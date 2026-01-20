@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Contio.AI
+Copyright (c) 2025-present Contio, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+SCOPE: This MIT License applies solely to the Contio Partner SDK
+(@contio/partner-sdk) source code contained in this package. It does not
+extend to the Contio platform, APIs, services, or any other Contio software,
+which remain subject to the Contio Terms of Service (https://contio.ai/tos)
+and applicable proprietary licenses.
+
+Use of the Contio Partner API accessed through this SDK is governed by your
+Partner Agreement with Contio, Inc.
