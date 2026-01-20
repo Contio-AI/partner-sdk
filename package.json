@@ -1,0 +1,83 @@
+{
+  "name": "@contio/partner-sdk",
+  "version": "1.3.0",
+  "description": "Official SDK for Contio MeetingOS Partner API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./webhooks": {
+      "types": "./dist/webhooks/index.d.ts",
+      "import": "./dist/esm/webhooks/index.js",
+      "require": "./dist/webhooks/index.js",
+      "default": "./dist/webhooks/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "import": "./dist/esm/auth/index.js",
+      "require": "./dist/auth/index.js",
+      "default": "./dist/auth/index.js"
+    },
+    "./models": {
+      "types": "./dist/models/index.d.ts",
+      "import": "./dist/esm/models/index.js",
+      "require": "./dist/models/index.js",
+      "default": "./dist/models/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "docs": "typedoc --out ../../dist/typedoc src/index.ts",
+    "gen-types": "swagger-typescript-api generate --path https://docs.contio.ai/partner-api/openapi/partner-openapi.yaml --output src/generated --name api-types.ts --no-client --extract-request-params --extract-request-body --extract-response-body --extract-response-error --generate-union-enums --sort-types",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "axios": "^1.12.0",
+    "qs": "^6.11.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/qs": "^6.9.7",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
+    "axios-mock-adapter": "^1.22.0",
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.0",
+    "swagger-typescript-api": "^13.2.16",
+    "ts-jest": "^29.4.1",
+    "typedoc": "^0.28.15"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.5.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "contio",
+    "partner",
+    "api",
+    "sdk",
+    "meetingos"
+  ],
+  "author": "Contio AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Contio-AI/partner-sdk"
+  }
+}
