@@ -28,13 +28,15 @@
 import { WebhookVerifier } from './verifier';
 import {
   ContioWebhookEvent,
-  WorkflowAssignmentCreatedWebhook,
-  ActionItemUpdatedWebhook,
-  UserConnectionRevokedWebhook,
-  MeetingCompletedWebhook,
-  MeetingCreatedWebhook,
-  ActionItemCreatedWebhook,
-  ActionItemCompletedWebhook,
+  WorkflowAssignmentCreatedPayload,
+  ActionItemUpdatedPayload,
+  UserConnectionRevokedPayload,
+  MeetingCompletedPayload,
+  MeetingCreatedPayload,
+  ActionItemCreatedPayload,
+  ActionItemCompletedPayload,
+  ParticipantAddedPayload,
+  ParticipantRemovedPayload,
   WebhookEventType,
 } from './types';
 
@@ -42,13 +44,15 @@ import {
  * Map of event types to their corresponding webhook payload types
  */
 export interface WebhookEventMap {
-  'workflow.assignment.created': WorkflowAssignmentCreatedWebhook;
-  'action_item.updated': ActionItemUpdatedWebhook;
-  'user.connection.revoked': UserConnectionRevokedWebhook;
-  'meeting.completed': MeetingCompletedWebhook;
-  'meeting.created': MeetingCreatedWebhook;
-  'action_item.created': ActionItemCreatedWebhook;
-  'action_item.completed': ActionItemCompletedWebhook;
+  'workflow.assignment.created': WorkflowAssignmentCreatedPayload;
+  'action_item.updated': ActionItemUpdatedPayload;
+  'user.connection.revoked': UserConnectionRevokedPayload;
+  'meeting.completed': MeetingCompletedPayload;
+  'meeting.created': MeetingCreatedPayload;
+  'action_item.created': ActionItemCreatedPayload;
+  'action_item.completed': ActionItemCompletedPayload;
+  'participant.added': ParticipantAddedPayload;
+  'participant.removed': ParticipantRemovedPayload;
 }
 
 /**
