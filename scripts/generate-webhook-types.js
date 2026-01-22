@@ -60,6 +60,8 @@ async function generate() {
     if (code.startsWith('interface ') || code.startsWith('type ')) {
       code = 'export ' + code;
     }
+    // Replace any with unknown for stricter typing
+    code = code.replace(/Record<string, any>/g, 'Record<string, unknown>');
     output += code + '\n\n';
   }
 

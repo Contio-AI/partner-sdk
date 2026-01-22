@@ -5,7 +5,7 @@
  *
  * Source: specs/asyncapi/webhooks.yaml
  * Spec version: 1.4.0
- * Generated: 2026-01-21T23:04:42.209Z
+ * Generated: 2026-01-22T00:20:09.670Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -17,7 +17,7 @@ export interface ActionItemCompletedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ActionItemCompletedData {
@@ -26,13 +26,13 @@ export interface ActionItemCompletedData {
   'completed_at': string;
   'completed_by_user_id': string;
   'meeting_id': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface WebhookUserContext {
   'email': string;
   'id': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ActionItemCreatedPayload {
@@ -42,7 +42,7 @@ export interface ActionItemCreatedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ActionItemCreatedData {
@@ -51,7 +51,7 @@ export interface ActionItemCreatedData {
   'created_at': string;
   'meeting_id': string;
   'title': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ActionItemUpdatedPayload {
@@ -61,7 +61,7 @@ export interface ActionItemUpdatedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ActionItemUpdatedData {
@@ -71,7 +71,7 @@ export interface ActionItemUpdatedData {
   'status': ActionItemStatus;
   'updated_at': string;
   'workspace_id': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export type ActionItemStatus = "needs_review" | "accepted" | "in_progress" | "completed" | "cancelled" | "blocked";
@@ -83,7 +83,7 @@ export interface MeetingCompletedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface MeetingCompletedData {
@@ -91,7 +91,7 @@ export interface MeetingCompletedData {
   'meeting_id': string;
   'title': string;
   'workspace_id': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface MeetingCreatedPayload {
@@ -101,7 +101,7 @@ export interface MeetingCreatedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface MeetingCreatedData {
@@ -110,7 +110,7 @@ export interface MeetingCreatedData {
   'meeting_id': string;
   'title': string;
   'workspace_id': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ParticipantAddedPayload {
@@ -120,14 +120,14 @@ export interface ParticipantAddedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ParticipantAddedData {
   'added_at': string;
   'meeting_id': string;
   'participants': ParticipantInfo[];
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ParticipantInfo {
@@ -135,7 +135,7 @@ export interface ParticipantInfo {
   'participant_id': string;
   'role': string;
   'user_id'?: string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ParticipantRemovedPayload {
@@ -145,7 +145,7 @@ export interface ParticipantRemovedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ParticipantRemovedData {
@@ -154,7 +154,7 @@ export interface ParticipantRemovedData {
   'participant_id': string;
   'removed_at': string;
   'user_id'?: string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface UserConnectionRevokedPayload {
@@ -164,13 +164,13 @@ export interface UserConnectionRevokedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface UserConnectionRevokedData {
   'connection_id': string;
   'revoked_at': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface WorkflowAssignmentCreatedPayload {
@@ -180,7 +180,7 @@ export interface WorkflowAssignmentCreatedPayload {
   'for_user'?: WebhookUserContext;
   'partner_app_id': string;
   'timestamp': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface WorkflowAssignmentCreatedData {
@@ -190,11 +190,11 @@ export interface WorkflowAssignmentCreatedData {
   'created_at': string;
   'meeting_id': string;
   'status': string;
-  'workflow_data_payload'?: Record<string, any>;
+  'workflow_data_payload'?: Record<string, unknown>;
   'workflow_id': string;
   'workflow_name': string;
   'workspace_id': string;
-  'additionalProperties'?: Record<string, any>;
+  'additionalProperties'?: Record<string, unknown>;
 }
 
 /**
