@@ -95,3 +95,47 @@ export interface WebhookVerificationResult {
 export type WebhookHandler<T extends ContioWebhookEvent = ContioWebhookEvent> = (
   event: T
 ) => Promise<void> | void;
+
+// =============================================================================
+// Deprecated type aliases for backward compatibility
+// These will be removed in the next major version
+// =============================================================================
+
+/**
+ * @deprecated Use WorkflowAssignmentCreatedPayload instead.
+ * Note: Data structure has changed - fields are now at data.X instead of data.assignment.X
+ */
+export type WorkflowAssignmentCreatedWebhook = WorkflowAssignmentCreatedPayload;
+
+/**
+ * @deprecated Use ActionItemUpdatedPayload instead.
+ * Note: Data structure has changed - fields are now at data.X instead of data.action_item.X
+ */
+export type ActionItemUpdatedWebhook = ActionItemUpdatedPayload;
+
+/**
+ * @deprecated Use UserConnectionRevokedPayload instead.
+ * Note: Data structure has changed - fields are now at data.X instead of data.connection.X
+ */
+export type UserConnectionRevokedWebhook = UserConnectionRevokedPayload;
+
+/**
+ * @deprecated Use MeetingCompletedPayload instead.
+ * Note: Data structure has changed - fields are now at data.X instead of data.meeting.X
+ */
+export type MeetingCompletedWebhook = MeetingCompletedPayload;
+
+/**
+ * @deprecated Use MeetingCreatedPayload instead.
+ */
+export type MeetingCreatedWebhook = MeetingCreatedPayload;
+
+/**
+ * @deprecated Use ActionItemCreatedPayload instead.
+ */
+export type ActionItemCreatedWebhook = ActionItemCreatedPayload;
+
+/**
+ * @deprecated Use ActionItemCompletedPayload instead.
+ */
+export type ActionItemCompletedWebhook = ActionItemCompletedPayload;
