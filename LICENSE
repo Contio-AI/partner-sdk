@@ -23,7 +23,7 @@ SOFTWARE.
 ---
 
 SCOPE: This MIT License applies solely to the Contio Partner SDK
-(@contio/partner-sdk) source code contained in this package. It does not
+(@contio-ai/partner-sdk) source code contained in this package. It does not
 extend to the Contio platform, APIs, services, or any other Contio software,
 which remain subject to the Contio Terms of Service (https://contio.ai/tos)
 and applicable proprietary licenses.

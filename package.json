@@ -37,7 +37,11 @@
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "docs": "typedoc --out ../../dist/typedoc src/index.ts",
-    "gen-types": "swagger-typescript-api generate --path https://docs.contio.ai/partner-api/openapi/partner-openapi.yaml --output src/generated --name api-types.ts --no-client --extract-request-params --extract-request-body --extract-response-body --extract-response-error --generate-union-enums --sort-types",
+    "gen-types": "swagger-typescript-api generate --path specs/api/partner-openapi.json --output src/generated --name api-types.ts --no-client --extract-request-params --extract-request-body --extract-response-body --extract-response-error --generate-union-enums --sort-types && node scripts/post-process-api-types.js",
+    "gen-webhook-types": "node scripts/generate-webhook-types.js",
+    "gen-all-types": "npm run gen-types && npm run gen-webhook-types",
+    "update-spec:api": "curl -s https://docs.contio.ai/partner-api/openapi/partner-openapi.json -o specs/api/partner-openapi.json && npm run gen-types",
+    "update-spec:webhooks": "curl -s https://docs.contio.ai/partner-api/asyncapi/webhooks.yaml -o specs/asyncapi/webhooks.yaml && npm run gen-webhook-types",
     "prepublishOnly": "npm run build && npm run test"
   },
   "dependencies": {
@@ -45,6 +49,7 @@
     "qs": "^6.11.0"
   },
   "devDependencies": {
+    "@asyncapi/modelina": "^3.12.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/qs": "^6.9.7",

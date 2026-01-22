@@ -6,8 +6,8 @@ import * as crypto from 'crypto';
 import { WebhookVerifier, verifyWebhookSignature, parseWebhook } from '../src/webhooks/verifier';
 import {
   ContioWebhookEvent,
-  WorkflowAssignmentCreatedWebhook,
-  ActionItemUpdatedWebhook,
+  WorkflowAssignmentCreatedPayload,
+  ActionItemUpdatedPayload,
   WEBHOOK_EVENTS,
 } from '../src/webhooks/types';
 
@@ -134,42 +134,41 @@ describe('WebhookVerifier', () => {
   });
 
   describe('parseWebhook', () => {
-    const workflowAssignmentEvent: WorkflowAssignmentCreatedWebhook = {
+    const workflowAssignmentEvent: WorkflowAssignmentCreatedPayload = {
       event_type: 'workflow.assignment.created',
       event_id: 'evt_workflow_123',
       timestamp: '2025-01-08T12:00:00Z',
       partner_app_id: 'app_456',
       data: {
-        assignment: {
-          assignment_id: 'assign_789',
-          action_item_id: 'action_101',
-          workflow_id: 'workflow_202',
-          workflow_name: 'Create Jira Ticket',
-          confidence_score: 0.95,
-          workflow_data_payload: {
-            project: 'PROJ',
-            issue_type: 'Task',
-          },
-          status: 'pending',
-          created_at: '2025-01-08T12:00:00Z',
+        assignment_id: 'assign_789',
+        action_item_id: 'action_101',
+        workflow_id: 'workflow_202',
+        workflow_name: 'Create Jira Ticket',
+        confidence_score: 0.95,
+        workflow_data_payload: {
+          project: 'PROJ',
+          issue_type: 'Task',
         },
+        status: 'pending',
+        meeting_id: 'meeting_303',
+        workspace_id: 'workspace_404',
+        created_at: '2025-01-08T12:00:00Z',
       },
     };
 
     // Minimal payload - only IDs and key state, partners fetch full details via API
-    const actionItemEvent: ActionItemUpdatedWebhook = {
+    const actionItemEvent: ActionItemUpdatedPayload = {
       event_type: 'action_item.updated',
       event_id: 'evt_action_456',
       timestamp: '2025-01-08T13:00:00Z',
       partner_app_id: 'app_456',
       data: {
-        action_item: {
-          action_item_id: 'action_101',
-          meeting_id: 'meeting_303',
-          is_completed: true,
-          status: 'completed',
-          updated_at: '2025-01-08T13:00:00Z',
-        },
+        action_item_id: 'action_101',
+        meeting_id: 'meeting_303',
+        is_completed: true,
+        status: 'completed',
+        workspace_id: 'workspace_404',
+        updated_at: '2025-01-08T13:00:00Z',
       },
     };
 
@@ -191,9 +190,9 @@ describe('WebhookVerifier', () => {
       expect(event?.event_id).toBe('evt_workflow_123');
       expect(event?.partner_app_id).toBe('app_456');
 
-      const typedEvent = event as WorkflowAssignmentCreatedWebhook;
-      expect(typedEvent.data.assignment.assignment_id).toBe('assign_789');
-      expect(typedEvent.data.assignment.workflow_name).toBe('Create Jira Ticket');
+      const typedEvent = event as WorkflowAssignmentCreatedPayload;
+      expect(typedEvent.data.assignment_id).toBe('assign_789');
+      expect(typedEvent.data.workflow_name).toBe('Create Jira Ticket');
     });
 
     it('should parse valid action item webhook', () => {
@@ -205,9 +204,9 @@ describe('WebhookVerifier', () => {
       expect(event).toBeDefined();
       expect(event?.event_type).toBe('action_item.updated');
 
-      const typedEvent = event as ActionItemUpdatedWebhook;
-      expect(typedEvent.data.action_item.action_item_id).toBe('action_101');
-      expect(typedEvent.data.action_item.is_completed).toBe(true);
+      const typedEvent = event as ActionItemUpdatedPayload;
+      expect(typedEvent.data.action_item_id).toBe('action_101');
+      expect(typedEvent.data.is_completed).toBe(true);
     });
 
     it('should parse webhook with Buffer payload', () => {

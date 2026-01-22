@@ -422,7 +422,7 @@ export interface AdminWorkflowResponse {
 
 export type AuthorizeCreateData = OauthOAuthConsentResponse;
 
-export type AuthorizeCreateError = Record<string, any>;
+export type AuthorizeCreateError = Record<string, unknown>;
 
 export type AuthorizeListError = ErrorsErrorResponse;
 
@@ -516,7 +516,7 @@ export type JwksJsonListData =
 export type JwksJsonListError = ErrorsErrorResponse;
 
 export interface OauthHealthResponse {
-  checks?: Record<string, any>;
+  checks?: Record<string, unknown>;
   /** @example "partner-oauth" */
   service?: string;
   /** @example "healthy" */
@@ -722,7 +722,7 @@ export type PartnerAdminCredentialsClientSecretRotateCreateData =
 export type PartnerAdminCredentialsClientSecretRotateCreateError =
   ErrorsErrorResponse;
 
-export type PartnerAdminCredentialsHistoryListData = Record<string, any>;
+export type PartnerAdminCredentialsHistoryListData = Record<string, unknown>;
 
 export type PartnerAdminCredentialsHistoryListError = ErrorsErrorResponse;
 
@@ -786,7 +786,7 @@ export type PartnerAdminWebhookDeliveriesListData =
 
 export type PartnerAdminWebhookDeliveriesListError = ErrorsPartnerErrorResponse;
 
-export type PartnerAdminWebhookDeliveriesRetryCreateData = Record<string, any>;
+export type PartnerAdminWebhookDeliveriesRetryCreateData = Record<string, unknown>;
 
 export type PartnerAdminWebhookDeliveriesRetryCreateError =
   ErrorsPartnerErrorResponse;
@@ -854,7 +854,7 @@ export interface PartnerInfoPublicListParams {
   clientId: string;
 }
 
-export type PartnerSsoCallbackListError = string | Record<string, any>;
+export type PartnerSsoCallbackListError = string | Record<string, unknown>;
 
 export interface PartnerSsoCallbackListParams {
   /** Authorization code from IdP */
@@ -878,7 +878,7 @@ export interface PartnerSsoInfoDetailParams {
 
 export type PartnerSsoInitiateListData = SsoInitiateResponse;
 
-export type PartnerSsoInitiateListError = string | Record<string, any>;
+export type PartnerSsoInitiateListError = string | Record<string, unknown>;
 
 export interface PartnerSsoInitiateListParams {
   /** Auto-redirect to authorization URL */
@@ -891,7 +891,7 @@ export interface PartnerSsoInitiateListParams {
 
 export type PartnerSsoSessionDetailData = SsoSessionStatusResponse;
 
-export type PartnerSsoSessionDetailError = Record<string, any>;
+export type PartnerSsoSessionDetailError = Record<string, unknown>;
 
 export interface PartnerSsoSessionDetailParams {
   /** Session ID */
@@ -1161,7 +1161,7 @@ export interface RomeApiControllersExternalPartnerOauthTokenIntrospection {
   client_id?: string;
   /** @example 1704110400 */
   exp?: number;
-  ext?: Record<string, any>;
+  ext?: Record<string, unknown>;
   /** @example 1704106800 */
   iat?: number;
   /** @example "https://auth.contio.io" */
@@ -1291,7 +1291,7 @@ export interface UserCreateActionItemRequest {
   due_date?: string;
   /** @example "123e4567-e89b-12d3-a456-426614174000" */
   meeting_id: string;
-  partner_context?: Record<string, any>;
+  partner_context?: Record<string, unknown>;
   /** @example "needs_review" */
   status?:
     | "needs_review"
@@ -1495,7 +1495,7 @@ export interface UserPartnerActionItemResponse {
   is_completed?: boolean;
   /** @example "123e4567-e89b-12d3-a456-426614174000" */
   meeting_id?: string;
-  partner_context?: Record<string, any>;
+  partner_context?: Record<string, unknown>;
   /** @example "accepted" */
   status?: string;
   /** @example "Client follow-up call" */
@@ -1623,7 +1623,7 @@ export interface UserUpdateActionItemRequest {
   due_date?: string;
   /** @example true */
   is_completed?: boolean;
-  partner_context?: Record<string, any>;
+  partner_context?: Record<string, unknown>;
   /** @example "needs_review" */
   status?:
     | "needs_review"
