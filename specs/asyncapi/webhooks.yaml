@@ -12,7 +12,7 @@
 asyncapi: 2.6.0
 info:
     title: Contio Partner Webhook Events
-    version: 1.4.0
+    version: 1.3.0
     description: AsyncAPI specification for Contio Partner webhook events.
     contact:
         name: Contio Partner Support
