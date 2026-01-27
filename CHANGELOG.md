@@ -6,6 +6,10 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-01-27
+
+### Moved from private repository to new home at https://github.com/Contio-AI/partner-sdk
+
 ## [1.3.0] - 2026-01-20
 
 ### Added
@@ -87,4 +91,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
-[1.3.0]: https://github.com/Contio-AI/partner-sdk/compare/v0.0.0...v1.3.0
+[1.3.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.3.0...v1.3.1
