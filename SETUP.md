@@ -2,30 +2,6 @@
 
 This document describes the setup and configuration for the `@contio/partner-sdk` public repository.
 
-## Repository Configuration
-
-### Required GitHub Secrets
-
-The following secrets must be configured in the repository settings for the CI/CD workflows to function:
-
-1. **`NPM_TOKEN`** - npm authentication token for publishing packages
-   - Go to [npmjs.com](https://www.npmjs.com/) → Account Settings → Access Tokens
-   - Create a new "Automation" token
-   - Add to GitHub: Settings → Secrets and variables → Actions → New repository secret
-
-2. **`GITHUB_TOKEN`** - Automatically provided by GitHub Actions (no setup needed)
-   - Used for creating GitHub releases
-
-### Branch Protection
-
-Recommended branch protection rules for `main`:
-
-- Require pull request reviews before merging
-- Require status checks to pass before merging (CI workflow)
-- Require branches to be up to date before merging
-- Do not allow force pushes
-- Do not allow deletions
-
 ## Development Workflow
 
 ### Local Development
