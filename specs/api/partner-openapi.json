@@ -13,7 +13,7 @@
             "name": "MIT/Commercial",
             "url": "https://docs.contio.ai/partner-api/license/"
         },
-        "version": "1.3.0"
+        "version": "1.4.0"
     },
     "host": "api.contio.ai",
     "basePath": "/",
@@ -2900,6 +2900,75 @@
                 }
             }
         },
+        "/v1/partner/user/calendar/events/{calendar_event_id}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "calendar:read"
+                        ]
+                    }
+                ],
+                "description": "Retrieve details of a specific calendar event for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner User API"
+                ],
+                "summary": "Get calendar event by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Calendar Event ID",
+                        "name": "calendar_event_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.PartnerCalendarEventResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid calendar event ID format",
+                        "schema": {
+                            "$ref": "#/definitions/errors.PartnerErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "schema": {
+                            "$ref": "#/definitions/errors.PartnerErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "User does not have access to this calendar event",
+                        "schema": {
+                            "$ref": "#/definitions/errors.PartnerErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Calendar event not found",
+                        "schema": {
+                            "$ref": "#/definitions/errors.PartnerErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errors.PartnerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/partner/user/calendar/events/{calendar_event_id}/meeting": {
             "post": {
                 "security": [
@@ -4894,8 +4963,9 @@
                     "example": "Call or schedule meeting to discuss"
                 },
                 "due_date": {
+                    "description": "YYYY-MM-DD format",
                     "type": "string",
-                    "example": "2023-01-08T17:00:00Z"
+                    "example": "2023-01-08"
                 },
                 "meeting_id": {
                     "type": "string",
@@ -5190,8 +5260,9 @@
                     "example": "Follow up with client about proposal"
                 },
                 "due_date": {
+                    "description": "YYYY-MM-DD format",
                     "type": "string",
-                    "example": "2023-01-08T17:00:00-07:00"
+                    "example": "2023-01-08"
                 },
                 "has_partner_assignment": {
                     "type": "boolean",
@@ -5453,8 +5524,9 @@
                     "example": "Updated description"
                 },
                 "due_date": {
+                    "description": "YYYY-MM-DD format",
                     "type": "string",
-                    "example": "2023-01-08T17:00:00Z"
+                    "example": "2023-01-08"
                 },
                 "is_completed": {
                     "type": "boolean",

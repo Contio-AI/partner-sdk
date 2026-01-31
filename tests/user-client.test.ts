@@ -687,6 +687,49 @@ describe('PartnerUserClient', () => {
       });
     });
 
+    describe('getCalendarEvent', () => {
+      const mockCalendarEventDetail = {
+        id: 'cal-event-123',
+        title: 'Product Planning Meeting',
+        description: 'Q1 product roadmap discussion',
+        start_time: '2026-01-31T14:00:00Z',
+        end_time: '2026-01-31T15:30:00Z',
+        is_all_day: false,
+        location: 'Conference Room B',
+        attendee_count: 5,
+        organizer: {
+          email: 'product@example.com',
+          name: 'Product Manager',
+          response_status: 'accepted',
+        },
+        attendees: [
+          {
+            email: 'dev1@example.com',
+            name: 'Developer One',
+            response_status: 'accepted',
+          },
+          {
+            email: 'dev2@example.com',
+            name: 'Developer Two',
+            response_status: 'tentative',
+          },
+        ],
+      };
+
+      it('should get calendar event details by ID', async () => {
+        mockAxios.onGet('/calendar/events/cal-event-123').reply(200, mockCalendarEventDetail);
+
+        const event = await userClient.getCalendarEvent('cal-event-123');
+
+        expect(event.id).toBe('cal-event-123');
+        expect(event.title).toBe('Product Planning Meeting');
+        expect(event.attendee_count).toBe(5);
+        expect(event.is_all_day).toBe(false);
+        expect(event.organizer?.email).toBe('product@example.com');
+        expect(event.attendees).toHaveLength(2);
+      });
+    });
+
     describe('linkCalendarEvent', () => {
       const linkRequest: LinkCalendarEventRequest = {
         calendar_event_id: 'event-123',

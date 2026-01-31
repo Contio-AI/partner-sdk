@@ -4,8 +4,8 @@
  * THIS FILE IS AUTO-GENERATED - DO NOT EDIT
  *
  * Source: specs/asyncapi/webhooks.yaml
- * Spec version: 1.3.0
- * Generated: 2026-01-22T04:08:48.294Z
+ * Spec version: 1.4.0
+ * Generated: 2026-01-31T06:55:58.504Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -76,6 +76,117 @@ export interface ActionItemUpdatedData {
 
 export type ActionItemStatus = "needs_review" | "accepted" | "in_progress" | "completed" | "cancelled" | "blocked";
 
+export interface AgendaItemCreatedPayload {
+  'data': AgendaItemCreatedData;
+  'event_id': string;
+  'event_type': 'agenda_item.created';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AgendaItemCreatedData {
+  'agenda_item_id': string;
+  'created_at': string;
+  'item_type': string;
+  'meeting_id'?: string;
+  'title': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AgendaItemDeletedPayload {
+  'data': AgendaItemDeletedData;
+  'event_id': string;
+  'event_type': 'agenda_item.deleted';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AgendaItemDeletedData {
+  'agenda_item_id': string;
+  'deleted_at': string;
+  'meeting_id'?: string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AgendaItemUpdatedPayload {
+  'data': AgendaItemUpdatedData;
+  'event_id': string;
+  'event_type': 'agenda_item.updated';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AgendaItemUpdatedData {
+  'agenda_item_id': string;
+  'item_type': string;
+  'meeting_id'?: string;
+  'status': string;
+  'title': string;
+  'updated_at': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CalendarEventCreatedPayload {
+  'data': CalendarEventCreatedData;
+  'event_id': string;
+  'event_type': 'calendar_event.created';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CalendarEventCreatedData {
+  'attendee_count': number;
+  'calendar_event_id': string;
+  'end_time': string;
+  'is_all_day': boolean;
+  'start_time': string;
+  'title': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CalendarEventDeletedPayload {
+  'data': CalendarEventDeletedData;
+  'event_id': string;
+  'event_type': 'calendar_event.deleted';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CalendarEventDeletedData {
+  'calendar_event_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CalendarEventUpdatedPayload {
+  'data': CalendarEventUpdatedData;
+  'event_id': string;
+  'event_type': 'calendar_event.updated';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CalendarEventUpdatedData {
+  'attendee_count': number;
+  'calendar_event_id': string;
+  'end_time': string;
+  'is_all_day': boolean;
+  'start_time': string;
+  'title': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
 export interface MeetingCompletedPayload {
   'data': MeetingCompletedData;
   'event_id': string;
@@ -109,6 +220,25 @@ export interface MeetingCreatedData {
   'created_by_user_id': string;
   'meeting_id': string;
   'title': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingUpdatedPayload {
+  'data': MeetingUpdatedData;
+  'event_id': string;
+  'event_type': 'meeting.updated';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingUpdatedData {
+  'meeting_id': string;
+  'scheduled_start'?: string;
+  'title': string;
+  'updated_at': string;
   'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
@@ -204,8 +334,15 @@ export const WEBHOOK_EVENT_TYPES = [
   'action_item.completed',
   'action_item.created',
   'action_item.updated',
+  'agenda_item.created',
+  'agenda_item.deleted',
+  'agenda_item.updated',
+  'calendar_event.created',
+  'calendar_event.deleted',
+  'calendar_event.updated',
   'meeting.completed',
   'meeting.created',
+  'meeting.updated',
   'participant.added',
   'participant.removed',
   'user.connection.revoked',

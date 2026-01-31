@@ -12,7 +12,7 @@
 asyncapi: 2.6.0
 info:
     title: Contio Partner Webhook Events
-    version: 1.3.0
+    version: 1.4.0
     description: AsyncAPI specification for Contio Partner webhook events.
     contact:
         name: Contio Partner Support
@@ -47,6 +47,54 @@ channels:
                 name: action_item.updated
                 payload:
                     $ref: '#/components/schemas/ActionItemUpdatedPayload'
+    agenda_item.created:
+        subscribe:
+            summary: Sent when an agenda item is created
+            operationId: onAgendaItemCreated
+            message:
+                name: agenda_item.created
+                payload:
+                    $ref: '#/components/schemas/AgendaItemCreatedPayload'
+    agenda_item.deleted:
+        subscribe:
+            summary: Sent when an agenda item is deleted
+            operationId: onAgendaItemDeleted
+            message:
+                name: agenda_item.deleted
+                payload:
+                    $ref: '#/components/schemas/AgendaItemDeletedPayload'
+    agenda_item.updated:
+        subscribe:
+            summary: Sent when an agenda item is updated
+            operationId: onAgendaItemUpdated
+            message:
+                name: agenda_item.updated
+                payload:
+                    $ref: '#/components/schemas/AgendaItemUpdatedPayload'
+    calendar_event.created:
+        subscribe:
+            summary: Sent when a calendar event is synced from an external calendar
+            operationId: onCalendarEventCreated
+            message:
+                name: calendar_event.created
+                payload:
+                    $ref: '#/components/schemas/CalendarEventCreatedPayload'
+    calendar_event.deleted:
+        subscribe:
+            summary: Sent when a calendar event is cancelled/deleted from an external calendar
+            operationId: onCalendarEventDeleted
+            message:
+                name: calendar_event.deleted
+                payload:
+                    $ref: '#/components/schemas/CalendarEventDeletedPayload'
+    calendar_event.updated:
+        subscribe:
+            summary: Sent when a calendar event is updated in an external calendar
+            operationId: onCalendarEventUpdated
+            message:
+                name: calendar_event.updated
+                payload:
+                    $ref: '#/components/schemas/CalendarEventUpdatedPayload'
     meeting.completed:
         subscribe:
             summary: Sent when a meeting ends and notes/summary are available
@@ -63,6 +111,14 @@ channels:
                 name: meeting.created
                 payload:
                     $ref: '#/components/schemas/MeetingCreatedPayload'
+    meeting.updated:
+        subscribe:
+            summary: Sent when a meeting's properties are updated
+            operationId: onMeetingUpdated
+            message:
+                name: meeting.updated
+                payload:
+                    $ref: '#/components/schemas/MeetingUpdatedPayload'
     participant.added:
         subscribe:
             summary: Sent when one or more participants are added to a meeting
@@ -206,6 +262,178 @@ components:
                     event_type:
                         const: action_item.updated
                   type: object
+        AgendaItemCreatedData:
+            type: object
+            required:
+                - agenda_item_id
+                - created_at
+                - item_type
+                - title
+            properties:
+                agenda_item_id:
+                    type: string
+                    format: uuid
+                created_at:
+                    type: string
+                    format: date-time
+                item_type:
+                    type: string
+                meeting_id:
+                    type: string
+                    format: uuid
+                title:
+                    type: string
+        AgendaItemCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/AgendaItemCreatedData'
+                    event_type:
+                        const: agenda_item.created
+                  type: object
+        AgendaItemDeletedData:
+            type: object
+            required:
+                - agenda_item_id
+                - deleted_at
+            properties:
+                agenda_item_id:
+                    type: string
+                    format: uuid
+                deleted_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type: string
+                    format: uuid
+        AgendaItemDeletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/AgendaItemDeletedData'
+                    event_type:
+                        const: agenda_item.deleted
+                  type: object
+        AgendaItemUpdatedData:
+            type: object
+            required:
+                - agenda_item_id
+                - item_type
+                - status
+                - title
+                - updated_at
+            properties:
+                agenda_item_id:
+                    type: string
+                    format: uuid
+                item_type:
+                    type: string
+                meeting_id:
+                    type: string
+                    format: uuid
+                status:
+                    type: string
+                title:
+                    type: string
+                updated_at:
+                    type: string
+                    format: date-time
+        AgendaItemUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/AgendaItemUpdatedData'
+                    event_type:
+                        const: agenda_item.updated
+                  type: object
+        CalendarEventCreatedData:
+            type: object
+            required:
+                - attendee_count
+                - calendar_event_id
+                - end_time
+                - is_all_day
+                - start_time
+                - title
+            properties:
+                attendee_count:
+                    type: integer
+                calendar_event_id:
+                    type: string
+                    format: uuid
+                end_time:
+                    type: string
+                    format: date-time
+                is_all_day:
+                    type: boolean
+                start_time:
+                    type: string
+                    format: date-time
+                title:
+                    type: string
+        CalendarEventCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CalendarEventCreatedData'
+                    event_type:
+                        const: calendar_event.created
+                  type: object
+        CalendarEventDeletedData:
+            type: object
+            required:
+                - calendar_event_id
+            properties:
+                calendar_event_id:
+                    type: string
+                    format: uuid
+        CalendarEventDeletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CalendarEventDeletedData'
+                    event_type:
+                        const: calendar_event.deleted
+                  type: object
+        CalendarEventUpdatedData:
+            type: object
+            required:
+                - attendee_count
+                - calendar_event_id
+                - end_time
+                - is_all_day
+                - start_time
+                - title
+            properties:
+                attendee_count:
+                    type: integer
+                calendar_event_id:
+                    type: string
+                    format: uuid
+                end_time:
+                    type: string
+                    format: date-time
+                is_all_day:
+                    type: boolean
+                start_time:
+                    type: string
+                    format: date-time
+                title:
+                    type: string
+        CalendarEventUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CalendarEventUpdatedData'
+                    event_type:
+                        const: calendar_event.updated
+                  type: object
         MeetingCompletedData:
             type: object
             required:
@@ -265,6 +493,37 @@ components:
                         $ref: '#/components/schemas/MeetingCreatedData'
                     event_type:
                         const: meeting.created
+                  type: object
+        MeetingUpdatedData:
+            type: object
+            required:
+                - meeting_id
+                - title
+                - updated_at
+                - workspace_id
+            properties:
+                meeting_id:
+                    type: string
+                    format: uuid
+                scheduled_start:
+                    type: string
+                    format: date-time
+                title:
+                    type: string
+                updated_at:
+                    type: string
+                    format: date-time
+                workspace_id:
+                    type: string
+                    format: uuid
+        MeetingUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/MeetingUpdatedData'
+                    event_type:
+                        const: meeting.updated
                   type: object
         ParticipantAddedData:
             type: object

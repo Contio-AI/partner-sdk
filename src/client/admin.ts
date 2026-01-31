@@ -84,7 +84,8 @@ export class PartnerAdminClient extends BaseClient {
    *
    * @param data - Workflow creation data
    * @param data.name - Workflow name (required)
-   * @param data.trigger - Event that triggers the workflow
+   * @param data.description - Optional workflow description
+   * @param data.trigger_type - Event that triggers the workflow (e.g., 'action_item_match')
    * @param data.actions - Actions to perform when triggered
    * @returns The newly created workflow
    * @throws {ContioAPIError} If validation fails
@@ -192,8 +193,7 @@ export class PartnerAdminClient extends BaseClient {
    * @param params - Optional filter and pagination parameters
    * @param params.limit - Maximum number of deliveries to return
    * @param params.offset - Number of deliveries to skip for pagination
-   * @param params.status - Filter by status: 'pending', 'delivered', 'failed'
-   * @param params.event_type - Filter by event type (e.g., 'meeting.created')
+   * @param params.status - Filter by delivery status
    * @returns Paginated list of webhook deliveries
    * @throws {ContioAPIError} If the request fails
    */
@@ -461,17 +461,18 @@ export class PartnerAdminClient extends BaseClient {
   /**
    * Create IdP configuration for this partner app.
    *
-   * Configures your partner app as an Identity Provider (IdP) for SSO.
-   * This enables users to authenticate via your app and access Contio.
+   * Configures OIDC-based SSO for your partner app. The discovery URL is used to
+   * automatically fetch OIDC endpoints (issuer, authorization, token, userinfo, jwks).
    *
    * @param data - IdP configuration data
-   * @param data.issuer - Your IdP issuer URL (e.g., 'https://auth.yourapp.com')
-   * @param data.authorization_endpoint - OAuth authorization endpoint
-   * @param data.token_endpoint - OAuth token endpoint
-   * @param data.userinfo_endpoint - OIDC userinfo endpoint
-   * @param data.jwks_uri - JWKS endpoint for token verification
-   * @param data.client_id - OAuth client ID for Contio
-   * @param data.client_secret - OAuth client secret for Contio
+   * @param data.name - Display name for this IdP configuration (required)
+   * @param data.discovery_url - OIDC discovery endpoint URL (should end with /.well-known/openid-configuration) (required)
+   * @param data.idp_client_id - OAuth Client ID from your Identity Provider (required)
+   * @param data.idp_client_secret - OAuth Client Secret from your Identity Provider (required)
+   * @param data.mode - Domain validation mode: 'strict' or 'partner_managed' (required)
+   * @param data.scopes - OIDC scopes to request (optional, defaults to ["openid", "email", "profile"])
+   * @param data.claim_mappings - Maps Contio user fields to IdP claim names (optional)
+   * @param data.allowed_email_domains - Email domains allowed for SSO (required for strict mode)
    * @returns The created IdP configuration
    * @throws {ContioAPIError} If validation fails or IdP already exists
    *
@@ -480,13 +481,12 @@ export class PartnerAdminClient extends BaseClient {
    * @example
    * ```typescript
    * const idp = await admin.createIdPConfig({
-   *   issuer: 'https://auth.yourapp.com',
-   *   authorization_endpoint: 'https://auth.yourapp.com/oauth/authorize',
-   *   token_endpoint: 'https://auth.yourapp.com/oauth/token',
-   *   userinfo_endpoint: 'https://auth.yourapp.com/oauth/userinfo',
-   *   jwks_uri: 'https://auth.yourapp.com/.well-known/jwks.json',
-   *   client_id: 'contio-client-id',
-   *   client_secret: 'contio-client-secret'
+   *   name: 'Okta SSO',
+   *   discovery_url: 'https://yourorg.okta.com/.well-known/openid-configuration',
+   *   idp_client_id: 'okta-client-id',
+   *   idp_client_secret: 'okta-client-secret',
+   *   mode: 'strict',
+   *   allowed_email_domains: ['yourcompany.com']
    * });
    * ```
    */
