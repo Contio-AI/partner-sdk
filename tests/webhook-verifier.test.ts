@@ -209,6 +209,97 @@ describe('WebhookVerifier', () => {
       expect(typedEvent.data.is_completed).toBe(true);
     });
 
+    it('should parse meeting.updated webhook', () => {
+      const meetingUpdatedEvent = {
+        event_type: 'meeting.updated',
+        event_id: 'evt_meeting_upd_123',
+        timestamp: '2026-01-31T10:30:00Z',
+        partner_app_id: 'app_456',
+        for_user: {
+          id: 'user_789',
+          email: 'user@example.com',
+        },
+        data: {
+          meeting_id: 'meeting_123',
+          workspace_id: 'ws_456',
+          title: 'Updated Meeting Title',
+          scheduled_start: '2026-02-01T14:00:00Z',
+          updated_at: '2026-01-31T10:30:00Z',
+        },
+      };
+
+      const payloadString = JSON.stringify(meetingUpdatedEvent);
+      const signature = signPayload(meetingUpdatedEvent, testSecret);
+
+      const event = verifier.parseWebhook(payloadString, signature);
+
+      expect(event).toBeDefined();
+      expect(event?.event_type).toBe('meeting.updated');
+      expect((event as any).data.meeting_id).toBe('meeting_123');
+      expect((event as any).data.title).toBe('Updated Meeting Title');
+    });
+
+    it('should parse calendar_event.created webhook', () => {
+      const calendarEventCreatedEvent = {
+        event_type: 'calendar_event.created',
+        event_id: 'evt_cal_created_123',
+        timestamp: '2026-01-31T10:30:00Z',
+        partner_app_id: 'app_456',
+        for_user: {
+          id: 'user_789',
+          email: 'user@example.com',
+        },
+        data: {
+          calendar_event_id: 'cal_event_123',
+          title: 'Team Standup',
+          start_time: '2026-02-01T09:00:00Z',
+          end_time: '2026-02-01T09:30:00Z',
+          is_all_day: false,
+          attendee_count: 5,
+        },
+      };
+
+      const payloadString = JSON.stringify(calendarEventCreatedEvent);
+      const signature = signPayload(calendarEventCreatedEvent, testSecret);
+
+      const event = verifier.parseWebhook(payloadString, signature);
+
+      expect(event).toBeDefined();
+      expect(event?.event_type).toBe('calendar_event.created');
+      expect((event as any).data.calendar_event_id).toBe('cal_event_123');
+      expect((event as any).data.attendee_count).toBe(5);
+    });
+
+    it('should parse agenda_item.created webhook', () => {
+      const agendaItemCreatedEvent = {
+        event_type: 'agenda_item.created',
+        event_id: 'evt_agenda_created_123',
+        timestamp: '2026-01-31T10:30:00Z',
+        partner_app_id: 'app_456',
+        for_user: {
+          id: 'user_789',
+          email: 'user@example.com',
+        },
+        data: {
+          agenda_item_id: 'agenda_123',
+          meeting_id: 'meeting_456',
+          title: 'Discuss Q1 Goals',
+          item_type: 'DISCUSSION',
+          created_at: '2026-01-31T10:30:00Z',
+        },
+      };
+
+      const payloadString = JSON.stringify(agendaItemCreatedEvent);
+      const signature = signPayload(agendaItemCreatedEvent, testSecret);
+
+      const event = verifier.parseWebhook(payloadString, signature);
+
+      expect(event).toBeDefined();
+      expect(event?.event_type).toBe('agenda_item.created');
+      expect((event as any).data.agenda_item_id).toBe('agenda_123');
+      expect((event as any).data.item_type).toBe('DISCUSSION');
+    });
+
     it('should parse webhook with Buffer payload', () => {
       const payloadString = JSON.stringify(workflowAssignmentEvent);
       const bufferPayload = Buffer.from(payloadString, 'utf8');

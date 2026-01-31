@@ -956,6 +956,16 @@ export interface PartnerUserActionItemsUpdateParams {
   id: string;
 }
 
+export type PartnerUserCalendarEventsDetailData =
+  UserPartnerCalendarEventResponse;
+
+export type PartnerUserCalendarEventsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserCalendarEventsDetailParams {
+  /** Calendar Event ID */
+  calendarEventId: string;
+}
+
 export type PartnerUserCalendarEventsListData =
   UserListResponseUserPartnerCalendarEventResponse;
 
@@ -1287,7 +1297,10 @@ export interface UserCreateActionItemRequest {
    * @example "Call or schedule meeting to discuss"
    */
   description?: string;
-  /** @example "2023-01-08T17:00:00Z" */
+  /**
+   * YYYY-MM-DD format
+   * @example "2023-01-08"
+   */
   due_date?: string;
   /** @example "123e4567-e89b-12d3-a456-426614174000" */
   meeting_id: string;
@@ -1485,7 +1498,10 @@ export interface UserPartnerActionItemResponse {
   created_at?: string;
   /** @example "Follow up with client about proposal" */
   description?: string;
-  /** @example "2023-01-08T17:00:00-07:00" */
+  /**
+   * YYYY-MM-DD format
+   * @example "2023-01-08"
+   */
   due_date?: string;
   /** @example true */
   has_partner_assignment?: boolean;
@@ -1619,7 +1635,10 @@ export interface UserUpdateActionItemRequest {
    * @example "Updated description"
    */
   description?: string;
-  /** @example "2023-01-08T17:00:00Z" */
+  /**
+   * YYYY-MM-DD format
+   * @example "2023-01-08"
+   */
   due_date?: string;
   /** @example true */
   is_completed?: boolean;

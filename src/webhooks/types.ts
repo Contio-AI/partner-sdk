@@ -15,8 +15,15 @@ export {
   ActionItemCompletedPayload,
   ActionItemCreatedPayload,
   ActionItemUpdatedPayload,
+  AgendaItemCreatedPayload,
+  AgendaItemUpdatedPayload,
+  AgendaItemDeletedPayload,
+  CalendarEventCreatedPayload,
+  CalendarEventUpdatedPayload,
+  CalendarEventDeletedPayload,
   MeetingCompletedPayload,
   MeetingCreatedPayload,
+  MeetingUpdatedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
   UserConnectionRevokedPayload,
@@ -25,8 +32,15 @@ export {
   ActionItemCompletedData,
   ActionItemCreatedData,
   ActionItemUpdatedData,
+  AgendaItemCreatedData,
+  AgendaItemUpdatedData,
+  AgendaItemDeletedData,
+  CalendarEventCreatedData,
+  CalendarEventUpdatedData,
+  CalendarEventDeletedData,
   MeetingCompletedData,
   MeetingCreatedData,
+  MeetingUpdatedData,
   ParticipantAddedData,
   ParticipantRemovedData,
   ParticipantInfo,
@@ -43,8 +57,15 @@ import type {
   ActionItemCompletedPayload,
   ActionItemCreatedPayload,
   ActionItemUpdatedPayload,
+  AgendaItemCreatedPayload,
+  AgendaItemUpdatedPayload,
+  AgendaItemDeletedPayload,
+  CalendarEventCreatedPayload,
+  CalendarEventUpdatedPayload,
+  CalendarEventDeletedPayload,
   MeetingCompletedPayload,
   MeetingCreatedPayload,
+  MeetingUpdatedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
   UserConnectionRevokedPayload,
@@ -58,8 +79,15 @@ export type ContioWebhookEvent =
   | ActionItemCompletedPayload
   | ActionItemCreatedPayload
   | ActionItemUpdatedPayload
+  | AgendaItemCreatedPayload
+  | AgendaItemUpdatedPayload
+  | AgendaItemDeletedPayload
+  | CalendarEventCreatedPayload
+  | CalendarEventUpdatedPayload
+  | CalendarEventDeletedPayload
   | MeetingCompletedPayload
   | MeetingCreatedPayload
+  | MeetingUpdatedPayload
   | ParticipantAddedPayload
   | ParticipantRemovedPayload
   | UserConnectionRevokedPayload
@@ -74,9 +102,16 @@ export const WEBHOOK_EVENTS = {
   ACTION_ITEM_UPDATED: 'action_item.updated',
   ACTION_ITEM_CREATED: 'action_item.created',
   ACTION_ITEM_COMPLETED: 'action_item.completed',
+  AGENDA_ITEM_CREATED: 'agenda_item.created',
+  AGENDA_ITEM_UPDATED: 'agenda_item.updated',
+  AGENDA_ITEM_DELETED: 'agenda_item.deleted',
+  CALENDAR_EVENT_CREATED: 'calendar_event.created',
+  CALENDAR_EVENT_UPDATED: 'calendar_event.updated',
+  CALENDAR_EVENT_DELETED: 'calendar_event.deleted',
   USER_CONNECTION_REVOKED: 'user.connection.revoked',
   MEETING_COMPLETED: 'meeting.completed',
   MEETING_CREATED: 'meeting.created',
+  MEETING_UPDATED: 'meeting.updated',
   PARTICIPANT_ADDED: 'participant.added',
   PARTICIPANT_REMOVED: 'participant.removed',
 } as const;
