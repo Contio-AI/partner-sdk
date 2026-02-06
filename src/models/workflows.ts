@@ -118,7 +118,10 @@ export interface WebhookDelivery {
 export interface WebhookDeliveryListParams {
   limit?: number;
   offset?: number;
+  /** Filter by delivery status (pending, delivered, failed, abandoned) */
   status?: string;
+  /** Filter by event type (e.g., meeting.created, workflow.assignment.created) */
+  event_type?: string;
 }
 
 export interface WebhookDeliveryListResponse {

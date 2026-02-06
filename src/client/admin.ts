@@ -191,11 +191,22 @@ export class PartnerAdminClient extends BaseClient {
    * Use this to monitor webhook delivery status and troubleshoot failures.
    *
    * @param params - Optional filter and pagination parameters
-   * @param params.limit - Maximum number of deliveries to return
-   * @param params.offset - Number of deliveries to skip for pagination
-   * @param params.status - Filter by delivery status
+   * @param params.limit - Maximum number of deliveries to return (default 50, max 100)
+   * @param params.offset - Number of deliveries to skip for pagination (default 0)
+   * @param params.status - Filter by delivery status (pending, delivered, failed, abandoned)
+   * @param params.event_type - Filter by event type (e.g., meeting.created, workflow.assignment.created)
    * @returns Paginated list of webhook deliveries
    * @throws {ContioAPIError} If the request fails
+   *
+   * @example
+   * ```typescript
+   * // Get all failed deliveries for meeting.created events
+   * const deliveries = await admin.getWebhookDeliveries({
+   *   status: 'failed',
+   *   event_type: 'meeting.created',
+   *   limit: 20
+   * });
+   * ```
    */
   async getWebhookDeliveries(params?: WebhookDeliveryListParams): Promise<WebhookDeliveryListResponse> {
     return this.get<WebhookDeliveryListResponse>('/webhook-deliveries', params);
