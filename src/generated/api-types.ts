@@ -786,6 +786,17 @@ export type PartnerAdminWebhookDeliveriesListData =
 
 export type PartnerAdminWebhookDeliveriesListError = ErrorsPartnerErrorResponse;
 
+export interface PartnerAdminWebhookDeliveriesListParams {
+  /** Filter by event type (e.g., meeting.created, workflow.assignment.created) */
+  event_type?: string;
+  /** Maximum number of results to return (default 50, max 100) */
+  limit?: number;
+  /** Number of results to skip (default 0) */
+  offset?: number;
+  /** Filter by delivery status (pending, delivered, failed, abandoned) */
+  status?: string;
+}
+
 export type PartnerAdminWebhookDeliveriesRetryCreateData = Record<string, unknown>;
 
 export type PartnerAdminWebhookDeliveriesRetryCreateError =

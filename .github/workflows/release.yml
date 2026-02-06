@@ -38,7 +38,7 @@ jobs:
       - name: Generate TypeDoc
         run: |
           npm install -g typedoc
-          typedoc --out typedoc-output src/index.ts
+          typedoc --includeVersion --out typedoc-output src/index.ts
           
       - name: Create TypeDoc archive
         run: |

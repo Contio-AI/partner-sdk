@@ -382,6 +382,19 @@ describe('PartnerAdminClient', () => {
           status: 'failed',
         });
       });
+
+      it('should support filtering by event_type', async () => {
+        mockAxios.onGet('/webhook-deliveries').reply((config) => {
+          expect(config.params.event_type).toBe('meeting.created');
+          expect(config.params.status).toBe('failed');
+          return [200, mockDeliveriesResponse];
+        });
+
+        await adminClient.getWebhookDeliveries({
+          event_type: 'meeting.created',
+          status: 'failed',
+        });
+      });
     });
 
     describe('getWebhookDelivery', () => {
