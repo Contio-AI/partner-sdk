@@ -6,6 +6,13 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-02-06
+
+### Changed
+
+- **Deprecated**: `user.createMeetingFromCalendarEvent({calendar_event_id: string})` - The new `user.createMeetingFromCalendarEvent(calendarEventId)` method should be used instead. The argument is now a string instead of an object.
+- **Deprecated**: `CreateMeetingFromCalendarEventRequest` interface - This interface is no longer used. The `createMeetingFromCalendarEvent` method now takes a string argument.
+
 ## [1.4.0] - 2026-01-31
 
 ### Added
@@ -111,4 +118,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.4.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.3.0...v1.3.1
