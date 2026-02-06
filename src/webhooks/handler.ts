@@ -30,11 +30,18 @@ import {
   ContioWebhookEvent,
   WorkflowAssignmentCreatedPayload,
   ActionItemUpdatedPayload,
+  ActionItemCreatedPayload,
+  ActionItemCompletedPayload,
+  AgendaItemCreatedPayload,
+  AgendaItemUpdatedPayload,
+  AgendaItemDeletedPayload,
+  CalendarEventCreatedPayload,
+  CalendarEventUpdatedPayload,
+  CalendarEventDeletedPayload,
   UserConnectionRevokedPayload,
   MeetingCompletedPayload,
   MeetingCreatedPayload,
-  ActionItemCreatedPayload,
-  ActionItemCompletedPayload,
+  MeetingUpdatedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
   WebhookEventType,
@@ -45,12 +52,19 @@ import {
  */
 export interface WebhookEventMap {
   'workflow.assignment.created': WorkflowAssignmentCreatedPayload;
+  'action_item.created': ActionItemCreatedPayload;
   'action_item.updated': ActionItemUpdatedPayload;
+  'action_item.completed': ActionItemCompletedPayload;
+  'agenda_item.created': AgendaItemCreatedPayload;
+  'agenda_item.updated': AgendaItemUpdatedPayload;
+  'agenda_item.deleted': AgendaItemDeletedPayload;
+  'calendar_event.created': CalendarEventCreatedPayload;
+  'calendar_event.updated': CalendarEventUpdatedPayload;
+  'calendar_event.deleted': CalendarEventDeletedPayload;
   'user.connection.revoked': UserConnectionRevokedPayload;
   'meeting.completed': MeetingCompletedPayload;
   'meeting.created': MeetingCreatedPayload;
-  'action_item.created': ActionItemCreatedPayload;
-  'action_item.completed': ActionItemCompletedPayload;
+  'meeting.updated': MeetingUpdatedPayload;
   'participant.added': ParticipantAddedPayload;
   'participant.removed': ParticipantRemovedPayload;
 }
