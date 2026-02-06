@@ -2,6 +2,8 @@
 
 This document describes the setup and configuration for the `@contio/partner-sdk` public repository.
 
+> **Note**: This document contains both partner-facing information (development workflow, release branches) and internal maintainer notes (release process, CI/CD configuration). Sections marked "for SDK Maintainers" or "Internal Notes" are intended for the Contio team.
+
 ## Development Workflow
 
 ### Local Development
@@ -42,7 +44,123 @@ This document describes the setup and configuration for the `@contio/partner-sdk
 6. Wait for CI checks to pass
 7. Get approval and merge
 
-## Release Process
+## Release Branch Workflow
+
+### When to Use Release Branches
+
+Use a **release branch** when developing a new SDK version that needs to be tested with your application **before** the version is published to npm. This allows you to validate SDK changes in your environment before the official release.
+
+Use a **feature branch** for regular development work that doesn't require pre-release coordination.
+
+### Branch Naming Convention
+
+**Pattern**: `sdk-release/{version}` (without `v` prefix)
+
+**Examples**:
+- `sdk-release/1.4.0`
+- `sdk-release/1.5.0`
+- `sdk-release/2.0.0`
+
+### Purpose
+
+Release branches allow partners and developers to access and test upcoming SDK versions before they're published to npm:
+
+- **Early Access**: Test new features and changes before official release
+- **Integration Testing**: Validate the SDK works with your application
+- **Feedback Loop**: Report issues or provide feedback during the pre-release phase
+- **Build from Source**: Clone the SDK repo and build from the release branch locally
+
+This enables coordinated development and testing, ensuring new SDK versions work seamlessly with your integration before they're published.
+
+### Using a Pre-Release Version
+
+If you need to test an unreleased SDK version, you can build from a release branch:
+
+1. **Clone the SDK repository**:
+   ```bash
+   git clone https://github.com/Contio-AI/partner-sdk.git
+   cd partner-sdk
+   ```
+
+2. **Check out the release branch**:
+   ```bash
+   git checkout sdk-release/1.4.0
+   ```
+
+3. **Install dependencies and build**:
+   ```bash
+   npm install
+   npm run build
+   ```
+
+4. **Link locally in your project**:
+   ```bash
+   # In the SDK directory
+   npm link
+
+   # In your project directory
+   npm link @contio/partner-sdk
+   ```
+
+5. **Or install directly from the branch**:
+   ```bash
+   npm install Contio-AI/partner-sdk#sdk-release/1.4.0
+   ```
+
+### Release Branch Lifecycle (for SDK Maintainers)
+
+1. **Create the release branch** when starting work on a new version:
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b sdk-release/1.4.0
+   git push origin -u sdk-release/1.4.0
+   ```
+
+2. **Develop and test** on the release branch:
+   - Make SDK changes
+   - Update version in `package.json` to match the branch (e.g., `1.4.0`)
+   - Update specs if needed (`specs/api/partner-openapi.json`, `specs/asyncapi/webhooks.yaml`)
+   - Run `npm run gen-all-types` if specs changed
+   - Commit and push changes
+
+3. **Coordinate with partners and sample applications**:
+   - Partners can test the release branch using the instructions above
+   - Gather feedback and make adjustments as needed
+   - Verify all tests pass
+
+4. **Merge to main** when ready for release:
+   ```bash
+   git checkout main
+   git pull origin main
+   git merge sdk-release/1.4.0
+   git push origin main
+   ```
+
+5. **Publish to npm** (see Release Process below)
+
+6. **Delete the release branch** after successful npm publish:
+   ```bash
+   git push origin --delete sdk-release/1.4.0
+   git branch -d sdk-release/1.4.0
+   ```
+
+### Renaming a Branch to Follow Convention
+
+If you have an existing branch that needs to be renamed:
+
+```bash
+# If you have the branch checked out locally:
+git branch -m old-branch-name sdk-release/1.4.0
+git push origin -u sdk-release/1.4.0
+git push origin --delete old-branch-name
+
+# Or if working from a different branch:
+git push origin origin/old-branch-name:refs/heads/sdk-release/1.4.0
+git push origin --delete old-branch-name
+```
+
+## Release Process (Internal Notes for SDK Maintainers)
 
 ### Automated Release Workflow
 
@@ -85,7 +203,7 @@ After the release workflow completes:
 2. Check GitHub releases: https://github.com/Contio-AI/partner-sdk/releases
 3. Verify TypeDoc artifact is attached to the release
 
-## CI/CD Workflows
+## CI/CD Workflows (Internal Notes for SDK Maintainers)
 
 ### CI Workflow (`.github/workflows/ci.yml`)
 
@@ -123,31 +241,39 @@ The package provides multiple entry points:
 - **ESM**: `dist/esm/*.js` (for ES modules import)
 - **Types**: `dist/*.d.ts` (TypeScript definitions)
 
-## Integration with Documentation
+## Integration with Documentation (Internal Notes for SDK Maintainers)
 
-The TypeDoc archive generated during releases is consumed by the documentation site:
+The TypeDoc archive generated during releases is automatically integrated with the documentation site:
 
-- Documentation repo fetches `typedoc.tar.gz` from the latest SDK release
-- Extracts it during the docs build process
-- Publishes API reference at https://docs.contio.ai/partner-api/reference/
+- The `typedoc.tar.gz` artifact is attached to each GitHub release
+- The documentation build process fetches this artifact
+- API reference is published at https://docs.contio.ai/partner-api/reference/
 
-## Troubleshooting
+**Note**: Ensure TypeDoc generation completes successfully during releases to keep API documentation up to date.
+
+## Troubleshooting (Internal Notes for SDK Maintainers)
 
 ### Release workflow fails at npm publish
 
-- Verify `NPM_TOKEN` secret is set correctly
-- Check token has not expired
-- Ensure token has "Automation" permissions
+- Verify npm authentication is configured correctly in GitHub Actions
+- Check that the publishing token has not expired
+- Ensure the token has appropriate permissions for publishing
 
 ### TypeDoc generation fails
 
 - Check `typedoc` is in devDependencies
 - Verify `src/index.ts` exports all public APIs
-- Review TypeDoc configuration in workflow
+- Review TypeDoc configuration in the release workflow
 
 ### Tests fail in CI but pass locally
 
 - Check Node.js version matches (22.x)
 - Ensure all dependencies are in `package.json`
-- Review environment differences
+- Review environment differences (environment variables, file paths, etc.)
+
+### Build artifacts missing
+
+- Verify both CommonJS and ESM builds complete successfully
+- Check that `dist/` directory contains all expected files
+- Ensure TypeScript compilation has no errors
 

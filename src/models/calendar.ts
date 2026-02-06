@@ -21,6 +21,30 @@ export interface CalendarEvent {
   organizer?: CalendarEventAttendee;
 }
 
+/**
+ * Detailed calendar event information returned by GET /calendar/events/{id}
+ */
+export interface CalendarEventDetail {
+  id: string;
+  title: string;
+  description?: string;
+  start_time: string;
+  end_time: string;
+  is_all_day: boolean;
+  location?: string;
+  attendee_count: number;
+  organizer?: {
+    email: string;
+    name?: string;
+    response_status?: string;
+  };
+  attendees?: Array<{
+    email: string;
+    name?: string;
+    response_status?: string;
+  }>;
+}
+
 export interface CalendarEventListParams {
   /** Start time in RFC3339 format */
   start: string;

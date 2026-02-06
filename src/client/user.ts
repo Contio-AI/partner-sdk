@@ -18,6 +18,7 @@ import {
   UpdateActionItemRequest,
   UserProfile,
   CalendarEvent,
+  CalendarEventDetail,
   CalendarEventListParams,
   CalendarEventListResponse,
   LinkCalendarEventRequest,
@@ -253,16 +254,17 @@ export class PartnerUserClient extends BaseClient {
    * @param params - Optional filter and pagination parameters
    * @param params.limit - Maximum number of items to return (default: 20, max: 100)
    * @param params.offset - Number of items to skip for pagination
-   * @param params.status - Filter by status: 'open', 'completed', 'needs_review'
    * @param params.meeting_id - Filter action items by meeting ID
+   * @param params.is_completed - Filter by completion status
+   * @param params.has_partner_assignment - Filter by partner assignment status
    * @param options - Optional request options
    * @returns Paginated list of action items with total count
    * @throws {ContioAPIError} If the request fails
    *
    * @example
    * ```typescript
-   * // Get all open action items
-   * const items = await user.getActionItems({ status: 'open' });
+   * // Get all incomplete action items
+   * const items = await user.getActionItems({ is_completed: false });
    *
    * // Get action items for a specific meeting
    * const meetingItems = await user.getActionItems({ meeting_id: 'meeting-uuid' });
@@ -325,11 +327,12 @@ export class PartnerUserClient extends BaseClient {
    * Create a new action item.
    *
    * @param data - Action item creation data
+   * @param data.meeting_id - Meeting ID to associate with (required)
    * @param data.title - Action item title (required)
    * @param data.description - Optional detailed description
+   * @param data.status - Optional initial status
    * @param data.due_date - Optional due date (ISO 8601)
-   * @param data.assignee_email - Optional email of the assignee
-   * @param data.meeting_id - Optional meeting ID to associate with
+   * @param data.partner_context - Optional partner-specific metadata
    * @param options - Optional request options
    * @returns The newly created action item
    * @throws {ContioAPIError} If validation fails
@@ -337,9 +340,10 @@ export class PartnerUserClient extends BaseClient {
    * @example
    * ```typescript
    * const item = await user.createActionItem({
+   *   meeting_id: 'meeting-456',
    *   title: 'Follow up with client',
    *   due_date: '2026-01-25T17:00:00Z',
-   *   assignee_email: 'team@example.com'
+   *   status: 'needs_review'
    * });
    * ```
    */
@@ -410,9 +414,11 @@ export class PartnerUserClient extends BaseClient {
    * Requires the user to have connected their calendar via OAuth.
    *
    * @param params - Filter parameters (required)
-   * @param params.start_date - Start of the time range (ISO 8601, required)
-   * @param params.end_date - End of the time range (ISO 8601, required)
-   * @param params.limit - Maximum number of events to return
+   * @param params.start - Start of the time range (RFC3339 format, required)
+   * @param params.end - End of the time range (RFC3339 format, required)
+   * @param params.limit - Maximum number of events to return (default 25, max 100)
+   * @param params.offset - Pagination offset (default 0)
+   * @param params.direction - Sort direction: 'asc' or 'desc' (default: 'asc')
    * @param options - Optional request options
    * @returns List of calendar events within the specified range
    * @throws {ContioAPIError} If calendar is not connected or request fails
@@ -420,8 +426,8 @@ export class PartnerUserClient extends BaseClient {
    * @example
    * ```typescript
    * const events = await user.getCalendarEvents({
-   *   start_date: '2026-01-20T00:00:00Z',
-   *   end_date: '2026-01-27T23:59:59Z'
+   *   start: '2026-01-20T00:00:00Z',
+   *   end: '2026-01-27T23:59:59Z'
    * });
    * ```
    */
@@ -467,6 +473,28 @@ export class PartnerUserClient extends BaseClient {
   }
 
   /**
+   * Get detailed information about a specific calendar event.
+   *
+   * Retrieves complete calendar event details including title, times, attendees,
+   * and organizer information. Requires the user to have a synced calendar connection.
+   *
+   * @param calendarEventId - The calendar event ID to retrieve
+   * @param options - Optional request options
+   * @returns Complete calendar event details
+   * @throws {ContioAPIError} If the event is not found or user doesn't have access
+   *
+   * @example
+   * ```typescript
+   * const event = await user.getCalendarEvent('cal-event-123');
+   * console.log(`Event: ${event.title}`);
+   * console.log(`Attendees: ${event.attendee_count}`);
+   * ```
+   */
+  async getCalendarEvent(calendarEventId: string, options?: RequestOptions): Promise<CalendarEventDetail> {
+    return this.get<CalendarEventDetail>(`/calendar/events/${calendarEventId}`, undefined, options);
+  }
+
+  /**
    * Link a calendar event to an existing meeting.
    *
    * Associates a calendar event with a Contio meeting for automatic
@@ -490,8 +518,7 @@ export class PartnerUserClient extends BaseClient {
    * including title, time, and participants.
    *
    * @param data - Calendar event to meeting conversion data
-   * @param data.calendar_event_id - The calendar event ID to convert
-   * @param data.template_id - Optional template to apply to the meeting
+   * @param data.calendar_event_id - The calendar event ID to convert (required)
    * @param options - Optional request options
    * @returns The newly created meeting linked to the calendar event
    * @throws {ContioAPIError} If the calendar event is not found
@@ -499,10 +526,9 @@ export class PartnerUserClient extends BaseClient {
    * @example
    * ```typescript
    * const result = await user.createMeetingFromCalendarEvent({
-   *   calendar_event_id: 'cal-event-123',
-   *   template_id: 'weekly-standup-template'
+   *   calendar_event_id: 'cal-event-123'
    * });
-   * console.log('Created meeting:', result.meeting.id);
+   * console.log('Created meeting:', result.meeting_id);
    * ```
    */
   async createMeetingFromCalendarEvent(data: CreateMeetingFromCalendarEventRequest, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse> {
@@ -583,10 +609,12 @@ export class PartnerUserClient extends BaseClient {
    *
    * @param meetingId - The meeting ID to add the agenda item to
    * @param data - Agenda item creation data
+   * @param data.item_type - Type of agenda item: 'DISCUSSION', 'DECISION', 'ACTION_ITEM', or 'INFORMATION' (required)
    * @param data.title - Agenda item title (required)
-   * @param data.duration_minutes - Optional estimated duration in minutes
-   * @param data.presenter_email - Optional email of the presenter
-   * @param data.order - Optional display order (items are sorted by order)
+   * @param data.description - Optional detailed description
+   * @param data.time_allocation_minutes - Optional estimated duration in minutes
+   * @param data.presenters - Optional array of presenter names or emails
+   * @param data.restricted_to_leads - Optional flag to restrict visibility to meeting leads
    * @param options - Optional request options
    * @returns The newly created agenda item
    * @throws {ContioAPIError} If the meeting is not found or validation fails
@@ -594,9 +622,10 @@ export class PartnerUserClient extends BaseClient {
    * @example
    * ```typescript
    * const item = await user.createAgendaItem('meeting-id', {
+   *   item_type: 'DISCUSSION',
    *   title: 'Q1 Review',
-   *   duration_minutes: 15,
-   *   presenter_email: 'manager@example.com'
+   *   time_allocation_minutes: 15,
+   *   presenters: ['manager@example.com']
    * });
    * ```
    */

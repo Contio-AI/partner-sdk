@@ -52,6 +52,61 @@ const workflows = await admin.getWorkflows();
 const stats = await admin.getStats();
 ```
 
+## Key Features
+
+### Calendar Events
+
+Access user calendar events and retrieve detailed event information:
+
+```typescript
+// List calendar events in a date range
+const events = await user.getCalendarEvents({
+  start: '2026-01-01T00:00:00Z',
+  end: '2026-01-31T23:59:59Z'
+});
+
+// Get detailed information about a specific calendar event
+const event = await user.getCalendarEvent('cal-event-123');
+console.log(`Event: ${event.title}`);
+console.log(`Attendees: ${event.attendee_count}`);
+console.log(`Organizer: ${event.organizer?.email}`);
+
+// Create a meeting from a calendar event
+const result = await user.createMeetingFromCalendarEvent({
+  calendar_event_id: 'cal-event-123'
+});
+```
+
+### Webhook Events
+
+The SDK supports all Partner API webhook events with full TypeScript typing:
+
+**Meeting Events:**
+- `meeting.created` - New meeting created
+- `meeting.updated` - Meeting properties changed (title, scheduled time, etc.)
+- `meeting.completed` - Meeting ended with notes/summary available
+
+**Calendar Events:**
+- `calendar_event.created` - Calendar event synced from external calendar
+- `calendar_event.updated` - Calendar event updated in external calendar
+- `calendar_event.deleted` - Calendar event cancelled/deleted
+
+**Agenda Items:**
+- `agenda_item.created` - Agenda item created in meeting or backlog
+- `agenda_item.updated` - Agenda item title, status, or properties changed
+- `agenda_item.deleted` - Agenda item removed
+
+**Action Items:**
+- `action_item.created` - New action item created
+- `action_item.updated` - Action item status or details changed
+- `action_item.completed` - Action item marked as completed
+
+**Other Events:**
+- `workflow.assignment.created` - Action item assigned to your workflow
+- `participant.added` - Participant(s) added to meeting
+- `participant.removed` - Participant removed from meeting
+- `user.connection.revoked` - User revoked connection to your app
+
 ## Webhook Verification
 
 ```typescript

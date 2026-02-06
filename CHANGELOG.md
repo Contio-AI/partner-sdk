@@ -1,10 +1,30 @@
 # Changelog
 
-All notable changes to the Contio Partner SDK will be documented in this file. 
+All notable changes to the Contio Partner SDK will be documented in this file.
 Versions prior to v1.3.0 were maintained in a private repository (history unavilable).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.4.0] - 2026-01-31
+
+### Added
+
+- **New API endpoint**: `user.getCalendarEvent(calendarEventId)` - Retrieve detailed calendar event information including title, times, attendees, and organizer
+- **New webhook events** (7 total):
+  - `meeting.updated` - Meeting properties changed (title, scheduled time, etc.)
+  - `calendar_event.created` - Calendar event synced from external calendar (Google, Outlook)
+  - `calendar_event.updated` - Calendar event updated in external calendar
+  - `calendar_event.deleted` - Calendar event cancelled/deleted in external calendar
+  - `agenda_item.created` - Agenda item created in a meeting or backlog
+  - `agenda_item.updated` - Agenda item title, status, or properties changed
+  - `agenda_item.deleted` - Agenda item removed from meeting or backlog
+- **TypeScript types**: Added `CalendarEventDetail` interface and all new webhook payload types with full type safety
+
+### Changed
+
+- Updated webhook type exports to include all new event types in `ContioWebhookEvent` union
+- Updated `WEBHOOK_EVENTS` constant with new event type mappings
 
 ## [1.3.1] - 2026-01-27
 
