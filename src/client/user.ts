@@ -487,7 +487,7 @@ export class PartnerUserClient extends BaseClient {
    * ```typescript
    * const event = await user.getCalendarEvent('cal-event-123');
    * console.log(`Event: ${event.title}`);
-   * console.log(`Attendees: ${event.attendee_count}`);
+   * console.log(`Organizer: ${event.organizer?.email}`);
    * ```
    */
   async getCalendarEvent(calendarEventId: string, options?: RequestOptions): Promise<CalendarEventDetail> {
@@ -517,22 +517,30 @@ export class PartnerUserClient extends BaseClient {
    * Automatically populates meeting details from the calendar event
    * including title, time, and participants.
    *
-   * @param data - Calendar event to meeting conversion data
-   * @param data.calendar_event_id - The calendar event ID to convert (required)
+   * @param calendarEventId - The calendar event ID to create a meeting from
    * @param options - Optional request options
    * @returns The newly created meeting linked to the calendar event
    * @throws {ContioAPIError} If the calendar event is not found
    *
    * @example
    * ```typescript
-   * const result = await user.createMeetingFromCalendarEvent({
-   *   calendar_event_id: 'cal-event-123'
-   * });
-   * console.log('Created meeting:', result.meeting_id);
+   * const result = await user.createMeetingFromCalendarEvent('cal-event-123');
+   * console.log('Created meeting:', result.meeting?.id);
    * ```
    */
-  async createMeetingFromCalendarEvent(data: CreateMeetingFromCalendarEventRequest, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse> {
-    return this.post<CreateMeetingFromCalendarEventResponse>('/calendar/events/meeting', data, options);
+  async createMeetingFromCalendarEvent(calendarEventId: string, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse>;
+  /**
+   * @deprecated Pass the calendar event ID as a string instead of a request object.
+   * Use `createMeetingFromCalendarEvent('cal-event-123')` instead of
+   * `createMeetingFromCalendarEvent({ calendar_event_id: 'cal-event-123' })`.
+   * This overload will be removed in the next major version.
+   */
+  async createMeetingFromCalendarEvent(data: CreateMeetingFromCalendarEventRequest, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse>;
+  async createMeetingFromCalendarEvent(calendarEventIdOrData: string | CreateMeetingFromCalendarEventRequest, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse> {
+    const calendarEventId = typeof calendarEventIdOrData === 'string'
+      ? calendarEventIdOrData
+      : calendarEventIdOrData.calendar_event_id;
+    return this.post<CreateMeetingFromCalendarEventResponse>(`/calendar/events/${calendarEventId}/meeting`, undefined, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

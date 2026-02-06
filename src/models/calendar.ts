@@ -2,6 +2,8 @@
  * Calendar-related type definitions for the Contio Partner API
  */
 
+import type { UserPartnerMeetingResponse } from '../generated/api-types';
+
 export interface CalendarEventAttendee {
   email?: string;
   name?: string;
@@ -25,24 +27,31 @@ export interface CalendarEvent {
  * Detailed calendar event information returned by GET /calendar/events/{id}
  */
 export interface CalendarEventDetail {
-  id: string;
-  title: string;
+  id?: string;
+  title?: string;
   description?: string;
-  start_time: string;
-  end_time: string;
-  is_all_day: boolean;
+  start_time?: string;
+  end_time?: string;
   location?: string;
-  attendee_count: number;
-  organizer?: {
-    email: string;
-    name?: string;
-    response_status?: string;
-  };
-  attendees?: Array<{
-    email: string;
-    name?: string;
-    response_status?: string;
-  }>;
+  meeting_id?: string;
+  organizer?: CalendarEventAttendee;
+  attendees?: CalendarEventAttendee[];
+
+  // ── Deprecated fields (remove in next major version) ────────────────────
+  // These fields are not returned by the API and will always be undefined.
+  // They are retained here to avoid compile errors for partners who referenced them.
+
+  /**
+   * @deprecated This field is not present in the API response. Use attendees?.length instead.
+   * Will be removed in the next major version.
+   */
+  attendee_count?: number;
+
+  /**
+   * @deprecated This field is not present in the API response.
+   * Will be removed in the next major version.
+   */
+  is_all_day?: boolean;
 }
 
 export interface CalendarEventListParams {
@@ -74,11 +83,30 @@ export interface LinkCalendarEventResponse {
   message?: string;
 }
 
-export interface CreateMeetingFromCalendarEventRequest {
-  calendar_event_id: string;
+export interface CreateMeetingFromCalendarEventResponse {
+  created?: boolean;
+  meeting?: UserPartnerMeetingResponse;
+  message?: string;
+
+  // ── Deprecated fields (remove in next major version) ────────────────────
+
+  /**
+   * @deprecated Use `meeting?.id` instead. This field is no longer returned by the API.
+   * Will be removed in the next major version.
+   */
+  meeting_id?: string;
 }
 
-export interface CreateMeetingFromCalendarEventResponse {
-  meeting_id?: string;
-  message?: string;
+// =============================================================================
+// DEPRECATED TYPES — remove in next major version
+// =============================================================================
+
+/**
+ * @deprecated The calendar_event_id is now passed as a path parameter.
+ * Use `createMeetingFromCalendarEvent(calendarEventId: string)` instead of
+ * `createMeetingFromCalendarEvent({ calendar_event_id: '...' })`.
+ * Will be removed in the next major version.
+ */
+export interface CreateMeetingFromCalendarEventRequest {
+  calendar_event_id: string;
 }

@@ -694,24 +694,23 @@ describe('PartnerUserClient', () => {
         description: 'Q1 product roadmap discussion',
         start_time: '2026-01-31T14:00:00Z',
         end_time: '2026-01-31T15:30:00Z',
-        is_all_day: false,
         location: 'Conference Room B',
-        attendee_count: 5,
+        meeting_id: 'meeting-456',
         organizer: {
           email: 'product@example.com',
           name: 'Product Manager',
-          response_status: 'accepted',
+          status: 'accepted',
         },
         attendees: [
           {
             email: 'dev1@example.com',
             name: 'Developer One',
-            response_status: 'accepted',
+            status: 'accepted',
           },
           {
             email: 'dev2@example.com',
             name: 'Developer Two',
-            response_status: 'tentative',
+            status: 'tentative',
           },
         ],
       };
@@ -723,8 +722,7 @@ describe('PartnerUserClient', () => {
 
         expect(event.id).toBe('cal-event-123');
         expect(event.title).toBe('Product Planning Meeting');
-        expect(event.attendee_count).toBe(5);
-        expect(event.is_all_day).toBe(false);
+        expect(event.meeting_id).toBe('meeting-456');
         expect(event.organizer?.email).toBe('product@example.com');
         expect(event.attendees).toHaveLength(2);
       });
@@ -761,32 +759,45 @@ describe('PartnerUserClient', () => {
     });
 
     describe('createMeetingFromCalendarEvent', () => {
-      const createRequest: CreateMeetingFromCalendarEventRequest = {
-        calendar_event_id: 'event-789',
-      };
-
       const mockCreateResponse: CreateMeetingFromCalendarEventResponse = {
-        meeting_id: 'meeting-new',
+        created: true,
+        meeting: {
+          id: 'meeting-new',
+          title: 'Weekly Team Sync',
+        },
         message: 'Meeting created from calendar event successfully',
       };
 
       it('should create meeting from calendar event', async () => {
-        mockAxios.onPost('/calendar/events/meeting').reply(201, mockCreateResponse);
+        mockAxios.onPost('/calendar/events/event-789/meeting').reply(201, mockCreateResponse);
 
-        const response = await userClient.createMeetingFromCalendarEvent(createRequest);
+        const response = await userClient.createMeetingFromCalendarEvent('event-789');
 
-        expect(response.meeting_id).toBe('meeting-new');
+        expect(response.created).toBe(true);
+        expect(response.meeting?.id).toBe('meeting-new');
         expect(response.message).toBe('Meeting created from calendar event successfully');
       });
 
-      it('should send correct request body', async () => {
-        mockAxios.onPost('/calendar/events/meeting').reply((config) => {
-          const body = JSON.parse(config.data);
-          expect(body.calendar_event_id).toBe('event-789');
+      it('should use calendar event ID as path parameter', async () => {
+        mockAxios.onPost('/calendar/events/event-789/meeting').reply((config) => {
+          expect(config.url).toBe('/calendar/events/event-789/meeting');
           return [201, mockCreateResponse];
         });
 
-        await userClient.createMeetingFromCalendarEvent(createRequest);
+        await userClient.createMeetingFromCalendarEvent('event-789');
+      });
+
+      it('should support deprecated object-based calling convention', async () => {
+        mockAxios.onPost('/calendar/events/event-789/meeting').reply(201, mockCreateResponse);
+
+        const request: CreateMeetingFromCalendarEventRequest = {
+          calendar_event_id: 'event-789',
+        };
+        const response = await userClient.createMeetingFromCalendarEvent(request);
+
+        expect(response.created).toBe(true);
+        expect(response.meeting?.id).toBe('meeting-new');
+        expect(response.message).toBe('Meeting created from calendar event successfully');
       });
     });
   });

@@ -68,13 +68,11 @@ const events = await user.getCalendarEvents({
 // Get detailed information about a specific calendar event
 const event = await user.getCalendarEvent('cal-event-123');
 console.log(`Event: ${event.title}`);
-console.log(`Attendees: ${event.attendee_count}`);
 console.log(`Organizer: ${event.organizer?.email}`);
 
 // Create a meeting from a calendar event
-const result = await user.createMeetingFromCalendarEvent({
-  calendar_event_id: 'cal-event-123'
-});
+const result = await user.createMeetingFromCalendarEvent('cal-event-123');
+console.log(`Created: ${result.created}, Meeting ID: ${result.meeting?.id}`);
 ```
 
 ### Webhook Events
