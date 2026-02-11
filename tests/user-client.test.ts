@@ -378,6 +378,19 @@ describe('PartnerUserClient', () => {
 
         await userClient.getActionItems({ meeting_id: 'meeting-123' });
       });
+
+      it('should support date range filters', async () => {
+        mockAxios.onGet('/action-items').reply((config) => {
+          expect(config.params.start_date).toBe('2025-01-01');
+          expect(config.params.end_date).toBe('2025-01-31');
+          return [200, mockActionItemsResponse];
+        });
+
+        await userClient.getActionItems({
+          start_date: '2025-01-01',
+          end_date: '2025-01-31',
+        });
+      });
     });
 
     describe('getActionItem', () => {
@@ -597,8 +610,8 @@ describe('PartnerUserClient', () => {
         mockAxios.onGet('/calendar/events').reply(200, mockCalendarEventsResponse);
 
         const response = await userClient.getCalendarEvents({
-          start: '2025-01-10T00:00:00Z',
-          end: '2025-01-17T23:59:59Z',
+          start_date: '2025-01-10T00:00:00Z',
+          end_date: '2025-01-17T23:59:59Z',
         });
 
         expect(response.items).toHaveLength(1);
@@ -606,20 +619,33 @@ describe('PartnerUserClient', () => {
         expect(response.total).toBe(1);
       });
 
-      it('should send correct query parameters', async () => {
+      it('should send correct query parameters with start_date/end_date', async () => {
         mockAxios.onGet('/calendar/events').reply((config) => {
-          expect(config.params.start).toBe('2025-01-10T00:00:00Z');
-          expect(config.params.end).toBe('2025-01-17T23:59:59Z');
+          expect(config.params.start_date).toBe('2025-01-10T00:00:00Z');
+          expect(config.params.end_date).toBe('2025-01-17T23:59:59Z');
           expect(config.params.limit).toBe(50);
           expect(config.params.offset).toBe(10);
           return [200, mockCalendarEventsResponse];
         });
 
         await userClient.getCalendarEvents({
-          start: '2025-01-10T00:00:00Z',
-          end: '2025-01-17T23:59:59Z',
+          start_date: '2025-01-10T00:00:00Z',
+          end_date: '2025-01-17T23:59:59Z',
           limit: 50,
           offset: 10,
+        });
+      });
+
+      it('should still support deprecated start/end parameters', async () => {
+        mockAxios.onGet('/calendar/events').reply((config) => {
+          expect(config.params.start).toBe('2025-01-10T00:00:00Z');
+          expect(config.params.end).toBe('2025-01-17T23:59:59Z');
+          return [200, mockCalendarEventsResponse];
+        });
+
+        await userClient.getCalendarEvents({
+          start: '2025-01-10T00:00:00Z',
+          end: '2025-01-17T23:59:59Z',
         });
       });
     });
@@ -641,8 +667,8 @@ describe('PartnerUserClient', () => {
         });
 
         const events = await userClient.getAllCalendarEvents({
-          start: '2026-01-01T00:00:00Z',
-          end: '2026-01-31T23:59:59Z',
+          start_date: '2026-01-01T00:00:00Z',
+          end_date: '2026-01-31T23:59:59Z',
         });
 
         expect(events).toHaveLength(3);
@@ -660,13 +686,13 @@ describe('PartnerUserClient', () => {
         });
 
         await userClient.getAllCalendarEvents({
-          start: '2026-01-01T00:00:00Z',
-          end: '2026-01-31T23:59:59Z',
+          start_date: '2026-01-01T00:00:00Z',
+          end_date: '2026-01-31T23:59:59Z',
           direction: 'desc',
         });
 
-        expect(mockAxios.history.get[0].params.start).toBe('2026-01-01T00:00:00Z');
-        expect(mockAxios.history.get[0].params.end).toBe('2026-01-31T23:59:59Z');
+        expect(mockAxios.history.get[0].params.start_date).toBe('2026-01-01T00:00:00Z');
+        expect(mockAxios.history.get[0].params.end_date).toBe('2026-01-31T23:59:59Z');
         expect(mockAxios.history.get[0].params.direction).toBe('desc');
       });
 
@@ -679,8 +705,8 @@ describe('PartnerUserClient', () => {
         });
 
         const events = await userClient.getAllCalendarEvents({
-          start: '2026-01-01T00:00:00Z',
-          end: '2026-01-31T23:59:59Z',
+          start_date: '2026-01-01T00:00:00Z',
+          end_date: '2026-01-31T23:59:59Z',
         });
 
         expect(events).toHaveLength(0);
@@ -1151,6 +1177,31 @@ describe('PartnerUserClient', () => {
 
       await expect(fastRetryClient.getMeetings()).rejects.toThrow();
       fastMockAxios.reset();
+    });
+  });
+
+  describe('Error response request_id', () => {
+    it('should surface request_id from error responses', async () => {
+      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0, retryDelay: 0 });
+      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+      noRetryMockAxios.onGet('/meetings').reply(400, {
+        code: 'invalid_request',
+        error: 'Invalid parameters',
+        request_id: 'req-abc-123',
+      });
+
+      try {
+        await noRetryClient.getMeetings();
+        fail('Expected ContioAPIError to be thrown');
+      } catch (err: any) {
+        expect(err.name).toBe('ContioAPIError');
+        expect(err.code).toBe('invalid_request');
+        expect(err.message).toBe('Invalid parameters');
+        expect(err.requestId).toBe('req-abc-123');
+        expect(err.response.request_id).toBe('req-abc-123');
+      }
+
+      noRetryMockAxios.reset();
     });
   });
 });

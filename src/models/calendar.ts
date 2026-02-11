@@ -55,10 +55,20 @@ export interface CalendarEventDetail {
 }
 
 export interface CalendarEventListParams {
-  /** Start time in RFC3339 format */
-  start: string;
-  /** End time in RFC3339 format */
-  end: string;
+  /** Start date/time in ISO 8601 format (preferred over `start`) */
+  start_date?: string;
+  /** End date/time in ISO 8601 format (preferred over `end`) */
+  end_date?: string;
+  /**
+   * Start time in RFC3339 format
+   * @deprecated Use `start_date` instead. Will be removed in the next major version.
+   */
+  start?: string;
+  /**
+   * End time in RFC3339 format
+   * @deprecated Use `end_date` instead. Will be removed in the next major version.
+   */
+  end?: string;
   /** Number of results per page (default 25, max 100) */
   limit?: number;
   /** Pagination offset (default 0) */

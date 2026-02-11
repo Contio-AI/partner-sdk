@@ -35,7 +35,12 @@ export interface UserProfile {
 export interface ErrorResponse {
   code: string;
   error?: string;
+  /**
+   * @deprecated Use `error` instead. Will be removed in the next major version.
+   */
   message?: string;
+  /** Unique identifier for the API request, useful for debugging and support */
+  request_id?: string;
 }
 
 export interface AuthTokens {
