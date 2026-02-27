@@ -39,6 +39,38 @@ const meetings = await user.getMeetings();
 const actionItems = await user.getActionItems();
 ```
 
+### Shared Workspace Provisioning
+
+Provision new users into existing shared workspaces instead of creating individual workspaces:
+
+```typescript
+import { ContioPartnerSDK } from '@contio/partner-sdk';
+
+const { oauth } = ContioPartnerSDK.forUser({
+  clientId: 'your-client-id',
+  clientSecret: 'your-client-secret',
+  redirectUri: 'https://your-app.com/callback'
+});
+
+// Provision a new user into a shared workspace
+const result = await oauth.initiatePartnerAuth(
+  'newuser@example.com',
+  'New User',
+  { workspace_id: 'existing-workspace-uuid' }
+);
+
+// Provision as a workspace admin
+const adminResult = await oauth.initiatePartnerAuth(
+  'admin@example.com',
+  'Admin User',
+  { workspace_id: 'existing-workspace-uuid', is_admin: true }
+);
+
+// Check a user's workspace after provisioning
+const profile = await user.getUserProfile();
+console.log(`Workspace: ${profile.workspace_name} (${profile.workspace_role})`);
+```
+
 ### API Key Admin Operations
 
 ```typescript
@@ -151,6 +183,9 @@ try {
 | `not_found` | 404 | Resource does not exist |
 | `validation_error` | 400 | Invalid request parameters |
 | `rate_limited` | 429 | Too many requests; retry after backoff |
+| `workspace_not_found` | 400 | Specified `workspace_id` does not exist |
+| `workspace_not_authorized` | 403 | Workspace not owned by a user from the same partner |
+| `workspace_conflict` | 409 | User already belongs to a different workspace |
 | `internal_error` | 500 | Server error; retry with exponential backoff |
 
 The SDK automatically retries transient errors (5xx) with exponential backoff.

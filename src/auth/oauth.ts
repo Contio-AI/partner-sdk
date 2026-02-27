@@ -5,7 +5,7 @@
 import axios, { AxiosInstance } from 'axios';
 import https from 'https';
 import qs from 'qs';
-import { OAuthConfig, OAuthTokenResponse, AuthTokens } from '../models/auth';
+import { OAuthConfig, OAuthTokenResponse, AuthTokens, InitiatePartnerAuthOptions } from '../models/auth';
 
 /**
  * Options for generating the authorization URL
@@ -347,10 +347,26 @@ export class OAuthClient {
    *
    * @param email - User's email address
    * @param name - Optional user's name (used for new user provisioning)
+   * @param options - Optional shared workspace configuration
+   * @param options.workspace_id - Target workspace ID (UUID). If omitted, a personal workspace is created.
+   * @param options.is_admin - When true, assigns WORKSPACE_ADMIN role instead of WORKSPACE_MEMBER.
    * @returns Session info for completing authentication
    * @throws {Error} If initiation fails
+   * @throws {Error} `workspace_not_found` (400) if `workspace_id` does not exist
+   * @throws {Error} `workspace_not_authorized` (403) if the workspace is not owned by a user from the same partner
+   * @throws {Error} `workspace_conflict` (409) if the user is already in a different workspace
+   *
+   * @example
+   * ```typescript
+   * // Provision user into a shared workspace as admin
+   * const result = await oauth.initiatePartnerAuth(
+   *   'newuser@example.com',
+   *   'New User',
+   *   { workspace_id: 'workspace-uuid', is_admin: true }
+   * );
+   * ```
    */
-  async initiatePartnerAuth(email: string, name?: string): Promise<{
+  async initiatePartnerAuth(email: string, name?: string, options?: InitiatePartnerAuthOptions): Promise<{
     session: string;
     challengeName: string;
     challengeParams?: Record<string, string>;
@@ -366,6 +382,8 @@ export class OAuthClient {
           client_id: this.config.clientId,
           email,
           ...(name && { name }),
+          ...(options?.workspace_id && { workspace_id: options.workspace_id }),
+          ...(options?.is_admin !== undefined && { is_admin: options.is_admin }),
         },
         {
           headers: {

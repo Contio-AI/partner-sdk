@@ -6,6 +6,21 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2026-02-27
+
+### Added
+
+- **Shared workspace provisioning**: `initiatePartnerAuth()` now accepts an optional `options` parameter with `workspace_id` and `is_admin` fields, allowing partners to provision new users into existing shared workspaces ([CON-2753](https://linear.app/contio/issue/CON-2753))
+- **Workspace profile fields**: `UserProfile` now includes `workspace_id`, `workspace_name`, and `workspace_role` fields
+- **`WorkspaceRole` type**: New union type for workspace roles (`WORKSPACE_OWNER` | `WORKSPACE_ADMIN` | `WORKSPACE_MEMBER`)
+- **`InitiatePartnerAuthOptions` interface**: Typed options for the shared workspace provisioning flow
+- **`WorkspaceErrorCode` type**: New error codes for workspace operations (`workspace_not_found`, `workspace_not_authorized`, `workspace_conflict`)
+- **`workspace_id` on `ErrorResponse`**: Present on `workspace_conflict` errors to indicate the user's current workspace
+
+### Changed
+
+- Aligned SDK with Partner API shared workspace changes ([CON-2743](https://linear.app/contio/issue/CON-2743))
+
 ## [1.4.2] - 2026-02-11
 
 ### Added
