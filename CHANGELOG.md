@@ -6,6 +6,20 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-02-11
+
+### Added
+
+- **Date range filtering for calendar events**: New `start_date` and `end_date` parameters on `CalendarEventListParams` (preferred over the deprecated `start`/`end`)
+- **Date range filtering for action items**: New `start_date` and `end_date` parameters on `ActionItemListParams`
+- **Error request tracking**: `request_id` field on `ErrorResponse` for API request tracing; also surfaced as `requestId` on `ContioAPIError`
+
+### Changed
+
+- **Deprecated**: `CalendarEventListParams.start` and `CalendarEventListParams.end` — use `start_date` / `end_date` instead
+- **Deprecated**: `ErrorResponse.message` — use `ErrorResponse.error` instead
+- Aligned SDK with Partner API v1.4.2 changes ([rome#2896](https://github.com/Contio-AI/rome/pull/2896))
+
 ## [1.4.1] - 2026-02-06
 
 ### Changed
@@ -118,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.4.2]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.3.0...v1.3.1

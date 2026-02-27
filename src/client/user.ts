@@ -252,11 +252,13 @@ export class PartnerUserClient extends BaseClient {
    * Get a paginated list of action items accessible to the authenticated user.
    *
    * @param params - Optional filter and pagination parameters
-   * @param params.limit - Maximum number of items to return (default: 20, max: 100)
+   * @param params.limit - Maximum number of items to return (default: 25, max: 100)
    * @param params.offset - Number of items to skip for pagination
    * @param params.meeting_id - Filter action items by meeting ID
    * @param params.is_completed - Filter by completion status
    * @param params.has_partner_assignment - Filter by partner assignment status
+   * @param params.start_date - Filter action items from this date/time onward (ISO 8601)
+   * @param params.end_date - Filter action items up to this date/time (ISO 8601)
    * @param options - Optional request options
    * @returns Paginated list of action items with total count
    * @throws {ContioAPIError} If the request fails
@@ -268,6 +270,12 @@ export class PartnerUserClient extends BaseClient {
    *
    * // Get action items for a specific meeting
    * const meetingItems = await user.getActionItems({ meeting_id: 'meeting-uuid' });
+   *
+   * // Get action items within a date range
+   * const recent = await user.getActionItems({
+   *   start_date: '2026-01-01',
+   *   end_date: '2026-01-31',
+   * });
    * ```
    */
   async getActionItems(params?: ActionItemListParams, options?: RequestOptions): Promise<ActionItemListResponse> {
@@ -413,9 +421,11 @@ export class PartnerUserClient extends BaseClient {
    *
    * Requires the user to have connected their calendar via OAuth.
    *
-   * @param params - Filter parameters (required)
-   * @param params.start - Start of the time range (RFC3339 format, required)
-   * @param params.end - End of the time range (RFC3339 format, required)
+   * @param params - Filter parameters
+   * @param params.start_date - Start of the time range (ISO 8601 format, preferred)
+   * @param params.end_date - End of the time range (ISO 8601 format, preferred)
+   * @param params.start - Start of the time range (RFC3339 format, deprecated — use `start_date`)
+   * @param params.end - End of the time range (RFC3339 format, deprecated — use `end_date`)
    * @param params.limit - Maximum number of events to return (default 25, max 100)
    * @param params.offset - Pagination offset (default 0)
    * @param params.direction - Sort direction: 'asc' or 'desc' (default: 'asc')
@@ -426,8 +436,8 @@ export class PartnerUserClient extends BaseClient {
    * @example
    * ```typescript
    * const events = await user.getCalendarEvents({
-   *   start: '2026-01-20T00:00:00Z',
-   *   end: '2026-01-27T23:59:59Z'
+   *   start_date: '2026-01-20T00:00:00Z',
+   *   end_date: '2026-01-27T23:59:59Z'
    * });
    * ```
    */
@@ -441,7 +451,7 @@ export class PartnerUserClient extends BaseClient {
    * Use this when you need to fetch all events without manually handling pagination.
    * For large date ranges, consider using `getCalendarEvents()` with pagination for better control.
    *
-   * @param params - Required start and end dates, optional direction (limit/offset managed automatically)
+   * @param params - Required date range, optional direction (limit/offset managed automatically)
    * @param options - Optional request options (e.g., timezone override)
    * @returns Array of all calendar events within the date range
    * @throws {ContioAPIError} If calendar is not connected or request fails
@@ -450,8 +460,8 @@ export class PartnerUserClient extends BaseClient {
    * ```typescript
    * // Get all events for the month
    * const allEvents = await user.getAllCalendarEvents({
-   *   start: '2026-01-01T00:00:00Z',
-   *   end: '2026-01-31T23:59:59Z'
+   *   start_date: '2026-01-01T00:00:00Z',
+   *   end_date: '2026-01-31T23:59:59Z'
    * });
    * console.log(`Found ${allEvents.length} events`);
    * ```

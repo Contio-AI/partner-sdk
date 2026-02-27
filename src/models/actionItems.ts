@@ -53,6 +53,10 @@ export interface ActionItemListParams {
   meeting_id?: string;
   is_completed?: boolean;
   has_partner_assignment?: boolean;
+  /** Filter action items from this date/time onward (ISO 8601 format) */
+  start_date?: string;
+  /** Filter action items up to this date/time (ISO 8601 format) */
+  end_date?: string;
 }
 
 export interface ActionItemListResponse {

@@ -10,7 +10,7 @@ import { ErrorResponse } from '../models/auth';
  * SDK version for User-Agent header.
  * This is updated during the release process.
  */
-export const SDK_VERSION = '1.4.0';
+export const SDK_VERSION = '1.4.2';
 
 export interface ClientConfig {
   baseURL?: string;
@@ -45,6 +45,8 @@ export class ContioAPIError extends Error {
   public readonly code: string;
   public readonly statusCode?: number;
   public readonly response?: ErrorResponse;
+  /** Unique request ID returned by the API, useful for debugging and support */
+  public readonly requestId?: string;
 
   constructor(message: string, code: string, statusCode?: number, response?: ErrorResponse) {
     super(message);
@@ -52,6 +54,7 @@ export class ContioAPIError extends Error {
     this.code = code;
     this.statusCode = statusCode;
     this.response = response;
+    this.requestId = response?.request_id;
   }
 }
 
