@@ -492,6 +492,58 @@ describe('OAuthClient', () => {
       await client.initiatePartnerAuth('user@example.com');
     });
 
+    it('should include workspace_id when provided', async () => {
+      mockAxios.onPost('https://auth.contio.ai/auth/initiate').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.workspace_id).toBe('ws-uuid-123');
+        expect(body.is_admin).toBeUndefined();
+        return [200, mockResponse];
+      });
+
+      await client.initiatePartnerAuth('user@example.com', 'Test User', {
+        workspace_id: 'ws-uuid-123',
+      });
+    });
+
+    it('should include is_admin when provided', async () => {
+      mockAxios.onPost('https://auth.contio.ai/auth/initiate').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.workspace_id).toBe('ws-uuid-123');
+        expect(body.is_admin).toBe(true);
+        return [200, mockResponse];
+      });
+
+      await client.initiatePartnerAuth('user@example.com', 'Test User', {
+        workspace_id: 'ws-uuid-123',
+        is_admin: true,
+      });
+    });
+
+    it('should include is_admin as false when explicitly set', async () => {
+      mockAxios.onPost('https://auth.contio.ai/auth/initiate').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.workspace_id).toBe('ws-uuid-123');
+        expect(body.is_admin).toBe(false);
+        return [200, mockResponse];
+      });
+
+      await client.initiatePartnerAuth('user@example.com', undefined, {
+        workspace_id: 'ws-uuid-123',
+        is_admin: false,
+      });
+    });
+
+    it('should not include workspace fields when options not provided', async () => {
+      mockAxios.onPost('https://auth.contio.ai/auth/initiate').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.workspace_id).toBeUndefined();
+        expect(body.is_admin).toBeUndefined();
+        return [200, mockResponse];
+      });
+
+      await client.initiatePartnerAuth('user@example.com');
+    });
+
     it('should throw error on failure', async () => {
       mockAxios.onPost('https://auth.contio.ai/auth/initiate').reply(400, {
         error: 'invalid_request',
