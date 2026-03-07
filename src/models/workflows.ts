@@ -162,7 +162,7 @@ export interface UpdatePartnerAppStatusRequest {
 
 export interface UpdateWebhookStatusRequest {
   enabled: boolean;
-  pending_disposition?: 'abandon';
+  pending_disposition?: 'abandon' | 'deliver';
 }
 
 export interface SetWebhookFilterRequest {
