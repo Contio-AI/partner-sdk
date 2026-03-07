@@ -84,6 +84,25 @@ const workflows = await admin.getWorkflows();
 const stats = await admin.getStats();
 ```
 
+#### Webhook Management
+
+```typescript
+const disabledApp = await admin.updateWebhookStatus({
+  enabled: false
+});
+
+const filteredApp = await admin.setWebhookFilter({
+  type: 'include',
+  events: ['meeting.created', 'meeting.completed']
+});
+
+const unfilteredApp = await admin.removeWebhookFilter();
+
+console.log(disabledApp.webhook_enabled);
+console.log(filteredApp.webhook_filter);
+console.log(unfilteredApp.webhook_filter); // null
+```
+
 ## Key Features
 
 ### Calendar Events

@@ -17,6 +17,8 @@ import {
   PartnerApp,
   UpdatePartnerAppRequest,
   UpdatePartnerAppStatusRequest,
+  UpdateWebhookStatusRequest,
+  SetWebhookFilterRequest,
   UserConnection,
   UserConnectionListParams,
   UserConnectionListResponse,
@@ -244,6 +246,96 @@ export class PartnerAdminClient extends BaseClient {
    */
   async retryWebhookDelivery(deliveryId: string): Promise<{ message: string; retry_scheduled: boolean }> {
     return this.post(`/webhook-deliveries/${deliveryId}/retry`);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Webhook Management endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Enable or disable webhook delivery for your partner app.
+   *
+   * Use this to temporarily pause webhook delivery or re-enable delivery after
+   * resolving endpoint issues.
+   *
+   * @param data - Webhook status update data
+   * @param data.enabled - Whether webhook delivery should be enabled
+   * @param data.pending_disposition - Required when re-enabling to dispose of pending deliveries
+   * @returns The updated partner app configuration
+   * @throws {ContioAPIError} If the request is invalid or the status change is not allowed
+   *
+   * @example
+   * ```typescript
+   * await admin.updateWebhookStatus({
+   *   enabled: false
+   * });
+   * ```
+   *
+   * @example
+   * ```typescript
+   * const app = await admin.updateWebhookStatus({
+   *   enabled: true,
+   *   pending_disposition: 'abandon'
+   * });
+   *
+   * console.log('Webhook enabled:', app.webhook_enabled);
+   * ```
+   */
+  async updateWebhookStatus(data: UpdateWebhookStatusRequest): Promise<PartnerApp> {
+    return this.put<PartnerApp>('/app/webhook-status', data);
+  }
+
+  /**
+   * Configure event filtering for webhook delivery.
+   *
+   * Use include filters to allow only specific events, or exclude filters to
+   * suppress selected events from being delivered.
+   *
+   * @param data - Webhook filter configuration
+   * @param data.type - Filter mode: include or exclude
+   * @param data.events - Event types to include or exclude
+   * @returns The updated partner app configuration
+   * @throws {ContioAPIError} If the request is invalid or includes unsupported event types
+   *
+   * @example
+   * ```typescript
+   * const app = await admin.setWebhookFilter({
+   *   type: 'include',
+   *   events: ['meeting.created', 'meeting.completed']
+   * });
+   *
+   * console.log(app.webhook_filter);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * await admin.setWebhookFilter({
+   *   type: 'exclude',
+   *   events: ['participant.added']
+   * });
+   * ```
+   */
+  async setWebhookFilter(data: SetWebhookFilterRequest): Promise<PartnerApp> {
+    return this.put<PartnerApp>('/app/webhook-filter', data);
+  }
+
+  /**
+   * Remove the webhook event filter for your partner app.
+   *
+   * After removing the filter, all supported webhook events will be eligible
+   * for delivery again.
+   *
+   * @returns The updated partner app configuration
+   * @throws {ContioAPIError} If the request fails
+   *
+   * @example
+   * ```typescript
+   * const app = await admin.removeWebhookFilter();
+   * console.log(app.webhook_filter); // null
+   * ```
+   */
+  async removeWebhookFilter(): Promise<PartnerApp> {
+    return this.delete<PartnerApp>('/app/webhook-filter');
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
