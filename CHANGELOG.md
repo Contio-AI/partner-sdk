@@ -6,6 +6,16 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.4.5
+
+### Added
+- `updateWebhookStatus()` method on `PartnerAdminClient` — enable/disable webhooks with optional `pending_disposition`
+- `setWebhookFilter()` method on `PartnerAdminClient` — set include/exclude event type filters
+- `removeWebhookFilter()` method on `PartnerAdminClient` — remove event filter
+- `webhook_enabled` field on `PartnerApp` type
+- `webhook_filter` field on `PartnerApp` type
+- `UpdateWebhookStatusRequest`, `SetWebhookFilterRequest`, `SetWebhookFilterError` types
+
 ## [1.4.3] - 2026-02-27
 
 ### Added

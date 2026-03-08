@@ -13,6 +13,8 @@ import {
   PartnerApp,
   UpdatePartnerAppRequest,
   UpdatePartnerAppStatusRequest,
+  UpdateWebhookStatusRequest,
+  SetWebhookFilterRequest,
   WebhookDelivery,
   WebhookDeliveryListResponse,
   UserConnection,
@@ -251,6 +253,8 @@ describe('PartnerAdminClient', () => {
         company_name: 'Test Company Inc.',
         primary_contact_email: 'contact@testcompany.com',
         webhook_url: 'https://partner.example.com/webhooks',
+        webhook_enabled: true,
+        webhook_filter: null,
         status: 'active',
         created_at: '2024-12-01T00:00:00Z',
         updated_at: '2025-01-08T10:00:00Z',
@@ -283,6 +287,8 @@ describe('PartnerAdminClient', () => {
         company_name: 'Test Company Inc.',
         primary_contact_email: 'contact@testcompany.com',
         webhook_url: 'https://partner.example.com/new-webhooks',
+        webhook_enabled: true,
+        webhook_filter: null,
         status: 'active',
         created_at: '2024-12-01T00:00:00Z',
         updated_at: '2025-01-08T14:00:00Z',
@@ -309,6 +315,8 @@ describe('PartnerAdminClient', () => {
         name: 'Test Partner App',
         company_name: 'Test Company Inc.',
         primary_contact_email: 'contact@testcompany.com',
+        webhook_enabled: true,
+        webhook_filter: null,
         status: 'inactive',
         created_at: '2024-12-01T00:00:00Z',
         updated_at: '2025-01-08T14:00:00Z',
@@ -320,6 +328,148 @@ describe('PartnerAdminClient', () => {
         const app = await adminClient.updateAppStatus(statusRequest);
 
         expect(app.status).toBe('inactive');
+      });
+    });
+  });
+
+  describe('Webhook Management endpoints', () => {
+    const basePartnerApp: PartnerApp = {
+      id: 'app-123',
+      client_id: 'test-client-id',
+      name: 'Test Partner App',
+      description: 'A test partner application',
+      company_name: 'Test Company Inc.',
+      primary_contact_email: 'contact@testcompany.com',
+      webhook_url: 'https://partner.example.com/webhooks',
+      webhook_enabled: true,
+      webhook_filter: null,
+      status: 'active',
+      created_at: '2024-12-01T00:00:00Z',
+      updated_at: '2025-01-08T10:00:00Z',
+    };
+
+    describe('updateWebhookStatus', () => {
+      it('should enable webhook delivery', async () => {
+        const statusRequest: UpdateWebhookStatusRequest = {
+          enabled: true,
+          pending_disposition: 'abandon',
+        };
+        const mockUpdatedApp: PartnerApp = {
+          ...basePartnerApp,
+          webhook_enabled: true,
+          updated_at: '2025-01-08T14:00:00Z',
+        };
+
+        mockAxios.onPut('/app/webhook-status').reply((config) => {
+          const body = JSON.parse(config.data);
+          expect(body.enabled).toBe(true);
+          expect(body.pending_disposition).toBe('abandon');
+          return [200, mockUpdatedApp];
+        });
+
+        const app = await adminClient.updateWebhookStatus(statusRequest);
+
+        expect(app.webhook_enabled).toBe(true);
+      });
+
+      it('should disable webhook delivery', async () => {
+        const statusRequest: UpdateWebhookStatusRequest = {
+          enabled: false,
+        };
+        const mockUpdatedApp: PartnerApp = {
+          ...basePartnerApp,
+          webhook_enabled: false,
+          updated_at: '2025-01-08T15:00:00Z',
+        };
+
+        mockAxios.onPut('/app/webhook-status').reply((config) => {
+          const body = JSON.parse(config.data);
+          expect(body.enabled).toBe(false);
+          expect(body.pending_disposition).toBeUndefined();
+          return [200, mockUpdatedApp];
+        });
+
+        const app = await adminClient.updateWebhookStatus(statusRequest);
+
+        expect(app.webhook_enabled).toBe(false);
+      });
+    });
+
+    describe('setWebhookFilter', () => {
+      it('should set an include webhook filter', async () => {
+        const filterRequest: SetWebhookFilterRequest = {
+          type: 'include',
+          events: ['meeting.created', 'meeting.completed'],
+        };
+        const mockUpdatedApp: PartnerApp = {
+          ...basePartnerApp,
+          webhook_filter: {
+            type: 'include',
+            events: ['meeting.created', 'meeting.completed'],
+          },
+          updated_at: '2025-01-08T16:00:00Z',
+        };
+
+        mockAxios.onPut('/app/webhook-filter').reply((config) => {
+          const body = JSON.parse(config.data);
+          expect(body.type).toBe('include');
+          expect(body.events).toEqual(['meeting.created', 'meeting.completed']);
+          return [200, mockUpdatedApp];
+        });
+
+        const app = await adminClient.setWebhookFilter(filterRequest);
+
+        expect(app.webhook_filter).toEqual({
+          type: 'include',
+          events: ['meeting.created', 'meeting.completed'],
+        });
+      });
+
+      it('should set an exclude webhook filter', async () => {
+        const filterRequest: SetWebhookFilterRequest = {
+          type: 'exclude',
+          events: ['participant.added'],
+        };
+        const mockUpdatedApp: PartnerApp = {
+          ...basePartnerApp,
+          webhook_filter: {
+            type: 'exclude',
+            events: ['participant.added'],
+          },
+          updated_at: '2025-01-08T17:00:00Z',
+        };
+
+        mockAxios.onPut('/app/webhook-filter').reply((config) => {
+          const body = JSON.parse(config.data);
+          expect(body.type).toBe('exclude');
+          expect(body.events).toEqual(['participant.added']);
+          return [200, mockUpdatedApp];
+        });
+
+        const app = await adminClient.setWebhookFilter(filterRequest);
+
+        expect(app.webhook_filter).toEqual({
+          type: 'exclude',
+          events: ['participant.added'],
+        });
+      });
+    });
+
+    describe('removeWebhookFilter', () => {
+      it('should remove the webhook filter', async () => {
+        const mockUpdatedApp: PartnerApp = {
+          ...basePartnerApp,
+          webhook_filter: null,
+          updated_at: '2025-01-08T18:00:00Z',
+        };
+
+        mockAxios.onDelete('/app/webhook-filter').reply(200, mockUpdatedApp);
+
+        const app = await adminClient.removeWebhookFilter();
+
+        expect(mockAxios.history.delete).toHaveLength(1);
+        expect(mockAxios.history.delete[0].url).toBe('/app/webhook-filter');
+        expect(app.webhook_filter).toBeNull();
       });
     });
   });

@@ -2,6 +2,8 @@
  * Workflow-related type definitions for the Contio Partner API
  */
 
+import { ErrorResponse } from './auth';
+
 /**
  * Configuration for phrase-based matching action
  */
@@ -139,6 +141,8 @@ export interface PartnerApp {
   client_id: string;
   primary_contact_email: string;
   webhook_url?: string;
+  webhook_enabled: boolean;
+  webhook_filter?: { type: string; events: string[] } | null;
   status: string;
   slug?: string;
   created_at: string;
@@ -154,6 +158,20 @@ export interface UpdatePartnerAppRequest {
 
 export interface UpdatePartnerAppStatusRequest {
   status: 'active' | 'suspended' | 'inactive';
+}
+
+export interface UpdateWebhookStatusRequest {
+  enabled: boolean;
+  pending_disposition?: 'abandon' | 'deliver';
+}
+
+export interface SetWebhookFilterRequest {
+  type: 'include' | 'exclude';
+  events: string[];
+}
+
+export interface SetWebhookFilterError extends ErrorResponse {
+  valid_event_types?: string[];
 }
 
 export interface UserConnection {
