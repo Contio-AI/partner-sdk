@@ -10,6 +10,217 @@
  * ---------------------------------------------------------------
  */
 
+/** Bad request error for creating an action item */
+export interface ActionItemCreateActionItemError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request"
+   */
+  code?: "invalid_request" | "invalid_due_date";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface ActionItemCreateActionItemRequest {
+  /**
+   * @minLength 1
+   * @maxLength 1000
+   * @example "Call or schedule meeting to discuss"
+   */
+  description?: string;
+  /**
+   * YYYY-MM-DD format
+   * @example "2023-01-08"
+   */
+  due_date?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  meeting_id: string;
+  partner_context?: Record<string, unknown>;
+  /** @example "needs_review" */
+  status?:
+    | "needs_review"
+    | "accepted"
+    | "in_progress"
+    | "blocked"
+    | "completed"
+    | "cancelled";
+  /**
+   * @minLength 1
+   * @maxLength 1000
+   * @example "Follow up with client"
+   */
+  title: string;
+}
+
+/** Bad request error for listing action items */
+export interface ActionItemGetActionItemsError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_start_date"
+   */
+  code?: "invalid_start_date" | "invalid_end_date";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid start_date format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface ActionItemPartnerActionItemResponse {
+  /**
+   * ID of the user assigned to this action item
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  assigned_to_user_id?: string;
+  /**
+   * Timestamp when the action item was completed
+   * @example "2023-01-08T18:00:00-07:00"
+   */
+  completed_at?: string;
+  /**
+   * Timestamp when the action item was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Detailed description of the action item
+   * @example "Follow up with client about proposal"
+   */
+  description?: string;
+  /**
+   * Due date in YYYY-MM-DD format
+   * @example "2023-01-08"
+   */
+  due_date?: string;
+  /**
+   * Whether this action item was assigned via partner workflow
+   * @example true
+   */
+  has_partner_assignment?: boolean;
+  /**
+   * Unique identifier for the action item
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  id?: string;
+  /**
+   * Whether the action item has been completed
+   * @example false
+   */
+  is_completed?: boolean;
+  /**
+   * ID of the meeting this action item belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id?: string;
+  /** Partner-specific context data stored with the action item */
+  partner_context?: Record<string, unknown>;
+  /**
+   * Current status (needs_review, accepted, in_progress, blocked, completed, cancelled)
+   * @example "accepted"
+   */
+  status?: string;
+  /**
+   * Title of the action item
+   * @example "Client follow-up call"
+   */
+  title?: string;
+  /**
+   * Timestamp when the action item was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}
+
+/** Bad request error for updating an action item */
+export interface ActionItemUpdateActionItemError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_action_item_id"
+   */
+  code?: "invalid_action_item_id" | "invalid_request" | "invalid_due_date";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid action item ID format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface ActionItemUpdateActionItemRequest {
+  /**
+   * @minLength 1
+   * @maxLength 1000
+   * @example "Updated description"
+   */
+  description?: string;
+  /**
+   * YYYY-MM-DD format
+   * @example "2023-01-08"
+   */
+  due_date?: string;
+  /** @example true */
+  is_completed?: boolean;
+  partner_context?: Record<string, unknown>;
+  /** @example "needs_review" */
+  status?:
+    | "needs_review"
+    | "accepted"
+    | "in_progress"
+    | "blocked"
+    | "completed"
+    | "cancelled";
+  /**
+   * @minLength 1
+   * @maxLength 1000
+   * @example "Follow up with client"
+   */
+  title?: string;
+}
+
+/** Bad request error for creating IdP configuration */
+export interface AdminCreateIdPConfigError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?:
+    | "invalid_request_body"
+    | "invalid_idp_credentials"
+    | "invalid_idp"
+    | "domain_is_generic"
+    | "domain_already_claimed"
+    | "strict_mode_requires_domains"
+    | "discovery_fetch_failed"
+    | "idp_config_exists";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
 export interface AdminCreateIdPConfigRequest {
   /**
    * Email domains allowed for SSO (required for strict mode). Users with other domains will be rejected.
@@ -54,6 +265,25 @@ export interface AdminCreateIdPConfigRequest {
   scopes?: string[];
 }
 
+/** Bad request error for creating a workflow */
+export interface AdminCreateWorkflowError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?: "invalid_request_body" | "validation_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
 export interface AdminCreateWorkflowRequest {
   /** @minItems 1 */
   actions: PartnerWorkflowAction[];
@@ -86,34 +316,73 @@ export interface AdminCredentialRotationRequest {
 }
 
 export interface AdminCredentialRotationResponse {
-  /** @example "api_key" */
+  /**
+   * Type of credential that was rotated (api_key or client_secret)
+   * @example "api_key"
+   */
   credential_type?: string;
-  /** @example "2024-01-15T10:30:00Z" */
+  /**
+   * When the grace period ends and old credential stops working
+   * @example "2024-01-15T10:30:00Z"
+   */
   grace_period_ends_at?: string;
-  /** @example "pk_live_abc123..." */
+  /**
+   * The newly generated credential value (only shown once)
+   * @example "pk_live_abc123..."
+   */
   new_credential?: string;
-  /** @example "2024-01-14T10:30:00Z" */
+  /**
+   * When the rollback token expires
+   * @example "2024-01-14T10:30:00Z"
+   */
   rollback_expires_at?: string;
-  /** @example "rollback_token_xyz..." */
+  /**
+   * Token to use if you need to rollback to the previous credential
+   * @example "rollback_token_xyz..."
+   */
   rollback_token?: string;
 }
 
 export interface AdminCredentialStatusResponse {
-  /** @example 5 */
+  /**
+   * Age of the credential in days
+   * @example 5
+   */
   age_days?: number;
-  /** @example "2024-01-01T00:00:00Z" */
+  /**
+   * When the credential was created
+   * @example "2024-01-01T00:00:00Z"
+   */
   created_at?: string;
-  /** @example "api_key" */
+  /**
+   * Type of credential (api_key or client_secret)
+   * @example "api_key"
+   */
   credential_type?: string;
-  /** @example "2024-01-12T10:30:00Z" */
+  /**
+   * When the grace period ends (if in pending_rotation status)
+   * @example "2024-01-12T10:30:00Z"
+   */
   grace_period_ends_at?: string;
-  /** @example "2024-01-10T10:30:00Z" */
+  /**
+   * When the credential was last rotated
+   * @example "2024-01-10T10:30:00Z"
+   */
   last_rotated_at?: string;
-  /** @example "2024-01-20T10:30:00Z" */
+  /**
+   * When the credential was last used for authentication
+   * @example "2024-01-20T10:30:00Z"
+   */
   last_used_at?: string;
-  /** @example "ok" */
+  /**
+   * Recommended action (ok, rotate_soon, rotate_now)
+   * @example "ok"
+   */
   recommended_action?: string;
-  /** @example "active" */
+  /**
+   * Current status (active, pending_rotation, expired)
+   * @example "active"
+   */
   status?: string;
 }
 
@@ -201,48 +470,191 @@ export interface AdminIdPConfigResponse {
 }
 
 export interface AdminListResponseAdminUserConnectionResponse {
+  /** Array of items for the current page */
   items?: AdminUserConnectionResponse[];
-  /** @example 50 */
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
   limit?: number;
-  /** @example 0 */
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
   offset?: number;
-  /** @example 100 */
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
   total?: number;
 }
 
 export interface AdminListResponseAdminWorkflowResponse {
+  /** Array of items for the current page */
   items?: AdminWorkflowResponse[];
-  /** @example 50 */
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
   limit?: number;
-  /** @example 0 */
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
   offset?: number;
-  /** @example 100 */
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
   total?: number;
 }
 
 export interface AdminPartnerAppResponse {
-  /** @example "partner_1234567890_abcdef123456" */
+  /**
+   * OAuth client ID for this partner app
+   * @example "partner_1234567890_abcdef123456"
+   */
   client_id?: string;
-  /** @example "Acme Corp" */
+  /**
+   * Name of the company that owns this partner app
+   * @example "Acme Corp"
+   */
   company_name?: string;
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * Timestamp when the partner app was created
+   * @example "2023-01-01T00:00:00Z"
+   */
   created_at?: string;
-  /** @example "Integrates with our CRM system" */
+  /**
+   * Optional description of the partner app
+   * @example "Integrates with our CRM system"
+   */
   description?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  /**
+   * Unique identifier for the partner app
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
   id?: string;
-  /** @example "CRM Integration" */
+  /**
+   * Display name of the partner app
+   * @example "CRM Integration"
+   */
   name?: string;
-  /** @example "contact@example.com" */
+  /**
+   * Primary contact email for this partner app
+   * @example "contact@example.com"
+   */
   primary_contact_email?: string;
-  /** @example "acme-crm" */
+  /**
+   * URL-friendly slug for the partner app
+   * @example "acme-crm"
+   */
   slug?: string;
-  /** @example "active" */
+  /**
+   * Current status (active, inactive, suspended)
+   * @example "active"
+   */
   status?: string;
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * Timestamp when the partner app was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
   updated_at?: string;
-  /** @example "https://api.example.com/webhook" */
+  /**
+   * Whether webhook delivery is enabled for this partner app
+   * @example true
+   */
+  webhook_enabled?: boolean;
+  /** Optional webhook event filter configuration for this partner app */
+  webhook_filter?: AdminWebhookFilterResponse;
+  /**
+   * Webhook URL for receiving event notifications
+   * @example "https://api.example.com/webhook"
+   */
   webhook_url?: string;
+}
+
+/** Bad request error for rotating API key */
+export interface AdminRotateAPIKeyError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "bad_request"
+   */
+  code?: "bad_request" | "rate_limit_exceeded";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Bad request error for rotating client secret */
+export interface AdminRotateClientSecretError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "bad_request"
+   */
+  code?: "bad_request" | "rate_limit_exceeded";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Bad request error for rotating webhook secret */
+export interface AdminRotateWebhookSecretError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "bad_request"
+   */
+  code?: "bad_request";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface AdminSetWebhookFilterRequest {
+  /** @minItems 1 */
+  events: string[];
+  /** @example "include" */
+  type: "include" | "exclude";
+}
+
+/** Bad request error for updating partner app */
+export interface AdminUpdateAppError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?: "invalid_request" | "invalid_request_body" | "validation_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
 }
 
 export interface AdminUpdateAppRequest {
@@ -267,9 +679,54 @@ export interface AdminUpdateAppRequest {
   webhook_url?: string;
 }
 
+/** Bad request error for updating partner app status */
+export interface AdminUpdateAppStatusError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_status"
+   */
+  code?: "invalid_request_body" | "invalid_status";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid status value"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
 export interface AdminUpdateAppStatusRequest {
   /** @example "suspended" */
   status: "active" | "suspended" | "inactive";
+}
+
+/** Bad request error for updating IdP configuration */
+export interface AdminUpdateIdPConfigError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?:
+    | "invalid_request_body"
+    | "invalid_idp_credentials"
+    | "invalid_idp"
+    | "domain_is_generic"
+    | "domain_already_claimed"
+    | "strict_mode_requires_domains"
+    | "discovery_fetch_failed";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
 }
 
 export interface AdminUpdateIdPConfigRequest {
@@ -315,6 +772,56 @@ export interface AdminUpdateIdPConfigRequest {
   scopes?: string[];
 }
 
+/** Bad request error for updating partner app webhook filters */
+export interface AdminUpdateWebhookFilterError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "validation_error"
+   */
+  code?: "invalid_request_body" | "validation_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "invalid event types: invalid.event"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+  /**
+   * Valid event types that can be used in the webhook filter request
+   * @example ["meeting.created","action_item.updated"]
+   */
+  valid_event_types?: string[];
+}
+
+export interface AdminUpdateWebhookStatusRequest {
+  /** @example true */
+  enabled: boolean;
+  /** @example "abandon" */
+  pending_disposition?: "deliver" | "abandon";
+}
+
+/** Bad request error for updating a workflow */
+export interface AdminUpdateWorkflowError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_workflow_id"
+   */
+  code?: "invalid_workflow_id" | "invalid_request_body" | "validation_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid workflow ID format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
 export interface AdminUpdateWorkflowRequest {
   /** @minItems 1 */
   actions?: PartnerWorkflowAction[];
@@ -341,82 +848,196 @@ export interface AdminUpdateWorkflowRequest {
 }
 
 export interface AdminUserConnectionResponse {
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * Timestamp when the connection was created
+   * @example "2023-01-01T00:00:00Z"
+   */
   created_at?: string;
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * When the partner feature was activated for this user
+   * @example "2023-01-01T00:00:00Z"
+   */
   feature_activated_at?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174002" */
+  /**
+   * Unique identifier for the user connection
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
   id?: string;
-  /** @example "2023-01-15T10:30:00Z" */
+  /**
+   * When the user last used the partner integration
+   * @example "2023-01-15T10:30:00Z"
+   */
   last_used_at?: string;
-  /** @example "2023-12-31T23:59:59Z" */
+  /**
+   * Expiration time of the OAuth token
+   * @example "2023-12-31T23:59:59Z"
+   */
   oauth_expires_at?: string;
-  /** @example ["['openid'"," 'profile'"," 'meetings:read']"] */
+  /**
+   * OAuth scopes granted by the user
+   * @example ["['openid'"," 'profile'"," 'meetings:read']"]
+   */
   oauth_scopes?: string[];
-  /** @example "active" */
+  /**
+   * Current status of the connection (active, inactive, revoked)
+   * @example "active"
+   */
   status?: string;
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * Timestamp when the connection was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
   updated_at?: string;
-  /** @example "john.doe@example.com" */
+  /**
+   * Email address of the connected user
+   * @example "john.doe@example.com"
+   */
   user_email?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174003" */
+  /**
+   * ID of the connected user
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
   user_id?: string;
-  /** @example "John Doe" */
+  /**
+   * Display name of the connected user
+   * @example "John Doe"
+   */
   user_name?: string;
 }
 
 export interface AdminWebhookDeliveriesResponse {
+  /** Array of webhook delivery records */
   deliveries?: AdminWebhookDeliveryResponse[];
-  /** @example 50 */
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
   limit?: number;
-  /** @example 0 */
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
   offset?: number;
-  /** @example 25 */
+  /**
+   * Total number of deliveries matching the filter
+   * @example 25
+   */
   total?: number;
 }
 
 export interface AdminWebhookDeliveryResponse {
-  /** @example "2024-01-14T10:00:00Z" */
+  /**
+   * Timestamp when the delivery was created
+   * @example "2024-01-14T10:00:00Z"
+   */
   created_at?: string;
-  /** @example "2024-01-14T10:30:00Z" */
+  /**
+   * When the webhook was successfully delivered
+   * @example "2024-01-14T10:30:00Z"
+   */
   delivered_at?: string;
-  /** @example "delivered" */
+  /**
+   * Current delivery status (pending, delivered, failed, abandoned)
+   * @example "delivered"
+   */
   delivery_status?: string;
-  /** @example "" */
+  /**
+   * Error message if delivery failed
+   * @example ""
+   */
   error_message?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174006" */
+  /**
+   * ID of the event that triggered this delivery
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
   event_id?: string;
-  /** @example "action_item_created" */
+  /**
+   * Type of event that triggered this webhook
+   * @example "action_item_created"
+   */
   event_type?: string;
-  /** @example 200 */
+  /**
+   * HTTP status code returned by the webhook endpoint
+   * @example 200
+   */
   http_status_code?: number;
-  /** @example "123e4567-e89b-12d3-a456-426614174005" */
+  /**
+   * Unique identifier for the webhook delivery
+   * @example "123e4567-e89b-12d3-a456-426614174005"
+   */
   id?: string;
-  /** @example "2024-01-15T10:30:00Z" */
+  /**
+   * When the next retry attempt will be made (if applicable)
+   * @example "2024-01-15T10:30:00Z"
+   */
   next_retry_at?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  /**
+   * ID of the partner app this delivery belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
   partner_app_id?: string;
-  /** @example 0 */
+  /**
+   * Number of retry attempts made
+   * @example 0
+   */
   retry_count?: number;
 }
 
+export interface AdminWebhookFilterResponse {
+  /**
+   * Event types included in the filter configuration
+   * @example ["meeting.created","action_item.updated"]
+   */
+  events?: string[];
+  /**
+   * Filter mode controlling how events are matched
+   * @example "include"
+   */
+  type?: string;
+}
+
 export interface AdminWorkflowResponse {
+  /** Actions to execute when the workflow is triggered */
   actions?: PartnerWorkflowAction[];
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * Timestamp when the workflow was created
+   * @example "2023-01-01T00:00:00Z"
+   */
   created_at?: string;
-  /** @example "Sync action items to CRM" */
+  /**
+   * Optional description of what the workflow does
+   * @example "Sync action items to CRM"
+   */
   description?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174001" */
+  /**
+   * Unique identifier for the workflow
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
   id?: string;
-  /** @example "CRM Integration" */
+  /**
+   * Name of the workflow
+   * @example "CRM Integration"
+   */
   name?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  /**
+   * ID of the partner app that owns this workflow
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
   partner_app_id?: string;
-  /** @example "active" */
+  /**
+   * Current status (active or inactive)
+   * @example "active"
+   */
   status?: string;
-  /** @example "action_item_created" */
+  /**
+   * Event type that triggers this workflow
+   * @example "action_item_created"
+   */
   trigger_type?: string;
-  /** @example "2023-01-01T00:00:00Z" */
+  /**
+   * Timestamp when the workflow was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
   updated_at?: string;
 }
 
@@ -443,50 +1064,277 @@ export interface AuthorizeListParams {
   state?: string;
 }
 
-export type CheckConsentCreateData = OauthOAuthConsentCheckResponse;
-
-export type CheckConsentCreateError = ErrorsErrorResponse;
-
-/** Standard error response format used across all API endpoints All error responses follow this consistent structure for predictable error handling */
-export interface ErrorsErrorResponse {
+/** Bad request error for creating a meeting from a calendar event */
+export interface CalendarCreateMeetingFromCalendarEventError400 {
   /**
-   * Error code identifying the specific type of error
-   * @Description Unique identifier for the error type, useful for programmatic error handling
-   * @Enum not_found,note_not_found,bad_request,validation_error,unauthorized,forbidden,conflict,resource_already_exists,too_many_requests,internal_server_error
-   * @example "not_found"
+   * Unique identifier for the error type
+   * @example "invalid_calendar_event_id"
    */
-  code?: string;
+  code?: "invalid_calendar_event_id" | "invalid_request";
   /**
-   * Human-readable error message
-   * @Description User-friendly description of what went wrong
-   * @example "The requested resource could not be found"
+   * User-friendly description of what went wrong
+   * @example "Invalid calendar event ID format"
    */
-  message?: string;
+  error?: string;
   /**
-   * RequestID is the unique request identifier for tracing
-   * @Description Request identifier to correlate errors with logs
+   * Request identifier to correlate errors with logs
    * @example "abc123xyz"
    */
   request_id?: string;
 }
 
-/** Standard error response format used across all partner API endpoints This format is used by both partner admin and partner user APIs for consistency */
-export interface ErrorsPartnerErrorResponse {
+/** Bad request error for listing calendar events */
+export interface CalendarGetCalendarEventsError400 {
   /**
    * Error code identifying the specific type of error
-   * @Description Unique identifier for the error type, useful for programmatic error handling
+   * @example "invalid_start_date"
+   */
+  code?:
+    | "invalid_query_parameters"
+    | "missing_start_date"
+    | "missing_end_date"
+    | "invalid_start_date"
+    | "invalid_end_date";
+  /**
+   * Human-readable error message
+   * @example "Invalid start_date format"
+   */
+  error?: string;
+  /**
+   * Request identifier for tracing
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Bad request error for linking a calendar event to a meeting */
+export interface CalendarLinkCalendarEventError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_meeting_id"
+   */
+  code?:
+    | "invalid_meeting_id"
+    | "invalid_request_body"
+    | "calendar_event_already_linked"
+    | "meeting_already_linked";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid meeting ID format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface CalendarLinkCalendarEventResponse {
+  /**
+   * Human-readable message describing the result
+   * @example "Meeting linked to calendar event successfully"
+   */
+  message?: string;
+  /**
+   * Whether the operation was successful
+   * @example true
+   */
+  success?: boolean;
+}
+
+export interface CalendarPartnerCalendarEventAttendee {
+  /**
+   * Email address of the attendee
+   * @example "john.doe@example.com"
+   */
+  email?: string;
+  /**
+   * Display name of the attendee
+   * @example "John Doe"
+   */
+  name?: string;
+  /**
+   * RSVP status (accepted, declined, tentative, needs_action)
+   * @example "accepted"
+   */
+  status?: string;
+  /**
+   * Attendee type (required, optional, resource)
+   * @example "required"
+   */
+  type?: string;
+}
+
+export interface CalendarPartnerCalendarEventResponse {
+  /** List of attendees for the calendar event */
+  attendees?: CalendarPartnerCalendarEventAttendee[];
+  /**
+   * Description or body of the calendar event
+   * @example "Discuss project updates"
+   */
+  description?: string;
+  /**
+   * End time of the event in RFC3339 format
+   * @example "2023-01-01T11:00:00-07:00"
+   */
+  end_time?: string;
+  /**
+   * Unique identifier for the calendar event
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
+  id?: string;
+  /**
+   * Location of the event (physical or virtual)
+   * @example "Conference Room A"
+   */
+  location?: string;
+  /**
+   * ID of the linked Contio meeting, if any
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id?: string;
+  /** Organizer of the calendar event */
+  organizer?: CalendarPartnerCalendarEventAttendee;
+  /**
+   * Start time of the event in RFC3339 format
+   * @example "2023-01-01T10:00:00-07:00"
+   */
+  start_time?: string;
+  /**
+   * Title of the calendar event
+   * @example "Weekly Team Sync"
+   */
+  title?: string;
+}
+
+export interface CalendarPartnerCreateMeetingFromCalendarEventResponse {
+  /**
+   * Whether a new meeting was created (false if existing meeting was returned)
+   * @example true
+   */
+  created?: boolean;
+  /** The created or existing meeting */
+  meeting?: SharedPartnerMeetingResponse;
+  /**
+   * Human-readable message describing the result
+   * @example "Meeting created successfully from calendar event"
+   */
+  message?: string;
+}
+
+export interface CalendarPartnerLinkCalendarEventRequest {
+  /**
+   * @maxLength 255
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
+  calendar_event_id: string;
+}
+
+export type CheckConsentCreateData = OauthOAuthConsentCheckResponse;
+
+export type CheckConsentCreateError = ErrorsErrorResponse;
+
+export interface ContextMeetingContextListResponse {
+  items?: ContextMeetingContextResponse[];
+  limit?: number;
+  offset?: number;
+  total?: number;
+}
+
+export interface ContextMeetingContextResponse {
+  context_type?: string;
+  created_at?: string;
+  created_by_user_id?: string;
+  deleted_at?: string;
+  document_id?: string;
+  id?: string;
+  meeting_id?: string;
+  partner_app_id?: string;
+  platform_name?: string;
+  source_format?: string;
+  title?: string;
+  updated_at?: string;
+  workspace_id?: string;
+}
+
+/** Standard error response format used across all API endpoints. All error responses follow this consistent structure for predictable error handling. */
+export interface ErrorsErrorResponse {
+  /**
+   * Unique identifier for the error type, useful for programmatic error handling
+   * @example "not_found"
+   */
+  code?:
+    | "not_found"
+    | "note_not_found"
+    | "bad_request"
+    | "validation_error"
+    | "unauthorized"
+    | "forbidden"
+    | "conflict"
+    | "resource_already_exists"
+    | "too_many_requests"
+    | "internal_server_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "The requested resource could not be found"
+   */
+  message?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Error response for workspace conflict (409). Includes the user's current workspace_id. */
+export interface ErrorsPartnerConflictErrorResponse {
+  /**
+   * Unique identifier for the error type, useful for programmatic error handling
+   * @example "workspace_conflict"
+   */
+  code?: string;
+  /**
+   * User-friendly description of what went wrong
+   * @example "User already belongs to a different workspace"
+   */
+  error?: string;
+  /**
+   * Deprecated: Use 'error' field instead. Will be removed in v2.0
+   * @example "User already belongs to a different workspace"
+   */
+  message?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+  /**
+   * The workspace ID the user currently belongs to
+   * @example "550e8400-e29b-41d4-a716-446655440000"
+   */
+  workspace_id?: string;
+}
+
+/** Standard error response format used across all partner API endpoints. This format is used by both partner admin and partner user APIs for consistency. DEPRECATION NOTICE (v2.0): The 'message' field will be removed in the next major release. Partners should migrate to using the 'error' field instead. */
+export interface ErrorsPartnerErrorResponse {
+  /**
+   * Unique identifier for the error type, useful for programmatic error handling
    * @example "invalid_request"
    */
   code?: string;
   /**
-   * Human-readable error message
-   * @Description User-friendly description of what went wrong
+   * User-friendly description of what went wrong
    * @example "Invalid request"
    */
   error?: string;
   /**
-   * RequestID is the unique request identifier for tracing
-   * @Description Request identifier to correlate errors with logs
+   * Deprecated: Use 'error' field instead. Will be removed in v2.0
+   * @example "Invalid request"
+   */
+  message?: string;
+  /**
+   * Request identifier to correlate errors with logs
    * @example "abc123xyz"
    */
   request_id?: string;
@@ -498,7 +1346,10 @@ export type HealthListError = ErrorsErrorResponse;
 
 export type InitiateCreateData = OauthPartnerAuthInitiateResponse;
 
-export type InitiateCreateError = ErrorsErrorResponse;
+export type InitiateCreateError =
+  | ErrorsErrorResponse
+  | ErrorsPartnerErrorResponse
+  | ErrorsPartnerConflictErrorResponse;
 
 export type IntrospectCreateData =
   RomeApiControllersExternalPartnerOauthTokenIntrospection;
@@ -514,6 +1365,287 @@ export type JwksJsonListData =
   RomeApiControllersExternalPartnerOauthJWKSResponse;
 
 export type JwksJsonListError = ErrorsErrorResponse;
+
+export interface MeetingAddParticipantRequest {
+  /** @example "john.doe@example.com" */
+  email: string;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "John Doe"
+   */
+  name: string;
+  /** @example "EDITOR" */
+  role: "EDITOR" | "VIEWER";
+}
+
+export interface MeetingCreateAgendaItemRequest {
+  /**
+   * @maxLength 5000
+   * @example "Review and discuss Q1 objectives"
+   */
+  description?: string;
+  /** @example "DISCUSSION" */
+  item_type: "DISCUSSION" | "DECISION" | "ACTION_ITEM" | "INFORMATION";
+  /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
+  presenters?: string[];
+  /** @example false */
+  restricted_to_leads?: boolean;
+  /**
+   * @min 0
+   * @max 1440
+   * @example 15
+   */
+  time_allocation_minutes?: number;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Q1 Planning Discussion"
+   */
+  title: string;
+}
+
+/** Bad request error for creating a meeting */
+export interface MeetingCreateMeetingError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_start_time"
+   */
+  code?:
+    | "invalid_request"
+    | "invalid_start_time"
+    | "invalid_end_time"
+    | "invalid_time_range"
+    | "invalid_start_date";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid start time format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Bad request error for listing meetings */
+export interface MeetingGetMeetingsError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_start_date"
+   */
+  code?: "invalid_start_date" | "invalid_end_date";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid start_date format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface MeetingPartnerAgendaItemResponse {
+  /**
+   * Timestamp when the agenda item was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Detailed description of the agenda item
+   * @example "Review and discuss Q1 objectives"
+   */
+  description?: string;
+  /**
+   * Unique identifier for the agenda item
+   * @example "123e4567-e89b-12d3-a456-426614174005"
+   */
+  id?: string;
+  /**
+   * Type of agenda item (DISCUSSION, DECISION, ACTION_ITEM, INFORMATION)
+   * @example "DISCUSSION"
+   */
+  item_type?: string;
+  /**
+   * ID of the meeting this agenda item belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id?: string;
+  /**
+   * User IDs of the presenters for this agenda item
+   * @example ["123e4567-e89b-12d3-a456-426614174003"]
+   */
+  presenters?: string[];
+  /**
+   * Whether this item is restricted to meeting leads only
+   * @example false
+   */
+  restricted_to_leads?: boolean;
+  /**
+   * Order sequence of the agenda item
+   * @example "1"
+   */
+  sequence?: string;
+  /**
+   * Current status (pending, in_progress, completed)
+   * @example "pending"
+   */
+  status?: string;
+  /**
+   * Allocated time for this agenda item in minutes
+   * @example 15
+   */
+  time_allocation_minutes?: number;
+  /**
+   * Title of the agenda item
+   * @example "Q1 Planning Discussion"
+   */
+  title?: string;
+  /**
+   * Timestamp when the agenda item was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}
+
+export interface MeetingPartnerCreateMeetingRequest {
+  /** @example "STANDARD" */
+  detail_level?: "BULLET_POINTS" | "STANDARD" | "VERBATIM";
+  /** @example "2023-01-01T11:00:00Z" */
+  end_time?: string;
+  /** @example false */
+  is_instant?: boolean;
+  /** @example "2023-01-01T10:00:00Z" */
+  start_time?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174004" */
+  template_id?: string;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Weekly Team Sync"
+   */
+  title: string;
+}
+
+export interface MeetingPartnerMeetingParticipantResponse {
+  /**
+   * Timestamp when the participant was added
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Participant's email address
+   * @example "john.doe@example.com"
+   */
+  email?: string;
+  /**
+   * Unique identifier for the participant record
+   * @example "123e4567-e89b-12d3-a456-426614174004"
+   */
+  id?: string;
+  /**
+   * Whether the participant attended the meeting
+   * @example true
+   */
+  is_attended?: boolean;
+  /**
+   * ID of the meeting this participant belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id?: string;
+  /**
+   * Participant's display name
+   * @example "John Doe"
+   */
+  name?: string;
+  /**
+   * Participant's role in the meeting (EDITOR or VIEWER)
+   * @example "EDITOR"
+   */
+  role?: string;
+  /**
+   * Timestamp when the participant record was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * ID of the user if they have a Contio account
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  user_id?: string;
+}
+
+export interface MeetingPartnerUpdateMeetingRequest {
+  /** @example "STANDARD" */
+  detail_level?: "BULLET_POINTS" | "STANDARD" | "VERBATIM";
+  /** @example "2023-01-01T11:00:00Z" */
+  end_time?: string;
+  /** @example "2023-01-01T10:00:00Z" */
+  start_time?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174004" */
+  template_id?: string;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Updated Team Sync"
+   */
+  title?: string;
+}
+
+export interface MeetingUpdateAgendaItemRequest {
+  /**
+   * @maxLength 5000
+   * @example "Updated description"
+   */
+  description?: string;
+  /** @example "DISCUSSION" */
+  item_type?: "DISCUSSION" | "DECISION" | "ACTION_ITEM" | "INFORMATION";
+  /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
+  presenters?: string[];
+  /** @example true */
+  restricted_to_leads?: boolean;
+  /** @example "in_progress" */
+  status?: "pending" | "in_progress" | "completed";
+  /**
+   * @min 0
+   * @max 1440
+   * @example 20
+   */
+  time_allocation_minutes?: number;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Updated Discussion"
+   */
+  title?: string;
+}
+
+/** Bad request error for updating a meeting */
+export interface MeetingUpdateMeetingError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_meeting_id"
+   */
+  code?:
+    | "invalid_meeting_id"
+    | "invalid_request"
+    | "invalid_start_time"
+    | "invalid_end_time"
+    | "invalid_time_range";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid meeting ID format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
 
 export interface OauthHealthResponse {
   checks?: Record<string, unknown>;
@@ -590,8 +1722,12 @@ export interface OauthPartnerAuthInitiateRequest {
   client_id: string;
   /** @example "user@example.com" */
   email: string;
+  /** @example false */
+  is_admin?: boolean;
   /** @example "John Doe" */
   name?: string;
+  /** @example "550e8400-e29b-41d4-a716-446655440000" */
+  workspace_id?: string;
 }
 
 export interface OauthPartnerAuthInitiateResponse {
@@ -661,11 +1797,31 @@ export type PartnerAdminAppListError = ErrorsPartnerErrorResponse;
 
 export type PartnerAdminAppStatusUpdateData = AdminPartnerAppResponse;
 
-export type PartnerAdminAppStatusUpdateError = ErrorsPartnerErrorResponse;
+export type PartnerAdminAppStatusUpdateError =
+  | AdminUpdateAppStatusError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminAppUpdateData = AdminPartnerAppResponse;
 
-export type PartnerAdminAppUpdateError = ErrorsPartnerErrorResponse;
+export type PartnerAdminAppUpdateError =
+  | AdminUpdateAppError400
+  | ErrorsPartnerErrorResponse;
+
+export type PartnerAdminAppWebhookFilterDeleteData = AdminPartnerAppResponse;
+
+export type PartnerAdminAppWebhookFilterDeleteError =
+  ErrorsPartnerErrorResponse;
+
+export type PartnerAdminAppWebhookFilterUpdateData = AdminPartnerAppResponse;
+
+export type PartnerAdminAppWebhookFilterUpdateError =
+  | AdminUpdateWebhookFilterError400
+  | ErrorsPartnerErrorResponse;
+
+export type PartnerAdminAppWebhookStatusUpdateData = AdminPartnerAppResponse;
+
+export type PartnerAdminAppWebhookStatusUpdateError =
+  ErrorsPartnerErrorResponse;
 
 export type PartnerAdminConnectionsDeleteData = any;
 
@@ -714,17 +1870,20 @@ export type PartnerAdminCredentialsApiKeyRotateCreateData =
   AdminCredentialRotationResponse;
 
 export type PartnerAdminCredentialsApiKeyRotateCreateError =
-  ErrorsErrorResponse;
+  | AdminRotateAPIKeyError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminCredentialsClientSecretRotateCreateData =
   AdminCredentialRotationResponse;
 
 export type PartnerAdminCredentialsClientSecretRotateCreateError =
-  ErrorsErrorResponse;
+  | AdminRotateClientSecretError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminCredentialsHistoryListData = Record<string, unknown>;
 
-export type PartnerAdminCredentialsHistoryListError = ErrorsErrorResponse;
+export type PartnerAdminCredentialsHistoryListError =
+  ErrorsPartnerErrorResponse;
 
 export interface PartnerAdminCredentialsHistoryListParams {
   /** Filter by credential type */
@@ -746,17 +1905,20 @@ export type PartnerAdminCredentialsListData = Record<
   AdminCredentialStatusResponse
 >;
 
-export type PartnerAdminCredentialsListError = ErrorsErrorResponse;
+export type PartnerAdminCredentialsListError = ErrorsPartnerErrorResponse;
 
 export type PartnerAdminCredentialsWebhookSecretRotateCreateData =
   AdminCredentialRotationResponse;
 
 export type PartnerAdminCredentialsWebhookSecretRotateCreateError =
-  ErrorsErrorResponse;
+  | AdminRotateWebhookSecretError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminIdpCreateData = AdminIdPConfigResponse;
 
-export type PartnerAdminIdpCreateError = ErrorsPartnerErrorResponse;
+export type PartnerAdminIdpCreateError =
+  | AdminCreateIdPConfigError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminIdpDeleteData = any;
 
@@ -768,7 +1930,9 @@ export type PartnerAdminIdpListError = ErrorsPartnerErrorResponse;
 
 export type PartnerAdminIdpUpdateData = AdminIdPConfigResponse;
 
-export type PartnerAdminIdpUpdateError = ErrorsPartnerErrorResponse;
+export type PartnerAdminIdpUpdateError =
+  | AdminUpdateIdPConfigError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminWebhookDeliveriesDetailData =
   AdminWebhookDeliveryResponse;
@@ -809,7 +1973,9 @@ export interface PartnerAdminWebhookDeliveriesRetryCreateParams {
 
 export type PartnerAdminWorkflowsCreateData = AdminWorkflowResponse;
 
-export type PartnerAdminWorkflowsCreateError = ErrorsPartnerErrorResponse;
+export type PartnerAdminWorkflowsCreateError =
+  | AdminCreateWorkflowError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminWorkflowsDeleteData = any;
 
@@ -849,7 +2015,9 @@ export interface PartnerAdminWorkflowsListParams {
 
 export type PartnerAdminWorkflowsUpdateData = AdminWorkflowResponse;
 
-export type PartnerAdminWorkflowsUpdateError = ErrorsPartnerErrorResponse;
+export type PartnerAdminWorkflowsUpdateError =
+  | AdminUpdateWorkflowError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerAdminWorkflowsUpdateParams {
   /** Workflow ID */
@@ -909,22 +2077,26 @@ export interface PartnerSsoSessionDetailParams {
   sessionId: string;
 }
 
-export type PartnerUserActionItemsCreateData = UserPartnerActionItemResponse;
+export type PartnerUserActionItemsCreateData =
+  ActionItemPartnerActionItemResponse;
 
-export type PartnerUserActionItemsCreateError = ErrorsErrorResponse;
+export type PartnerUserActionItemsCreateError =
+  | ActionItemCreateActionItemError400
+  | ErrorsPartnerErrorResponse;
 
 export type PartnerUserActionItemsDeleteData = any;
 
-export type PartnerUserActionItemsDeleteError = ErrorsErrorResponse;
+export type PartnerUserActionItemsDeleteError = ErrorsPartnerErrorResponse;
 
 export interface PartnerUserActionItemsDeleteParams {
   /** Action Item ID */
   id: string;
 }
 
-export type PartnerUserActionItemsDetailData = UserPartnerActionItemResponse;
+export type PartnerUserActionItemsDetailData =
+  ActionItemPartnerActionItemResponse;
 
-export type PartnerUserActionItemsDetailError = ErrorsErrorResponse;
+export type PartnerUserActionItemsDetailError = ErrorsPartnerErrorResponse;
 
 export interface PartnerUserActionItemsDetailParams {
   /** Action Item ID */
@@ -932,18 +2104,25 @@ export interface PartnerUserActionItemsDetailParams {
 }
 
 export type PartnerUserActionItemsListData =
-  UserListResponseUserPartnerActionItemResponse;
+  SharedListResponseActionItemPartnerActionItemResponse;
 
-export type PartnerUserActionItemsListError = ErrorsErrorResponse;
+export type PartnerUserActionItemsListError =
+  | ActionItemGetActionItemsError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerUserActionItemsListParams {
+  /**
+   * Filter by end date (ISO 8601)
+   * @example ""2023-12-31T23:59:59Z""
+   */
+  end_date?: string;
   /** Filter by partner assignment */
   has_partner_assignment?: boolean;
   /** Filter by completion status */
   is_completed?: boolean;
   /**
    * Limit
-   * @default 50
+   * @default 25
    */
   limit?: number;
   /**
@@ -956,11 +2135,19 @@ export interface PartnerUserActionItemsListParams {
    * @default 0
    */
   offset?: number;
+  /**
+   * Filter by start date (ISO 8601)
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start_date?: string;
 }
 
-export type PartnerUserActionItemsUpdateData = UserPartnerActionItemResponse;
+export type PartnerUserActionItemsUpdateData =
+  ActionItemPartnerActionItemResponse;
 
-export type PartnerUserActionItemsUpdateError = ErrorsErrorResponse;
+export type PartnerUserActionItemsUpdateError =
+  | ActionItemUpdateActionItemError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerUserActionItemsUpdateParams {
   /** Action Item ID */
@@ -968,48 +2155,106 @@ export interface PartnerUserActionItemsUpdateParams {
 }
 
 export type PartnerUserCalendarEventsDetailData =
-  UserPartnerCalendarEventResponse;
+  CalendarPartnerCalendarEventResponse;
 
 export type PartnerUserCalendarEventsDetailError = ErrorsPartnerErrorResponse;
 
 export interface PartnerUserCalendarEventsDetailParams {
-  /** Calendar Event ID */
+  /**
+   * Calendar Event ID
+   * @example ""123e4567-e89b-12d3-a456-426614174006""
+   */
   calendarEventId: string;
 }
 
 export type PartnerUserCalendarEventsListData =
-  UserListResponseUserPartnerCalendarEventResponse;
+  SharedListResponseCalendarPartnerCalendarEventResponse;
 
-export type PartnerUserCalendarEventsListError = ErrorsPartnerErrorResponse;
+export type PartnerUserCalendarEventsListError =
+  | CalendarGetCalendarEventsError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerUserCalendarEventsListParams {
   /** Sort direction: asc or desc (default: asc) */
   direction?: string;
-  /** End time in RFC3339 format */
-  end: string;
+  /**
+   * Deprecated: Use end_date instead
+   * @example ""2023-01-31T23:59:59Z""
+   */
+  end?: string;
+  /**
+   * End time in RFC3339 format (preferred)
+   * @example ""2023-01-31T23:59:59Z""
+   */
+  end_date?: string;
   /** Number of results per page (default 25, max 100) */
   limit?: number;
   /** Pagination offset (default 0) */
   offset?: number;
-  /** Start time in RFC3339 format */
-  start: string;
+  /**
+   * Deprecated: Use start_date instead
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start?: string;
+  /**
+   * Start time in RFC3339 format (preferred)
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start_date?: string;
 }
 
 export type PartnerUserCalendarEventsMeetingCreateData =
-  UserCreateMeetingFromCalendarEventResponse;
+  CalendarPartnerCreateMeetingFromCalendarEventResponse;
 
 export type PartnerUserCalendarEventsMeetingCreateError =
-  ErrorsPartnerErrorResponse;
+  | CalendarCreateMeetingFromCalendarEventError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerUserCalendarEventsMeetingCreateParams {
-  /** Calendar Event ID */
+  /**
+   * Calendar Event ID
+   * @example ""123e4567-e89b-12d3-a456-426614174006""
+   */
   calendarEventId: string;
 }
 
-export type PartnerUserMeetingsAgendaItemsListData =
-  UserListResponseUserPartnerAgendaItemResponse;
+export type PartnerUserMeetingsAgendaItemsCreateData =
+  MeetingPartnerAgendaItemResponse;
 
-export type PartnerUserMeetingsAgendaItemsListError = Record<string, string>;
+export type PartnerUserMeetingsAgendaItemsCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsAgendaItemsCreateParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  meetingId: string;
+}
+
+export type PartnerUserMeetingsAgendaItemsDeleteData = any;
+
+export type PartnerUserMeetingsAgendaItemsDeleteError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsAgendaItemsDeleteParams {
+  /**
+   * Agenda Item ID
+   * @format uuid
+   */
+  itemId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  meetingId: string;
+}
+
+export type PartnerUserMeetingsAgendaItemsListData =
+  SharedListResponseMeetingPartnerAgendaItemResponse;
+
+export type PartnerUserMeetingsAgendaItemsListError =
+  ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsAgendaItemsListParams {
   /**
@@ -1019,35 +2264,164 @@ export interface PartnerUserMeetingsAgendaItemsListParams {
   id: string;
 }
 
-export type PartnerUserMeetingsCalendarLinkCreateData =
-  UserLinkCalendarEventResponse;
+export type PartnerUserMeetingsAgendaItemsUpdateData =
+  MeetingPartnerAgendaItemResponse;
 
-export type PartnerUserMeetingsCalendarLinkCreateError =
+export type PartnerUserMeetingsAgendaItemsUpdateError =
   ErrorsPartnerErrorResponse;
 
+export interface PartnerUserMeetingsAgendaItemsUpdateParams {
+  /**
+   * Agenda Item ID
+   * @format uuid
+   */
+  itemId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  meetingId: string;
+}
+
+export type PartnerUserMeetingsCalendarLinkCreateData =
+  CalendarLinkCalendarEventResponse;
+
+export type PartnerUserMeetingsCalendarLinkCreateError =
+  | CalendarLinkCalendarEventError400
+  | ErrorsPartnerErrorResponse;
+
 export interface PartnerUserMeetingsCalendarLinkCreateParams {
-  /** Meeting ID */
+  /**
+   * Meeting ID
+   * @example ""123e4567-e89b-12d3-a456-426614174000""
+   */
   id: string;
 }
 
 export type PartnerUserMeetingsCalendarUnlinkDeleteData =
-  UserLinkCalendarEventResponse;
+  CalendarLinkCalendarEventResponse;
 
 export type PartnerUserMeetingsCalendarUnlinkDeleteError =
   ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsCalendarUnlinkDeleteParams {
-  /** Meeting ID */
+  /**
+   * Meeting ID
+   * @example ""123e4567-e89b-12d3-a456-426614174000""
+   */
   id: string;
 }
 
-export type PartnerUserMeetingsCreateData = UserPartnerMeetingResponse;
+/** @format binary */
+export type PartnerUserMeetingsContextContentListData = File;
 
-export type PartnerUserMeetingsCreateError = ErrorsErrorResponse;
+export type PartnerUserMeetingsContextContentListError =
+  ErrorsPartnerErrorResponse;
 
-export type PartnerUserMeetingsDetailData = UserPartnerMeetingResponse;
+export interface PartnerUserMeetingsContextContentListParams {
+  /**
+   * Document ID
+   * @format uuid
+   */
+  documentId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
 
-export type PartnerUserMeetingsDetailError = ErrorsErrorResponse;
+export type PartnerUserMeetingsContextCreateData =
+  ContextMeetingContextResponse;
+
+export type PartnerUserMeetingsContextCreateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsContextCreateParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export interface PartnerUserMeetingsContextCreatePayload {
+  /** Logical context type */
+  context_type?: string;
+  /** Context document file */
+  file: File;
+  /** Source format (json,csv,tsv,xml,html,yaml,md,txt) */
+  source_format: string;
+  /** Document title */
+  title?: string;
+}
+
+export type PartnerUserMeetingsContextDeleteData = any;
+
+export type PartnerUserMeetingsContextDeleteError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsContextDeleteParams {
+  /**
+   * Document ID
+   * @format uuid
+   */
+  documentId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingsContextDetailData =
+  ContextMeetingContextResponse;
+
+export type PartnerUserMeetingsContextDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsContextDetailParams {
+  /**
+   * Document ID
+   * @format uuid
+   */
+  documentId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingsContextListData =
+  ContextMeetingContextListResponse;
+
+export type PartnerUserMeetingsContextListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsContextListParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Limit
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerUserMeetingsCreateData = SharedPartnerMeetingResponse;
+
+export type PartnerUserMeetingsCreateError =
+  | MeetingCreateMeetingError400
+  | ErrorsPartnerErrorResponse;
+
+export type PartnerUserMeetingsDetailData = SharedPartnerMeetingResponse;
+
+export type PartnerUserMeetingsDetailError = ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsDetailParams {
   /** Meeting ID */
@@ -1055,9 +2429,11 @@ export interface PartnerUserMeetingsDetailParams {
 }
 
 export type PartnerUserMeetingsListData =
-  UserListResponseUserPartnerMeetingResponse;
+  SharedListResponseSharedPartnerMeetingResponse;
 
-export type PartnerUserMeetingsListError = ErrorsErrorResponse;
+export type PartnerUserMeetingsListError =
+  | MeetingGetMeetingsError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsListParams {
   /**
@@ -1067,7 +2443,7 @@ export interface PartnerUserMeetingsListParams {
   end_date?: string;
   /**
    * Limit
-   * @default 50
+   * @default 25
    */
   limit?: number;
   /**
@@ -1082,34 +2458,107 @@ export interface PartnerUserMeetingsListParams {
   start_date?: string;
 }
 
-export type PartnerUserMeetingsPartialUpdateData = UserPartnerMeetingResponse;
+export type PartnerUserMeetingsPartialUpdateData = SharedPartnerMeetingResponse;
 
-export type PartnerUserMeetingsPartialUpdateError = ErrorsErrorResponse;
+export type PartnerUserMeetingsPartialUpdateError =
+  | MeetingUpdateMeetingError400
+  | ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsPartialUpdateParams {
   /** Meeting ID */
   id: string;
 }
 
-export type PartnerUserMeetingsParticipantsListData =
-  UserListResponseUserPartnerMeetingParticipantResponse;
+export type PartnerUserMeetingsParticipantsCreateData =
+  MeetingPartnerMeetingParticipantResponse;
 
-export type PartnerUserMeetingsParticipantsListError = ErrorsErrorResponse;
+export type PartnerUserMeetingsParticipantsCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsParticipantsCreateParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingsParticipantsDeleteData = any;
+
+export type PartnerUserMeetingsParticipantsDeleteError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsParticipantsDeleteParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Participant ID
+   * @format uuid
+   */
+  participantId: string;
+}
+
+export type PartnerUserMeetingsParticipantsListData =
+  SharedListResponseMeetingPartnerMeetingParticipantResponse;
+
+export type PartnerUserMeetingsParticipantsListError =
+  ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsParticipantsListParams {
   /** Meeting ID */
   id: string;
 }
 
-export type PartnerUserProfileListData = UserUserProfileResponse;
+export type PartnerUserProfileListData = ProfileUserProfileResponse;
 
-export type PartnerUserProfileListError = ErrorsErrorResponse;
+export type PartnerUserProfileListError = ErrorsPartnerErrorResponse;
 
 export interface PartnerWorkflowAction {
   /** @example {"url":"https://api.example.com/webhook"} */
   config?: Record<string, string>;
   /** @example "webhook" */
   type: string;
+}
+
+export interface ProfileUserProfileResponse {
+  /**
+   * Timestamp when the user account was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * User's display name
+   * @example "John Doe"
+   */
+  display_name?: string;
+  /**
+   * User's email address
+   * @example "john.doe@example.com"
+   */
+  email?: string;
+  /**
+   * Unique identifier for the user
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  id?: string;
+  /**
+   * ID of the workspace the user belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  workspace_id?: string;
+  /**
+   * Name of the workspace the user belongs to
+   * @example "Acme Corp"
+   */
+  workspace_name?: string;
+  /**
+   * User's role in the workspace (e.g., WORKSPACE_OWNER, WORKSPACE_ADMIN, WORKSPACE_MEMBER)
+   * @example "WORKSPACE_MEMBER"
+   */
+  workspace_role?: string;
 }
 
 export type RevokeCreateData = any;
@@ -1241,6 +2690,169 @@ export type ScopesListData = OauthScopesResponse;
 
 export type ScopesListError = ErrorsErrorResponse;
 
+export interface SharedListResponseActionItemPartnerActionItemResponse {
+  /** Array of items for the current page */
+  items?: ActionItemPartnerActionItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseCalendarPartnerCalendarEventResponse {
+  /** Array of items for the current page */
+  items?: CalendarPartnerCalendarEventResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseMeetingPartnerAgendaItemResponse {
+  /** Array of items for the current page */
+  items?: MeetingPartnerAgendaItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseMeetingPartnerMeetingParticipantResponse {
+  /** Array of items for the current page */
+  items?: MeetingPartnerMeetingParticipantResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseSharedPartnerMeetingResponse {
+  /** Array of items for the current page */
+  items?: SharedPartnerMeetingResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedPartnerMeetingResponse {
+  /**
+   * ID of the linked calendar event, if any
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
+  calendar_event_id?: string;
+  /**
+   * Timestamp when the meeting was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * ID of the user who created the meeting
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  created_by_user_id?: string;
+  /**
+   * Scheduled end time in RFC3339 format
+   * @example "2023-01-01T11:00:00-07:00"
+   */
+  end_time?: string;
+  /**
+   * Unique identifier for the meeting
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * ID of the meeting to redirect to if this meeting was merged
+   * @example "123e4567-e89b-12d3-a456-426614174007"
+   */
+  redirect_to_meeting_id?: string;
+  /**
+   * Scheduled start time in RFC3339 format
+   * @example "2023-01-01T10:00:00-07:00"
+   */
+  start_time?: string;
+  /**
+   * Current status of the meeting
+   * @example "completed"
+   */
+  status?: "draft" | "scheduled" | "in_progress" | "ended" | "completed";
+  /**
+   * AI-generated summary notes from the meeting
+   * @example "Post-Meeting Summarization ..."
+   */
+  summary_notes?: string;
+  /**
+   * Title of the meeting
+   * @example "Weekly Team Sync"
+   */
+  title?: string;
+  /**
+   * Timestamp when the meeting was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * ID of the workspace this meeting belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  workspace_id?: string;
+}
+
 export interface SsoErrorResponse {
   /** @example "sso_authentication_failed" */
   code?: string;
@@ -1301,430 +2913,9 @@ export interface TokenCreatePayload {
   redirect_uri: string;
 }
 
-export interface UserCreateActionItemRequest {
-  /**
-   * @minLength 1
-   * @maxLength 1000
-   * @example "Call or schedule meeting to discuss"
-   */
-  description?: string;
-  /**
-   * YYYY-MM-DD format
-   * @example "2023-01-08"
-   */
-  due_date?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  meeting_id: string;
-  partner_context?: Record<string, unknown>;
-  /** @example "needs_review" */
-  status?:
-    | "needs_review"
-    | "accepted"
-    | "in_progress"
-    | "blocked"
-    | "completed"
-    | "cancelled";
-  /**
-   * @minLength 1
-   * @maxLength 1000
-   * @example "Follow up with client"
-   */
-  title: string;
-}
-
-export interface UserCreateAgendaItemRequest {
-  /**
-   * @maxLength 5000
-   * @example "Review and discuss Q1 objectives"
-   */
-  description?: string;
-  /** @example "DISCUSSION" */
-  item_type: "DISCUSSION" | "DECISION" | "ACTION_ITEM" | "INFORMATION";
-  /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
-  presenters?: string[];
-  /** @example false */
-  restricted_to_leads?: boolean;
-  /**
-   * @min 0
-   * @max 1440
-   * @example 15
-   */
-  time_allocation_minutes?: number;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   * @example "Q1 Planning Discussion"
-   */
-  title: string;
-}
-
-export interface UserCreateMeetingFromCalendarEventResponse {
-  /** @example true */
-  created?: boolean;
-  meeting?: UserPartnerMeetingResponse;
-  /** @example "Meeting created successfully from calendar event" */
-  message?: string;
-}
-
-export interface UserCreateMeetingRequest {
-  /** @example "STANDARD" */
-  detail_level?: "BULLET_POINTS" | "STANDARD" | "VERBATIM";
-  /** @example "2023-01-01T11:00:00Z" */
-  end_time?: string;
-  /** @example false */
-  is_instant?: boolean;
-  /** @example "2023-01-01T10:00:00Z" */
-  start_time?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174004" */
-  template_id?: string;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   * @example "Weekly Team Sync"
-   */
-  title: string;
-}
-
 export type UserInfoListData = RomeApiControllersExternalPartnerOauthUserInfo;
 
 export type UserInfoListError = ErrorsErrorResponse;
-
-export interface UserLinkCalendarEventRequest {
-  /**
-   * @maxLength 255
-   * @example "123e4567-e89b-12d3-a456-426614174006"
-   */
-  calendar_event_id: string;
-}
-
-export interface UserLinkCalendarEventResponse {
-  /** @example "Meeting linked to calendar event successfully" */
-  message?: string;
-  /** @example true */
-  success?: boolean;
-}
-
-export interface UserListResponseUserPartnerActionItemResponse {
-  items?: UserPartnerActionItemResponse[];
-  /** @example 50 */
-  limit?: number;
-  /** @example 0 */
-  offset?: number;
-  /** @example 100 */
-  total?: number;
-}
-
-export interface UserListResponseUserPartnerAgendaItemResponse {
-  items?: UserPartnerAgendaItemResponse[];
-  /** @example 50 */
-  limit?: number;
-  /** @example 0 */
-  offset?: number;
-  /** @example 100 */
-  total?: number;
-}
-
-export interface UserListResponseUserPartnerCalendarEventResponse {
-  items?: UserPartnerCalendarEventResponse[];
-  /** @example 50 */
-  limit?: number;
-  /** @example 0 */
-  offset?: number;
-  /** @example 100 */
-  total?: number;
-}
-
-export interface UserListResponseUserPartnerMeetingParticipantResponse {
-  items?: UserPartnerMeetingParticipantResponse[];
-  /** @example 50 */
-  limit?: number;
-  /** @example 0 */
-  offset?: number;
-  /** @example 100 */
-  total?: number;
-}
-
-export interface UserListResponseUserPartnerMeetingResponse {
-  items?: UserPartnerMeetingResponse[];
-  /** @example 50 */
-  limit?: number;
-  /** @example 0 */
-  offset?: number;
-  /** @example 100 */
-  total?: number;
-}
-
-export type UserMeetingsAgendaItemsCreateData = UserPartnerAgendaItemResponse;
-
-export type UserMeetingsAgendaItemsCreateError = ErrorsPartnerErrorResponse;
-
-export interface UserMeetingsAgendaItemsCreateParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  meetingId: string;
-}
-
-export type UserMeetingsAgendaItemsDeleteData = any;
-
-export type UserMeetingsAgendaItemsDeleteError = ErrorsPartnerErrorResponse;
-
-export interface UserMeetingsAgendaItemsDeleteParams {
-  /**
-   * Agenda Item ID
-   * @format uuid
-   */
-  itemId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  meetingId: string;
-}
-
-export type UserMeetingsAgendaItemsUpdateData = UserPartnerAgendaItemResponse;
-
-export type UserMeetingsAgendaItemsUpdateError = ErrorsPartnerErrorResponse;
-
-export interface UserMeetingsAgendaItemsUpdateParams {
-  /**
-   * Agenda Item ID
-   * @format uuid
-   */
-  itemId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  meetingId: string;
-}
-
-export interface UserPartnerActionItemResponse {
-  /** @example "123e4567-e89b-12d3-a456-426614174003" */
-  assigned_to_user_id?: string;
-  /** @example "2023-01-08T18:00:00-07:00" */
-  completed_at?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  created_at?: string;
-  /** @example "Follow up with client about proposal" */
-  description?: string;
-  /**
-   * YYYY-MM-DD format
-   * @example "2023-01-08"
-   */
-  due_date?: string;
-  /** @example true */
-  has_partner_assignment?: boolean;
-  /** @example "123e4567-e89b-12d3-a456-426614174001" */
-  id?: string;
-  /** @example false */
-  is_completed?: boolean;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  meeting_id?: string;
-  partner_context?: Record<string, unknown>;
-  /** @example "accepted" */
-  status?: string;
-  /** @example "Client follow-up call" */
-  title?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  updated_at?: string;
-}
-
-export interface UserPartnerAgendaItemResponse {
-  /** @example "2023-01-01T00:00:00Z" */
-  created_at?: string;
-  /** @example "Review and discuss Q1 objectives" */
-  description?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174005" */
-  id?: string;
-  /** @example "DISCUSSION" */
-  item_type?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  meeting_id?: string;
-  /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
-  presenters?: string[];
-  /** @example false */
-  restricted_to_leads?: boolean;
-  /** @example "1" */
-  sequence?: string;
-  /** @example "pending" */
-  status?: string;
-  /** @example 15 */
-  time_allocation_minutes?: number;
-  /** @example "Q1 Planning Discussion" */
-  title?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  updated_at?: string;
-}
-
-export interface UserPartnerCalendarEventAttendee {
-  /** @example "john.doe@example.com" */
-  email?: string;
-  /** @example "John Doe" */
-  name?: string;
-  /** @example "accepted" */
-  status?: string;
-  /** @example "required" */
-  type?: string;
-}
-
-export interface UserPartnerCalendarEventResponse {
-  attendees?: UserPartnerCalendarEventAttendee[];
-  /** @example "Discuss project updates" */
-  description?: string;
-  /** @example "2023-01-01T11:00:00-07:00" */
-  end_time?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174006" */
-  id?: string;
-  /** @example "Conference Room A" */
-  location?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  meeting_id?: string;
-  organizer?: UserPartnerCalendarEventAttendee;
-  /** @example "2023-01-01T10:00:00-07:00" */
-  start_time?: string;
-  /** @example "Weekly Team Sync" */
-  title?: string;
-}
-
-export interface UserPartnerMeetingParticipantResponse {
-  /** @example "2023-01-01T00:00:00Z" */
-  created_at?: string;
-  /** @example "john.doe@example.com" */
-  email?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174004" */
-  id?: string;
-  /** @example true */
-  is_attended?: boolean;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  meeting_id?: string;
-  /** @example "John Doe" */
-  name?: string;
-  /** @example "EDITOR" */
-  role?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  updated_at?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174003" */
-  user_id?: string;
-}
-
-export interface UserPartnerMeetingResponse {
-  /** @example "123e4567-e89b-12d3-a456-426614174006" */
-  calendar_event_id?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  created_at?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174003" */
-  created_by_user_id?: string;
-  /** @example "2023-01-01T11:00:00-07:00" */
-  end_time?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  id?: string;
-  /**
-   * Smart redirect hint (CON-1640)
-   * @example "123e4567-e89b-12d3-a456-426614174007"
-   */
-  redirect_to_meeting_id?: string;
-  /** @example "2023-01-01T10:00:00-07:00" */
-  start_time?: string;
-  /** @example "completed" */
-  status?: string;
-  /** @example "Post-Meeting Summarization ..." */
-  summary_notes?: string;
-  /** @example "Weekly Team Sync" */
-  title?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  updated_at?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174002" */
-  workspace_id?: string;
-}
-
-export interface UserUpdateActionItemRequest {
-  /**
-   * @minLength 1
-   * @maxLength 1000
-   * @example "Updated description"
-   */
-  description?: string;
-  /**
-   * YYYY-MM-DD format
-   * @example "2023-01-08"
-   */
-  due_date?: string;
-  /** @example true */
-  is_completed?: boolean;
-  partner_context?: Record<string, unknown>;
-  /** @example "needs_review" */
-  status?:
-    | "needs_review"
-    | "accepted"
-    | "in_progress"
-    | "blocked"
-    | "completed"
-    | "cancelled";
-  /**
-   * @minLength 1
-   * @maxLength 1000
-   * @example "Follow up with client"
-   */
-  title?: string;
-}
-
-export interface UserUpdateAgendaItemRequest {
-  /**
-   * @maxLength 5000
-   * @example "Updated description"
-   */
-  description?: string;
-  /** @example "DISCUSSION" */
-  item_type?: "DISCUSSION" | "DECISION" | "ACTION_ITEM" | "INFORMATION";
-  /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
-  presenters?: string[];
-  /** @example true */
-  restricted_to_leads?: boolean;
-  /** @example "in_progress" */
-  status?: "pending" | "in_progress" | "completed";
-  /**
-   * @min 0
-   * @max 1440
-   * @example 20
-   */
-  time_allocation_minutes?: number;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   * @example "Updated Discussion"
-   */
-  title?: string;
-}
-
-export interface UserUpdateMeetingRequest {
-  /** @example "STANDARD" */
-  detail_level?: "BULLET_POINTS" | "STANDARD" | "VERBATIM";
-  /** @example "2023-01-01T11:00:00Z" */
-  end_time?: string;
-  /** @example "2023-01-01T10:00:00Z" */
-  start_time?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174004" */
-  template_id?: string;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   * @example "Updated Team Sync"
-   */
-  title?: string;
-}
-
-export interface UserUserProfileResponse {
-  /** @example "2023-01-01T00:00:00Z" */
-  created_at?: string;
-  /** @example "John Doe" */
-  display_name?: string;
-  /** @example "john.doe@example.com" */
-  email?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174003" */
-  id?: string;
-}
 
 export type VerifyCreateData = OauthPartnerAuthResponse;
 

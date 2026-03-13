@@ -18,37 +18,37 @@ export * from './api-types';
 
 // --- Meetings ---
 import type {
-  UserPartnerMeetingResponse,
-  UserCreateMeetingRequest,
-  UserUpdateMeetingRequest,
-  UserListResponseUserPartnerMeetingResponse,
+  SharedPartnerMeetingResponse,
+  MeetingPartnerCreateMeetingRequest,
+  MeetingPartnerUpdateMeetingRequest,
+  SharedListResponseSharedPartnerMeetingResponse,
 } from './api-types';
 
-/** @deprecated Use UserPartnerMeetingResponse - kept for backwards compatibility */
-export type Meeting = UserPartnerMeetingResponse;
-/** @deprecated Use UserCreateMeetingRequest - kept for backwards compatibility */
-export type CreateMeetingRequest = UserCreateMeetingRequest;
-/** @deprecated Use UserUpdateMeetingRequest - kept for backwards compatibility */
-export type UpdateMeetingRequest = UserUpdateMeetingRequest;
-/** @deprecated Use UserListResponseUserPartnerMeetingResponse - kept for backwards compatibility */
-export type MeetingListResponse = UserListResponseUserPartnerMeetingResponse;
+/** @deprecated Use SharedPartnerMeetingResponse - kept for backwards compatibility */
+export type Meeting = SharedPartnerMeetingResponse;
+/** @deprecated Use MeetingPartnerCreateMeetingRequest - kept for backwards compatibility */
+export type CreateMeetingRequest = MeetingPartnerCreateMeetingRequest;
+/** @deprecated Use MeetingPartnerUpdateMeetingRequest - kept for backwards compatibility */
+export type UpdateMeetingRequest = MeetingPartnerUpdateMeetingRequest;
+/** @deprecated Use SharedListResponseSharedPartnerMeetingResponse - kept for backwards compatibility */
+export type MeetingListResponse = SharedListResponseSharedPartnerMeetingResponse;
 
 // --- Action Items ---
 import type {
-  UserPartnerActionItemResponse,
-  UserCreateActionItemRequest,
-  UserUpdateActionItemRequest,
-  UserListResponseUserPartnerActionItemResponse,
+  ActionItemPartnerActionItemResponse,
+  ActionItemCreateActionItemRequest,
+  ActionItemUpdateActionItemRequest,
+  SharedListResponseActionItemPartnerActionItemResponse,
 } from './api-types';
 
-/** @deprecated Use UserPartnerActionItemResponse - kept for backwards compatibility */
-export type ActionItem = UserPartnerActionItemResponse;
-/** @deprecated Use UserCreateActionItemRequest - kept for backwards compatibility */
-export type CreateActionItemRequest = UserCreateActionItemRequest;
-/** @deprecated Use UserUpdateActionItemRequest - kept for backwards compatibility */
-export type UpdateActionItemRequest = UserUpdateActionItemRequest;
-/** @deprecated Use UserListResponseUserPartnerActionItemResponse - kept for backwards compatibility */
-export type ActionItemListResponse = UserListResponseUserPartnerActionItemResponse;
+/** @deprecated Use ActionItemPartnerActionItemResponse - kept for backwards compatibility */
+export type ActionItem = ActionItemPartnerActionItemResponse;
+/** @deprecated Use ActionItemCreateActionItemRequest - kept for backwards compatibility */
+export type CreateActionItemRequest = ActionItemCreateActionItemRequest;
+/** @deprecated Use ActionItemUpdateActionItemRequest - kept for backwards compatibility */
+export type UpdateActionItemRequest = ActionItemUpdateActionItemRequest;
+/** @deprecated Use SharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
+export type ActionItemListResponse = SharedListResponseActionItemPartnerActionItemResponse;
 
 // --- Workflows ---
 import type {
@@ -121,10 +121,10 @@ export type WebhookDelivery = AdminWebhookDeliveryResponse;
 export type WebhookDeliveryListResponse = AdminWebhookDeliveriesResponse;
 
 // --- User Profile ---
-import type { UserUserProfileResponse } from './api-types';
+import type { ProfileUserProfileResponse } from './api-types';
 
-/** @deprecated Use UserUserProfileResponse - kept for backwards compatibility */
-export type UserProfile = UserUserProfileResponse;
+/** @deprecated Use ProfileUserProfileResponse - kept for backwards compatibility */
+export type UserProfile = ProfileUserProfileResponse;
 
 // --- Errors ---
 import type { ErrorsPartnerErrorResponse } from './api-types';

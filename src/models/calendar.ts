@@ -2,7 +2,7 @@
  * Calendar-related type definitions for the Contio Partner API
  */
 
-import type { UserPartnerMeetingResponse } from '../generated/api-types';
+import type { SharedPartnerMeetingResponse } from '../generated/api-types';
 
 export interface CalendarEventAttendee {
   email?: string;
@@ -95,7 +95,7 @@ export interface LinkCalendarEventResponse {
 
 export interface CreateMeetingFromCalendarEventResponse {
   created?: boolean;
-  meeting?: UserPartnerMeetingResponse;
+  meeting?: SharedPartnerMeetingResponse;
   message?: string;
 
   // ── Deprecated fields (remove in next major version) ────────────────────
