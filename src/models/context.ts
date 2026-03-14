@@ -78,6 +78,8 @@ export interface MeetingContextDocument {
   context_type?: string;
   /** Source format declared at upload time */
   source_format: ContextSourceFormat;
+  /** Processing status of the document (e.g. "pending", "processing", "complete", "error") */
+  file_status: string;
   /** ID of the user who uploaded the document */
   created_by_user_id: string;
   /** ISO 8601 timestamp of creation */
