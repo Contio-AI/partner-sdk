@@ -3,13 +3,13 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
-import { ApiKeyClient } from '../src/auth/apiKey';
-import { PartnerAdminClient } from '../src/client/admin';
+import { ApiKeyClient } from '../../src/auth/apiKey';
+import { PartnerAdminClient } from '../../src/client/admin';
 import {
   PartnerIdPConfig,
   CreateIdPConfigRequest,
   UpdateIdPConfigRequest,
-} from '../src/models';
+} from '../../src/models';
 
 describe('PartnerAdminClient - IdP Configuration', () => {
   let apiKeyClient: ApiKeyClient;

@@ -1,10 +1,15 @@
 /**
- * Partner User API client for OAuth-authenticated endpoints
+ * Partner User API client for OAuth-authenticated endpoints.
+ *
+ * This file is the public facade. Each domain's implementation lives in a
+ * sibling module (meetings.ts, actionItems.ts, calendar.ts, context.ts,
+ * profile.ts) and is delegated to from the methods below.
  */
 
 import { InternalAxiosRequestConfig } from 'axios';
-import { BaseClient, ClientConfig, RequestOptions } from './base';
-import { OAuthClient } from '../auth/oauth';
+import { BaseClient, ClientConfig, RequestOptions } from '../base';
+import { HttpTransport } from '../_http';
+import { OAuthClient } from '../../auth/oauth';
 import {
   Meeting,
   MeetingListParams,
@@ -31,7 +36,18 @@ import {
   AgendaItemListResponse,
   CreateAgendaItemRequest,
   UpdateAgendaItemRequest,
-} from '../models';
+  MeetingContextDocument,
+  MeetingContextListParams,
+  MeetingContextListResponse,
+  UploadMeetingContextRequest,
+  MeetingContextContentResponse,
+} from '../../models';
+
+import * as meetings from './meetings';
+import * as actionItems from './actionItems';
+import * as calendar from './calendar';
+import * as context from './context';
+import * as profile from './profile';
 
 /**
  * Partner User API client for OAuth-authenticated user endpoints.
@@ -53,6 +69,8 @@ import {
  */
 export class PartnerUserClient extends BaseClient {
   private oauthClient: OAuthClient;
+  /** @internal */
+  private readonly http: HttpTransport;
 
   /**
    * Create a new PartnerUserClient instance.
@@ -68,6 +86,18 @@ export class PartnerUserClient extends BaseClient {
       baseURL: finalURL,
     });
     this.oauthClient = oauthClient;
+
+    // Use arrow functions so jest.spyOn() on the instance methods works
+    // (bind() captures the reference at construction time, defeating spies).
+    this.http = {
+      get: (...args) => this.get(...args),
+      post: (...args) => this.post(...args),
+      put: (...args) => this.put(...args),
+      patch: (...args) => this.patch(...args),
+      delete: (...args) => this.delete(...args),
+      postForm: (...args) => this.postForm(...args),
+      getRaw: (...args) => this.getRaw(...args),
+    };
   }
 
   /**
@@ -101,147 +131,198 @@ export class PartnerUserClient extends BaseClient {
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Get a paginated list of meetings accessible to the authenticated user.
+   * Get a paginated list of meetings for the authenticated user.
    *
-   * @param params - Optional filter and pagination parameters
-   * @param params.limit - Maximum number of meetings to return (default: 20, max: 100)
-   * @param params.offset - Number of meetings to skip for pagination
-   * @param params.start_date - Filter meetings starting on or after this date (ISO 8601)
-   * @param params.end_date - Filter meetings starting on or before this date (ISO 8601)
+   * @param params - Optional pagination and filter parameters
    * @param options - Optional request options (e.g., timezone override)
-   * @returns Paginated list of meetings with total count
+   * @returns Paginated meeting list with total count
    * @throws {ContioAPIError} If the request fails
    *
    * @example
    * ```typescript
-   * // Get first page of meetings
-   * const response = await user.getMeetings({ limit: 20 });
+   * const response = await user.getMeetings({ limit: 10 });
    * console.log(`Found ${response.total} meetings`);
-   *
-   * // Get meetings from a specific date range
-   * const meetings = await user.getMeetings({
-   *   start_date: '2026-01-01T00:00:00Z',
-   *   end_date: '2026-01-31T23:59:59Z'
-   * });
    * ```
    */
   async getMeetings(params?: MeetingListParams, options?: RequestOptions): Promise<MeetingListResponse> {
-    return this.get<MeetingListResponse>('/meetings', params, options);
+    return meetings.getMeetings(this.http, params, options);
   }
 
   /**
    * Get all meetings by automatically paginating through all pages.
    *
-   * Use this when you need to fetch all meetings without manually handling pagination.
-   * For large datasets, consider using `getMeetings()` with pagination for better control.
-   *
    * @param params - Optional filter parameters (limit/offset are managed automatically)
-   * @param options - Optional request options (e.g., timezone override)
+   * @param options - Optional request options
    * @returns Array of all meetings matching the filter criteria
    * @throws {ContioAPIError} If any request fails
    *
    * @example
    * ```typescript
-   * // Get all meetings in January
-   * const allMeetings = await user.getAllMeetings({
-   *   start_date: '2026-01-01T00:00:00Z',
-   *   end_date: '2026-01-31T23:59:59Z'
-   * });
-   * console.log(`Total: ${allMeetings.length} meetings`);
+   * const allMeetings = await user.getAllMeetings();
+   * console.log(`${allMeetings.length} total meetings`);
    * ```
    */
   async getAllMeetings(params?: Omit<MeetingListParams, 'limit' | 'offset'>, options?: RequestOptions): Promise<Meeting[]> {
-    const allItems: Meeting[] = [];
-    const pageSize = 100; // Max page size for efficiency
-    let offset = 0;
-    let total = 0;
-
-    do {
-      const response = await this.getMeetings({ ...params, limit: pageSize, offset }, options);
-      allItems.push(...response.items);
-      total = response.total;
-      offset += pageSize;
-    } while (offset < total);
-
-    return allItems;
+    return meetings.getAllMeetings(this.http, params, options);
   }
 
   /**
    * Get a specific meeting by ID.
    *
-   * Automatically follows smart redirects if the meeting has been copied
-   * to the user's workspace (e.g., shared meeting notes).
+   * Automatically follows smart-redirect references (CON-1640) — if the
+   * meeting has been merged or moved, the response from the canonical meeting
+   * is returned transparently.
    *
    * @param meetingId - The unique meeting ID (UUID format)
-   * @param options - Optional request options (e.g., timezone override)
-   * @returns The meeting object with full details
+   * @param options - Optional request options
+   * @returns The meeting with full details
    * @throws {ContioAPIError} If the meeting is not found or access is denied
    *
    * @example
    * ```typescript
-   * const meeting = await user.getMeeting('550e8400-e29b-41d4-a716-446655440000');
-   * console.log(meeting.title, meeting.status);
+   * const meeting = await user.getMeeting('meeting-uuid');
+   * console.log(meeting.title);
    * ```
    */
   async getMeeting(meetingId: string, options?: RequestOptions): Promise<Meeting> {
-    const response = await this.get<Meeting>(`/meetings/${meetingId}`, undefined, options);
-
-    // Handle smart redirect (CON-1640)
-    // If the API returns a redirect hint, automatically fetch the redirected meeting
-    if (response.redirect_to_meeting_id) {
-      return this.get<Meeting>(`/meetings/${response.redirect_to_meeting_id}`, undefined, options);
-    }
-
-    return response;
+    return meetings.getMeeting(this.http, meetingId, options);
   }
 
   /**
    * Create a new meeting.
    *
    * @param data - Meeting creation data
-   * @param data.title - Meeting title (required)
-   * @param data.start_time - Scheduled start time (ISO 8601)
-   * @param data.end_time - Scheduled end time (ISO 8601)
-   * @param data.template_id - Optional template ID to use for the meeting
-   * @param data.is_instant - If true, creates an instant meeting (default: false)
-   * @param data.detail_level - Note detail level: 'BULLET_POINTS', 'STANDARD', or 'VERBATIM'
    * @param options - Optional request options
    * @returns The newly created meeting
-   * @throws {ContioAPIError} If validation fails or creation is denied
+   * @throws {ContioAPIError} If validation fails
    *
    * @example
    * ```typescript
    * const meeting = await user.createMeeting({
-   *   title: 'Weekly Team Sync',
-   *   start_time: '2026-01-20T10:00:00Z',
-   *   end_time: '2026-01-20T11:00:00Z',
-   *   detail_level: 'STANDARD'
+   *   title: 'Weekly Standup',
+   *   scheduled_start: '2026-01-20T10:00:00Z',
    * });
    * ```
    */
   async createMeeting(data: CreateMeetingRequest, options?: RequestOptions): Promise<Meeting> {
-    return this.post<Meeting>('/meetings', data, options);
+    return meetings.createMeeting(this.http, data, options);
   }
 
   /**
    * Update an existing meeting.
    *
-   * @param meetingId - The unique meeting ID to update
+   * @param meetingId - The meeting ID to update
    * @param data - Fields to update (all optional)
    * @param options - Optional request options
    * @returns The updated meeting
    * @throws {ContioAPIError} If the meeting is not found or update is denied
+   */
+  async updateMeeting(meetingId: string, data: UpdateMeetingRequest, options?: RequestOptions): Promise<Meeting> {
+    return meetings.updateMeeting(this.http, meetingId, data, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Meeting Participant endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get participants for a specific meeting.
+   *
+   * @param meetingId - The meeting ID to get participants for
+   * @param options - Optional request options
+   * @returns List of meeting participants with their roles
+   * @throws {ContioAPIError} If the meeting is not found
+   */
+  async getMeetingParticipants(meetingId: string, options?: RequestOptions): Promise<MeetingParticipantListResponse> {
+    return meetings.getMeetingParticipants(this.http, meetingId, options);
+  }
+
+  /**
+   * Add a participant to a meeting.
+   *
+   * @param meetingId - The meeting ID to add the participant to
+   * @param data - Participant data including email, name, and role
+   * @param options - Optional request options
+   * @returns The newly added participant
+   * @throws {ContioAPIError} If the meeting is not found or participant already exists
+   */
+  async addMeetingParticipant(meetingId: string, data: { email: string; name: string; role: 'EDITOR' | 'VIEWER' }, options?: RequestOptions): Promise<MeetingParticipant> {
+    return meetings.addMeetingParticipant(this.http, meetingId, data, options);
+  }
+
+  /**
+   * Remove a participant from a meeting.
+   *
+   * @param meetingId - The meeting ID to remove the participant from
+   * @param participantId - The participant ID to remove
+   * @param options - Optional request options
+   * @throws {ContioAPIError} If the meeting or participant is not found
+   */
+  async removeMeetingParticipant(meetingId: string, participantId: string, options?: RequestOptions): Promise<void> {
+    return meetings.removeMeetingParticipant(this.http, meetingId, participantId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Agenda Item endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get agenda items for a specific meeting.
+   *
+   * @param meetingId - The meeting ID to get agenda items for
+   * @param options - Optional request options
+   * @returns List of agenda items for the meeting
+   * @throws {ContioAPIError} If the meeting is not found
+   */
+  async getMeetingAgendaItems(meetingId: string, options?: RequestOptions): Promise<AgendaItemListResponse> {
+    return meetings.getMeetingAgendaItems(this.http, meetingId, options);
+  }
+
+  /**
+   * Create a new agenda item for a meeting.
+   *
+   * @param meetingId - The meeting ID to add the agenda item to
+   * @param data - Agenda item creation data
+   * @param options - Optional request options
+   * @returns The newly created agenda item
+   * @throws {ContioAPIError} If the meeting is not found or validation fails
    *
    * @example
    * ```typescript
-   * const updated = await user.updateMeeting('meeting-id', {
-   *   title: 'Updated Title',
-   *   detail_level: 'VERBATIM'
+   * const item = await user.createAgendaItem('meeting-id', {
+   *   title: 'Review Q1 metrics',
+   *   description: 'Discuss performance trends',
    * });
    * ```
    */
-  async updateMeeting(meetingId: string, data: UpdateMeetingRequest, options?: RequestOptions): Promise<Meeting> {
-    return this.patch<Meeting>(`/meetings/${meetingId}`, data, options);
+  async createAgendaItem(meetingId: string, data: CreateAgendaItemRequest, options?: RequestOptions): Promise<AgendaItem> {
+    return meetings.createAgendaItem(this.http, meetingId, data, options);
+  }
+
+  /**
+   * Update an existing agenda item.
+   *
+   * @param meetingId - The meeting ID the agenda item belongs to
+   * @param itemId - The agenda item ID to update
+   * @param data - Fields to update
+   * @param options - Optional request options
+   * @returns The updated agenda item
+   * @throws {ContioAPIError} If the item is not found
+   */
+  async updateAgendaItem(meetingId: string, itemId: string, data: UpdateAgendaItemRequest, options?: RequestOptions): Promise<AgendaItem> {
+    return meetings.updateAgendaItem(this.http, meetingId, itemId, data, options);
+  }
+
+  /**
+   * Delete an agenda item.
+   *
+   * @param meetingId - The meeting ID the agenda item belongs to
+   * @param itemId - The agenda item ID to delete
+   * @param options - Optional request options
+   * @throws {ContioAPIError} If the item is not found
+   */
+  async deleteAgendaItem(meetingId: string, itemId: string, options?: RequestOptions): Promise<void> {
+    return meetings.deleteAgendaItem(this.http, meetingId, itemId, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -249,18 +330,11 @@ export class PartnerUserClient extends BaseClient {
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Get a paginated list of action items accessible to the authenticated user.
+   * Get a paginated list of action items for the authenticated user.
    *
-   * @param params - Optional filter and pagination parameters
-   * @param params.limit - Maximum number of items to return (default: 25, max: 100)
-   * @param params.offset - Number of items to skip for pagination
-   * @param params.meeting_id - Filter action items by meeting ID
-   * @param params.is_completed - Filter by completion status
-   * @param params.has_partner_assignment - Filter by partner assignment status
-   * @param params.start_date - Filter action items from this date/time onward (ISO 8601)
-   * @param params.end_date - Filter action items up to this date/time (ISO 8601)
-   * @param options - Optional request options
-   * @returns Paginated list of action items with total count
+   * @param params - Optional pagination and filter parameters
+   * @param options - Optional request options (e.g., timezone override)
+   * @returns Paginated action item list with total count
    * @throws {ContioAPIError} If the request fails
    *
    * @example
@@ -279,7 +353,7 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async getActionItems(params?: ActionItemListParams, options?: RequestOptions): Promise<ActionItemListResponse> {
-    return this.get<ActionItemListResponse>('/action-items', params, options);
+    return actionItems.getActionItems(this.http, params, options);
   }
 
   /**
@@ -304,19 +378,7 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async getAllActionItems(params?: Omit<ActionItemListParams, 'limit' | 'offset'>, options?: RequestOptions): Promise<ActionItem[]> {
-    const allItems: ActionItem[] = [];
-    const pageSize = 100; // Max page size for efficiency
-    let offset = 0;
-    let total = 0;
-
-    do {
-      const response = await this.getActionItems({ ...params, limit: pageSize, offset }, options);
-      allItems.push(...response.items);
-      total = response.total;
-      offset += pageSize;
-    } while (offset < total);
-
-    return allItems;
+    return actionItems.getAllActionItems(this.http, params, options);
   }
 
   /**
@@ -328,7 +390,7 @@ export class PartnerUserClient extends BaseClient {
    * @throws {ContioAPIError} If the action item is not found or access is denied
    */
   async getActionItem(actionItemId: string, options?: RequestOptions): Promise<ActionItem> {
-    return this.get<ActionItem>(`/action-items/${actionItemId}`, undefined, options);
+    return actionItems.getActionItem(this.http, actionItemId, options);
   }
 
   /**
@@ -356,7 +418,7 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async createActionItem(data: CreateActionItemRequest, options?: RequestOptions): Promise<ActionItem> {
-    return this.post<ActionItem>('/action-items', data, options);
+    return actionItems.createActionItem(this.http, data, options);
   }
 
   /**
@@ -377,7 +439,7 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async updateActionItem(actionItemId: string, data: UpdateActionItemRequest, options?: RequestOptions): Promise<ActionItem> {
-    return this.put<ActionItem>(`/action-items/${actionItemId}`, data, options);
+    return actionItems.updateActionItem(this.http, actionItemId, data, options);
   }
 
   /**
@@ -388,8 +450,9 @@ export class PartnerUserClient extends BaseClient {
    * @throws {ContioAPIError} If the action item is not found or deletion is denied
    */
   async deleteActionItem(actionItemId: string, options?: RequestOptions): Promise<void> {
-    await this.delete(`/action-items/${actionItemId}`, options);
+    return actionItems.deleteActionItem(this.http, actionItemId, options);
   }
+
 
   // ─────────────────────────────────────────────────────────────────────────────
   // User Profile endpoints
@@ -409,7 +472,7 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async getUserProfile(options?: RequestOptions): Promise<UserProfile> {
-    return this.get<UserProfile>('/profile', undefined, options);
+    return profile.getUserProfile(this.http, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -442,14 +505,11 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async getCalendarEvents(params: CalendarEventListParams, options?: RequestOptions): Promise<CalendarEventListResponse> {
-    return this.get<CalendarEventListResponse>('/calendar/events', params, options);
+    return calendar.getCalendarEvents(this.http, params, options);
   }
 
   /**
    * Get all calendar events within a date range by automatically paginating through all pages.
-   *
-   * Use this when you need to fetch all events without manually handling pagination.
-   * For large date ranges, consider using `getCalendarEvents()` with pagination for better control.
    *
    * @param params - Required date range, optional direction (limit/offset managed automatically)
    * @param options - Optional request options (e.g., timezone override)
@@ -458,7 +518,6 @@ export class PartnerUserClient extends BaseClient {
    *
    * @example
    * ```typescript
-   * // Get all events for the month
    * const allEvents = await user.getAllCalendarEvents({
    *   start_date: '2026-01-01T00:00:00Z',
    *   end_date: '2026-01-31T23:59:59Z'
@@ -467,26 +526,11 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async getAllCalendarEvents(params: Omit<CalendarEventListParams, 'limit' | 'offset'>, options?: RequestOptions): Promise<CalendarEvent[]> {
-    const allItems: CalendarEvent[] = [];
-    const pageSize = 100; // Max page size for efficiency
-    let offset = 0;
-    let total = 0;
-
-    do {
-      const response = await this.getCalendarEvents({ ...params, limit: pageSize, offset }, options);
-      allItems.push(...(response.items || []));
-      total = response.total || 0;
-      offset += pageSize;
-    } while (offset < total);
-
-    return allItems;
+    return calendar.getAllCalendarEvents(this.http, params, options);
   }
 
   /**
    * Get detailed information about a specific calendar event.
-   *
-   * Retrieves complete calendar event details including title, times, attendees,
-   * and organizer information. Requires the user to have a synced calendar connection.
    *
    * @param calendarEventId - The calendar event ID to retrieve
    * @param options - Optional request options
@@ -501,14 +545,11 @@ export class PartnerUserClient extends BaseClient {
    * ```
    */
   async getCalendarEvent(calendarEventId: string, options?: RequestOptions): Promise<CalendarEventDetail> {
-    return this.get<CalendarEventDetail>(`/calendar/events/${calendarEventId}`, undefined, options);
+    return calendar.getCalendarEvent(this.http, calendarEventId, options);
   }
 
   /**
    * Link a calendar event to an existing meeting.
-   *
-   * Associates a calendar event with a Contio meeting for automatic
-   * scheduling and reminder integration.
    *
    * @param meetingId - The meeting ID to link to
    * @param data - Calendar event linking data
@@ -518,7 +559,7 @@ export class PartnerUserClient extends BaseClient {
    * @throws {ContioAPIError} If the meeting or event is not found
    */
   async linkCalendarEvent(meetingId: string, data: LinkCalendarEventRequest, options?: RequestOptions): Promise<LinkCalendarEventResponse> {
-    return this.post<LinkCalendarEventResponse>(`/meetings/${meetingId}/calendar/link`, data, options);
+    return calendar.linkCalendarEvent(this.http, meetingId, data, options);
   }
 
   /**
@@ -547,134 +588,186 @@ export class PartnerUserClient extends BaseClient {
    */
   async createMeetingFromCalendarEvent(data: CreateMeetingFromCalendarEventRequest, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse>;
   async createMeetingFromCalendarEvent(calendarEventIdOrData: string | CreateMeetingFromCalendarEventRequest, options?: RequestOptions): Promise<CreateMeetingFromCalendarEventResponse> {
-    const calendarEventId = typeof calendarEventIdOrData === 'string'
-      ? calendarEventIdOrData
-      : calendarEventIdOrData.calendar_event_id;
-    return this.post<CreateMeetingFromCalendarEventResponse>(`/calendar/events/${calendarEventId}/meeting`, undefined, options);
+    return calendar.createMeetingFromCalendarEvent(this.http, calendarEventIdOrData, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Meeting Participant endpoints
+  // Meeting Context Document endpoints
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Get participants for a specific meeting.
+   * Get a paginated list of context documents for a meeting.
    *
-   * @param meetingId - The meeting ID to get participants for
-   * @param options - Optional request options
-   * @returns List of meeting participants with their roles
-   * @throws {ContioAPIError} If the meeting is not found or access is denied
-   */
-  async getMeetingParticipants(meetingId: string, options?: RequestOptions): Promise<MeetingParticipantListResponse> {
-    return this.get<MeetingParticipantListResponse>(`/meetings/${meetingId}/participants`, undefined, options);
-  }
-
-  /**
-   * Add a participant to a meeting.
+   * Returns only documents uploaded by the current partner application —
+   * documents created by other partners or by users directly are not visible.
    *
-   * @param meetingId - The meeting ID to add the participant to
-   * @param data - Participant data
-   * @param data.email - Participant's email address (required)
-   * @param data.name - Participant's display name (required)
-   * @param data.role - Participant's role: 'EDITOR' (can modify) or 'VIEWER' (read-only)
-   * @param options - Optional request options
-   * @returns The added participant details
-   * @throws {ContioAPIError} If the meeting is not found or participant already exists
+   * @param meetingId - The meeting ID to list context documents for (UUID format)
+   * @param params - Optional pagination parameters
+   * @param params.limit - Maximum number of documents to return (default: 25, max: 100)
+   * @param params.offset - Number of documents to skip for pagination (default: 0)
+   * @param options - Optional request options (e.g., timezone override)
+   * @returns Paginated list of context documents with total count
+   * @throws {ContioAPIError} If the request fails
    *
    * @example
    * ```typescript
-   * await user.addMeetingParticipant('meeting-id', {
-   *   email: 'colleague@example.com',
-   *   name: 'Jane Doe',
-   *   role: 'EDITOR'
+   * const response = await user.getMeetingContextDocuments('meeting-id', {
+   *   limit: 10,
    * });
+   * console.log(`Found ${response.total} context documents`);
+   * for (const doc of response.items) {
+   *   console.log(`${doc.title} (${doc.source_format})`);
+   * }
    * ```
    */
-  async addMeetingParticipant(meetingId: string, data: { email: string; name: string; role: 'EDITOR' | 'VIEWER' }, options?: RequestOptions): Promise<MeetingParticipant> {
-    return this.post<MeetingParticipant>(`/meetings/${meetingId}/participants`, data, options);
+  async getMeetingContextDocuments(
+    meetingId: string,
+    params?: MeetingContextListParams,
+    options?: RequestOptions,
+  ): Promise<MeetingContextListResponse> {
+    return context.getMeetingContextDocuments(this.http, meetingId, params, options);
   }
 
   /**
-   * Remove a participant from a meeting.
+   * Get all context documents for a meeting by automatically paginating
+   * through all pages.
    *
-   * @param meetingId - The meeting ID to remove the participant from
-   * @param participantId - The participant ID to remove
-   * @param options - Optional request options
-   * @throws {ContioAPIError} If the meeting or participant is not found
-   */
-  async removeMeetingParticipant(meetingId: string, participantId: string, options?: RequestOptions): Promise<void> {
-    await this.delete(`/meetings/${meetingId}/participants/${participantId}`, options);
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Agenda Item endpoints
-  // ─────────────────────────────────────────────────────────────────────────────
-
-  /**
-   * Get agenda items for a specific meeting.
-   *
-   * @param meetingId - The meeting ID to get agenda items for
-   * @param options - Optional request options
-   * @returns List of agenda items in display order
-   * @throws {ContioAPIError} If the meeting is not found or access is denied
-   */
-  async getMeetingAgendaItems(meetingId: string, options?: RequestOptions): Promise<AgendaItemListResponse> {
-    return this.get<AgendaItemListResponse>(`/meetings/${meetingId}/agenda-items`, undefined, options);
-  }
-
-  /**
-   * Create a new agenda item for a meeting.
-   *
-   * @param meetingId - The meeting ID to add the agenda item to
-   * @param data - Agenda item creation data
-   * @param data.item_type - Type of agenda item: 'DISCUSSION', 'DECISION', 'ACTION_ITEM', or 'INFORMATION' (required)
-   * @param data.title - Agenda item title (required)
-   * @param data.description - Optional detailed description
-   * @param data.time_allocation_minutes - Optional estimated duration in minutes
-   * @param data.presenters - Optional array of presenter names or emails
-   * @param data.restricted_to_leads - Optional flag to restrict visibility to meeting leads
-   * @param options - Optional request options
-   * @returns The newly created agenda item
-   * @throws {ContioAPIError} If the meeting is not found or validation fails
+   * @param meetingId - The meeting ID to list context documents for (UUID format)
+   * @param options - Optional request options (e.g., timezone override)
+   * @returns Array of all context documents for the meeting
+   * @throws {ContioAPIError} If any page request fails
    *
    * @example
    * ```typescript
-   * const item = await user.createAgendaItem('meeting-id', {
-   *   item_type: 'DISCUSSION',
-   *   title: 'Q1 Review',
-   *   time_allocation_minutes: 15,
-   *   presenters: ['manager@example.com']
-   * });
+   * const allDocs = await user.getAllMeetingContextDocuments('meeting-id');
+   * console.log(`Total: ${allDocs.length} context documents`);
    * ```
    */
-  async createAgendaItem(meetingId: string, data: CreateAgendaItemRequest, options?: RequestOptions): Promise<AgendaItem> {
-    return this.post<AgendaItem>(`/meetings/${meetingId}/agenda-items`, data, options);
+  async getAllMeetingContextDocuments(
+    meetingId: string,
+    options?: RequestOptions,
+  ): Promise<MeetingContextDocument[]> {
+    return context.getAllMeetingContextDocuments(this.http, meetingId, options);
   }
 
   /**
-   * Update an existing agenda item.
+   * Get a specific context document by ID.
    *
-   * @param meetingId - The meeting ID containing the agenda item
-   * @param itemId - The agenda item ID to update
-   * @param data - Fields to update (all optional)
-   * @param options - Optional request options
-   * @returns The updated agenda item
-   * @throws {ContioAPIError} If the meeting or item is not found
+   * @param meetingId - The meeting ID the document belongs to (UUID format)
+   * @param documentId - The context document ID to retrieve (UUID format)
+   * @param options - Optional request options (e.g., timezone override)
+   * @returns The context document with full metadata
+   * @throws {ContioAPIError} If the document is not found or access is denied
+   *
+   * @example
+   * ```typescript
+   * const doc = await user.getMeetingContextDocument('meeting-id', 'doc-id');
+   * console.log(`${doc.title} — format: ${doc.source_format}`);
+   * ```
    */
-  async updateAgendaItem(meetingId: string, itemId: string, data: UpdateAgendaItemRequest, options?: RequestOptions): Promise<AgendaItem> {
-    return this.put<AgendaItem>(`/meetings/${meetingId}/agenda-items/${itemId}`, data, options);
+  async getMeetingContextDocument(
+    meetingId: string,
+    documentId: string,
+    options?: RequestOptions,
+  ): Promise<MeetingContextDocument> {
+    return context.getMeetingContextDocument(this.http, meetingId, documentId, options);
   }
 
   /**
-   * Delete an agenda item.
+   * Upload a context document to a meeting.
    *
-   * @param meetingId - The meeting ID containing the agenda item
-   * @param itemId - The agenda item ID to delete
-   * @param options - Optional request options
-   * @throws {ContioAPIError} If the meeting or item is not found
+   * The file is sent as `multipart/form-data`. The SDK handles `FormData`
+   * construction automatically — callers supply a plain request object.
+   *
+   * @param meetingId - The meeting ID to attach the document to (UUID format)
+   * @param data - Upload parameters including the file, source format, and optional metadata
+   * @param data.file - Document contents as a `Blob` (or `Buffer` / `File` in Node.js ≥ 22)
+   * @param data.source_format - Declared format of the file (e.g. `'md'`, `'json'`)
+   * @param data.title - Optional human-readable title (defaults to filename on the server)
+   * @param data.context_type - Optional partner-defined category (e.g. `"agenda"`, `"crm_record"`)
+   * @param options - Optional request options (e.g., timezone override)
+   * @returns The newly created context document
+   * @throws {ContioAPIError} If the meeting is not found, validation fails, or upload is denied
+   *
+   * @example
+   * ```typescript
+   * import { readFile } from 'node:fs/promises';
+   *
+   * const buffer = await readFile('./agenda.md');
+   * const doc = await user.uploadMeetingContextDocument('meeting-id', {
+   *   file: new Blob([buffer]),
+   *   source_format: 'md',
+   *   title: 'Sprint planning agenda',
+   *   context_type: 'agenda',
+   * });
+   * console.log(`Uploaded: ${doc.id}`);
+   * ```
    */
-  async deleteAgendaItem(meetingId: string, itemId: string, options?: RequestOptions): Promise<void> {
-    await this.delete(`/meetings/${meetingId}/agenda-items/${itemId}`, options);
+  async uploadMeetingContextDocument(
+    meetingId: string,
+    data: UploadMeetingContextRequest,
+    options?: RequestOptions,
+  ): Promise<MeetingContextDocument> {
+    return context.uploadMeetingContextDocument(this.http, meetingId, data, options);
+  }
+
+  /**
+   * Delete a context document from a meeting.
+   *
+   * This performs a soft-delete — the document's `deleted_at` timestamp is
+   * set and it will no longer appear in list results or be available for
+   * download.
+   *
+   * @param meetingId - The meeting ID the document belongs to (UUID format)
+   * @param documentId - The context document ID to delete (UUID format)
+   * @param options - Optional request options
+   * @throws {ContioAPIError} If the document is not found or deletion is denied
+   *
+   * @example
+   * ```typescript
+   * await user.deleteMeetingContextDocument('meeting-id', 'doc-id');
+   * ```
+   */
+  async deleteMeetingContextDocument(
+    meetingId: string,
+    documentId: string,
+    options?: RequestOptions,
+  ): Promise<void> {
+    return context.deleteMeetingContextDocument(this.http, meetingId, documentId, options);
+  }
+
+  /**
+   * Download the raw content of a context document.
+   *
+   * Returns the file bytes along with metadata extracted from the response
+   * headers (filename, content type, size). The `data` field is an
+   * `ArrayBuffer` that can be written to disk, converted to a `Buffer`,
+   * or processed in-memory.
+   *
+   * @param meetingId - The meeting ID the document belongs to (UUID format)
+   * @param documentId - The context document ID to download (UUID format)
+   * @param options - Optional request options (e.g., timezone override)
+   * @returns Structured response containing the file bytes and metadata
+   * @throws {ContioAPIError} If the document is not found or access is denied
+   *
+   * @example
+   * ```typescript
+   * import { writeFile } from 'node:fs/promises';
+   *
+   * const content = await user.downloadMeetingContextDocumentContent(
+   *   'meeting-id',
+   *   'doc-id',
+   * );
+   * console.log(`Downloading ${content.filename} (${content.size} bytes)`);
+   * await writeFile(content.filename ?? 'download.bin', Buffer.from(content.data));
+   * ```
+   */
+  async downloadMeetingContextDocumentContent(
+    meetingId: string,
+    documentId: string,
+    options?: RequestOptions,
+  ): Promise<MeetingContextContentResponse> {
+    return context.downloadMeetingContextDocumentContent(this.http, meetingId, documentId, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

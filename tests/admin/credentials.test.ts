@@ -2,12 +2,12 @@
  * Tests for credential management functionality
  */
 
-import { ContioPartnerSDK } from '../src';
+import { ContioPartnerSDK } from '../../src';
 import type {
   CredentialStatusResponse,
   CredentialRotationResponse,
   CredentialAuditHistoryResponse,
-} from '../src/models/credentials';
+} from '../../src/models/credentials';
 
 describe('Credential Management', () => {
   let sdk: ReturnType<typeof ContioPartnerSDK.forAdmin>;

@@ -144,63 +144,63 @@ describe('BaseClient', () => {
 
   describe('Retry logic - 4xx Client Errors', () => {
     it('should not retry on 400 Bad Request', async () => {
-      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0, retryDelay: 10 });
-      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+      const retryClient = new PartnerUserClient(oauthClient, { retries: 3, retryDelay: 10 });
+      const retryMockAxios = new MockAdapter((retryClient as any).axiosInstance);
 
       let requestCount = 0;
-      noRetryMockAxios.onGet('/meetings').reply(() => {
+      retryMockAxios.onGet('/meetings').reply(() => {
         requestCount++;
         return [400, { error: 'bad_request', message: 'Invalid parameters' }];
       });
 
-      await expect(noRetryClient.getMeetings()).rejects.toThrow(ContioAPIError);
-      expect(requestCount).toBe(1); // Should not retry
-      noRetryMockAxios.reset();
+      await expect(retryClient.getMeetings()).rejects.toThrow(ContioAPIError);
+      expect(requestCount).toBe(1); // Should not retry on 4xx
+      retryMockAxios.reset();
     });
 
     it('should not retry on 401 Unauthorized', async () => {
-      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0, retryDelay: 10 });
-      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+      const retryClient = new PartnerUserClient(oauthClient, { retries: 3, retryDelay: 10 });
+      const retryMockAxios = new MockAdapter((retryClient as any).axiosInstance);
 
       let requestCount = 0;
-      noRetryMockAxios.onGet('/meetings').reply(() => {
+      retryMockAxios.onGet('/meetings').reply(() => {
         requestCount++;
         return [401, { error: 'unauthorized', message: 'Invalid token' }];
       });
 
-      await expect(noRetryClient.getMeetings()).rejects.toThrow(ContioAPIError);
-      expect(requestCount).toBe(1); // Should not retry
-      noRetryMockAxios.reset();
+      await expect(retryClient.getMeetings()).rejects.toThrow(ContioAPIError);
+      expect(requestCount).toBe(1); // Should not retry on 4xx
+      retryMockAxios.reset();
     });
 
     it('should not retry on 403 Forbidden', async () => {
-      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0, retryDelay: 10 });
-      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+      const retryClient = new PartnerUserClient(oauthClient, { retries: 3, retryDelay: 10 });
+      const retryMockAxios = new MockAdapter((retryClient as any).axiosInstance);
 
       let requestCount = 0;
-      noRetryMockAxios.onGet('/meetings').reply(() => {
+      retryMockAxios.onGet('/meetings').reply(() => {
         requestCount++;
         return [403, { error: 'forbidden', message: 'Access denied' }];
       });
 
-      await expect(noRetryClient.getMeetings()).rejects.toThrow(ContioAPIError);
-      expect(requestCount).toBe(1); // Should not retry
-      noRetryMockAxios.reset();
+      await expect(retryClient.getMeetings()).rejects.toThrow(ContioAPIError);
+      expect(requestCount).toBe(1); // Should not retry on 4xx
+      retryMockAxios.reset();
     });
 
     it('should not retry on 404 Not Found', async () => {
-      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0, retryDelay: 10 });
-      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+      const retryClient = new PartnerUserClient(oauthClient, { retries: 3, retryDelay: 10 });
+      const retryMockAxios = new MockAdapter((retryClient as any).axiosInstance);
 
       let requestCount = 0;
-      noRetryMockAxios.onGet('/meetings/nonexistent').reply(() => {
+      retryMockAxios.onGet('/meetings/nonexistent').reply(() => {
         requestCount++;
         return [404, { error: 'not_found', message: 'Resource not found' }];
       });
 
-      await expect(noRetryClient.getMeeting('nonexistent')).rejects.toThrow(ContioAPIError);
-      expect(requestCount).toBe(1); // Should not retry
-      noRetryMockAxios.reset();
+      await expect(retryClient.getMeeting('nonexistent')).rejects.toThrow(ContioAPIError);
+      expect(requestCount).toBe(1); // Should not retry on 4xx
+      retryMockAxios.reset();
     });
   });
 
@@ -291,6 +291,31 @@ describe('BaseClient', () => {
       noRetryMockAxios.reset();
     });
 
+    it('should handle network errors with request but no response (error.request branch)', async () => {
+      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0 });
+      // Directly invoke handleError with an AxiosError that has request but no response
+      const handleError = (noRetryClient as any).handleError.bind(noRetryClient);
+      const fakeError = {
+        isAxiosError: true,
+        response: undefined,
+        request: { method: 'GET', path: '/meetings' }, // request exists, response does not
+        message: 'ECONNREFUSED',
+        config: {},
+        toJSON: () => ({}),
+      };
+
+      try {
+        await handleError(fakeError);
+        fail('Should have thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ContioAPIError);
+        const apiError = error as ContioAPIError;
+        expect(apiError.code).toBe('network_error');
+        expect(apiError.message).toBe('No response received from server');
+        expect(apiError.statusCode).toBeUndefined();
+      }
+    });
+
     it('should handle request errors', async () => {
       const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0 });
       const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
@@ -365,6 +390,48 @@ describe('BaseClient', () => {
         expect(apiError.message).toBe('An error occurred');
         expect(apiError.statusCode).toBe(500);
       }
+      noRetryMockAxios.reset();
+    });
+
+    it('should preserve retryAfter header in ContioAPIError for 429 responses', async () => {
+      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0 });
+      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+      noRetryMockAxios.onGet('/meetings').reply(429, {
+        error: 'rate_limited',
+        code: 'too_many_requests',
+      }, { 'retry-after': '30' });
+
+      try {
+        await noRetryClient.getMeetings();
+        fail('Should have thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ContioAPIError);
+        const apiError = error as ContioAPIError;
+        expect(apiError.statusCode).toBe(429);
+        expect(apiError.retryAfter).toBe('30');
+      }
+      noRetryMockAxios.reset();
+    });
+  });
+
+  describe('Request interceptor error path', () => {
+    it('should reject with the error when request interceptor fails', async () => {
+      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0 });
+      const noRetryMockAxios = new MockAdapter((noRetryClient as any).axiosInstance);
+
+      // Eject the original request interceptor and add one that fails
+      const interceptors = (noRetryClient as any).axiosInstance.interceptors.request;
+      interceptors.handlers.forEach((_: any, index: number) => {
+        interceptors.eject(index);
+      });
+      (noRetryClient as any).axiosInstance.interceptors.request.use(
+        () => { throw new Error('Interceptor failure'); },
+        (error: any) => Promise.reject(error)
+      );
+
+      noRetryMockAxios.onGet('/meetings').reply(200, { items: [] });
+
+      await expect(noRetryClient.getMeetings()).rejects.toThrow('Interceptor failure');
       noRetryMockAxios.reset();
     });
   });

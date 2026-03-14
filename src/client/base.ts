@@ -47,14 +47,17 @@ export class ContioAPIError extends Error {
   public readonly response?: ErrorResponse;
   /** Unique request ID returned by the API, useful for debugging and support */
   public readonly requestId?: string;
+  /** Value of the Retry-After response header, if present (for 429 responses) */
+  public readonly retryAfter?: string;
 
-  constructor(message: string, code: string, statusCode?: number, response?: ErrorResponse) {
+  constructor(message: string, code: string, statusCode?: number, response?: ErrorResponse, retryAfter?: string) {
     super(message);
     this.name = 'ContioAPIError';
     this.code = code;
     this.statusCode = statusCode;
     this.response = response;
     this.requestId = response?.request_id;
+    this.retryAfter = retryAfter;
   }
 }
 
@@ -191,50 +194,100 @@ export abstract class BaseClient {
   }
 
   /**
+   * Make a POST request with multipart/form-data.
+   *
+   * Overrides the default `application/json` content type so that axios
+   * sets the correct `multipart/form-data` boundary automatically.
+   *
+   * @param path  - Request path relative to the client's base URL
+   * @param formData - A `FormData` instance containing the fields and files to upload
+   * @param options  - Optional per-request options (e.g. timezone override)
+   * @returns Parsed response body
+   */
+  protected async postForm<T>(path: string, formData: FormData, options?: RequestOptions): Promise<T> {
+    const config = this.buildRequestConfig(options, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    const response = await this.retryRequest(() =>
+      this.axiosInstance.post<T>(path, formData, config)
+    );
+    return response.data;
+  }
+
+  /**
+   * Make a GET request that returns the full `AxiosResponse`, including
+   * headers and raw data.
+   *
+   * Use this for endpoints that return binary content (e.g. file downloads)
+   * where the caller needs access to response headers such as
+   * `Content-Disposition` or `Content-Type`.
+   *
+   * @param path    - Request path relative to the client's base URL
+   * @param params  - Optional query parameters
+   * @param options - Optional per-request options (e.g. timezone override)
+   * @param responseType - Axios response type (default: `'arraybuffer'`)
+   * @returns The full axios response
+   */
+  protected async getRaw(
+    path: string,
+    params?: object,
+    options?: RequestOptions,
+    responseType: 'arraybuffer' | 'blob' | 'stream' = 'arraybuffer',
+  ): Promise<AxiosResponse> {
+    const config = this.buildRequestConfig(options, { params, responseType });
+    return this.retryRequest(() =>
+      this.axiosInstance.get(path, config)
+    );
+  }
+
+  /**
    * Retry logic for failed requests with rate limit support.
    * Retries on 5xx errors and 429 (rate limit) with exponential backoff.
    */
   private async retryRequest<T>(
     request: () => Promise<AxiosResponse<T>>
   ): Promise<AxiosResponse<T>> {
-    let lastError: unknown;
+    const maxRetries = this.config.retries ?? 3;
 
-    for (let i = 0; i <= (this.config.retries ?? 3); i++) {
+    for (let i = 0; i <= maxRetries; i++) {
       try {
         return await request();
       } catch (error) {
-        lastError = error;
+        // The response interceptor converts AxiosError → ContioAPIError,
+        // so we check ContioAPIError properties for status-based retry decisions.
+        const statusCode = error instanceof ContioAPIError ? error.statusCode : undefined;
 
-        if (axios.isAxiosError(error) && error.response?.status) {
-          const status = error.response.status;
-
+        if (statusCode) {
           // Handle rate limiting (429) - retry with Retry-After header or exponential backoff
-          if (status === 429) {
-            if (i === this.config.retries) {
+          if (statusCode === 429) {
+            if (i === maxRetries) {
               throw error;
             }
-            const retryAfter = this.parseRetryAfter(error.response.headers['retry-after']);
+            const retryAfter = this.parseRetryAfter((error as ContioAPIError).retryAfter);
             await this.delay(retryAfter ?? ((this.config.retryDelay ?? 1000) * Math.pow(2, i)));
             continue;
           }
 
           // Don't retry on other client errors (4xx except 429)
-          if (status >= 400 && status < 500) {
+          if (statusCode >= 400 && statusCode < 500) {
             throw error;
           }
         }
 
         // Don't retry if this was the last attempt
-        if (i === this.config.retries) {
+        if (i === maxRetries) {
           throw error;
         }
 
-        // Wait before retrying (5xx errors)
+        // Wait before retrying (5xx errors, or errors without a status code)
         await this.delay(((this.config.retryDelay ?? 1000)) * Math.pow(2, i));
       }
     }
 
-    throw lastError;
+    // TypeScript requires a return/throw after the loop, but all paths above
+    // either return (success) or throw (max retries exhausted). This is a
+    // safeguard that should never execute.
+    throw new ContioAPIError('Max retries exhausted', 'retry_exhausted');
   }
 
   /**
@@ -275,11 +328,14 @@ export abstract class BaseClient {
       const message = errorData.error || errorData.message || 'An error occurred';
       const code = errorData.code || 'unknown_error';
 
+      const retryAfter = error.response.headers?.['retry-after'] as string | undefined;
+
       throw new ContioAPIError(
         message,
         code,
         error.response.status,
-        errorData
+        errorData,
+        retryAfter
       );
     } else if (error.request) {
       throw new ContioAPIError(
