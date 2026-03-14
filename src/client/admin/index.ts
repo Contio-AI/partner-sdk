@@ -1,10 +1,17 @@
 /**
- * Partner Admin API client for API key-authenticated endpoints
+ * Partner Admin API client for API key-authenticated endpoints.
+ *
+ * This module is the public facade — it delegates to domain-specific
+ * modules under `src/client/admin/` while maintaining a single class
+ * surface for backward compatibility and TypeDoc generation.
+ *
+ * @module
  */
 
 import { InternalAxiosRequestConfig } from 'axios';
-import { BaseClient, ClientConfig } from './base';
-import { ApiKeyClient } from '../auth/apiKey';
+import { BaseClient, ClientConfig, RequestOptions } from '../base';
+import { HttpTransport } from '../_http';
+import { ApiKeyClient } from '../../auth/apiKey';
 import {
   Workflow,
   WorkflowListParams,
@@ -31,7 +38,14 @@ import {
   PartnerIdPConfig,
   CreateIdPConfigRequest,
   UpdateIdPConfigRequest,
-} from '../models';
+} from '../../models';
+
+import * as workflows from './workflows';
+import * as app from './app';
+import * as webhooks from './webhooks';
+import * as connections from './connections';
+import * as credentials from './credentials';
+import * as idp from './idp';
 
 /**
  * Partner Admin API client for API key-authenticated admin endpoints.
@@ -52,6 +66,7 @@ import {
  */
 export class PartnerAdminClient extends BaseClient {
   private apiKeyClient: ApiKeyClient;
+  private readonly http: HttpTransport;
 
   /**
    * Create a new PartnerAdminClient instance.
@@ -67,6 +82,18 @@ export class PartnerAdminClient extends BaseClient {
       baseURL: finalURL,
     });
     this.apiKeyClient = apiKeyClient;
+
+    // Use arrow functions so jest.spyOn() on the instance methods works
+    // (bind() captures the reference at construction time, defeating spies).
+    this.http = {
+      get: (...args) => this.get(...args),
+      post: (...args) => this.post(...args),
+      put: (...args) => this.put(...args),
+      patch: (...args) => this.patch(...args),
+      delete: (...args) => this.delete(...args),
+      postForm: (...args) => this.postForm(...args),
+      getRaw: (...args) => this.getRaw(...args),
+    };
   }
 
   protected addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> {
@@ -93,7 +120,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If validation fails
    */
   async createWorkflow(data: CreateWorkflowRequest): Promise<Workflow> {
-    return this.post<Workflow>('/workflows', data);
+    return workflows.createWorkflow(this.http, data);
   }
 
   /**
@@ -106,7 +133,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the request fails
    */
   async getWorkflows(params?: WorkflowListParams): Promise<WorkflowListResponse> {
-    return this.get<WorkflowListResponse>('/workflows', params);
+    return workflows.getWorkflows(this.http, params);
   }
 
   /**
@@ -117,8 +144,10 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the workflow is not found
    */
   async getWorkflow(workflowId: string): Promise<Workflow> {
-    return this.get<Workflow>(`/workflows/${workflowId}`);
+    return workflows.getWorkflow(this.http, workflowId);
   }
+
+
 
   /**
    * Update a workflow.
@@ -129,7 +158,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the workflow is not found or validation fails
    */
   async updateWorkflow(workflowId: string, data: UpdateWorkflowRequest): Promise<Workflow> {
-    return this.put<Workflow>(`/workflows/${workflowId}`, data);
+    return workflows.updateWorkflow(this.http, workflowId, data);
   }
 
   /**
@@ -139,7 +168,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the workflow is not found
    */
   async deleteWorkflow(workflowId: string): Promise<void> {
-    await this.delete(`/workflows/${workflowId}`);
+    return workflows.deleteWorkflow(this.http, workflowId);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -155,7 +184,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the request fails
    */
   async getApp(): Promise<PartnerApp> {
-    return this.get<PartnerApp>('/app');
+    return app.getApp(this.http);
   }
 
   /**
@@ -166,7 +195,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If validation fails
    */
   async updateApp(data: UpdatePartnerAppRequest): Promise<PartnerApp> {
-    return this.put<PartnerApp>('/app', data);
+    return app.updateApp(this.http, data);
   }
 
   /**
@@ -180,11 +209,11 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the status transition is not allowed
    */
   async updateAppStatus(data: UpdatePartnerAppStatusRequest): Promise<PartnerApp> {
-    return this.put<PartnerApp>('/app/status', data);
+    return app.updateAppStatus(this.http, data);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Webhook endpoints
+  // Webhook Delivery endpoints
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
@@ -211,7 +240,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async getWebhookDeliveries(params?: WebhookDeliveryListParams): Promise<WebhookDeliveryListResponse> {
-    return this.get<WebhookDeliveryListResponse>('/webhook-deliveries', params);
+    return webhooks.getWebhookDeliveries(this.http, params);
   }
 
   /**
@@ -224,7 +253,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the delivery is not found
    */
   async getWebhookDelivery(deliveryId: string): Promise<WebhookDelivery> {
-    return this.get<WebhookDelivery>(`/webhook-deliveries/${deliveryId}`);
+    return webhooks.getWebhookDelivery(this.http, deliveryId);
   }
 
   /**
@@ -245,7 +274,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async retryWebhookDelivery(deliveryId: string): Promise<{ message: string; retry_scheduled: boolean }> {
-    return this.post(`/webhook-deliveries/${deliveryId}/retry`);
+    return webhooks.retryWebhookDelivery(this.http, deliveryId);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -282,7 +311,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async updateWebhookStatus(data: UpdateWebhookStatusRequest): Promise<PartnerApp> {
-    return this.put<PartnerApp>('/app/webhook-status', data);
+    return webhooks.updateWebhookStatus(this.http, data);
   }
 
   /**
@@ -316,7 +345,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async setWebhookFilter(data: SetWebhookFilterRequest): Promise<PartnerApp> {
-    return this.put<PartnerApp>('/app/webhook-filter', data);
+    return webhooks.setWebhookFilter(this.http, data);
   }
 
   /**
@@ -335,7 +364,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async removeWebhookFilter(): Promise<PartnerApp> {
-    return this.delete<PartnerApp>('/app/webhook-filter');
+    return webhooks.removeWebhookFilter(this.http);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -355,7 +384,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the request fails
    */
   async getUserConnections(params?: UserConnectionListParams): Promise<UserConnectionListResponse> {
-    return this.get<UserConnectionListResponse>('/connections', params);
+    return connections.getUserConnections(this.http, params);
   }
 
   /**
@@ -366,7 +395,7 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the connection is not found
    */
   async getUserConnection(connectionId: string): Promise<UserConnection> {
-    return this.get<UserConnection>(`/connections/${connectionId}`);
+    return connections.getUserConnection(this.http, connectionId);
   }
 
   /**
@@ -379,10 +408,12 @@ export class PartnerAdminClient extends BaseClient {
    * @throws {ContioAPIError} If the connection is not found
    */
   async revokeUserConnection(connectionId: string): Promise<void> {
-    await this.delete(`/connections/${connectionId}`);
+    return connections.revokeUserConnection(this.http, connectionId);
   }
 
+  // ─────────────────────────────────────────────────────────────────────────────
   // Credential Management endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
 
   /**
    * Get status of all credentials (API key, webhook secret, client secret)
@@ -397,7 +428,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async getCredentialStatus(): Promise<CredentialStatusResponse> {
-    return this.get<CredentialStatusResponse>('/credentials');
+    return credentials.getCredentialStatus(this.http);
   }
 
   /**
@@ -427,7 +458,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async rotateAPIKey(request: CredentialRotationRequest): Promise<CredentialRotationResponse> {
-    return this.post<CredentialRotationResponse>('/credentials/api-key/rotate', request);
+    return credentials.rotateAPIKey(this.http, request);
   }
 
   /**
@@ -460,7 +491,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async rotateWebhookSecret(request: CredentialRotationRequest): Promise<CredentialRotationResponse> {
-    return this.post<CredentialRotationResponse>('/credentials/webhook-secret/rotate', request);
+    return credentials.rotateWebhookSecret(this.http, request);
   }
 
   /**
@@ -490,7 +521,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async rotateClientSecret(request: CredentialRotationRequest): Promise<CredentialRotationResponse> {
-    return this.post<CredentialRotationResponse>('/credentials/client-secret/rotate', request);
+    return credentials.rotateClientSecret(this.http, request);
   }
 
   /**
@@ -518,7 +549,7 @@ export class PartnerAdminClient extends BaseClient {
     credentialType: 'api-key' | 'client-secret',
     request: CredentialRollbackRequest
   ): Promise<void> {
-    await this.post(`/credentials/${credentialType}/rollback`, request);
+    return credentials.rollbackCredential(this.http, credentialType, request);
   }
 
   /**
@@ -554,7 +585,7 @@ export class PartnerAdminClient extends BaseClient {
    * ```
    */
   async getCredentialHistory(params?: CredentialAuditHistoryParams): Promise<CredentialAuditHistoryResponse> {
-    return this.get<CredentialAuditHistoryResponse>('/credentials/history', params);
+    return credentials.getCredentialHistory(this.http, params);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -564,69 +595,55 @@ export class PartnerAdminClient extends BaseClient {
   /**
    * Create IdP configuration for this partner app.
    *
-   * Configures OIDC-based SSO for your partner app. The discovery URL is used to
-   * automatically fetch OIDC endpoints (issuer, authorization, token, userinfo, jwks).
+   * Configures SAML/OIDC identity provider settings for SSO.
    *
-   * @param data - IdP configuration data
-   * @param data.name - Display name for this IdP configuration (required)
-   * @param data.discovery_url - OIDC discovery endpoint URL (should end with /.well-known/openid-configuration) (required)
-   * @param data.idp_client_id - OAuth Client ID from your Identity Provider (required)
-   * @param data.idp_client_secret - OAuth Client Secret from your Identity Provider (required)
-   * @param data.mode - Domain validation mode: 'strict' or 'partner_managed' (required)
-   * @param data.scopes - OIDC scopes to request (optional, defaults to ["openid", "email", "profile"])
-   * @param data.claim_mappings - Maps Contio user fields to IdP claim names (optional)
-   * @param data.allowed_email_domains - Email domains allowed for SSO (required for strict mode)
+   * @param data - IdP configuration including provider type, metadata URL, etc.
    * @returns The created IdP configuration
-   * @throws {ContioAPIError} If validation fails or IdP already exists
-   *
-   * @see https://docs.contio.ai/partner-api/guides/sso/
+   * @throws {ContioAPIError} If configuration already exists or validation fails
    *
    * @example
    * ```typescript
-   * const idp = await admin.createIdPConfig({
-   *   name: 'Okta SSO',
-   *   discovery_url: 'https://yourorg.okta.com/.well-known/openid-configuration',
-   *   idp_client_id: 'okta-client-id',
-   *   idp_client_secret: 'okta-client-secret',
-   *   mode: 'strict',
-   *   allowed_email_domains: ['yourcompany.com']
+   * const config = await admin.createIdPConfig({
+   *   provider_type: 'saml',
+   *   metadata_url: 'https://idp.example.com/metadata',
+   *   entity_id: 'https://idp.example.com'
    * });
    * ```
    */
   async createIdPConfig(data: CreateIdPConfigRequest): Promise<PartnerIdPConfig> {
-    return this.post<PartnerIdPConfig>('/idp', data);
+    return idp.createIdPConfig(this.http, data);
   }
 
   /**
-   * Get the IdP configuration for this partner app.
+   * Get the current IdP configuration.
    *
-   * @returns The current IdP configuration, or throws if not configured
-   * @throws {ContioAPIError} If IdP is not configured (404)
+   * @returns The IdP configuration
+   * @throws {ContioAPIError} If no IdP configuration exists
    */
   async getIdPConfig(): Promise<PartnerIdPConfig> {
-    return this.get<PartnerIdPConfig>('/idp');
+    return idp.getIdPConfig(this.http);
   }
 
   /**
-   * Update the IdP configuration for this partner app.
+   * Update the IdP configuration.
    *
-   * @param data - Fields to update (all optional)
+   * @param data - Fields to update
    * @returns The updated IdP configuration
-   * @throws {ContioAPIError} If IdP is not configured or validation fails
+   * @throws {ContioAPIError} If no IdP configuration exists or validation fails
    */
   async updateIdPConfig(data: UpdateIdPConfigRequest): Promise<PartnerIdPConfig> {
-    return this.put<PartnerIdPConfig>('/idp', data);
+    return idp.updateIdPConfig(this.http, data);
   }
 
   /**
-   * Delete the IdP configuration for this partner app.
+   * Delete the IdP configuration.
    *
-   * This disables SSO for your partner app. Users will need to use
-   * standard OAuth authorization to connect.
+   * Removes the SAML/OIDC configuration. Users will no longer be able to SSO
+   * through this partner's identity provider.
    *
-   * @throws {ContioAPIError} If IdP is not configured
+   * @throws {ContioAPIError} If no IdP configuration exists
    */
   async deleteIdPConfig(): Promise<void> {
-    await this.delete('/idp');
+    return idp.deleteIdPConfig(this.http);
   }
 }
