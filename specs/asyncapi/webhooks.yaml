@@ -656,7 +656,7 @@ components:
                     format: date-time
         WebhookUserContext:
             type: object
-            description: User context for webhooks (CON-2165) - identifies which user the event is being delivered for
+            description: User context for webhooks - identifies which user the event is being delivered for
             required:
                 - id
                 - email

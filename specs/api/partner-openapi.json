@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.4.5"
+    "version": "1.4.6"
   },
   "host": "api.contio.ai",
   "basePath": "/",
@@ -25,7 +25,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "JSON Web Key Set Endpoint",
         "responses": {
@@ -51,7 +51,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "OpenID Connect Discovery Endpoint",
         "responses": {
@@ -80,7 +80,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Initiate Partner Passwordless Authentication",
         "parameters": [
@@ -144,7 +144,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Verify Partner Passwordless Authentication",
         "parameters": [
@@ -190,7 +190,7 @@
       "get": {
         "description": "Handles OAuth 2.0 authorization requests for partner applications",
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Authorization Endpoint",
         "parameters": [
@@ -267,7 +267,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Complete OAuth 2.0 Authorization",
         "parameters": [
@@ -315,7 +315,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Check Existing Consent",
         "parameters": [
@@ -355,7 +355,7 @@
       "get": {
         "description": "Tests connectivity to Cognito and returns service status",
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Health Check for OAuth/Cognito Service",
         "responses": {
@@ -384,7 +384,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Token Introspection Endpoint",
         "parameters": [
@@ -425,7 +425,7 @@
           "application/x-www-form-urlencoded"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Token Revocation Endpoint",
         "parameters": [
@@ -469,7 +469,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Get Available OAuth Scopes",
         "responses": {
@@ -495,7 +495,7 @@
           "application/x-www-form-urlencoded"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Token Endpoint",
         "parameters": [
@@ -572,7 +572,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Get user information",
         "parameters": [
@@ -627,7 +627,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "App Management"
         ],
         "summary": "Get partner app information",
         "responses": {
@@ -668,7 +668,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "App Management"
         ],
         "summary": "Update partner app",
         "parameters": [
@@ -728,7 +728,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "App Management"
         ],
         "summary": "Update partner app status",
         "parameters": [
@@ -770,164 +770,6 @@
         }
       }
     },
-    "/v1/partner/admin/app/webhook-filter": {
-      "put": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Configures include or exclude event filtering for webhook delivery",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin"
-        ],
-        "summary": "Update partner app webhook filter",
-        "parameters": [
-          {
-            "description": "Webhook filter update request",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/admin.SetWebhookFilterRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/admin.PartnerAppResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request body or event types",
-            "schema": {
-              "$ref": "#/definitions/admin.UpdateWebhookFilterError400"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Removes webhook event filtering for the authenticated partner app",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin"
-        ],
-        "summary": "Remove partner app webhook filter",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/admin.PartnerAppResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/app/webhook-status": {
-      "put": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Enables or disables webhook delivery for the authenticated partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin"
-        ],
-        "summary": "Update partner app webhook status",
-        "parameters": [
-          {
-            "description": "Webhook status update request",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/admin.UpdateWebhookStatusRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/admin.PartnerAppResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request body or pending disposition",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
     "/v1/partner/admin/connections": {
       "get": {
         "security": [
@@ -943,7 +785,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Connection Management"
         ],
         "summary": "Get user connections",
         "parameters": [
@@ -1023,7 +865,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Connection Management"
         ],
         "summary": "Get user connection by ID",
         "parameters": [
@@ -1079,7 +921,7 @@
         ],
         "description": "Revokes a user connection by ID if it belongs to the authenticated partner app",
         "tags": [
-          "Partner Admin"
+          "Connection Management"
         ],
         "summary": "Revoke user connection",
         "parameters": [
@@ -1137,7 +979,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Credential Management"
         ],
         "summary": "Get credential status",
         "responses": {
@@ -1152,6 +994,69 @@
           },
           "401": {
             "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/credentials/api-key/rollback": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Restores the API key to the prior value after rotation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Credential Management"
+        ],
+        "summary": "Rollback API key",
+        "parameters": [
+          {
+            "description": "Rollback request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.CredentialRollbackRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rollback successful"
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -1183,7 +1088,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Credential Management"
         ],
         "summary": "Rotate API key",
         "parameters": [
@@ -1231,6 +1136,69 @@
         }
       }
     },
+    "/v1/partner/admin/credentials/client-secret/rollback": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Restores the client secret to the prior value after rotation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Credential Management"
+        ],
+        "summary": "Rollback Client secret",
+        "parameters": [
+          {
+            "description": "Rollback request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.CredentialRollbackRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rollback successful"
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/admin/credentials/client-secret/rotate": {
       "post": {
         "security": [
@@ -1249,7 +1217,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Credential Management"
         ],
         "summary": "Rotate client secret",
         "parameters": [
@@ -1312,7 +1280,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "App Management"
         ],
         "summary": "Get audit history",
         "parameters": [
@@ -1384,7 +1352,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Credential Management"
         ],
         "summary": "Rotate webhook secret",
         "parameters": [
@@ -1447,7 +1415,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "IdP Management"
         ],
         "summary": "Get IdP configuration",
         "responses": {
@@ -1494,7 +1462,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "IdP Management"
         ],
         "summary": "Update IdP configuration",
         "parameters": [
@@ -1564,7 +1532,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "IdP Management"
         ],
         "summary": "Create IdP configuration",
         "parameters": [
@@ -1625,7 +1593,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "IdP Management"
         ],
         "summary": "Delete IdP configuration",
         "responses": {
@@ -1668,7 +1636,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Webhook Management"
         ],
         "summary": "List webhook deliveries",
         "parameters": [
@@ -1734,7 +1702,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Webhook Management"
         ],
         "summary": "Get webhook delivery",
         "parameters": [
@@ -1789,7 +1757,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Webhook Management"
         ],
         "summary": "Retry webhook delivery",
         "parameters": [
@@ -1830,6 +1798,164 @@
         }
       }
     },
+    "/v1/partner/admin/webhook-filter": {
+      "put": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Configures include or exclude event filtering for webhook delivery",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Webhook Management"
+        ],
+        "summary": "Update partner app webhook filter",
+        "parameters": [
+          {
+            "description": "Webhook filter update request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.SetWebhookFilterRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/admin.PartnerAppResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or event types",
+            "schema": {
+              "$ref": "#/definitions/admin.UpdateWebhookFilterError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Removes webhook event filtering for the authenticated partner app",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Webhook Management"
+        ],
+        "summary": "Remove partner app webhook filter",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/admin.PartnerAppResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/webhook-status": {
+      "put": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Enables or disables webhook delivery for the authenticated partner app",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Webhook Management"
+        ],
+        "summary": "Update partner app webhook status",
+        "parameters": [
+          {
+            "description": "Webhook status update request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.UpdateWebhookStatusRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/admin.PartnerAppResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or pending disposition",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/admin/workflows": {
       "get": {
         "security": [
@@ -1845,7 +1971,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Workflow Management"
         ],
         "summary": "Get workflows",
         "parameters": [
@@ -1908,7 +2034,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Workflow Management"
         ],
         "summary": "Create a new workflow",
         "parameters": [
@@ -1965,7 +2091,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Workflow Management"
         ],
         "summary": "Get workflow by ID",
         "parameters": [
@@ -2027,7 +2153,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin"
+          "Workflow Management"
         ],
         "summary": "Update workflow",
         "parameters": [
@@ -2092,7 +2218,7 @@
         ],
         "description": "Deletes a workflow by ID",
         "tags": [
-          "Partner Admin"
+          "Workflow Management"
         ],
         "summary": "Delete workflow",
         "parameters": [
@@ -2133,7 +2259,7 @@
       "get": {
         "description": "Returns safe public partner app information for display in OAuth login/consent pages. This endpoint does not require client authentication and only returns safe public information like name and company.",
         "tags": [
-          "Partner OAuth"
+          "OAuth 2.0"
         ],
         "summary": "Get Public Partner Information by Client ID",
         "parameters": [
@@ -2177,7 +2303,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner SSO"
+          "Single Sign-On"
         ],
         "summary": "Handle partner SSO callback",
         "parameters": [
@@ -2245,7 +2371,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner SSO"
+          "Single Sign-On"
         ],
         "summary": "Get partner SSO information",
         "parameters": [
@@ -2289,7 +2415,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner SSO"
+          "Single Sign-On"
         ],
         "summary": "Initiate partner SSO flow",
         "parameters": [
@@ -2365,7 +2491,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner SSO"
+          "Single Sign-On"
         ],
         "summary": "Get partner SSO session status",
         "parameters": [
@@ -2415,7 +2541,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Action Items"
+          "Action Items"
         ],
         "summary": "Get action items",
         "parameters": [
@@ -2510,7 +2636,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Action Items"
+          "Action Items"
         ],
         "summary": "Create action item",
         "parameters": [
@@ -2566,7 +2692,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Action Items"
+          "Action Items"
         ],
         "summary": "Get action item by ID",
         "parameters": [
@@ -2627,7 +2753,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Action Items"
+          "Action Items"
         ],
         "summary": "Update action item",
         "parameters": [
@@ -2691,7 +2817,7 @@
         ],
         "description": "Deletes an action item if accessible to the authenticated user",
         "tags": [
-          "Partner User: Action Items"
+          "Action Items"
         ],
         "summary": "Delete action item",
         "parameters": [
@@ -2751,7 +2877,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Calendar"
+          "Calendar"
         ],
         "summary": "Get calendar events",
         "parameters": [
@@ -2847,7 +2973,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Calendar"
+          "Calendar"
         ],
         "summary": "Get calendar event by ID",
         "parameters": [
@@ -2917,7 +3043,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Calendar"
+          "Calendar"
         ],
         "summary": "Create meeting from calendar event",
         "parameters": [
@@ -2984,7 +3110,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Get meetings",
         "parameters": [
@@ -3060,7 +3186,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Create meeting",
         "parameters": [
@@ -3116,7 +3242,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Get meeting by ID",
         "parameters": [
@@ -3177,7 +3303,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Update meeting",
         "parameters": [
@@ -3249,7 +3375,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Get agenda items for a meeting",
         "parameters": [
@@ -3313,7 +3439,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Calendar"
+          "Calendar"
         ],
         "summary": "Link calendar event to meeting",
         "parameters": [
@@ -3392,7 +3518,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Calendar"
+          "Calendar"
         ],
         "summary": "Unlink calendar event from meeting",
         "parameters": [
@@ -3444,11 +3570,11 @@
         "security": [
           {
             "OAuth2Application": [
-              "meetings:read"
+              "context:read"
             ]
           }
         ],
-        "description": "Lists partner-scoped meeting context documents for a meeting with pagination.",
+        "description": "Lists partner-scoped meeting contexts for a meeting with pagination.",
         "consumes": [
           "application/json"
         ],
@@ -3456,9 +3582,9 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Context"
+          "Context"
         ],
-        "summary": "List meeting context documents",
+        "summary": "List meeting contexts",
         "parameters": [
           {
             "type": "string",
@@ -3514,11 +3640,11 @@
         "security": [
           {
             "OAuth2Application": [
-              "meetings:write"
+              "context:write"
             ]
           }
         ],
-        "description": "Uploads a partner-scoped meeting context document for a meeting using multipart/form-data.",
+        "description": "Uploads a partner-scoped meeting context for a meeting using multipart/form-data.",
         "consumes": [
           "multipart/form-data"
         ],
@@ -3526,9 +3652,9 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Context"
+          "Context"
         ],
-        "summary": "Upload meeting context document",
+        "summary": "Upload meeting context",
         "parameters": [
           {
             "type": "string",
@@ -3540,14 +3666,14 @@
           },
           {
             "type": "file",
-            "description": "Context document file",
+            "description": "Context file",
             "name": "file",
             "in": "formData",
             "required": true
           },
           {
             "type": "string",
-            "description": "Document title",
+            "description": "Context title",
             "name": "title",
             "in": "formData"
           },
@@ -3599,16 +3725,16 @@
         }
       }
     },
-    "/v1/partner/user/meetings/{id}/context/{document_id}": {
+    "/v1/partner/user/meetings/{id}/context/{context_id}": {
       "get": {
         "security": [
           {
             "OAuth2Application": [
-              "meetings:read"
+              "context:read"
             ]
           }
         ],
-        "description": "Retrieves a specific partner-scoped meeting context document by document ID.",
+        "description": "Retrieves a specific partner-scoped meeting context by context ID.",
         "consumes": [
           "application/json"
         ],
@@ -3616,9 +3742,9 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Context"
+          "Context"
         ],
-        "summary": "Get meeting context document",
+        "summary": "Get meeting context",
         "parameters": [
           {
             "type": "string",
@@ -3631,8 +3757,8 @@
           {
             "type": "string",
             "format": "uuid",
-            "description": "Document ID",
-            "name": "document_id",
+            "description": "Context ID",
+            "name": "context_id",
             "in": "path",
             "required": true
           }
@@ -3657,7 +3783,7 @@
             }
           },
           "404": {
-            "description": "Document not found",
+            "description": "Context not found",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -3674,11 +3800,11 @@
         "security": [
           {
             "OAuth2Application": [
-              "meetings:write"
+              "context:write"
             ]
           }
         ],
-        "description": "Deletes a specific partner-scoped meeting context document by document ID.",
+        "description": "Deletes a specific partner-scoped meeting context by context ID.",
         "consumes": [
           "application/json"
         ],
@@ -3686,9 +3812,9 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Context"
+          "Context"
         ],
-        "summary": "Delete meeting context document",
+        "summary": "Delete meeting context",
         "parameters": [
           {
             "type": "string",
@@ -3701,8 +3827,8 @@
           {
             "type": "string",
             "format": "uuid",
-            "description": "Document ID",
-            "name": "document_id",
+            "description": "Context ID",
+            "name": "context_id",
             "in": "path",
             "required": true
           }
@@ -3724,7 +3850,7 @@
             }
           },
           "404": {
-            "description": "Document not found",
+            "description": "Context not found",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -3738,23 +3864,23 @@
         }
       }
     },
-    "/v1/partner/user/meetings/{id}/context/{document_id}/content": {
+    "/v1/partner/user/meetings/{id}/context/{context_id}/content": {
       "get": {
         "security": [
           {
             "OAuth2Application": [
-              "meetings:read"
+              "context:read"
             ]
           }
         ],
-        "description": "Streams the file bytes for a specific partner-scoped meeting context document.",
+        "description": "Streams the file bytes for a specific partner-scoped meeting context.",
         "produces": [
           "application/octet-stream"
         ],
         "tags": [
-          "Partner User: Context"
+          "Context"
         ],
-        "summary": "Download meeting context document content",
+        "summary": "Download meeting context content",
         "parameters": [
           {
             "type": "string",
@@ -3767,15 +3893,15 @@
           {
             "type": "string",
             "format": "uuid",
-            "description": "Document ID",
-            "name": "document_id",
+            "description": "Context ID",
+            "name": "context_id",
             "in": "path",
             "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "Document file stream; Content-Disposition includes filename",
+            "description": "Context file stream; Content-Disposition includes filename",
             "schema": {
               "type": "file"
             }
@@ -3793,7 +3919,7 @@
             }
           },
           "404": {
-            "description": "Document not found",
+            "description": "Context not found",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -3821,7 +3947,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Get meeting participants",
         "parameters": [
@@ -3882,7 +4008,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Add meeting participant",
         "parameters": [
@@ -3964,7 +4090,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Remove meeting participant",
         "parameters": [
@@ -4032,7 +4158,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Create agenda item",
         "parameters": [
@@ -4104,7 +4230,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Update agenda item",
         "parameters": [
@@ -4182,7 +4308,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Meetings"
+          "Meetings"
         ],
         "summary": "Delete agenda item",
         "parameters": [
@@ -4254,7 +4380,7 @@
           "application/json"
         ],
         "tags": [
-          "Partner User: Profile"
+          "Profile"
         ],
         "summary": "Get user profile",
         "responses": {
@@ -4681,6 +4807,22 @@
             "meeting_ended",
             "meeting_summary_ready"
           ]
+        }
+      }
+    },
+    "admin.CredentialRollbackRequest": {
+      "type": "object",
+      "required": [
+        "rollback_token"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "example": "Detected issues"
+        },
+        "rollback_token": {
+          "type": "string",
+          "example": "rollback_token_xyz..."
         }
       }
     },
@@ -5902,13 +6044,16 @@
         "deleted_at": {
           "type": "string"
         },
-        "document_id": {
+        "file_status": {
           "type": "string"
         },
         "id": {
           "type": "string"
         },
         "meeting_id": {
+          "type": "string"
+        },
+        "model_id": {
           "type": "string"
         },
         "partner_app_id": {
@@ -7351,31 +7496,31 @@
   },
   "x-tagGroups": [
     {
-      "name": "Authentication",
+      "name": "Partner Authentication",
       "tags": [
-        "Partner OAuth"
+        "OAuth 2.0",
+        "Single Sign-On"
       ]
     },
     {
       "name": "Partner Admin API",
       "tags": [
-        "Partner Admin"
-      ]
-    },
-    {
-      "name": "Partner SSO",
-      "tags": [
-        "Partner SSO"
+        "App Management",
+        "Connection Management",
+        "Credential Management",
+        "IdP Management",
+        "Webhook Management",
+        "Workflow Management"
       ]
     },
     {
       "name": "Partner User API",
       "tags": [
-        "Partner User: Action Items",
-        "Partner User: Calendar",
-        "Partner User: Context",
-        "Partner User: Meetings",
-        "Partner User: Profile"
+        "Action Items",
+        "Calendar",
+        "Context",
+        "Meetings",
+        "Profile"
       ]
     }
   ]

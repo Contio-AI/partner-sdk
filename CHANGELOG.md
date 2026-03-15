@@ -6,6 +6,17 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.6] - 2026-03-13
+
+### Added
+- `uploadContext()` method on `PartnerUserClient` — upload a context document for a meeting
+- `listContexts()` method on `PartnerUserClient` — list all context documents for a meeting
+- `getContext()` method on `PartnerUserClient` — get a specific context document
+- `downloadContextContent()` method on `PartnerUserClient` — download context document content
+- `deleteContext()` method on `PartnerUserClient` — delete a context document
+- `MeetingContext`, `MeetingContextListResponse`, `MeetingContextResponse` types
+- `context:read` and `context:write` OAuth scopes for Meeting Context endpoints
+
 ## [1.4.5] - 2026-03-06
 
 ### Added
