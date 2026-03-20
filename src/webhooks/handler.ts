@@ -44,6 +44,9 @@ import {
   MeetingUpdatedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
+  SessionExpiredPayload,
+  SessionTurnCompletedPayload,
+  SessionTurnFailedPayload,
   WebhookEventType,
 } from './types';
 
@@ -67,6 +70,9 @@ export interface WebhookEventMap {
   'meeting.updated': MeetingUpdatedPayload;
   'participant.added': ParticipantAddedPayload;
   'participant.removed': ParticipantRemovedPayload;
+  'session.expired': SessionExpiredPayload;
+  'session.turn.completed': SessionTurnCompletedPayload;
+  'session.turn.failed': SessionTurnFailedPayload;
 }
 
 /**
