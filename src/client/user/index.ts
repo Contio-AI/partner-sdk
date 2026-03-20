@@ -41,6 +41,13 @@ import {
   MeetingContextListResponse,
   UploadMeetingContextRequest,
   MeetingContextContentResponse,
+  ChatSession,
+  ChatSessionListParams,
+  ChatSessionListResponse,
+  CreateChatSessionRequest,
+  GetChatSessionParams,
+  SendChatMessageRequest,
+  SendChatMessageResponse,
 } from '../../models';
 
 import * as meetings from './meetings';
@@ -48,6 +55,7 @@ import * as actionItems from './actionItems';
 import * as calendar from './calendar';
 import * as context from './context';
 import * as profile from './profile';
+import * as chat from './chat';
 
 /**
  * Partner User API client for OAuth-authenticated user endpoints.
@@ -768,6 +776,113 @@ export class PartnerUserClient extends BaseClient {
     options?: RequestOptions,
   ): Promise<MeetingContextContentResponse> {
     return context.downloadMeetingContextDocumentContent(this.http, meetingId, documentId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Chat Session endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a new chat session and submit the first user message.
+   *
+   * The agent begins processing immediately. The response includes the session
+   * and the initial user turn as `current_turn`. Listen for a
+   * `session.turn.completed` webhook to know when the agent response is ready,
+   * then call {@link getSession} to retrieve it.
+   *
+   * Requires the `chat:write` OAuth scope.
+   *
+   * @param data - Session creation data including the meeting ID and opening message
+   * @param options - Optional request options
+   * @returns The newly created session with `current_turn` populated
+   * @throws {ContioAPIError} If validation fails or the meeting is not found
+   *
+   * @example
+   * ```typescript
+   * const session = await user.createChatSession({
+   *   meeting_id: 'meeting-uuid',
+   *   message: 'Summarize the key decisions from this meeting.',
+   *   metadata: { partner_ref: 'crm-case-4821' },
+   * });
+   * console.log('Session created:', session.id);
+   * ```
+   */
+  async createChatSession(data: CreateChatSessionRequest, options?: RequestOptions): Promise<ChatSession> {
+    return chat.createSession(this.http, data, options);
+  }
+
+  /**
+   * Get a paginated list of chat sessions for the authenticated user.
+   *
+   * Requires the `chat:read` OAuth scope.
+   *
+   * @param params - Optional filter and pagination parameters
+   * @param options - Optional request options
+   * @returns Paginated session list with total count
+   * @throws {ContioAPIError} If the request fails
+   *
+   * @example
+   * ```typescript
+   * const response = await user.getChatSessions({ meeting_id: 'meeting-uuid' });
+   * console.log(`Found ${response.total} sessions`);
+   * ```
+   */
+  async getChatSessions(params?: ChatSessionListParams, options?: RequestOptions): Promise<ChatSessionListResponse> {
+    return chat.getSessions(this.http, params, options);
+  }
+
+  /**
+   * Get a specific chat session by ID, including its turns.
+   *
+   * By default returns only turns not yet seen by the caller (`include: 'undelivered'`).
+   * Pass `include: 'all_turns'` to retrieve the full conversation history.
+   *
+   * Requires the `chat:read` OAuth scope.
+   *
+   * @param sessionId - The unique session ID (UUID format)
+   * @param params - Optional query parameters (`include`, `turn_limit`, `turn_offset`)
+   * @param options - Optional request options
+   * @returns The session with its turns
+   * @throws {ContioAPIError} If the session is not found
+   *
+   * @example
+   * ```typescript
+   * // Fetch full conversation history after receiving a webhook
+   * const session = await user.getChatSession('session-uuid', { include: 'all_turns' });
+   * for (const turn of session.turns?.items ?? []) {
+   *   console.log(`[${turn.role}] ${turn.content}`);
+   * }
+   * ```
+   */
+  async getChatSession(sessionId: string, params?: GetChatSessionParams, options?: RequestOptions): Promise<ChatSession> {
+    return chat.getSession(this.http, sessionId, params, options);
+  }
+
+  /**
+   * Enqueue a new user message as the next turn in an existing session.
+   *
+   * Returns immediately with the queued turn and its position in the processing
+   * queue. The agent processes all queued turns sequentially — wait for a
+   * `session.turn.completed` webhook before calling {@link getChatSession}.
+   *
+   * Requires the `chat:write` OAuth scope.
+   *
+   * @param sessionId - The session ID to add a message to
+   * @param data - The message to send
+   * @param options - Optional request options
+   * @returns The queued turn and its position in the processing queue
+   * @throws {ContioAPIError} If the session is not found, closed, or the turn limit is reached
+   *
+   * @example
+   * ```typescript
+   * const { turn, position } = await user.sendChatMessage('session-uuid', {
+   *   message: 'Create action items for each open question.',
+   * });
+   * console.log(`Turn ${turn.sequence_number} queued at position ${position}`);
+   * ```
+   */
+  async sendChatMessage(sessionId: string, data: SendChatMessageRequest, options?: RequestOptions): Promise<SendChatMessageResponse> {
+    return chat.sendMessage(this.http, sessionId, data, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

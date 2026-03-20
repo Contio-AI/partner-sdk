@@ -12,3 +12,4 @@ export * from './calendar';
 export * from './participants';
 export * from './agendaItems';
 export * from './context';
+export * from './chat';

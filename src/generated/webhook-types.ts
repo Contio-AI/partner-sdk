@@ -5,7 +5,7 @@
  *
  * Source: specs/asyncapi/webhooks.yaml
  * Spec version: 1.4.0
- * Generated: 2026-01-31T06:55:58.504Z
+ * Generated: 2026-03-20T20:37:23.346Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -287,6 +287,107 @@ export interface ParticipantRemovedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
+export interface SessionExpiredPayload {
+  'data': SessionExpiredData;
+  'event_id': string;
+  'event_type': 'session.expired';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface SessionExpiredData {
+  'session_id': string;
+  'meeting_id': string;
+  'expired_at': string;
+  'turn_count': number;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface SessionTurnCompletedPayload {
+  'data': SessionTurnCompletedData;
+  'event_id': string;
+  'event_type': 'session.turn.completed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface SessionTurnCompletedData {
+  'session_id': string;
+  'turn_id': string;
+  'session_status': AnonymousSchema_113;
+  'turn_sequence_number': number;
+  'turn_role': AnonymousSchema_115;
+  'turn_status': AnonymousSchema_116;
+  'turn_content': string;
+  'turn_created_at': string;
+  'turn_completed_at'?: string;
+  'agent_metadata'?: AnonymousSchema_120;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export type AnonymousSchema_113 = "active" | "closed" | "expired";
+
+export type AnonymousSchema_115 = "user" | "agent";
+
+export type AnonymousSchema_116 = "completed";
+
+export interface AnonymousSchema_120 {
+  'tool_calls'?: AnonymousSchema_122[];
+  'referenced_documents'?: string[];
+  'model'?: string;
+  'token_usage'?: AnonymousSchema_128;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_122 {
+  'name'?: string;
+  'status'?: AnonymousSchema_124;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export type AnonymousSchema_124 = "success" | "failed";
+
+export interface AnonymousSchema_128 {
+  'prompt_tokens'?: number;
+  'completion_tokens'?: number;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface SessionTurnFailedPayload {
+  'data': SessionTurnFailedData;
+  'event_id': string;
+  'event_type': 'session.turn.failed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface SessionTurnFailedData {
+  'session_id': string;
+  'turn_id': string;
+  'turn_sequence_number': number;
+  'turn_status': AnonymousSchema_136;
+  'error': AnonymousSchema_137;
+  'turn_created_at': string;
+  'turn_completed_at'?: string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export type AnonymousSchema_136 = "failed";
+
+export interface AnonymousSchema_137 {
+  'code': AnonymousSchema_138;
+  'message': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export type AnonymousSchema_138 = "agent_error" | "timeout" | "context_too_large" | "rate_limited";
+
 export interface UserConnectionRevokedPayload {
   'data': UserConnectionRevokedData;
   'event_id': string;
@@ -345,6 +446,9 @@ export const WEBHOOK_EVENT_TYPES = [
   'meeting.updated',
   'participant.added',
   'participant.removed',
+  'session.expired',
+  'session.turn.completed',
+  'session.turn.failed',
   'user.connection.revoked',
   'workflow.assignment.created',
 ] as const;

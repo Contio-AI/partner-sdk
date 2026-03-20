@@ -135,6 +135,30 @@ channels:
                 name: participant.removed
                 payload:
                     $ref: '#/components/schemas/ParticipantRemovedPayload'
+    session.expired:
+        subscribe:
+            summary: Sent when a chat session expires due to inactivity
+            operationId: onSessionExpired
+            message:
+                name: session.expired
+                payload:
+                    $ref: '#/components/schemas/SessionExpiredPayload'
+    session.turn.completed:
+        subscribe:
+            summary: Sent when the agent finishes processing a turn in a chat session
+            operationId: onSessionTurnCompleted
+            message:
+                name: session.turn.completed
+                payload:
+                    $ref: '#/components/schemas/SessionTurnCompletedPayload'
+    session.turn.failed:
+        subscribe:
+            summary: Sent when the agent fails to process a turn in a chat session
+            operationId: onSessionTurnFailed
+            message:
+                name: session.turn.failed
+                payload:
+                    $ref: '#/components/schemas/SessionTurnFailedPayload'
     user.connection.revoked:
         subscribe:
             summary: Sent when a user revokes their connection to your partner app
@@ -714,4 +738,167 @@ components:
                         $ref: '#/components/schemas/WorkflowAssignmentCreatedData'
                     event_type:
                         const: workflow.assignment.created
+                  type: object
+        SessionTurnCompletedData:
+            type: object
+            required:
+                - session_id
+                - turn_id
+                - session_status
+                - turn_sequence_number
+                - turn_role
+                - turn_status
+                - turn_content
+                - turn_created_at
+            properties:
+                session_id:
+                    type: string
+                    format: uuid
+                turn_id:
+                    type: string
+                    format: uuid
+                session_status:
+                    type: string
+                    enum:
+                        - active
+                        - closed
+                        - expired
+                turn_sequence_number:
+                    type: integer
+                turn_role:
+                    type: string
+                    enum:
+                        - user
+                        - agent
+                turn_status:
+                    type: string
+                    enum:
+                        - completed
+                turn_content:
+                    type: string
+                turn_created_at:
+                    type: string
+                    format: date-time
+                turn_completed_at:
+                    type: string
+                    format: date-time
+                agent_metadata:
+                    type: object
+                    nullable: true
+                    properties:
+                        tool_calls:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    name:
+                                        type: string
+                                    status:
+                                        type: string
+                                        enum:
+                                            - success
+                                            - failed
+                        referenced_documents:
+                            type: array
+                            items:
+                                type: string
+                                format: uuid
+                        model:
+                            type: string
+                        token_usage:
+                            type: object
+                            properties:
+                                prompt_tokens:
+                                    type: integer
+                                completion_tokens:
+                                    type: integer
+        SessionTurnCompletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/SessionTurnCompletedData'
+                    event_type:
+                        const: session.turn.completed
+                  type: object
+        SessionTurnFailedData:
+            type: object
+            required:
+                - session_id
+                - turn_id
+                - turn_sequence_number
+                - turn_status
+                - error
+                - turn_created_at
+            properties:
+                session_id:
+                    type: string
+                    format: uuid
+                turn_id:
+                    type: string
+                    format: uuid
+                turn_sequence_number:
+                    type: integer
+                turn_status:
+                    type: string
+                    enum:
+                        - failed
+                error:
+                    type: object
+                    required:
+                        - code
+                        - message
+                    properties:
+                        code:
+                            type: string
+                            enum:
+                                - agent_error
+                                - timeout
+                                - context_too_large
+                                - rate_limited
+                        message:
+                            type: string
+                turn_created_at:
+                    type: string
+                    format: date-time
+                turn_completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+        SessionTurnFailedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/SessionTurnFailedData'
+                    event_type:
+                        const: session.turn.failed
+                  type: object
+        SessionExpiredData:
+            type: object
+            required:
+                - session_id
+                - meeting_id
+                - expired_at
+                - turn_count
+            properties:
+                session_id:
+                    type: string
+                    format: uuid
+                meeting_id:
+                    type: string
+                    format: uuid
+                expired_at:
+                    type: string
+                    format: date-time
+                turn_count:
+                    type: integer
+        SessionExpiredPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/SessionExpiredData'
+                    event_type:
+                        const: session.expired
                   type: object
