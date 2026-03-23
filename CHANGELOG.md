@@ -6,6 +6,27 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.7] - 2026-03-20
+
+### Added
+
+- **Chat Session API** — full support for asynchronous, turn-based AI chat sessions scoped to meetings:
+  - `createChatSession()` on `PartnerUserClient` — create a new session and submit the first user message (`chat:write`)
+  - `getChatSessions()` on `PartnerUserClient` — list sessions with optional `meeting_id`/`status` filters and pagination (`chat:read`)
+  - `getChatSession()` on `PartnerUserClient` — retrieve a session with its turns; supports `include: 'undelivered' | 'all_turns'` (`chat:read`)
+  - `sendChatMessage()` on `PartnerUserClient` — enqueue the next user message turn; returns queue position (`chat:write`)
+- **New Chat models** exported from the root package:
+  - `ChatSession`, `ChatSessionStatus`
+  - `ChatTurn`, `ChatTurnRole`, `ChatTurnStatus`
+  - `ChatAgentMetadata`, `ChatToolCall`, `ChatTokenUsage`, `ChatTurnError`
+  - `CreateChatSessionRequest`, `GetChatSessionParams`, `ChatSessionListParams`, `ChatSessionListResponse`
+  - `SendChatMessageRequest`, `SendChatMessageResponse`, `ChatTurnListResponse`
+- **New webhook events** — `WebhookEventHandler.on()` now accepts three additional event types:
+  - `session.turn.completed` — fired when the agent finishes processing a turn; payload typed as `SessionTurnCompletedPayload`
+  - `session.turn.failed` — fired when the agent fails to process a turn; payload typed as `SessionTurnFailedPayload`
+  - `session.expired` — fired when a session expires due to inactivity; payload typed as `SessionExpiredPayload`
+- `WEBHOOK_EVENTS.SESSION_EXPIRED`, `WEBHOOK_EVENTS.SESSION_TURN_COMPLETED`, `WEBHOOK_EVENTS.SESSION_TURN_FAILED` constants
+
 ## [1.4.6] - 2026-03-13
 
 ### Added

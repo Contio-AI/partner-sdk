@@ -26,6 +26,9 @@ export {
   MeetingUpdatedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
+  SessionExpiredPayload,
+  SessionTurnCompletedPayload,
+  SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
   WorkflowAssignmentCreatedPayload,
   // Data types (event-specific data)
@@ -44,6 +47,9 @@ export {
   ParticipantAddedData,
   ParticipantRemovedData,
   ParticipantInfo,
+  SessionExpiredData,
+  SessionTurnCompletedData,
+  SessionTurnFailedData,
   UserConnectionRevokedData,
   WorkflowAssignmentCreatedData,
   // Shared types
@@ -68,6 +74,9 @@ import type {
   MeetingUpdatedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
+  SessionExpiredPayload,
+  SessionTurnCompletedPayload,
+  SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
   WorkflowAssignmentCreatedPayload,
 } from '../generated/webhook-types';
@@ -90,6 +99,9 @@ export type ContioWebhookEvent =
   | MeetingUpdatedPayload
   | ParticipantAddedPayload
   | ParticipantRemovedPayload
+  | SessionExpiredPayload
+  | SessionTurnCompletedPayload
+  | SessionTurnFailedPayload
   | UserConnectionRevokedPayload
   | WorkflowAssignmentCreatedPayload;
 
@@ -114,6 +126,9 @@ export const WEBHOOK_EVENTS = {
   MEETING_UPDATED: 'meeting.updated',
   PARTICIPANT_ADDED: 'participant.added',
   PARTICIPANT_REMOVED: 'participant.removed',
+  SESSION_EXPIRED: 'session.expired',
+  SESSION_TURN_COMPLETED: 'session.turn.completed',
+  SESSION_TURN_FAILED: 'session.turn.failed',
 } as const;
 
 /**
