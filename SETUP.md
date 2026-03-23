@@ -128,6 +128,7 @@ If you need to test an unreleased SDK version, you can build from a release bran
    - Partners can test the release branch using the instructions above
    - Gather feedback and make adjustments as needed
    - Verify all tests pass
+   - Build and verify typedoc generation: `npm run docs`
 
 4. **Merge to main** when ready for release:
    ```bash
