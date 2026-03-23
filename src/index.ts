@@ -17,7 +17,8 @@ export { ApiKeyClient } from './auth/apiKey';
 // Export API clients
 export { PartnerUserClient } from './client/user';
 export { PartnerAdminClient } from './client/admin';
-export { BaseClient, ClientConfig, ContioAPIError, RequestOptions, TIMEZONE_HEADER } from './client/base';
+export { BaseClient, ContioAPIError, TIMEZONE_HEADER } from './client/base';
+export type { ClientConfig, RequestOptions } from './client/base';
 
 // Export all models
 export * from './models';

@@ -4,8 +4,9 @@
 
 import { SSOEntryUrlOptions, SSOTarget, buildMeetingTarget } from './models';
 
-// Re-export types for convenience
-export { SSOTarget, SSOEntryUrlOptions, buildMeetingTarget };
+// Re-export types and helpers for convenience
+export type { SSOTarget, SSOEntryUrlOptions };
+export { buildMeetingTarget };
 
 /**
  * Build the SSO entry URL for a partner
