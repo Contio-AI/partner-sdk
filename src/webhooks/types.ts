@@ -10,7 +10,7 @@
  */
 
 // Re-export all generated types from AsyncAPI spec
-export {
+export type {
   // Payload types (full webhook envelope)
   ActionItemCompletedPayload,
   ActionItemCreatedPayload,
@@ -54,10 +54,12 @@ export {
   WorkflowAssignmentCreatedData,
   // Shared types
   WebhookUserContext,
-  // Event type constants
-  WEBHOOK_EVENT_TYPES,
+  // Event type union
   WebhookEventType,
 } from '../generated/webhook-types';
+
+// Re-export value constants
+export { WEBHOOK_EVENT_TYPES } from '../generated/webhook-types';
 
 import type {
   ActionItemCompletedPayload,
