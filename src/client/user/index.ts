@@ -44,6 +44,7 @@ import {
   ChatSession,
   ChatSessionListParams,
   ChatSessionListResponse,
+  ChatTurn,
   CreateChatSessionRequest,
   GetChatSessionParams,
   SendChatMessageRequest,
@@ -883,6 +884,31 @@ export class PartnerUserClient extends BaseClient {
    */
   async sendChatMessage(sessionId: string, data: SendChatMessageRequest, options?: RequestOptions): Promise<SendChatMessageResponse> {
     return chat.sendMessage(this.http, sessionId, data, options);
+  }
+
+  /**
+   * Retrieve a specific turn by ID within a session.
+   *
+   * This is useful when a `turn_id` is received via webhook and the partner
+   * wants to fetch only that turn instead of the full session history.
+   *
+   * Requires the `chat:read` OAuth scope.
+   *
+   * @param sessionId - The session ID that contains the turn
+   * @param turnId - The turn ID to retrieve
+   * @param options - Optional request options
+   * @returns The requested turn with full details
+   * @throws {ContioAPIError} If the session or turn is not found
+   *
+   * @example
+   * ```typescript
+   * // Fetch a specific turn after receiving a webhook with turn_id
+   * const turn = await user.getChatTurn('session-uuid', 'turn-uuid');
+   * console.log(`[${turn.role}] ${turn.content}`);
+   * ```
+   */
+  async getChatTurn(sessionId: string, turnId: string, options?: RequestOptions): Promise<ChatTurn> {
+    return chat.getTurn(this.http, sessionId, turnId, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

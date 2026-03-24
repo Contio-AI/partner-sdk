@@ -27,8 +27,84 @@ describe('PartnerUserClient › Chat Sessions', () => {
     ctx.mockAxios.reset();
   });
 
-  // ── Shared fixtures ──────────────────────────────────────────────────────────
+  // ── Shared fixtures (RAW API responses) ──────────────────────────────────────
+  // These mirror what the Partner API actually returns (transport layer).
+  // The SDK mapping functions transform these into clean domain models.
 
+  /** Raw turn as returned by the API */
+  interface RawTurn {
+    id: string;
+    session_id: string;
+    sequence_number?: number | null;
+    role: string;
+    content: string;
+    status: string;
+    error?: { code: string; message: string } | null;
+    agent_metadata?: {
+      tool_calls?: Array<{ name: string; status: string }>;
+      referenced_documents?: string[];
+      model?: string;
+      token_usage?: { prompt_tokens: number; completion_tokens: number };
+    } | null;
+    created_at: string;
+    completed_at?: string | null;
+  }
+
+  const rawUserTurn: RawTurn = {
+    id: 'turn-001',
+    session_id: 'session-abc',
+    sequence_number: 1,
+    role: 'user',
+    content: 'Summarize the key decisions from this meeting.',
+    status: 'queued',
+    created_at: '2026-03-20T10:00:00Z',
+    completed_at: null,
+  };
+
+  const rawAgentTurn: RawTurn = {
+    id: 'turn-002',
+    session_id: 'session-abc',
+    sequence_number: 2,
+    role: 'agent',
+    content: 'The key decisions were: 1. Launch Q2. 2. Hire frontend engineer.',
+    status: 'completed',
+    agent_metadata: {
+      tool_calls: [{ name: 'search_meeting_notes', status: 'success' }],
+      referenced_documents: ['doc-1'],
+      model: 'gpt-4o',
+      token_usage: { prompt_tokens: 512, completion_tokens: 128 },
+    },
+    created_at: '2026-03-20T10:00:05Z',
+    completed_at: '2026-03-20T10:00:10Z',
+  };
+
+  /** Raw POST /sessions response */
+  const rawCreateSessionResponse = {
+    id: 'session-abc',
+    meeting_id: 'meeting-123',
+    status: 'active',
+    metadata: { partner_ref: 'crm-case-4821' },
+    created_at: '2026-03-20T10:00:00Z',
+    initial_turn: rawUserTurn,
+  };
+
+  /** Raw GET /sessions/:id response */
+  const rawGetSessionResponse = {
+    session: {
+      id: 'session-abc',
+      meeting_id: 'meeting-123',
+      status: 'active',
+      title: null,
+      turn_count: 2,
+      metadata: { partner_ref: 'crm-case-4821' },
+      created_at: '2026-03-20T10:00:00Z',
+      updated_at: '2026-03-20T10:00:00Z',
+    },
+    turns: [rawUserTurn, rawAgentTurn],
+    turn_pagination: { total: 2, offset: 0, limit: 50, has_more: false },
+  };
+
+  // Domain model fixtures (for tests that don't go through HTTP layer)
   const mockUserTurn: ChatTurn = {
     id: 'turn-001',
     session_id: 'session-abc',
@@ -57,6 +133,7 @@ describe('PartnerUserClient › Chat Sessions', () => {
     completed_at: '2026-03-20T10:00:10Z',
   };
 
+  // Keep these for list/send tests that don't use mapping
   const mockSession: ChatSession = {
     id: 'session-abc',
     meeting_id: 'meeting-123',
@@ -68,23 +145,12 @@ describe('PartnerUserClient › Chat Sessions', () => {
     current_turn: mockUserTurn,
   };
 
-  const mockSessionWithTurns: ChatSession = {
-    ...mockSession,
-    turn_count: 2,
-    current_turn: undefined,
-    turns: {
-      items: [mockUserTurn, mockAgentTurn],
-      total: 2,
-      limit: 50,
-      offset: 0,
-    },
-  };
-
   // ── createChatSession ────────────────────────────────────────────────────────
 
   describe('createChatSession', () => {
     it('should POST /sessions and return the new session with current_turn', async () => {
-      ctx.mockAxios.onPost('/sessions').reply(201, mockSession);
+      // Mock returns raw API response; SDK maps it to domain model
+      ctx.mockAxios.onPost('/sessions').reply(201, rawCreateSessionResponse);
 
       const session = await ctx.userClient.createChatSession({
         meeting_id: 'meeting-123',
@@ -106,7 +172,7 @@ describe('PartnerUserClient › Chat Sessions', () => {
         expect(body.meeting_id).toBe('meeting-123');
         expect(body.message).toBe('Hello');
         expect(body.context_document_ids).toEqual(['doc-1', 'doc-2']);
-        return [201, mockSession];
+        return [201, rawCreateSessionResponse];
       });
 
       await ctx.userClient.createChatSession({
@@ -121,7 +187,7 @@ describe('PartnerUserClient › Chat Sessions', () => {
         const body = JSON.parse(config.data);
         expect(body.context_document_ids).toBeUndefined();
         expect(body.metadata).toBeUndefined();
-        return [201, { ...mockSession, metadata: undefined }];
+        return [201, { ...rawCreateSessionResponse, metadata: undefined }];
       });
 
       const session = await ctx.userClient.createChatSession({
@@ -188,7 +254,8 @@ describe('PartnerUserClient › Chat Sessions', () => {
 
   describe('getChatSession', () => {
     it('should GET /sessions/:id and return session with turns', async () => {
-      ctx.mockAxios.onGet('/sessions/session-abc').reply(200, mockSessionWithTurns);
+      // Mock returns raw API response with { session, turns, turn_pagination }
+      ctx.mockAxios.onGet('/sessions/session-abc').reply(200, rawGetSessionResponse);
 
       const session = await ctx.userClient.getChatSession('session-abc');
 
@@ -200,7 +267,7 @@ describe('PartnerUserClient › Chat Sessions', () => {
     it('should pass include=all_turns as query param', async () => {
       ctx.mockAxios.onGet('/sessions/session-abc').reply((config) => {
         expect(config.params.include).toBe('all_turns');
-        return [200, mockSessionWithTurns];
+        return [200, rawGetSessionResponse];
       });
 
       await ctx.userClient.getChatSession('session-abc', { include: 'all_turns' });
@@ -209,7 +276,7 @@ describe('PartnerUserClient › Chat Sessions', () => {
     it('should pass include=undelivered as query param', async () => {
       ctx.mockAxios.onGet('/sessions/session-abc').reply((config) => {
         expect(config.params.include).toBe('undelivered');
-        return [200, mockSessionWithTurns];
+        return [200, rawGetSessionResponse];
       });
 
       await ctx.userClient.getChatSession('session-abc', { include: 'undelivered' });
@@ -219,14 +286,14 @@ describe('PartnerUserClient › Chat Sessions', () => {
       ctx.mockAxios.onGet('/sessions/session-abc').reply((config) => {
         expect(config.params.turn_limit).toBe(5);
         expect(config.params.turn_offset).toBe(10);
-        return [200, mockSessionWithTurns];
+        return [200, rawGetSessionResponse];
       });
 
       await ctx.userClient.getChatSession('session-abc', { turn_limit: 5, turn_offset: 10 });
     });
 
     it('should expose agent_metadata on agent turns', async () => {
-      ctx.mockAxios.onGet('/sessions/session-abc').reply(200, mockSessionWithTurns);
+      ctx.mockAxios.onGet('/sessions/session-abc').reply(200, rawGetSessionResponse);
 
       const session = await ctx.userClient.getChatSession('session-abc');
       const agentTurn = session.turns!.items[1];
@@ -239,8 +306,8 @@ describe('PartnerUserClient › Chat Sessions', () => {
 
     it('should handle a session with expired status', async () => {
       ctx.mockAxios.onGet('/sessions/session-abc').reply(200, {
-        ...mockSessionWithTurns,
-        status: 'expired',
+        ...rawGetSessionResponse,
+        session: { ...rawGetSessionResponse.session, status: 'expired' },
       });
 
       const session = await ctx.userClient.getChatSession('session-abc');
@@ -313,6 +380,62 @@ describe('PartnerUserClient › Chat Sessions', () => {
 
       expect(result.position).toBe(3);
       expect(result.queued_turns).toBe(3);
+    });
+  });
+
+  // ── getChatTurn ─────────────────────────────────────────────────────────────
+
+  describe('getChatTurn', () => {
+    it('should GET /sessions/:sessionId/turns/:turnId and return the turn', async () => {
+      ctx.mockAxios.onGet('/sessions/session-abc/turns/turn-001').reply(200, { turn: mockUserTurn });
+
+      const turn = await ctx.userClient.getChatTurn('session-abc', 'turn-001');
+
+      expect(turn.id).toBe('turn-001');
+      expect(turn.session_id).toBe('session-abc');
+      expect(turn.role).toBe('user');
+      expect(turn.content).toBe('Summarize the key decisions from this meeting.');
+      expect(turn.status).toBe('queued');
+    });
+
+    it('should use the correct URL with session and turn IDs', async () => {
+      ctx.mockAxios.onGet('/sessions/session-xyz/turns/turn-999').reply(200, { turn: mockUserTurn });
+
+      await ctx.userClient.getChatTurn('session-xyz', 'turn-999');
+
+      expect(ctx.mockAxios.history.get).toHaveLength(1);
+      expect(ctx.mockAxios.history.get[0].url).toBe('/sessions/session-xyz/turns/turn-999');
+    });
+
+    it('should return an agent turn with metadata', async () => {
+      ctx.mockAxios.onGet('/sessions/session-abc/turns/turn-002').reply(200, { turn: mockAgentTurn });
+
+      const turn = await ctx.userClient.getChatTurn('session-abc', 'turn-002');
+
+      expect(turn.role).toBe('agent');
+      expect(turn.status).toBe('completed');
+      expect(turn.agent_metadata).toBeDefined();
+      expect(turn.agent_metadata!.model).toBe('gpt-4o');
+      expect(turn.agent_metadata!.tool_calls[0].name).toBe('search_meeting_notes');
+      expect(turn.agent_metadata!.token_usage.prompt_tokens).toBe(512);
+      expect(turn.agent_metadata!.token_usage.completion_tokens).toBe(128);
+    });
+
+    it('should return a turn with completed_at timestamp', async () => {
+      ctx.mockAxios.onGet('/sessions/session-abc/turns/turn-002').reply(200, { turn: mockAgentTurn });
+
+      const turn = await ctx.userClient.getChatTurn('session-abc', 'turn-002');
+
+      expect(turn.created_at).toBe('2026-03-20T10:00:05Z');
+      expect(turn.completed_at).toBe('2026-03-20T10:00:10Z');
+    });
+
+    it('should return a turn with null completed_at when still processing', async () => {
+      ctx.mockAxios.onGet('/sessions/session-abc/turns/turn-001').reply(200, { turn: mockUserTurn });
+
+      const turn = await ctx.userClient.getChatTurn('session-abc', 'turn-001');
+
+      expect(turn.completed_at).toBeNull();
     });
   });
 });

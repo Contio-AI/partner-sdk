@@ -90,12 +90,15 @@ export interface ChatTurnListResponse {
 }
 
 /**
- * A chat session between a partner and the Contio AI agent, scoped to a meeting.
+ * A chat session between a partner and the Contio AI agent.
+ * `meeting_id` is optional — sessions can be created without a meeting context.
  */
 export interface ChatSession {
   id: string;
-  meeting_id: string;
+  meeting_id?: string | null;
   status: ChatSessionStatus;
+  /** AI-generated or partner-supplied session title */
+  title?: string | null;
   /** Total number of turns (user + agent) in this session */
   turn_count: number;
   /** Partner-supplied arbitrary key-value metadata */
@@ -128,7 +131,8 @@ export interface ChatSessionListResponse {
 
 /** Request body for creating a new session (`POST /sessions`) */
 export interface CreateChatSessionRequest {
-  meeting_id: string;
+  /** Optional — omit to create a session without a meeting context. */
+  meeting_id?: string;
   message: string;
   context_document_ids?: string[];
   metadata?: Record<string, string>;
@@ -154,5 +158,10 @@ export interface SendChatMessageResponse {
   position: number;
   /** Total number of turns waiting to be processed */
   queued_turns: number;
+}
+
+/** Response body for get turn (`GET /sessions/:id/turns/:turn_id`) */
+export interface GetTurnResponse {
+  turn: ChatTurn;
 }
 
