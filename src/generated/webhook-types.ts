@@ -319,12 +319,12 @@ export interface SessionTurnCompletedData {
   'session_id': string;
   'turn_id': string;
   'session_status': AnonymousSchema_113;
-  'turn_sequence_number': number;
+  'sequence_number': number;
   'turn_role': AnonymousSchema_115;
   'turn_status': AnonymousSchema_116;
   'turn_content': string;
   'turn_created_at': string;
-  'turn_completed_at'?: string;
+  'completed_at'?: string;
   'agent_metadata'?: AnonymousSchema_120;
   'additionalProperties'?: Record<string, unknown>;
 }
@@ -370,11 +370,11 @@ export interface SessionTurnFailedPayload {
 export interface SessionTurnFailedData {
   'session_id': string;
   'turn_id': string;
-  'turn_sequence_number': number;
+  'sequence_number': number;
   'turn_status': AnonymousSchema_136;
   'error': AnonymousSchema_137;
   'turn_created_at': string;
-  'turn_completed_at'?: string;
+  'completed_at'?: string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
