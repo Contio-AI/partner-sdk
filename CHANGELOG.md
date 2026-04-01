@@ -6,6 +6,68 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-04-03
+
+### Added
+
+- **Toolkits API** — declarative bundles of templates, next steps, and action buttons that can be managed and deployed as a unit:
+  - **Admin (API key) endpoints** on `PartnerAdminClient`:
+    - `createToolkit()`, `getToolkits()`, `getToolkit()`, `updateToolkit()`, `deleteToolkit()`
+  - **User (OAuth) endpoints** on `PartnerUserClient`:
+    - `getToolkits()` / `getToolkit()` — browse available toolkits with installation status
+    - `installToolkit()` — install a toolkit into the user's workspace (provisions all manifest entities)
+    - `uninstallToolkit()` — remove a toolkit and its provisioned entities from the workspace
+- **Templates API** — reusable meeting structures with associated next steps:
+  - **Admin endpoints** on `PartnerAdminClient`:
+    - `createTemplate()`, `getTemplates()`, `getTemplate()`, `updateTemplate()`, `deleteTemplate()`
+    - `getTemplateNextSteps()`, `addTemplateNextStep()`, `updateTemplateNextStep()`, `removeTemplateNextStep()`
+  - **User endpoints** on `PartnerUserClient`:
+    - `getMeetingTemplates()` / `getMeetingTemplate()` — list and retrieve templates with nested next steps and action buttons
+- **Next Steps API** — AI-powered post-meeting actions:
+  - **Admin endpoints** on `PartnerAdminClient`:
+    - `createNextStep()`, `getNextSteps()`, `getNextStep()`, `updateNextStep()`, `deleteNextStep()`
+    - `getNextStepActionButtons()`, `addNextStepActionButton()`, `updateNextStepActionButton()`, `removeNextStepActionButton()`
+  - **User endpoints** on `PartnerUserClient`:
+    - `getMeetingNextSteps()` — list next steps for a meeting
+    - `executeNextStep()` — trigger AI execution of a next step; returns a `result_id` for polling
+    - `getNextStepResult()` — retrieve the execution result
+- **Action Buttons API** — delivery mechanisms (email, webhook, redirect, etc.) attached to next steps:
+  - **Admin endpoints** on `PartnerAdminClient`:
+    - `createActionButton()`, `getActionButtons()`, `getActionButton()`, `updateActionButton()`, `deleteActionButton()`
+  - **User endpoints** on `PartnerUserClient`:
+    - `getMeetingActionButtons()` — list action buttons available for a meeting
+    - `triggerActionButton()` — execute a button's action; may return a `redirect_url`
+- **New models** exported from the root package:
+  - Toolkit: `Toolkit`, `ToolkitListParams`, `ToolkitListResponse`, `CreateToolkitRequest`, `UpdateToolkitRequest`, `ToolkitWithInstallation`, `ToolkitWithInstallationListResponse`, `ToolkitInstallation`
+  - Template: `Template`, `TemplateListParams`, `TemplateListResponse`, `CreateTemplateRequest`, `UpdateTemplateRequest`, `TemplateNextStep`, `TemplateNextStepListParams`, `TemplateNextStepListResponse`, `AddTemplateNextStepRequest`, `UpdateTemplateNextStepRequest`
+  - Next Step: `NextStep`, `NextStepListParams`, `NextStepListResponse`, `CreateNextStepRequest`, `UpdateNextStepRequest`, `NextStepActionButton`, `NextStepActionButtonListParams`, `NextStepActionButtonListResponse`, `AddNextStepActionButtonRequest`, `UpdateNextStepActionButtonRequest`
+  - Action Button: `ActionButton`, `ActionButtonListParams`, `ActionButtonListResponse`, `CreateActionButtonRequest`, `UpdateActionButtonRequest`
+  - Meeting-scoped: `MeetingNextStep`, `MeetingNextStepListParams`, `MeetingNextStepListResponse`, `MeetingActionButton`, `MeetingActionButtonListParams`, `MeetingActionButtonListResponse`, `ExecuteNextStepRequest`, `ExecuteNextStepResponse`, `TriggerActionButtonRequest`, `TriggerActionButtonResponse`, `NextStepResult`
+  - User templates: `UserMeetingTemplate`, `UserMeetingTemplateListParams`, `UserMeetingTemplateListResponse`, `UserTemplateNextStep`, `UserTemplateActionButton`
+- **New webhook events** — `WebhookEventHandler.on()` now accepts seven additional event types:
+  - `action_button.triggered` — fired when a user triggers an action button; payload typed as `ActionButtonTriggeredPayload`
+  - `meeting.context.created` — fired when context data is uploaded to a meeting; payload typed as `MeetingContextCreatedPayload`
+  - `meeting.context.deleted` — fired when context data is removed from a meeting; payload typed as `MeetingContextDeletedPayload`
+  - `meeting.context.processed` — fired when uploaded context data finishes preprocessing (includes sanitization report); payload typed as `MeetingContextProcessedPayload`
+  - `meeting_template.applied` — fired when a template is applied to a meeting; payload typed as `MeetingTemplateAppliedPayload`
+  - `next_step.completed` — fired when a Next Step execution completes; payload typed as `NextStepCompletedPayload`
+  - `workflow.assignment.created` — fired when a workflow assignment is created; payload typed as `WorkflowAssignmentCreatedPayload`
+- New `WEBHOOK_EVENTS` constants: `ACTION_BUTTON_TRIGGERED`, `MEETING_CONTEXT_CREATED`, `MEETING_CONTEXT_DELETED`, `MEETING_CONTEXT_PROCESSED`, `MEETING_TEMPLATE_APPLIED`, `NEXT_STEP_COMPLETED`, `WORKFLOW_ASSIGNMENT_CREATED`
+- **Automated webhook spec sync** — new CI workflow (`.github/workflows/sync-webhook-spec.yml`) that checks for upstream AsyncAPI spec updates on weekdays and opens a PR with regenerated types
+
+### Changed
+
+- Webhook types are now generated from AsyncAPI spec **v1.5.0** (previously v1.4.0)
+- `SessionTurnCompletedData` and `SessionTurnFailedData` schemas simplified — several deprecated/verbose fields removed in favour of flattened top-level properties
+- `SessionExpiredData.meeting_id` is now nullable (`string | null`)
+- `assignee_id` fields on `ActionItemCompletedData` and `ActionItemCreatedData` are now nullable (`string | null`)
+- `meeting_id` fields on `AgendaItemCreatedData`, `AgendaItemDeletedData`, and `AgendaItemUpdatedData` are now nullable
+- `ParticipantInfo.guest_email` and `ParticipantInfo.user_id` are now nullable
+- `MeetingUpdatedData.scheduled_start` is now nullable
+- `ActionItemCompletedData`, `ActionItemCreatedData`, and `ParticipantAddedData` now include a `workspace_id` field
+- `ActionItemUpdatedData` now includes an `assignee_id` field
+- `ParticipantRemovedData` now includes `workspace_id` and nullable `user_id` fields
+
 ## [1.4.7] - 2026-03-20
 
 ### Added
@@ -189,6 +251,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.5.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.7...v1.5.0
+[1.4.7]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.6...v1.4.7
+[1.4.6]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.3...v1.4.5
 [1.4.3]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.1...v1.4.2
