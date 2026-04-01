@@ -49,6 +49,21 @@ import {
   GetChatSessionParams,
   SendChatMessageRequest,
   SendChatMessageResponse,
+  // Toolkit-related imports
+  ToolkitListParams,
+  ToolkitWithInstallation,
+  ToolkitWithInstallationListResponse,
+  ToolkitInstallation,
+  // Next Steps & Action Buttons imports
+  MeetingNextStepListParams,
+  MeetingNextStepListResponse,
+  MeetingActionButtonListParams,
+  MeetingActionButtonListResponse,
+  ExecuteNextStepRequest,
+  ExecuteNextStepResponse,
+  TriggerActionButtonRequest,
+  TriggerActionButtonResponse,
+  NextStepResult,
 } from '../../models';
 
 import * as meetings from './meetings';
@@ -57,6 +72,8 @@ import * as calendar from './calendar';
 import * as context from './context';
 import * as profile from './profile';
 import * as chat from './chat';
+import * as userToolkits from './toolkits';
+import * as userTemplates from './templates';
 
 /**
  * Partner User API client for OAuth-authenticated user endpoints.
@@ -332,6 +349,136 @@ export class PartnerUserClient extends BaseClient {
    */
   async deleteAgendaItem(meetingId: string, itemId: string, options?: RequestOptions): Promise<void> {
     return meetings.deleteAgendaItem(this.http, meetingId, itemId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Meeting Next Steps endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get next steps for a specific meeting.
+   *
+   * Returns the next steps associated with the meeting, including any
+   * available action buttons for each next step.
+   *
+   * @param meetingId - The meeting ID
+   * @param params - Optional pagination parameters
+   * @param options - Request options
+   * @returns Paginated list of next steps
+   * @throws {ContioAPIError} If the meeting is not found
+   *
+   * @example
+   * ```typescript
+   * const nextSteps = await user.getMeetingNextSteps('meeting-uuid');
+   * for (const step of nextSteps.items) {
+   *   console.log(`${step.name}: ${step.action_buttons?.length ?? 0} buttons`);
+   * }
+   * ```
+   */
+  async getMeetingNextSteps(
+    meetingId: string,
+    params?: MeetingNextStepListParams,
+    options?: RequestOptions,
+  ): Promise<MeetingNextStepListResponse> {
+    return meetings.getMeetingNextSteps(this.http, meetingId, params, options);
+  }
+
+  /**
+   * Execute a next step for a meeting.
+   *
+   * Triggers the AI-powered execution of a next step, which may generate
+   * content based on the meeting transcript and the step's AI prompt.
+   *
+   * @param meetingId - The meeting ID
+   * @param nextStepId - The next step ID to execute
+   * @param data - Optional execution parameters
+   * @param options - Request options
+   * @returns Execution response with result ID for tracking
+   * @throws {ContioAPIError} If the meeting or next step is not found
+   *
+   * @example
+   * ```typescript
+   * const result = await user.executeNextStep('meeting-uuid', 'step-uuid');
+   * console.log(`Execution started: ${result.result_id}`);
+   *
+   * // Poll for result
+   * const finalResult = await user.getNextStepResult(result.result_id);
+   * console.log(finalResult.content);
+   * ```
+   */
+  async executeNextStep(
+    meetingId: string,
+    nextStepId: string,
+    data?: ExecuteNextStepRequest,
+    options?: RequestOptions,
+  ): Promise<ExecuteNextStepResponse> {
+    return meetings.executeNextStep(this.http, meetingId, nextStepId, data, options);
+  }
+
+  /**
+   * Get the result of a next step execution.
+   *
+   * @param resultId - The result ID from executeNextStep
+   * @param options - Request options
+   * @returns The next step execution result
+   * @throws {ContioAPIError} If the result is not found
+   */
+  async getNextStepResult(resultId: string, options?: RequestOptions): Promise<NextStepResult> {
+    return meetings.getNextStepResult(this.http, resultId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Meeting Action Button endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get action buttons available for a meeting.
+   *
+   * Returns action buttons that can be triggered for the meeting,
+   * typically associated with next steps.
+   *
+   * @param meetingId - The meeting ID
+   * @param params - Optional pagination parameters
+   * @param options - Request options
+   * @returns Paginated list of action buttons
+   * @throws {ContioAPIError} If the meeting is not found
+   */
+  async getMeetingActionButtons(
+    meetingId: string,
+    params?: MeetingActionButtonListParams,
+    options?: RequestOptions,
+  ): Promise<MeetingActionButtonListResponse> {
+    return meetings.getMeetingActionButtons(this.http, meetingId, params, options);
+  }
+
+  /**
+   * Trigger an action button for a meeting.
+   *
+   * Executes the action associated with the button, which may send
+   * an email, create a document, trigger a webhook, or perform other actions.
+   *
+   * @param meetingId - The meeting ID
+   * @param buttonId - The action button ID to trigger
+   * @param data - Optional trigger parameters
+   * @param options - Request options
+   * @returns Trigger response with result information
+   * @throws {ContioAPIError} If the meeting or button is not found
+   *
+   * @example
+   * ```typescript
+   * const result = await user.triggerActionButton('meeting-uuid', 'button-uuid');
+   * if (result.redirect_url) {
+   *   window.open(result.redirect_url);
+   * }
+   * ```
+   */
+  async triggerActionButton(
+    meetingId: string,
+    buttonId: string,
+    data?: TriggerActionButtonRequest,
+    options?: RequestOptions,
+  ): Promise<TriggerActionButtonResponse> {
+    return meetings.triggerActionButton(this.http, meetingId, buttonId, data, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -909,6 +1056,133 @@ export class PartnerUserClient extends BaseClient {
    */
   async getChatTurn(sessionId: string, turnId: string, options?: RequestOptions): Promise<ChatTurn> {
     return chat.getTurn(this.http, sessionId, turnId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Toolkit endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get available toolkits with installation status.
+   *
+   * Returns toolkits that are active and available to install,
+   * along with installation status for the user's workspace.
+   *
+   * @param params - Optional pagination parameters
+   * @param options - Request options
+   * @returns Paginated list of toolkits with installation status
+   * @throws {ContioAPIError} If the request fails
+   *
+   * @example
+   * ```typescript
+   * const toolkits = await user.getToolkits({ limit: 10 });
+   * for (const t of toolkits.items) {
+   *   console.log(`${t.toolkit.name}: ${t.installation ? 'installed' : 'not installed'}`);
+   * }
+   * ```
+   */
+  async getToolkits(
+    params?: ToolkitListParams,
+    options?: RequestOptions,
+  ): Promise<ToolkitWithInstallationListResponse> {
+    return userToolkits.getToolkits(this.http, params, options);
+  }
+
+  /**
+   * Get a specific toolkit with installation status.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param options - Request options
+   * @returns The toolkit with installation status
+   * @throws {ContioAPIError} If the toolkit is not found
+   */
+  async getToolkit(toolkitId: string, options?: RequestOptions): Promise<ToolkitWithInstallation> {
+    return userToolkits.getToolkit(this.http, toolkitId, options);
+  }
+
+  /**
+   * Install a toolkit in the user's workspace.
+   *
+   * Creates all toolkit entities (templates, next steps, action buttons)
+   * in the user's workspace based on the toolkit manifest.
+   *
+   * @param toolkitId - The unique toolkit ID to install
+   * @param options - Request options
+   * @returns The installation record
+   * @throws {ContioAPIError} If the toolkit is not found or already installed
+   *
+   * @example
+   * ```typescript
+   * const installation = await user.installToolkit('toolkit-uuid');
+   * console.log(`Installed at ${installation.installed_at}`);
+   * ```
+   */
+  async installToolkit(toolkitId: string, options?: RequestOptions): Promise<ToolkitInstallation> {
+    return userToolkits.installToolkit(this.http, toolkitId, options);
+  }
+
+  /**
+   * Uninstall a toolkit from the user's workspace.
+   *
+   * Removes all toolkit-created entities from the user's workspace.
+   *
+   * @param toolkitId - The unique toolkit ID to uninstall
+   * @param options - Request options
+   * @throws {ContioAPIError} If the toolkit is not found or not installed
+   *
+   * @example
+   * ```typescript
+   * await user.uninstallToolkit('toolkit-uuid');
+   * console.log('Toolkit uninstalled');
+   * ```
+   */
+  async uninstallToolkit(toolkitId: string, options?: RequestOptions): Promise<void> {
+    return userToolkits.uninstallToolkit(this.http, toolkitId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Meeting Template endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get meeting templates available to the user.
+   *
+   * Returns templates that the user can use to create meetings,
+   * including associated next steps and action buttons.
+   *
+   * @param params - Optional pagination parameters
+   * @param options - Request options
+   * @returns Paginated list of meeting templates
+   * @throws {ContioAPIError} If the request fails
+   *
+   * @example
+   * ```typescript
+   * const templates = await user.getMeetingTemplates({ limit: 10 });
+   * for (const t of templates.items) {
+   *   console.log(`${t.name}: ${t.next_steps?.length ?? 0} next steps`);
+   * }
+   * ```
+   */
+  async getMeetingTemplates(
+    params?: userTemplates.UserMeetingTemplateListParams,
+    options?: RequestOptions,
+  ): Promise<userTemplates.UserMeetingTemplateListResponse> {
+    return userTemplates.getMeetingTemplates(this.http, params, options);
+  }
+
+  /**
+   * Get a specific meeting template.
+   *
+   * @param templateId - The unique template ID
+   * @param options - Request options
+   * @returns The meeting template with full details
+   * @throws {ContioAPIError} If the template is not found
+   */
+  async getMeetingTemplate(
+    templateId: string,
+    options?: RequestOptions,
+  ): Promise<userTemplates.UserMeetingTemplate> {
+    return userTemplates.getMeetingTemplate(this.http, templateId, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

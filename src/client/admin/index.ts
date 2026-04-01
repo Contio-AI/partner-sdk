@@ -38,6 +38,40 @@ import {
   PartnerIdPConfig,
   CreateIdPConfigRequest,
   UpdateIdPConfigRequest,
+  // Toolkit-related imports
+  Toolkit,
+  ToolkitListParams,
+  ToolkitListResponse,
+  CreateToolkitRequest,
+  UpdateToolkitRequest,
+  // Template-related imports
+  Template,
+  TemplateListParams,
+  TemplateListResponse,
+  CreateTemplateRequest,
+  UpdateTemplateRequest,
+  TemplateNextStep,
+  TemplateNextStepListParams,
+  TemplateNextStepListResponse,
+  AddTemplateNextStepRequest,
+  UpdateTemplateNextStepRequest,
+  // Next Step-related imports
+  NextStep,
+  NextStepListParams,
+  NextStepListResponse,
+  CreateNextStepRequest,
+  UpdateNextStepRequest,
+  NextStepActionButton,
+  NextStepActionButtonListParams,
+  NextStepActionButtonListResponse,
+  AddNextStepActionButtonRequest,
+  UpdateNextStepActionButtonRequest,
+  // Action Button-related imports
+  ActionButton,
+  ActionButtonListParams,
+  ActionButtonListResponse,
+  CreateActionButtonRequest,
+  UpdateActionButtonRequest,
 } from '../../models';
 
 import * as workflows from './workflows';
@@ -46,6 +80,10 @@ import * as webhooks from './webhooks';
 import * as connections from './connections';
 import * as credentials from './credentials';
 import * as idp from './idp';
+import * as toolkits from './toolkits';
+import * as templates from './templates';
+import * as nextSteps from './nextSteps';
+import * as actionButtons from './actionButtons';
 
 /**
  * Partner Admin API client for API key-authenticated admin endpoints.
@@ -645,5 +683,369 @@ export class PartnerAdminClient extends BaseClient {
    */
   async deleteIdPConfig(): Promise<void> {
     return idp.deleteIdPConfig(this.http);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Toolkit endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a new toolkit.
+   *
+   * Toolkits are collections of related entities (templates, next steps, action buttons)
+   * that can be installed and uninstalled as a unit.
+   *
+   * @param data - Toolkit creation data including name, slug, version, and manifest
+   * @returns The newly created toolkit
+   * @throws {ContioAPIError} If validation fails
+   */
+  async createToolkit(data: CreateToolkitRequest): Promise<Toolkit> {
+    return toolkits.createToolkit(this.http, data);
+  }
+
+  /**
+   * Get a paginated list of toolkits.
+   *
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of toolkits
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getToolkits(params?: ToolkitListParams): Promise<ToolkitListResponse> {
+    return toolkits.getToolkits(this.http, params);
+  }
+
+  /**
+   * Get a specific toolkit by ID.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @returns The toolkit with full details including manifest
+   * @throws {ContioAPIError} If the toolkit is not found
+   */
+  async getToolkit(toolkitId: string): Promise<Toolkit> {
+    return toolkits.getToolkit(this.http, toolkitId);
+  }
+
+  /**
+   * Update a toolkit.
+   *
+   * @param toolkitId - The unique toolkit ID to update
+   * @param data - Fields to update (name, description, version, is_active, manifest)
+   * @returns The updated toolkit
+   * @throws {ContioAPIError} If the toolkit is not found or validation fails
+   */
+  async updateToolkit(toolkitId: string, data: UpdateToolkitRequest): Promise<Toolkit> {
+    return toolkits.updateToolkit(this.http, toolkitId, data);
+  }
+
+  /**
+   * Delete a toolkit.
+   *
+   * @param toolkitId - The unique toolkit ID to delete
+   * @throws {ContioAPIError} If the toolkit is not found
+   */
+  async deleteToolkit(toolkitId: string): Promise<void> {
+    return toolkits.deleteToolkit(this.http, toolkitId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Template endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a new template.
+   *
+   * Templates define reusable meeting structures with associated next steps.
+   *
+   * @param data - Template creation data
+   * @returns The newly created template
+   * @throws {ContioAPIError} If validation fails
+   */
+  async createTemplate(data: CreateTemplateRequest): Promise<Template> {
+    return templates.createTemplate(this.http, data);
+  }
+
+  /**
+   * Get a paginated list of templates.
+   *
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of templates
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getTemplates(params?: TemplateListParams): Promise<TemplateListResponse> {
+    return templates.getTemplates(this.http, params);
+  }
+
+  /**
+   * Get a specific template by ID.
+   *
+   * @param templateId - The unique template ID
+   * @returns The template with full details
+   * @throws {ContioAPIError} If the template is not found
+   */
+  async getTemplate(templateId: string): Promise<Template> {
+    return templates.getTemplate(this.http, templateId);
+  }
+
+  /**
+   * Update a template.
+   *
+   * @param templateId - The unique template ID to update
+   * @param data - Fields to update
+   * @returns The updated template
+   * @throws {ContioAPIError} If the template is not found or validation fails
+   */
+  async updateTemplate(templateId: string, data: UpdateTemplateRequest): Promise<Template> {
+    return templates.updateTemplate(this.http, templateId, data);
+  }
+
+  /**
+   * Delete a template.
+   *
+   * @param templateId - The unique template ID to delete
+   * @throws {ContioAPIError} If the template is not found
+   */
+  async deleteTemplate(templateId: string): Promise<void> {
+    return templates.deleteTemplate(this.http, templateId);
+  }
+
+  /**
+   * Get next steps associated with a template.
+   *
+   * @param templateId - The unique template ID
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of template next steps
+   * @throws {ContioAPIError} If the template is not found
+   */
+  async getTemplateNextSteps(
+    templateId: string,
+    params?: TemplateNextStepListParams,
+  ): Promise<TemplateNextStepListResponse> {
+    return templates.getTemplateNextSteps(this.http, templateId, params);
+  }
+
+  /**
+   * Add a next step to a template.
+   *
+   * @param templateId - The unique template ID
+   * @param data - Next step association data
+   * @returns The template next step association
+   * @throws {ContioAPIError} If the template or next step is not found
+   */
+  async addTemplateNextStep(
+    templateId: string,
+    data: AddTemplateNextStepRequest,
+  ): Promise<TemplateNextStep> {
+    return templates.addTemplateNextStep(this.http, templateId, data);
+  }
+
+  /**
+   * Update a template next step association.
+   *
+   * @param templateId - The unique template ID
+   * @param nextStepId - The unique next step ID
+   * @param data - Fields to update (autopilot setting)
+   * @returns The updated template next step association
+   * @throws {ContioAPIError} If the association is not found
+   */
+  async updateTemplateNextStep(
+    templateId: string,
+    nextStepId: string,
+    data: UpdateTemplateNextStepRequest,
+  ): Promise<TemplateNextStep> {
+    return templates.updateTemplateNextStep(this.http, templateId, nextStepId, data);
+  }
+
+  /**
+   * Remove a next step from a template.
+   *
+   * @param templateId - The unique template ID
+   * @param nextStepId - The unique next step ID to remove
+   * @throws {ContioAPIError} If the association is not found
+   */
+  async removeTemplateNextStep(templateId: string, nextStepId: string): Promise<void> {
+    return templates.removeTemplateNextStep(this.http, templateId, nextStepId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Next Step endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a new next step.
+   *
+   * Next steps define actions that can be taken after a meeting.
+   *
+   * @param data - Next step creation data
+   * @returns The newly created next step
+   * @throws {ContioAPIError} If validation fails
+   */
+  async createNextStep(data: CreateNextStepRequest): Promise<NextStep> {
+    return nextSteps.createNextStep(this.http, data);
+  }
+
+  /**
+   * Get a paginated list of next steps.
+   *
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of next steps
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getNextSteps(params?: NextStepListParams): Promise<NextStepListResponse> {
+    return nextSteps.getNextSteps(this.http, params);
+  }
+
+  /**
+   * Get a specific next step by ID.
+   *
+   * @param nextStepId - The unique next step ID
+   * @returns The next step with full details
+   * @throws {ContioAPIError} If the next step is not found
+   */
+  async getNextStep(nextStepId: string): Promise<NextStep> {
+    return nextSteps.getNextStep(this.http, nextStepId);
+  }
+
+  /**
+   * Update a next step.
+   *
+   * @param nextStepId - The unique next step ID to update
+   * @param data - Fields to update
+   * @returns The updated next step
+   * @throws {ContioAPIError} If the next step is not found or validation fails
+   */
+  async updateNextStep(nextStepId: string, data: UpdateNextStepRequest): Promise<NextStep> {
+    return nextSteps.updateNextStep(this.http, nextStepId, data);
+  }
+
+  /**
+   * Delete a next step.
+   *
+   * @param nextStepId - The unique next step ID to delete
+   * @throws {ContioAPIError} If the next step is not found
+   */
+  async deleteNextStep(nextStepId: string): Promise<void> {
+    return nextSteps.deleteNextStep(this.http, nextStepId);
+  }
+
+  /**
+   * Get action buttons associated with a next step.
+   *
+   * @param nextStepId - The unique next step ID
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of next step action buttons
+   * @throws {ContioAPIError} If the next step is not found
+   */
+  async getNextStepActionButtons(
+    nextStepId: string,
+    params?: NextStepActionButtonListParams,
+  ): Promise<NextStepActionButtonListResponse> {
+    return nextSteps.getNextStepActionButtons(this.http, nextStepId, params);
+  }
+
+  /**
+   * Add an action button to a next step.
+   *
+   * @param nextStepId - The unique next step ID
+   * @param data - Action button association data
+   * @returns The next step action button association
+   * @throws {ContioAPIError} If the next step or action button is not found
+   */
+  async addNextStepActionButton(
+    nextStepId: string,
+    data: AddNextStepActionButtonRequest,
+  ): Promise<NextStepActionButton> {
+    return nextSteps.addNextStepActionButton(this.http, nextStepId, data);
+  }
+
+  /**
+   * Update a next step action button association.
+   *
+   * @param nextStepId - The unique next step ID
+   * @param actionButtonId - The unique action button ID
+   * @param data - Fields to update (is_default setting)
+   * @returns The updated next step action button association
+   * @throws {ContioAPIError} If the association is not found
+   */
+  async updateNextStepActionButton(
+    nextStepId: string,
+    actionButtonId: string,
+    data: UpdateNextStepActionButtonRequest,
+  ): Promise<NextStepActionButton> {
+    return nextSteps.updateNextStepActionButton(this.http, nextStepId, actionButtonId, data);
+  }
+
+  /**
+   * Remove an action button from a next step.
+   *
+   * @param nextStepId - The unique next step ID
+   * @param actionButtonId - The unique action button ID to remove
+   * @throws {ContioAPIError} If the association is not found
+   */
+  async removeNextStepActionButton(nextStepId: string, actionButtonId: string): Promise<void> {
+    return nextSteps.removeNextStepActionButton(this.http, nextStepId, actionButtonId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Action Button endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a new action button.
+   *
+   * Action buttons define delivery mechanisms for next step outputs.
+   *
+   * @param data - Action button creation data
+   * @returns The newly created action button
+   * @throws {ContioAPIError} If validation fails
+   */
+  async createActionButton(data: CreateActionButtonRequest): Promise<ActionButton> {
+    return actionButtons.createActionButton(this.http, data);
+  }
+
+  /**
+   * Get a paginated list of action buttons.
+   *
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of action buttons
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getActionButtons(params?: ActionButtonListParams): Promise<ActionButtonListResponse> {
+    return actionButtons.getActionButtons(this.http, params);
+  }
+
+  /**
+   * Get a specific action button by ID.
+   *
+   * @param actionButtonId - The unique action button ID
+   * @returns The action button with full details
+   * @throws {ContioAPIError} If the action button is not found
+   */
+  async getActionButton(actionButtonId: string): Promise<ActionButton> {
+    return actionButtons.getActionButton(this.http, actionButtonId);
+  }
+
+  /**
+   * Update an action button.
+   *
+   * @param actionButtonId - The unique action button ID to update
+   * @param data - Fields to update
+   * @returns The updated action button
+   * @throws {ContioAPIError} If the action button is not found or validation fails
+   */
+  async updateActionButton(
+    actionButtonId: string,
+    data: UpdateActionButtonRequest,
+  ): Promise<ActionButton> {
+    return actionButtons.updateActionButton(this.http, actionButtonId, data);
+  }
+
+  /**
+   * Delete an action button.
+   *
+   * @param actionButtonId - The unique action button ID to delete
+   * @throws {ContioAPIError} If the action button is not found
+   */
+  async deleteActionButton(actionButtonId: string): Promise<void> {
+    return actionButtons.deleteActionButton(this.http, actionButtonId);
   }
 }
