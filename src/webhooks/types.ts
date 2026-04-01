@@ -12,18 +12,24 @@
 // Re-export all generated types from AsyncAPI spec
 export type {
   // Payload types (full webhook envelope)
+  ActionButtonTriggeredPayload,
   ActionItemCompletedPayload,
   ActionItemCreatedPayload,
   ActionItemUpdatedPayload,
   AgendaItemCreatedPayload,
-  AgendaItemUpdatedPayload,
   AgendaItemDeletedPayload,
+  AgendaItemUpdatedPayload,
   CalendarEventCreatedPayload,
-  CalendarEventUpdatedPayload,
   CalendarEventDeletedPayload,
+  CalendarEventUpdatedPayload,
   MeetingCompletedPayload,
+  MeetingContextCreatedPayload,
+  MeetingContextDeletedPayload,
+  MeetingContextProcessedPayload,
   MeetingCreatedPayload,
+  MeetingTemplateAppliedPayload,
   MeetingUpdatedPayload,
+  NextStepCompletedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
   SessionExpiredPayload,
@@ -32,21 +38,26 @@ export type {
   UserConnectionRevokedPayload,
   WorkflowAssignmentCreatedPayload,
   // Data types (event-specific data)
+  ActionButtonTriggeredData,
   ActionItemCompletedData,
   ActionItemCreatedData,
   ActionItemUpdatedData,
   AgendaItemCreatedData,
-  AgendaItemUpdatedData,
   AgendaItemDeletedData,
+  AgendaItemUpdatedData,
   CalendarEventCreatedData,
-  CalendarEventUpdatedData,
   CalendarEventDeletedData,
+  CalendarEventUpdatedData,
   MeetingCompletedData,
+  MeetingContextCreatedData,
+  MeetingContextDeletedData,
+  MeetingContextProcessedData,
   MeetingCreatedData,
+  MeetingTemplateAppliedData,
   MeetingUpdatedData,
+  NextStepCompletedData,
   ParticipantAddedData,
   ParticipantRemovedData,
-  ParticipantInfo,
   SessionExpiredData,
   SessionTurnCompletedData,
   SessionTurnFailedData,
@@ -54,6 +65,7 @@ export type {
   WorkflowAssignmentCreatedData,
   // Shared types
   WebhookUserContext,
+  ParticipantInfo,
   // Event type union
   WebhookEventType,
 } from '../generated/webhook-types';
@@ -62,18 +74,24 @@ export type {
 export { WEBHOOK_EVENT_TYPES } from '../generated/webhook-types';
 
 import type {
+  ActionButtonTriggeredPayload,
   ActionItemCompletedPayload,
   ActionItemCreatedPayload,
   ActionItemUpdatedPayload,
   AgendaItemCreatedPayload,
-  AgendaItemUpdatedPayload,
   AgendaItemDeletedPayload,
+  AgendaItemUpdatedPayload,
   CalendarEventCreatedPayload,
-  CalendarEventUpdatedPayload,
   CalendarEventDeletedPayload,
+  CalendarEventUpdatedPayload,
   MeetingCompletedPayload,
+  MeetingContextCreatedPayload,
+  MeetingContextDeletedPayload,
+  MeetingContextProcessedPayload,
   MeetingCreatedPayload,
+  MeetingTemplateAppliedPayload,
   MeetingUpdatedPayload,
+  NextStepCompletedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
   SessionExpiredPayload,
@@ -87,18 +105,24 @@ import type {
  * Union type for all webhook events
  */
 export type ContioWebhookEvent =
+  | ActionButtonTriggeredPayload
   | ActionItemCompletedPayload
   | ActionItemCreatedPayload
   | ActionItemUpdatedPayload
   | AgendaItemCreatedPayload
-  | AgendaItemUpdatedPayload
   | AgendaItemDeletedPayload
+  | AgendaItemUpdatedPayload
   | CalendarEventCreatedPayload
-  | CalendarEventUpdatedPayload
   | CalendarEventDeletedPayload
+  | CalendarEventUpdatedPayload
   | MeetingCompletedPayload
+  | MeetingContextCreatedPayload
+  | MeetingContextDeletedPayload
+  | MeetingContextProcessedPayload
   | MeetingCreatedPayload
+  | MeetingTemplateAppliedPayload
   | MeetingUpdatedPayload
+  | NextStepCompletedPayload
   | ParticipantAddedPayload
   | ParticipantRemovedPayload
   | SessionExpiredPayload
@@ -112,25 +136,31 @@ export type ContioWebhookEvent =
  * @deprecated Use WEBHOOK_EVENT_TYPES array instead
  */
 export const WEBHOOK_EVENTS = {
-  WORKFLOW_ASSIGNMENT_CREATED: 'workflow.assignment.created',
-  ACTION_ITEM_UPDATED: 'action_item.updated',
-  ACTION_ITEM_CREATED: 'action_item.created',
+  ACTION_BUTTON_TRIGGERED: 'action_button.triggered',
   ACTION_ITEM_COMPLETED: 'action_item.completed',
+  ACTION_ITEM_CREATED: 'action_item.created',
+  ACTION_ITEM_UPDATED: 'action_item.updated',
   AGENDA_ITEM_CREATED: 'agenda_item.created',
-  AGENDA_ITEM_UPDATED: 'agenda_item.updated',
   AGENDA_ITEM_DELETED: 'agenda_item.deleted',
+  AGENDA_ITEM_UPDATED: 'agenda_item.updated',
   CALENDAR_EVENT_CREATED: 'calendar_event.created',
-  CALENDAR_EVENT_UPDATED: 'calendar_event.updated',
   CALENDAR_EVENT_DELETED: 'calendar_event.deleted',
-  USER_CONNECTION_REVOKED: 'user.connection.revoked',
+  CALENDAR_EVENT_UPDATED: 'calendar_event.updated',
   MEETING_COMPLETED: 'meeting.completed',
+  MEETING_CONTEXT_CREATED: 'meeting.context.created',
+  MEETING_CONTEXT_DELETED: 'meeting.context.deleted',
+  MEETING_CONTEXT_PROCESSED: 'meeting.context.processed',
   MEETING_CREATED: 'meeting.created',
   MEETING_UPDATED: 'meeting.updated',
+  MEETING_TEMPLATE_APPLIED: 'meeting_template.applied',
+  NEXT_STEP_COMPLETED: 'next_step.completed',
   PARTICIPANT_ADDED: 'participant.added',
   PARTICIPANT_REMOVED: 'participant.removed',
   SESSION_EXPIRED: 'session.expired',
   SESSION_TURN_COMPLETED: 'session.turn.completed',
   SESSION_TURN_FAILED: 'session.turn.failed',
+  USER_CONNECTION_REVOKED: 'user.connection.revoked',
+  WORKFLOW_ASSIGNMENT_CREATED: 'workflow.assignment.created',
 } as const;
 
 /**

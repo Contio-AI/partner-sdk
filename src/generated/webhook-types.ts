@@ -4,11 +4,39 @@
  * THIS FILE IS AUTO-GENERATED - DO NOT EDIT
  *
  * Source: specs/asyncapi/webhooks.yaml
- * Spec version: 1.4.0
- * Generated: 2026-03-20T20:37:23.346Z
+ * Spec version: 1.5.0
+ * Generated: 2026-04-01T21:35:30.949Z
  *
  * Regenerate: npm run gen-webhook-types
  */
+
+export interface ActionButtonTriggeredPayload {
+  'data': ActionButtonTriggeredData;
+  'event_id': string;
+  'event_type': 'action_button.triggered';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface ActionButtonTriggeredData {
+  'action_button_id': string;
+  'action_button_name': string;
+  'meeting_id': string;
+  'next_step_id'?: string | null;
+  'result_id'?: string | null;
+  'trigger_mode': string;
+  'triggered_at': string;
+  'triggered_by': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WebhookUserContext {
+  'email': string;
+  'id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
 
 export interface ActionItemCompletedPayload {
   'data': ActionItemCompletedData;
@@ -22,16 +50,12 @@ export interface ActionItemCompletedPayload {
 
 export interface ActionItemCompletedData {
   'action_item_id': string;
-  'assignee_id': string;
+  'assignee_id'?: string | null;
   'completed_at': string;
   'completed_by_user_id': string;
   'meeting_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WebhookUserContext {
-  'email': string;
-  'id': string;
+  'title': string;
+  'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -47,10 +71,11 @@ export interface ActionItemCreatedPayload {
 
 export interface ActionItemCreatedData {
   'action_item_id': string;
-  'assignee_id'?: string;
+  'assignee_id'?: string | null;
   'created_at': string;
   'meeting_id': string;
   'title': string;
+  'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -66,6 +91,7 @@ export interface ActionItemUpdatedPayload {
 
 export interface ActionItemUpdatedData {
   'action_item_id': string;
+  'assignee_id'?: string | null;
   'is_completed': boolean;
   'meeting_id': string;
   'status': ActionItemStatus;
@@ -90,7 +116,7 @@ export interface AgendaItemCreatedData {
   'agenda_item_id': string;
   'created_at': string;
   'item_type': string;
-  'meeting_id'?: string;
+  'meeting_id'?: string | null;
   'title': string;
   'additionalProperties'?: Record<string, unknown>;
 }
@@ -108,7 +134,7 @@ export interface AgendaItemDeletedPayload {
 export interface AgendaItemDeletedData {
   'agenda_item_id': string;
   'deleted_at': string;
-  'meeting_id'?: string;
+  'meeting_id'?: string | null;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -125,7 +151,7 @@ export interface AgendaItemUpdatedPayload {
 export interface AgendaItemUpdatedData {
   'agenda_item_id': string;
   'item_type': string;
-  'meeting_id'?: string;
+  'meeting_id'?: string | null;
   'status': string;
   'title': string;
   'updated_at': string;
@@ -205,6 +231,76 @@ export interface MeetingCompletedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
+export interface MeetingContextCreatedPayload {
+  'data': MeetingContextCreatedData;
+  'event_id': string;
+  'event_type': 'meeting.context.created';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingContextCreatedData {
+  'context_id': string;
+  'created_at': string;
+  'meeting_id': string;
+  'title'?: string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingContextDeletedPayload {
+  'data': MeetingContextDeletedData;
+  'event_id': string;
+  'event_type': 'meeting.context.deleted';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingContextDeletedData {
+  'context_id': string;
+  'deleted_at': string;
+  'meeting_id': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingContextProcessedPayload {
+  'data': MeetingContextProcessedData;
+  'event_id': string;
+  'event_type': 'meeting.context.processed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingContextProcessedData {
+  'context_id': string;
+  'meeting_id': string;
+  'processed_at': string;
+  'sanitization_report': AnonymousSchema_105;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_105 {
+  'formula_escaped': boolean;
+  'pii_detected': boolean;
+  'redactions'?: AnonymousSchema_109[];
+  'secrets_detected': boolean;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_109 {
+  'count': number;
+  'type': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
 export interface MeetingCreatedPayload {
   'data': MeetingCreatedData;
   'event_id': string;
@@ -236,10 +332,58 @@ export interface MeetingUpdatedPayload {
 
 export interface MeetingUpdatedData {
   'meeting_id': string;
-  'scheduled_start'?: string;
+  'scheduled_start'?: string | null;
   'title': string;
   'updated_at': string;
   'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingTemplateAppliedPayload {
+  'data': MeetingTemplateAppliedData;
+  'event_id': string;
+  'event_type': 'meeting_template.applied';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface MeetingTemplateAppliedData {
+  'applied_at': string;
+  'applied_by_user_id': string;
+  'applied_items': AnonymousSchema_132;
+  'meeting_id': string;
+  'template_id': string;
+  'template_name': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_132 {
+  'agenda_items': number;
+  'documents': number;
+  'participants': number;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface NextStepCompletedPayload {
+  'data': NextStepCompletedData;
+  'event_id': string;
+  'event_type': 'next_step.completed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface NextStepCompletedData {
+  'executed_at': string;
+  'executed_by': string;
+  'execution_mode': string;
+  'meeting_id': string;
+  'next_step_id': string;
+  'next_step_name': string;
+  'result_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -257,14 +401,15 @@ export interface ParticipantAddedData {
   'added_at': string;
   'meeting_id': string;
   'participants': ParticipantInfo[];
+  'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
 export interface ParticipantInfo {
-  'guest_email'?: string;
+  'guest_email'?: string | null;
   'participant_id': string;
   'role': string;
-  'user_id'?: string;
+  'user_id'?: string | null;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -279,11 +424,12 @@ export interface ParticipantRemovedPayload {
 }
 
 export interface ParticipantRemovedData {
-  'guest_email'?: string;
+  'guest_email'?: string | null;
   'meeting_id': string;
   'participant_id': string;
   'removed_at': string;
-  'user_id'?: string;
+  'user_id'?: string | null;
+  'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -298,9 +444,10 @@ export interface SessionExpiredPayload {
 }
 
 export interface SessionExpiredData {
-  'session_id': string;
-  'meeting_id': string;
   'expired_at': string;
+  'last_activity_at': string;
+  'meeting_id'?: string | null;
+  'session_id': string;
   'turn_count': number;
   'additionalProperties'?: Record<string, unknown>;
 }
@@ -316,44 +463,11 @@ export interface SessionTurnCompletedPayload {
 }
 
 export interface SessionTurnCompletedData {
+  'completed_at': string;
+  'meeting_id'?: string | null;
+  'sequence_number': number;
   'session_id': string;
   'turn_id': string;
-  'session_status': AnonymousSchema_113;
-  'sequence_number': number;
-  'turn_role': AnonymousSchema_115;
-  'turn_status': AnonymousSchema_116;
-  'turn_content': string;
-  'turn_created_at': string;
-  'completed_at'?: string;
-  'agent_metadata'?: AnonymousSchema_120;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export type AnonymousSchema_113 = "active" | "closed" | "expired";
-
-export type AnonymousSchema_115 = "user" | "agent";
-
-export type AnonymousSchema_116 = "completed";
-
-export interface AnonymousSchema_120 {
-  'tool_calls'?: AnonymousSchema_122[];
-  'referenced_documents'?: string[];
-  'model'?: string;
-  'token_usage'?: AnonymousSchema_128;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface AnonymousSchema_122 {
-  'name'?: string;
-  'status'?: AnonymousSchema_124;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export type AnonymousSchema_124 = "success" | "failed";
-
-export interface AnonymousSchema_128 {
-  'prompt_tokens'?: number;
-  'completion_tokens'?: number;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -368,25 +482,15 @@ export interface SessionTurnFailedPayload {
 }
 
 export interface SessionTurnFailedData {
+  'error_code': string;
+  'error_message': string;
+  'failed_at': string;
+  'meeting_id'?: string | null;
+  'sequence_number': number;
   'session_id': string;
   'turn_id': string;
-  'sequence_number': number;
-  'turn_status': AnonymousSchema_136;
-  'error': AnonymousSchema_137;
-  'turn_created_at': string;
-  'completed_at'?: string;
   'additionalProperties'?: Record<string, unknown>;
 }
-
-export type AnonymousSchema_136 = "failed";
-
-export interface AnonymousSchema_137 {
-  'code': AnonymousSchema_138;
-  'message': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export type AnonymousSchema_138 = "agent_error" | "timeout" | "context_too_large" | "rate_limited";
 
 export interface UserConnectionRevokedPayload {
   'data': UserConnectionRevokedData;
@@ -432,6 +536,7 @@ export interface WorkflowAssignmentCreatedData {
  * All webhook event type names
  */
 export const WEBHOOK_EVENT_TYPES = [
+  'action_button.triggered',
   'action_item.completed',
   'action_item.created',
   'action_item.updated',
@@ -442,8 +547,13 @@ export const WEBHOOK_EVENT_TYPES = [
   'calendar_event.deleted',
   'calendar_event.updated',
   'meeting.completed',
+  'meeting.context.created',
+  'meeting.context.deleted',
+  'meeting.context.processed',
   'meeting.created',
   'meeting.updated',
+  'meeting_template.applied',
+  'next_step.completed',
   'participant.added',
   'participant.removed',
   'session.expired',
