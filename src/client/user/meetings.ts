@@ -23,6 +23,17 @@ import {
   AgendaItemListResponse,
   CreateAgendaItemRequest,
   UpdateAgendaItemRequest,
+  MeetingNextStep,
+  MeetingNextStepListParams,
+  MeetingNextStepListResponse,
+  MeetingActionButton,
+  MeetingActionButtonListParams,
+  MeetingActionButtonListResponse,
+  ExecuteNextStepRequest,
+  ExecuteNextStepResponse,
+  TriggerActionButtonRequest,
+  TriggerActionButtonResponse,
+  NextStepResult,
 } from '../../models';
 
 // ── Meetings ────────────────────────────────────────────────────────────
@@ -153,3 +164,60 @@ export async function deleteAgendaItem(
   await http.delete(`/meetings/${meetingId}/agenda-items/${itemId}`, options);
 }
 
+// ── Meeting Next Steps ────────────────────────────────────────────────────
+
+export async function getMeetingNextSteps(
+  http: HttpTransport,
+  meetingId: string,
+  params?: MeetingNextStepListParams,
+  options?: RequestOptions,
+): Promise<MeetingNextStepListResponse> {
+  return http.get<MeetingNextStepListResponse>(`/meetings/${meetingId}/next-steps`, params, options);
+}
+
+export async function executeNextStep(
+  http: HttpTransport,
+  meetingId: string,
+  nextStepId: string,
+  data?: ExecuteNextStepRequest,
+  options?: RequestOptions,
+): Promise<ExecuteNextStepResponse> {
+  return http.post<ExecuteNextStepResponse>(
+    `/meetings/${meetingId}/next-steps/${nextStepId}/execute`,
+    data,
+    options,
+  );
+}
+
+export async function getNextStepResult(
+  http: HttpTransport,
+  resultId: string,
+  options?: RequestOptions,
+): Promise<NextStepResult> {
+  return http.get<NextStepResult>(`/next-step-results/${resultId}`, undefined, options);
+}
+
+// ── Meeting Action Buttons ────────────────────────────────────────────────
+
+export async function getMeetingActionButtons(
+  http: HttpTransport,
+  meetingId: string,
+  params?: MeetingActionButtonListParams,
+  options?: RequestOptions,
+): Promise<MeetingActionButtonListResponse> {
+  return http.get<MeetingActionButtonListResponse>(`/meetings/${meetingId}/action-buttons`, params, options);
+}
+
+export async function triggerActionButton(
+  http: HttpTransport,
+  meetingId: string,
+  buttonId: string,
+  data?: TriggerActionButtonRequest,
+  options?: RequestOptions,
+): Promise<TriggerActionButtonResponse> {
+  return http.post<TriggerActionButtonResponse>(
+    `/meetings/${meetingId}/action-buttons/${buttonId}/trigger`,
+    data,
+    options,
+  );
+}

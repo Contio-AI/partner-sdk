@@ -21,7 +21,7 @@ import type {
   SharedPartnerMeetingResponse,
   MeetingPartnerCreateMeetingRequest,
   MeetingPartnerUpdateMeetingRequest,
-  SharedListResponseSharedPartnerMeetingResponse,
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse,
 } from './api-types';
 
 /** @deprecated Use SharedPartnerMeetingResponse - kept for backwards compatibility */
@@ -30,15 +30,15 @@ export type Meeting = SharedPartnerMeetingResponse;
 export type CreateMeetingRequest = MeetingPartnerCreateMeetingRequest;
 /** @deprecated Use MeetingPartnerUpdateMeetingRequest - kept for backwards compatibility */
 export type UpdateMeetingRequest = MeetingPartnerUpdateMeetingRequest;
-/** @deprecated Use SharedListResponseSharedPartnerMeetingResponse - kept for backwards compatibility */
-export type MeetingListResponse = SharedListResponseSharedPartnerMeetingResponse;
+/** @deprecated Use RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse - kept for backwards compatibility */
+export type MeetingListResponse = RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
 
 // --- Action Items ---
 import type {
   ActionItemPartnerActionItemResponse,
   ActionItemCreateActionItemRequest,
   ActionItemUpdateActionItemRequest,
-  SharedListResponseActionItemPartnerActionItemResponse,
+  RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse,
 } from './api-types';
 
 /** @deprecated Use ActionItemPartnerActionItemResponse - kept for backwards compatibility */
@@ -47,78 +47,78 @@ export type ActionItem = ActionItemPartnerActionItemResponse;
 export type CreateActionItemRequest = ActionItemCreateActionItemRequest;
 /** @deprecated Use ActionItemUpdateActionItemRequest - kept for backwards compatibility */
 export type UpdateActionItemRequest = ActionItemUpdateActionItemRequest;
-/** @deprecated Use SharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
-export type ActionItemListResponse = SharedListResponseActionItemPartnerActionItemResponse;
+/** @deprecated Use RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
+export type ActionItemListResponse = RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
 
 // --- Workflows ---
 import type {
-  AdminWorkflowResponse,
-  AdminCreateWorkflowRequest,
-  AdminUpdateWorkflowRequest,
-  AdminListResponseAdminWorkflowResponse,
+  WorkflowWorkflowResponse,
+  WorkflowCreateWorkflowRequest,
+  WorkflowUpdateWorkflowRequest,
+  RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse,
   PartnerWorkflowAction,
 } from './api-types';
 
-/** @deprecated Use AdminWorkflowResponse - kept for backwards compatibility */
-export type Workflow = AdminWorkflowResponse;
-/** @deprecated Use AdminCreateWorkflowRequest - kept for backwards compatibility */
-export type CreateWorkflowRequest = AdminCreateWorkflowRequest;
-/** @deprecated Use AdminUpdateWorkflowRequest - kept for backwards compatibility */
-export type UpdateWorkflowRequest = AdminUpdateWorkflowRequest;
-/** @deprecated Use AdminListResponseAdminWorkflowResponse - kept for backwards compatibility */
-export type WorkflowListResponse = AdminListResponseAdminWorkflowResponse;
+/** @deprecated Use WorkflowWorkflowResponse - kept for backwards compatibility */
+export type Workflow = WorkflowWorkflowResponse;
+/** @deprecated Use WorkflowCreateWorkflowRequest - kept for backwards compatibility */
+export type CreateWorkflowRequest = WorkflowCreateWorkflowRequest;
+/** @deprecated Use WorkflowUpdateWorkflowRequest - kept for backwards compatibility */
+export type UpdateWorkflowRequest = WorkflowUpdateWorkflowRequest;
+/** @deprecated Use RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse - kept for backwards compatibility */
+export type WorkflowListResponse = RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse;
 /** @deprecated Use PartnerWorkflowAction - kept for backwards compatibility */
 export type WorkflowAction = PartnerWorkflowAction;
 
 // --- Partner App ---
 import type {
-  AdminPartnerAppResponse,
-  AdminUpdateAppRequest,
-  AdminUpdateAppStatusRequest,
+  SharedPartnerAppResponse,
+  AppManagementUpdateAppRequest,
+  AppManagementUpdateAppStatusRequest,
 } from './api-types';
 
-/** @deprecated Use AdminPartnerAppResponse - kept for backwards compatibility */
-export type PartnerApp = AdminPartnerAppResponse;
-/** @deprecated Use AdminUpdateAppRequest - kept for backwards compatibility */
-export type UpdatePartnerAppRequest = AdminUpdateAppRequest;
-/** @deprecated Use AdminUpdateAppStatusRequest - kept for backwards compatibility */
-export type UpdatePartnerAppStatusRequest = AdminUpdateAppStatusRequest;
+/** @deprecated Use SharedPartnerAppResponse - kept for backwards compatibility */
+export type PartnerApp = SharedPartnerAppResponse;
+/** @deprecated Use AppManagementUpdateAppRequest - kept for backwards compatibility */
+export type UpdatePartnerAppRequest = AppManagementUpdateAppRequest;
+/** @deprecated Use AppManagementUpdateAppStatusRequest - kept for backwards compatibility */
+export type UpdatePartnerAppStatusRequest = AppManagementUpdateAppStatusRequest;
 
 // --- User Connections ---
 import type {
-  AdminUserConnectionResponse,
-  AdminListResponseAdminUserConnectionResponse,
+  ConnectionUserConnectionResponse,
+  RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse,
 } from './api-types';
 
-/** @deprecated Use AdminUserConnectionResponse - kept for backwards compatibility */
-export type UserConnection = AdminUserConnectionResponse;
-/** @deprecated Use AdminListResponseAdminUserConnectionResponse - kept for backwards compatibility */
-export type UserConnectionListResponse = AdminListResponseAdminUserConnectionResponse;
+/** @deprecated Use ConnectionUserConnectionResponse - kept for backwards compatibility */
+export type UserConnection = ConnectionUserConnectionResponse;
+/** @deprecated Use RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse - kept for backwards compatibility */
+export type UserConnectionListResponse = RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse;
 
 // --- Credentials ---
 import type {
-  AdminCredentialStatusResponse,
-  AdminCredentialRotationRequest,
-  AdminCredentialRotationResponse,
+  CredentialCredentialStatusResponse,
+  CredentialCredentialRotationRequest,
+  CredentialCredentialRotationResponse,
 } from './api-types';
 
-/** @deprecated Use AdminCredentialStatusResponse - kept for backwards compatibility */
-export type CredentialStatusInfo = AdminCredentialStatusResponse;
-/** @deprecated Use AdminCredentialRotationRequest - kept for backwards compatibility */
-export type CredentialRotationRequest = AdminCredentialRotationRequest;
-/** @deprecated Use AdminCredentialRotationResponse - kept for backwards compatibility */
-export type CredentialRotationResponse = AdminCredentialRotationResponse;
+/** @deprecated Use CredentialCredentialStatusResponse - kept for backwards compatibility */
+export type CredentialStatusInfo = CredentialCredentialStatusResponse;
+/** @deprecated Use CredentialCredentialRotationRequest - kept for backwards compatibility */
+export type CredentialRotationRequest = CredentialCredentialRotationRequest;
+/** @deprecated Use CredentialCredentialRotationResponse - kept for backwards compatibility */
+export type CredentialRotationResponse = CredentialCredentialRotationResponse;
 
 // --- Webhook Deliveries ---
 import type {
-  AdminWebhookDeliveryResponse,
-  AdminWebhookDeliveriesResponse,
+  WebhookWebhookDeliveryResponse,
+  WebhookWebhookDeliveriesResponse,
 } from './api-types';
 
-/** @deprecated Use AdminWebhookDeliveryResponse - kept for backwards compatibility */
-export type WebhookDelivery = AdminWebhookDeliveryResponse;
-/** @deprecated Use AdminWebhookDeliveriesResponse - kept for backwards compatibility */
-export type WebhookDeliveryListResponse = AdminWebhookDeliveriesResponse;
+/** @deprecated Use WebhookWebhookDeliveryResponse - kept for backwards compatibility */
+export type WebhookDelivery = WebhookWebhookDeliveryResponse;
+/** @deprecated Use WebhookWebhookDeliveriesResponse - kept for backwards compatibility */
+export type WebhookDeliveryListResponse = WebhookWebhookDeliveriesResponse;
 
 // --- User Profile ---
 import type { ProfileUserProfileResponse } from './api-types';

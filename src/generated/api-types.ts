@@ -10,6 +10,233 @@
  * ---------------------------------------------------------------
  */
 
+export interface ActionButtonActionButtonResponse {
+  /**
+   * Content format: rich_text, markdown, plain_text, html
+   * @example "markdown"
+   */
+  content_format?: string;
+  /**
+   * When the action button was created
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Delivery mechanism: webhook, redirect, email, clipboard, file_download, integration, os_email_client
+   * @example "webhook"
+   */
+  delivery_mechanism?: string;
+  /**
+   * File format for file_download delivery mechanism
+   * @example "pdf"
+   */
+  file_format?: string;
+  /**
+   * Icon URL for the action button
+   * @example "https://cdn.example.com/icon.png"
+   */
+  icon_url?: string;
+  /**
+   * Unique identifier for the action button
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Integration type for integration delivery mechanism
+   * @example "slack"
+   */
+  integration_type?: string;
+  /**
+   * Whether the action button is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Whether this is the default action button for next steps
+   * @example false
+   */
+  is_default_for_next_step?: boolean;
+  /**
+   * Name of the action button
+   * @example "Send to Slack"
+   */
+  name?: string;
+  /**
+   * Redirect URL for redirect delivery mechanism
+   * @example "https://partner.example.com/action"
+   */
+  redirect_url?: string;
+  /**
+   * Whether the action button requires a connected integration
+   * @example false
+   */
+  requires_connected_integration?: boolean;
+  /**
+   * Sort order for display
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * When the action button was last updated
+   * @example "2024-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * Webhook URL for webhook delivery mechanism
+   * @example "https://partner.example.com/webhook"
+   */
+  webhook_url?: string;
+}
+
+export interface ActionButtonCreateActionButtonRequest {
+  /**
+   * Content format: rich_text, markdown, plain_text, html
+   * @example "markdown"
+   */
+  content_format: "rich_text" | "markdown" | "plain_text" | "html";
+  /**
+   * Delivery mechanism: webhook, redirect, email, clipboard, file_download, integration, os_email_client
+   * @example "webhook"
+   */
+  delivery_mechanism:
+    | "webhook"
+    | "redirect"
+    | "email"
+    | "clipboard"
+    | "file_download"
+    | "integration"
+    | "os_email_client";
+  /**
+   * File format for file_download delivery mechanism
+   * @maxLength 50
+   * @example "pdf"
+   */
+  file_format?: string;
+  /**
+   * Optional icon URL for the action button
+   * @maxLength 2000
+   * @example "https://cdn.example.com/icon.png"
+   */
+  icon_url?: string;
+  /**
+   * Integration type for integration delivery mechanism
+   * @maxLength 100
+   * @example "slack"
+   */
+  integration_type?: string;
+  /**
+   * Whether this is the default action button for next steps
+   * @example false
+   */
+  is_default_for_next_step?: boolean;
+  /**
+   * Name of the action button
+   * @minLength 1
+   * @maxLength 255
+   * @example "Send to Slack"
+   */
+  name: string;
+  /**
+   * Redirect URL for redirect delivery mechanism
+   * @maxLength 2000
+   * @example "https://partner.example.com/action"
+   */
+  redirect_url?: string;
+  /**
+   * Whether the action button requires a connected integration
+   * @example false
+   */
+  requires_connected_integration?: boolean;
+  /**
+   * Sort order for display
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * Webhook URL for webhook delivery mechanism
+   * @maxLength 2000
+   * @example "https://partner.example.com/webhook"
+   */
+  webhook_url?: string;
+}
+
+export interface ActionButtonUpdateActionButtonRequest {
+  /**
+   * Content format: rich_text, markdown, plain_text, html
+   * @example "markdown"
+   */
+  content_format?: "rich_text" | "markdown" | "plain_text" | "html";
+  /**
+   * Delivery mechanism: webhook, redirect, email, clipboard, file_download, integration, os_email_client
+   * @example "webhook"
+   */
+  delivery_mechanism?:
+    | "webhook"
+    | "redirect"
+    | "email"
+    | "clipboard"
+    | "file_download"
+    | "integration"
+    | "os_email_client";
+  /**
+   * File format for file_download delivery mechanism
+   * @maxLength 50
+   * @example "pdf"
+   */
+  file_format?: string;
+  /**
+   * Icon URL for the action button
+   * @maxLength 2000
+   * @example "https://cdn.example.com/icon.png"
+   */
+  icon_url?: string;
+  /**
+   * Integration type for integration delivery mechanism
+   * @maxLength 100
+   * @example "slack"
+   */
+  integration_type?: string;
+  /**
+   * Whether the action button is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Whether this is the default action button for next steps
+   * @example false
+   */
+  is_default_for_next_step?: boolean;
+  /**
+   * Name of the action button
+   * @minLength 1
+   * @maxLength 255
+   * @example "Send to Slack"
+   */
+  name?: string;
+  /**
+   * Redirect URL for redirect delivery mechanism
+   * @maxLength 2000
+   * @example "https://partner.example.com/action"
+   */
+  redirect_url?: string;
+  /**
+   * Whether the action button requires a connected integration
+   * @example false
+   */
+  requires_connected_integration?: boolean;
+  /**
+   * Sort order for display
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * Webhook URL for webhook delivery mechanism
+   * @maxLength 2000
+   * @example "https://partner.example.com/webhook"
+   */
+  webhook_url?: string;
+}
+
 /** Bad request error for creating an action item */
 export interface ActionItemCreateActionItemError400 {
   /**
@@ -194,444 +421,7 @@ export interface ActionItemUpdateActionItemRequest {
   title?: string;
 }
 
-/** Bad request error for creating IdP configuration */
-export interface AdminCreateIdPConfigError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "invalid_request_body"
-   */
-  code?:
-    | "invalid_request_body"
-    | "invalid_idp_credentials"
-    | "invalid_idp"
-    | "domain_is_generic"
-    | "domain_already_claimed"
-    | "strict_mode_requires_domains"
-    | "discovery_fetch_failed"
-    | "idp_config_exists";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid request body"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-export interface AdminCreateIdPConfigRequest {
-  /**
-   * Email domains allowed for SSO (required for strict mode). Users with other domains will be rejected.
-   * @example ["company.com","subsidiary.com"]
-   */
-  allowed_email_domains?: string[];
-  /** Maps Contio user fields to IdP claim names. Defaults to {"email": "email", "name": "name"}. Only change if your IdP uses non-standard claim names. */
-  claim_mappings?: Record<string, string>;
-  /**
-   * OIDC discovery endpoint URL from your Identity Provider (must end with /.well-known/openid-configuration)
-   * @example "https://company.okta.com/.well-known/openid-configuration"
-   */
-  discovery_url: string;
-  /**
-   * OAuth Client ID from your Identity Provider's OIDC application. This is NOT your Contio Partner client_id.
-   * @minLength 1
-   * @example "0oa1234567890abcdef"
-   */
-  idp_client_id: string;
-  /**
-   * OAuth Client Secret from your Identity Provider's OIDC application. This is NOT your Contio Partner client_secret. Stored encrypted at rest.
-   * @minLength 1
-   * @example "IdP-secret-from-okta-or-azure"
-   */
-  idp_client_secret: string;
-  /**
-   * Domain validation mode: "strict" requires allowed_email_domains, "partner_managed" trusts your IdP's user base
-   * @example "strict"
-   */
-  mode: "strict" | "partner_managed";
-  /**
-   * Display name for this IdP configuration
-   * @minLength 1
-   * @maxLength 255
-   * @example "Okta SSO"
-   */
-  name: string;
-  /**
-   * OIDC scopes to request during authentication. Defaults to ["openid", "email", "profile"]
-   * @example ["openid","email","profile"]
-   */
-  scopes?: string[];
-}
-
-/** Bad request error for creating a workflow */
-export interface AdminCreateWorkflowError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "invalid_request_body"
-   */
-  code?: "invalid_request_body" | "validation_error";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid request body"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-export interface AdminCreateWorkflowRequest {
-  /** @minItems 1 */
-  actions: PartnerWorkflowAction[];
-  /**
-   * @maxLength 1000
-   * @example "Sync action items to CRM"
-   */
-  description?: string;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   * @example "CRM Integration"
-   */
-  name: string;
-  trigger_type:
-    | "action_item_created"
-    | "action_item_updated"
-    | "action_item_completed"
-    | "meeting_ended"
-    | "meeting_summary_ready";
-}
-
-export interface AdminCredentialRotationRequest {
-  /** @example "confirm-rotation-12345" */
-  confirmation_token: string;
-  /** @example 48 */
-  grace_period_hours?: number;
-  /** @example "Scheduled rotation" */
-  reason?: string;
-}
-
-export interface AdminCredentialRotationResponse {
-  /**
-   * Type of credential that was rotated (api_key or client_secret)
-   * @example "api_key"
-   */
-  credential_type?: string;
-  /**
-   * When the grace period ends and old credential stops working
-   * @example "2024-01-15T10:30:00Z"
-   */
-  grace_period_ends_at?: string;
-  /**
-   * The newly generated credential value (only shown once)
-   * @example "pk_live_abc123..."
-   */
-  new_credential?: string;
-  /**
-   * When the rollback token expires
-   * @example "2024-01-14T10:30:00Z"
-   */
-  rollback_expires_at?: string;
-  /**
-   * Token to use if you need to rollback to the previous credential
-   * @example "rollback_token_xyz..."
-   */
-  rollback_token?: string;
-}
-
-export interface AdminCredentialStatusResponse {
-  /**
-   * Age of the credential in days
-   * @example 5
-   */
-  age_days?: number;
-  /**
-   * When the credential was created
-   * @example "2024-01-01T00:00:00Z"
-   */
-  created_at?: string;
-  /**
-   * Type of credential (api_key or client_secret)
-   * @example "api_key"
-   */
-  credential_type?: string;
-  /**
-   * When the grace period ends (if in pending_rotation status)
-   * @example "2024-01-12T10:30:00Z"
-   */
-  grace_period_ends_at?: string;
-  /**
-   * When the credential was last rotated
-   * @example "2024-01-10T10:30:00Z"
-   */
-  last_rotated_at?: string;
-  /**
-   * When the credential was last used for authentication
-   * @example "2024-01-20T10:30:00Z"
-   */
-  last_used_at?: string;
-  /**
-   * Recommended action (ok, rotate_soon, rotate_now)
-   * @example "ok"
-   */
-  recommended_action?: string;
-  /**
-   * Current status (active, pending_rotation, expired)
-   * @example "active"
-   */
-  status?: string;
-}
-
-export interface AdminIdPConfigResponse {
-  /**
-   * Email domains allowed for SSO
-   * @example ["company.com","subsidiary.com"]
-   */
-  allowed_email_domains?: string[];
-  /**
-   * Discovered OIDC authorization endpoint
-   * @example "https://company.okta.com/authorize"
-   */
-  authorization_endpoint?: string;
-  /** Maps Contio user fields to IdP claim names */
-  claim_mappings?: Record<string, string>;
-  /** @example "2024-01-01T00:00:00Z" */
-  created_at?: string;
-  /**
-   * When the OIDC discovery document was last fetched
-   * @example "2024-01-01T00:00:00Z"
-   */
-  discovery_last_fetched_at?: string;
-  /**
-   * OIDC discovery endpoint URL
-   * @example "https://company.okta.com/.well-known/openid-configuration"
-   */
-  discovery_url?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  id?: string;
-  /**
-   * OAuth Client ID from your Identity Provider (secret is never returned)
-   * @example "0oa1234567890abcdef"
-   */
-  idp_client_id?: string;
-  /**
-   * Whether this IdP configuration is active
-   * @example true
-   */
-  is_active?: boolean;
-  /**
-   * Discovered OIDC issuer
-   * @example "https://company.okta.com"
-   */
-  issuer?: string;
-  /**
-   * Discovered OIDC JWKS URI
-   * @example "https://company.okta.com/jwks"
-   */
-  jwks_uri?: string;
-  /**
-   * Domain validation mode
-   * @example "strict"
-   */
-  mode?: string;
-  /**
-   * Display name for this IdP configuration
-   * @example "Okta SSO"
-   */
-  name?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174001" */
-  partner_app_id?: string;
-  /**
-   * OIDC scopes requested during authentication
-   * @example ["openid","email","profile"]
-   */
-  scopes?: string[];
-  /**
-   * Discovered OIDC token endpoint
-   * @example "https://company.okta.com/token"
-   */
-  token_endpoint?: string;
-  /**
-   * IdP type (always "oidc")
-   * @example "oidc"
-   */
-  type?: string;
-  /** @example "2024-01-01T00:00:00Z" */
-  updated_at?: string;
-  /**
-   * Discovered OIDC userinfo endpoint
-   * @example "https://company.okta.com/userinfo"
-   */
-  userinfo_endpoint?: string;
-}
-
-export interface AdminListResponseAdminUserConnectionResponse {
-  /** Array of items for the current page */
-  items?: AdminUserConnectionResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface AdminListResponseAdminWorkflowResponse {
-  /** Array of items for the current page */
-  items?: AdminWorkflowResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface AdminPartnerAppResponse {
-  /**
-   * OAuth client ID for this partner app
-   * @example "partner_1234567890_abcdef123456"
-   */
-  client_id?: string;
-  /**
-   * Name of the company that owns this partner app
-   * @example "Acme Corp"
-   */
-  company_name?: string;
-  /**
-   * Timestamp when the partner app was created
-   * @example "2023-01-01T00:00:00Z"
-   */
-  created_at?: string;
-  /**
-   * Optional description of the partner app
-   * @example "Integrates with our CRM system"
-   */
-  description?: string;
-  /**
-   * Unique identifier for the partner app
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  id?: string;
-  /**
-   * Display name of the partner app
-   * @example "CRM Integration"
-   */
-  name?: string;
-  /**
-   * Primary contact email for this partner app
-   * @example "contact@example.com"
-   */
-  primary_contact_email?: string;
-  /**
-   * URL-friendly slug for the partner app
-   * @example "acme-crm"
-   */
-  slug?: string;
-  /**
-   * Current status (active, inactive, suspended)
-   * @example "active"
-   */
-  status?: string;
-  /**
-   * Timestamp when the partner app was last updated
-   * @example "2023-01-01T00:00:00Z"
-   */
-  updated_at?: string;
-  /**
-   * Whether webhook delivery is enabled for this partner app
-   * @example true
-   */
-  webhook_enabled?: boolean;
-  /** Optional webhook event filter configuration for this partner app */
-  webhook_filter?: AdminWebhookFilterResponse;
-  /**
-   * Webhook URL for receiving event notifications
-   * @example "https://api.example.com/webhook"
-   */
-  webhook_url?: string;
-}
-
-/** Bad request error for rotating API key */
-export interface AdminRotateAPIKeyError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "bad_request"
-   */
-  code?: "bad_request" | "rate_limit_exceeded";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid request"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-/** Bad request error for rotating client secret */
-export interface AdminRotateClientSecretError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "bad_request"
-   */
-  code?: "bad_request" | "rate_limit_exceeded";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid request"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-/** Bad request error for rotating webhook secret */
-export interface AdminRotateWebhookSecretError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "bad_request"
-   */
-  code?: "bad_request";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid request"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-export interface AdminSetWebhookFilterRequest {
+export interface AppManagementSetWebhookFilterRequest {
   /** @minItems 1 */
   events: string[];
   /** @example "include" */
@@ -639,7 +429,7 @@ export interface AdminSetWebhookFilterRequest {
 }
 
 /** Bad request error for updating partner app */
-export interface AdminUpdateAppError400 {
+export interface AppManagementUpdateAppError400 {
   /**
    * Unique identifier for the error type
    * @example "invalid_request_body"
@@ -657,7 +447,9 @@ export interface AdminUpdateAppError400 {
   request_id?: string;
 }
 
-export interface AdminUpdateAppRequest {
+export interface AppManagementUpdateAppRequest {
+  /** @example "123e4567-e89b-12d3-a456-426614174001" */
+  default_toolkit_id?: string;
   /**
    * @maxLength 1000
    * @example "Updated integration description"
@@ -675,12 +467,15 @@ export interface AdminUpdateAppRequest {
    * @example "acme-crm"
    */
   slug?: string;
-  /** @example "https://api.example.com/webhook" */
+  /**
+   * @maxLength 2000
+   * @example "https://api.example.com/webhook"
+   */
   webhook_url?: string;
 }
 
 /** Bad request error for updating partner app status */
-export interface AdminUpdateAppStatusError400 {
+export interface AppManagementUpdateAppStatusError400 {
   /**
    * Unique identifier for the error type
    * @example "invalid_status"
@@ -698,82 +493,13 @@ export interface AdminUpdateAppStatusError400 {
   request_id?: string;
 }
 
-export interface AdminUpdateAppStatusRequest {
+export interface AppManagementUpdateAppStatusRequest {
   /** @example "suspended" */
   status: "active" | "suspended" | "inactive";
 }
 
-/** Bad request error for updating IdP configuration */
-export interface AdminUpdateIdPConfigError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "invalid_request_body"
-   */
-  code?:
-    | "invalid_request_body"
-    | "invalid_idp_credentials"
-    | "invalid_idp"
-    | "domain_is_generic"
-    | "domain_already_claimed"
-    | "strict_mode_requires_domains"
-    | "discovery_fetch_failed";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid request body"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-export interface AdminUpdateIdPConfigRequest {
-  /** Email domains allowed for SSO (required for strict mode) */
-  allowed_email_domains?: string[];
-  /** Maps Contio user fields to IdP claim names */
-  claim_mappings?: Record<string, string>;
-  /**
-   * OIDC discovery endpoint URL from your Identity Provider
-   * @example "https://company.okta.com/.well-known/openid-configuration"
-   */
-  discovery_url?: string;
-  /**
-   * OAuth Client ID from your Identity Provider's OIDC application. This is NOT your Contio Partner client_id.
-   * @minLength 1
-   * @example "0oa1234567890abcdef"
-   */
-  idp_client_id?: string;
-  /**
-   * OAuth Client Secret from your Identity Provider's OIDC application. This is NOT your Contio Partner client_secret. Stored encrypted at rest.
-   * @minLength 1
-   * @example "new-IdP-secret"
-   */
-  idp_client_secret?: string;
-  /**
-   * Enable or disable this IdP configuration
-   * @example true
-   */
-  is_active?: boolean;
-  /**
-   * Domain validation mode: "strict" or "partner_managed"
-   * @example "partner_managed"
-   */
-  mode?: "strict" | "partner_managed";
-  /**
-   * Display name for this IdP configuration
-   * @minLength 1
-   * @maxLength 255
-   * @example "Updated Okta SSO"
-   */
-  name?: string;
-  /** OIDC scopes to request during authentication */
-  scopes?: string[];
-}
-
 /** Bad request error for updating partner app webhook filters */
-export interface AdminUpdateWebhookFilterError400 {
+export interface AppManagementUpdateWebhookFilterError400 {
   /**
    * Unique identifier for the error type
    * @example "validation_error"
@@ -796,249 +522,11 @@ export interface AdminUpdateWebhookFilterError400 {
   valid_event_types?: string[];
 }
 
-export interface AdminUpdateWebhookStatusRequest {
+export interface AppManagementUpdateWebhookStatusRequest {
   /** @example true */
   enabled: boolean;
   /** @example "abandon" */
   pending_disposition?: "deliver" | "abandon";
-}
-
-/** Bad request error for updating a workflow */
-export interface AdminUpdateWorkflowError400 {
-  /**
-   * Unique identifier for the error type
-   * @example "invalid_workflow_id"
-   */
-  code?: "invalid_workflow_id" | "invalid_request_body" | "validation_error";
-  /**
-   * User-friendly description of what went wrong
-   * @example "Invalid workflow ID format"
-   */
-  error?: string;
-  /**
-   * Request identifier to correlate errors with logs
-   * @example "abc123xyz"
-   */
-  request_id?: string;
-}
-
-export interface AdminUpdateWorkflowRequest {
-  /** @minItems 1 */
-  actions?: PartnerWorkflowAction[];
-  /**
-   * @maxLength 1000
-   * @example "Updated description"
-   */
-  description?: string;
-  is_active?: boolean;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   * @example "Updated CRM Integration"
-   */
-  name?: string;
-  /** @example "active" */
-  status?: "active" | "inactive";
-  trigger_type?:
-    | "action_item_created"
-    | "action_item_updated"
-    | "action_item_completed"
-    | "meeting_ended"
-    | "meeting_summary_ready";
-}
-
-export interface AdminUserConnectionResponse {
-  /**
-   * Timestamp when the connection was created
-   * @example "2023-01-01T00:00:00Z"
-   */
-  created_at?: string;
-  /**
-   * When the partner feature was activated for this user
-   * @example "2023-01-01T00:00:00Z"
-   */
-  feature_activated_at?: string;
-  /**
-   * Unique identifier for the user connection
-   * @example "123e4567-e89b-12d3-a456-426614174002"
-   */
-  id?: string;
-  /**
-   * When the user last used the partner integration
-   * @example "2023-01-15T10:30:00Z"
-   */
-  last_used_at?: string;
-  /**
-   * Expiration time of the OAuth token
-   * @example "2023-12-31T23:59:59Z"
-   */
-  oauth_expires_at?: string;
-  /**
-   * OAuth scopes granted by the user
-   * @example ["['openid'"," 'profile'"," 'meetings:read']"]
-   */
-  oauth_scopes?: string[];
-  /**
-   * Current status of the connection (active, inactive, revoked)
-   * @example "active"
-   */
-  status?: string;
-  /**
-   * Timestamp when the connection was last updated
-   * @example "2023-01-01T00:00:00Z"
-   */
-  updated_at?: string;
-  /**
-   * Email address of the connected user
-   * @example "john.doe@example.com"
-   */
-  user_email?: string;
-  /**
-   * ID of the connected user
-   * @example "123e4567-e89b-12d3-a456-426614174003"
-   */
-  user_id?: string;
-  /**
-   * Display name of the connected user
-   * @example "John Doe"
-   */
-  user_name?: string;
-}
-
-export interface AdminWebhookDeliveriesResponse {
-  /** Array of webhook delivery records */
-  deliveries?: AdminWebhookDeliveryResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of deliveries matching the filter
-   * @example 25
-   */
-  total?: number;
-}
-
-export interface AdminWebhookDeliveryResponse {
-  /**
-   * Timestamp when the delivery was created
-   * @example "2024-01-14T10:00:00Z"
-   */
-  created_at?: string;
-  /**
-   * When the webhook was successfully delivered
-   * @example "2024-01-14T10:30:00Z"
-   */
-  delivered_at?: string;
-  /**
-   * Current delivery status (pending, delivered, failed, abandoned)
-   * @example "delivered"
-   */
-  delivery_status?: string;
-  /**
-   * Error message if delivery failed
-   * @example ""
-   */
-  error_message?: string;
-  /**
-   * ID of the event that triggered this delivery
-   * @example "123e4567-e89b-12d3-a456-426614174006"
-   */
-  event_id?: string;
-  /**
-   * Type of event that triggered this webhook
-   * @example "action_item_created"
-   */
-  event_type?: string;
-  /**
-   * HTTP status code returned by the webhook endpoint
-   * @example 200
-   */
-  http_status_code?: number;
-  /**
-   * Unique identifier for the webhook delivery
-   * @example "123e4567-e89b-12d3-a456-426614174005"
-   */
-  id?: string;
-  /**
-   * When the next retry attempt will be made (if applicable)
-   * @example "2024-01-15T10:30:00Z"
-   */
-  next_retry_at?: string;
-  /**
-   * ID of the partner app this delivery belongs to
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  partner_app_id?: string;
-  /**
-   * Number of retry attempts made
-   * @example 0
-   */
-  retry_count?: number;
-}
-
-export interface AdminWebhookFilterResponse {
-  /**
-   * Event types included in the filter configuration
-   * @example ["meeting.created","action_item.updated"]
-   */
-  events?: string[];
-  /**
-   * Filter mode controlling how events are matched
-   * @example "include"
-   */
-  type?: string;
-}
-
-export interface AdminWorkflowResponse {
-  /** Actions to execute when the workflow is triggered */
-  actions?: PartnerWorkflowAction[];
-  /**
-   * Timestamp when the workflow was created
-   * @example "2023-01-01T00:00:00Z"
-   */
-  created_at?: string;
-  /**
-   * Optional description of what the workflow does
-   * @example "Sync action items to CRM"
-   */
-  description?: string;
-  /**
-   * Unique identifier for the workflow
-   * @example "123e4567-e89b-12d3-a456-426614174001"
-   */
-  id?: string;
-  /**
-   * Name of the workflow
-   * @example "CRM Integration"
-   */
-  name?: string;
-  /**
-   * ID of the partner app that owns this workflow
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  partner_app_id?: string;
-  /**
-   * Current status (active or inactive)
-   * @example "active"
-   */
-  status?: string;
-  /**
-   * Event type that triggers this workflow
-   * @example "action_item_created"
-   */
-  trigger_type?: string;
-  /**
-   * Timestamp when the workflow was last updated
-   * @example "2023-01-01T00:00:00Z"
-   */
-  updated_at?: string;
 }
 
 export type AuthorizeCreateData = OauthOAuthConsentResponse;
@@ -1185,12 +673,17 @@ export interface CalendarPartnerCalendarEventResponse {
    */
   id?: string;
   /**
+   * IDs of all linked Contio meetings, sorted by creation date (oldest first)
+   * @example ["[\"123e4567-e89b-12d3-a456-426614174000\"]"]
+   */
+  linked_meetings?: string[];
+  /**
    * Location of the event (physical or virtual)
    * @example "Conference Room A"
    */
   location?: string;
   /**
-   * ID of the linked Contio meeting, if any
+   * Deprecated: Use linked_meetings instead. ID of the first (oldest) linked Contio meeting.
    * @example "123e4567-e89b-12d3-a456-426614174000"
    */
   meeting_id?: string;
@@ -1235,6 +728,64 @@ export type CheckConsentCreateData = OauthOAuthConsentCheckResponse;
 
 export type CheckConsentCreateError = ErrorsErrorResponse;
 
+export interface ConnectionUserConnectionResponse {
+  /**
+   * Timestamp when the connection was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * When the partner feature was activated for this user
+   * @example "2023-01-01T00:00:00Z"
+   */
+  feature_activated_at?: string;
+  /**
+   * Unique identifier for the user connection
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  id?: string;
+  /**
+   * When the user last used the partner integration
+   * @example "2023-01-15T10:30:00Z"
+   */
+  last_used_at?: string;
+  /**
+   * Expiration time of the OAuth token
+   * @example "2023-12-31T23:59:59Z"
+   */
+  oauth_expires_at?: string;
+  /**
+   * OAuth scopes granted by the user
+   * @example ["['openid'"," 'profile'"," 'meetings:read']"]
+   */
+  oauth_scopes?: string[];
+  /**
+   * Current status of the connection (active, inactive, revoked)
+   * @example "active"
+   */
+  status?: string;
+  /**
+   * Timestamp when the connection was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * Email address of the connected user
+   * @example "john.doe@example.com"
+   */
+  user_email?: string;
+  /**
+   * ID of the connected user
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  user_id?: string;
+  /**
+   * Display name of the connected user
+   * @example "John Doe"
+   */
+  user_name?: string;
+}
+
 export interface ContextMeetingContextListResponse {
   items?: ContextMeetingContextResponse[];
   limit?: number;
@@ -1247,15 +798,160 @@ export interface ContextMeetingContextResponse {
   created_at?: string;
   created_by_user_id?: string;
   deleted_at?: string;
-  document_id?: string;
+  file_status?: string;
   id?: string;
   meeting_id?: string;
+  model_id?: string;
   partner_app_id?: string;
   platform_name?: string;
   source_format?: string;
   title?: string;
   updated_at?: string;
   workspace_id?: string;
+}
+
+export interface CredentialCredentialRollbackRequest {
+  /** @example "Detected issues" */
+  reason?: string;
+  /** @example "rollback_token_xyz..." */
+  rollback_token: string;
+}
+
+export interface CredentialCredentialRotationRequest {
+  /** @example "confirm-rotation-12345" */
+  confirmation_token: string;
+  /** @example 48 */
+  grace_period_hours?: number;
+  /** @example "Scheduled rotation" */
+  reason?: string;
+}
+
+export interface CredentialCredentialRotationResponse {
+  /**
+   * Type of credential that was rotated (api_key or client_secret)
+   * @example "api_key"
+   */
+  credential_type?: string;
+  /**
+   * When the grace period ends and old credential stops working
+   * @example "2024-01-15T10:30:00Z"
+   */
+  grace_period_ends_at?: string;
+  /**
+   * The newly generated credential value (only shown once)
+   * @example "pk_live_abc123..."
+   */
+  new_credential?: string;
+  /**
+   * When the rollback token expires
+   * @example "2024-01-14T10:30:00Z"
+   */
+  rollback_expires_at?: string;
+  /**
+   * Token to use if you need to rollback to the previous credential
+   * @example "rollback_token_xyz..."
+   */
+  rollback_token?: string;
+}
+
+export interface CredentialCredentialStatusResponse {
+  /**
+   * Age of the credential in days
+   * @example 5
+   */
+  age_days?: number;
+  /**
+   * When the credential was created
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Type of credential (api_key or client_secret)
+   * @example "api_key"
+   */
+  credential_type?: string;
+  /**
+   * When the grace period ends (if in pending_rotation status)
+   * @example "2024-01-12T10:30:00Z"
+   */
+  grace_period_ends_at?: string;
+  /**
+   * When the credential was last rotated
+   * @example "2024-01-10T10:30:00Z"
+   */
+  last_rotated_at?: string;
+  /**
+   * When the credential was last used for authentication
+   * @example "2024-01-20T10:30:00Z"
+   */
+  last_used_at?: string;
+  /**
+   * Recommended action (ok, rotate_soon, rotate_now)
+   * @example "ok"
+   */
+  recommended_action?: string;
+  /**
+   * Current status (active, pending_rotation, expired)
+   * @example "active"
+   */
+  status?: string;
+}
+
+/** Bad request error for rotating API key */
+export interface CredentialRotateAPIKeyError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "bad_request"
+   */
+  code?: "bad_request" | "rate_limit_exceeded";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Bad request error for rotating client secret */
+export interface CredentialRotateClientSecretError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "bad_request"
+   */
+  code?: "bad_request" | "rate_limit_exceeded";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+/** Bad request error for rotating webhook secret */
+export interface CredentialRotateWebhookSecretError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "bad_request"
+   */
+  code?: "bad_request";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
 }
 
 /** Standard error response format used across all API endpoints. All error responses follow this consistent structure for predictable error handling. */
@@ -1343,6 +1039,229 @@ export interface ErrorsPartnerErrorResponse {
 export type HealthListData = OauthHealthResponse;
 
 export type HealthListError = ErrorsErrorResponse;
+
+/** Bad request error for creating IdP configuration */
+export interface IdpCreateIdPConfigError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?:
+    | "invalid_request_body"
+    | "invalid_idp_credentials"
+    | "invalid_idp"
+    | "domain_is_generic"
+    | "domain_already_claimed"
+    | "strict_mode_requires_domains"
+    | "discovery_fetch_failed"
+    | "idp_config_exists";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface IdpCreateIdPConfigRequest {
+  /**
+   * Email domains allowed for SSO (required for strict mode). Users with other domains will be rejected.
+   * @example ["company.com","subsidiary.com"]
+   */
+  allowed_email_domains?: string[];
+  /** Maps Contio user fields to IdP claim names. Defaults to {"email": "email", "name": "name"}. Only change if your IdP uses non-standard claim names. */
+  claim_mappings?: Record<string, string>;
+  /**
+   * OIDC discovery endpoint URL from your Identity Provider (must end with /.well-known/openid-configuration)
+   * @example "https://company.okta.com/.well-known/openid-configuration"
+   */
+  discovery_url: string;
+  /**
+   * OAuth Client ID from your Identity Provider's OIDC application. This is NOT your Contio Partner client_id.
+   * @minLength 1
+   * @example "0oa1234567890abcdef"
+   */
+  idp_client_id: string;
+  /**
+   * OAuth Client Secret from your Identity Provider's OIDC application. This is NOT your Contio Partner client_secret. Stored encrypted at rest.
+   * @minLength 1
+   * @example "IdP-secret-from-okta-or-azure"
+   */
+  idp_client_secret: string;
+  /**
+   * Domain validation mode: "strict" requires allowed_email_domains, "partner_managed" trusts your IdP's user base
+   * @example "strict"
+   */
+  mode: "strict" | "partner_managed";
+  /**
+   * Display name for this IdP configuration
+   * @minLength 1
+   * @maxLength 255
+   * @example "Okta SSO"
+   */
+  name: string;
+  /**
+   * OIDC scopes to request during authentication. Defaults to ["openid", "email", "profile"]
+   * @example ["openid","email","profile"]
+   */
+  scopes?: string[];
+}
+
+export interface IdpIdPConfigResponse {
+  /**
+   * Email domains allowed for SSO
+   * @example ["company.com","subsidiary.com"]
+   */
+  allowed_email_domains?: string[];
+  /**
+   * Discovered OIDC authorization endpoint
+   * @example "https://company.okta.com/authorize"
+   */
+  authorization_endpoint?: string;
+  /** Maps Contio user fields to IdP claim names */
+  claim_mappings?: Record<string, string>;
+  /** @example "2024-01-01T00:00:00Z" */
+  created_at?: string;
+  /**
+   * When the OIDC discovery document was last fetched
+   * @example "2024-01-01T00:00:00Z"
+   */
+  discovery_last_fetched_at?: string;
+  /**
+   * OIDC discovery endpoint URL
+   * @example "https://company.okta.com/.well-known/openid-configuration"
+   */
+  discovery_url?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  id?: string;
+  /**
+   * OAuth Client ID from your Identity Provider (secret is never returned)
+   * @example "0oa1234567890abcdef"
+   */
+  idp_client_id?: string;
+  /**
+   * Whether this IdP configuration is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Discovered OIDC issuer
+   * @example "https://company.okta.com"
+   */
+  issuer?: string;
+  /**
+   * Discovered OIDC JWKS URI
+   * @example "https://company.okta.com/jwks"
+   */
+  jwks_uri?: string;
+  /**
+   * Domain validation mode
+   * @example "strict"
+   */
+  mode?: string;
+  /**
+   * Display name for this IdP configuration
+   * @example "Okta SSO"
+   */
+  name?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174001" */
+  partner_app_id?: string;
+  /**
+   * OIDC scopes requested during authentication
+   * @example ["openid","email","profile"]
+   */
+  scopes?: string[];
+  /**
+   * Discovered OIDC token endpoint
+   * @example "https://company.okta.com/token"
+   */
+  token_endpoint?: string;
+  /**
+   * IdP type (always "oidc")
+   * @example "oidc"
+   */
+  type?: string;
+  /** @example "2024-01-01T00:00:00Z" */
+  updated_at?: string;
+  /**
+   * Discovered OIDC userinfo endpoint
+   * @example "https://company.okta.com/userinfo"
+   */
+  userinfo_endpoint?: string;
+}
+
+/** Bad request error for updating IdP configuration */
+export interface IdpUpdateIdPConfigError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?:
+    | "invalid_request_body"
+    | "invalid_idp_credentials"
+    | "invalid_idp"
+    | "domain_is_generic"
+    | "domain_already_claimed"
+    | "strict_mode_requires_domains"
+    | "discovery_fetch_failed";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface IdpUpdateIdPConfigRequest {
+  /** Email domains allowed for SSO (required for strict mode) */
+  allowed_email_domains?: string[];
+  /** Maps Contio user fields to IdP claim names */
+  claim_mappings?: Record<string, string>;
+  /**
+   * OIDC discovery endpoint URL from your Identity Provider
+   * @example "https://company.okta.com/.well-known/openid-configuration"
+   */
+  discovery_url?: string;
+  /**
+   * OAuth Client ID from your Identity Provider's OIDC application. This is NOT your Contio Partner client_id.
+   * @minLength 1
+   * @example "0oa1234567890abcdef"
+   */
+  idp_client_id?: string;
+  /**
+   * OAuth Client Secret from your Identity Provider's OIDC application. This is NOT your Contio Partner client_secret. Stored encrypted at rest.
+   * @minLength 1
+   * @example "new-IdP-secret"
+   */
+  idp_client_secret?: string;
+  /**
+   * Enable or disable this IdP configuration
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Domain validation mode: "strict" or "partner_managed"
+   * @example "partner_managed"
+   */
+  mode?: "strict" | "partner_managed";
+  /**
+   * Display name for this IdP configuration
+   * @minLength 1
+   * @maxLength 255
+   * @example "Updated Okta SSO"
+   */
+  name?: string;
+  /** OIDC scopes to request during authentication */
+  scopes?: string[];
+}
 
 export type InitiateCreateData = OauthPartnerAuthInitiateResponse;
 
@@ -1595,6 +1514,181 @@ export interface MeetingPartnerUpdateMeetingRequest {
   title?: string;
 }
 
+export interface MeetingTemplateAppliedItemsCountsResponse {
+  /**
+   * Number of agenda items applied
+   * @example 5
+   */
+  agenda_items?: number;
+  /**
+   * Number of documents applied
+   * @example 2
+   */
+  documents?: number;
+  /**
+   * Number of participants applied
+   * @example 3
+   */
+  participants?: number;
+}
+
+export interface MeetingTemplateApplyTemplateRequest {
+  /**
+   * ID of the meeting to apply the template to
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id: string;
+}
+
+export interface MeetingTemplateApplyTemplateResponse {
+  /**
+   * Unique identifier for the application record
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  application_id?: string;
+  /** Counts of items applied from the template */
+  applied_items?: MeetingTemplateAppliedItemsCountsResponse;
+  /**
+   * Whether the operation was successful
+   * @example true
+   */
+  success?: boolean;
+}
+
+export interface MeetingTemplatePartnerMeetingTemplateDetailResponse {
+  /**
+   * Number of agenda items in the template
+   * @example 5
+   */
+  agenda_item_count?: number;
+  /**
+   * Whether the current user can edit this template
+   * @example true
+   */
+  can_edit?: boolean;
+  /**
+   * Timestamp when the template was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description of the template
+   * @example "Standard agenda for weekly team meetings"
+   */
+  description?: string;
+  /**
+   * Number of documents in the template
+   * @example 2
+   */
+  document_count?: number;
+  /**
+   * Unique identifier for the meeting template
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether the template is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name of the template
+   * @example "Weekly Team Sync Template"
+   */
+  name?: string;
+  /**
+   * Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER)
+   * @example "WORKSPACE"
+   */
+  ownership_type?: "SYSTEM" | "VERTICAL" | "WORKSPACE" | "USER";
+  /**
+   * Number of participants in the template
+   * @example 3
+   */
+  participant_count?: number;
+  /**
+   * Timestamp when the template was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}
+
+export interface MeetingTemplatePartnerMeetingTemplateResponse {
+  /**
+   * Timestamp when the template was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description of the template
+   * @example "Standard agenda for weekly team meetings"
+   */
+  description?: string;
+  /**
+   * Unique identifier for the meeting template
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether the template is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name of the template
+   * @example "Weekly Team Sync Template"
+   */
+  name?: string;
+  /**
+   * Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER)
+   * @example "WORKSPACE"
+   */
+  ownership_type?: "SYSTEM" | "VERTICAL" | "WORKSPACE" | "USER";
+  /**
+   * Timestamp when the template was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}
+
+export interface MeetingTemplateTemplateNextStepResponse {
+  /**
+   * Whether autopilot is enabled for this next step on the template
+   * @example true
+   */
+  autopilot?: boolean;
+  /**
+   * Color of the next step
+   * @example "#4F46E5"
+   */
+  color?: string;
+  /**
+   * Description of the next step
+   * @example "AI-powered summary generation"
+   */
+  description?: string;
+  /**
+   * Icon name for the next step
+   * @example "document-text"
+   */
+  icon_name?: string;
+  /**
+   * Unique identifier for the next step
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Name of the next step
+   * @example "Generate Meeting Summary"
+   */
+  name?: string;
+  /**
+   * Sort order of the next step
+   * @example 1
+   */
+  sort_order?: number;
+}
+
 export interface MeetingUpdateAgendaItemRequest {
   /**
    * @maxLength 5000
@@ -1645,6 +1739,251 @@ export interface MeetingUpdateMeetingError400 {
    * @example "abc123xyz"
    */
   request_id?: string;
+}
+
+export interface NextStepActionButtonAddActionButtonToNextStepRequest {
+  /**
+   * ID of the action button to add
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  action_button_id: string;
+  /**
+   * Sort order for the action button (optional, defaults to 0)
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface NextStepActionButtonNextStepActionButtonResponse {
+  /**
+   * Delivery mechanism
+   * @example "webhook"
+   */
+  delivery_mechanism?: string;
+  /**
+   * Icon URL for the action button
+   * @example "https://cdn.example.com/icon.png"
+   */
+  icon_url?: string;
+  /**
+   * Unique identifier for the action button
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether this is the default action button for the next step
+   * @example true
+   */
+  is_default?: boolean;
+  /**
+   * Name of the action button
+   * @example "Send to Slack"
+   */
+  name?: string;
+  /**
+   * Sort order within the next step
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface NextStepActionButtonSetDefaultActionButtonRequest {
+  /**
+   * ID of the action button to set as default
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  action_button_id: string;
+}
+
+export interface NextStepCreateNextStepRequest {
+  /**
+   * AI prompt template for AI type next steps
+   * @example "Generate an invoice based on the meeting summary and action items"
+   */
+  ai_prompt?: string;
+  /**
+   * Optional color for the next step
+   * @maxLength 50
+   * @example "#FF5733"
+   */
+  color?: string;
+  /**
+   * Optional description of the next step
+   * @maxLength 1000
+   * @example "Generates an invoice from meeting action items"
+   */
+  description?: string;
+  /**
+   * Optional icon name for the next step
+   * @maxLength 100
+   * @example "receipt"
+   */
+  icon_name?: string;
+  /**
+   * Name of the next step
+   * @minLength 1
+   * @maxLength 255
+   * @example "Generate Invoice"
+   */
+  name: string;
+  /**
+   * Redirect URL for redirect type next steps
+   * @maxLength 2000
+   * @example "https://partner.example.com/invoice"
+   */
+  redirect_url?: string;
+  /**
+   * Type of next step: "ai" or "redirect"
+   * @example "ai"
+   */
+  type: "ai" | "redirect";
+}
+
+export interface NextStepNextStepResponse {
+  /**
+   * AI prompt template
+   * @example "Generate an invoice based on the meeting summary"
+   */
+  ai_prompt?: string;
+  /**
+   * Color for the next step
+   * @example "#FF5733"
+   */
+  color?: string;
+  /**
+   * When the next step was created
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description of the next step
+   * @example "Generates an invoice from meeting action items"
+   */
+  description?: string;
+  /**
+   * Icon name for the next step
+   * @example "receipt"
+   */
+  icon_name?: string;
+  /**
+   * Unique identifier for the next step
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether the next step is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name of the next step
+   * @example "Generate Invoice"
+   */
+  name?: string;
+  /**
+   * Redirect URL for redirect type next steps
+   * @example "https://partner.example.com/invoice"
+   */
+  redirect_url?: string;
+  /**
+   * Display order for sorting
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * Type of next step: "ai" or "redirect"
+   * @example "ai"
+   */
+  type?: string;
+  /**
+   * When the next step was last updated
+   * @example "2024-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}
+
+export interface NextStepResultNextStepResultResponse {
+  /**
+   * The format of the generated content
+   * @example "markdown"
+   */
+  content_format?: string;
+  /**
+   * When the result was created
+   * @example "2026-03-25T10:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * The execution log ID that produced this result
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  execution_log_id?: string;
+  /**
+   * When the result expires
+   * @example "2026-04-01T10:00:00Z"
+   */
+  expires_at?: string;
+  /**
+   * The AI-generated text content
+   * @example "# Meeting Summary
+   *
+   * Key discussion points..."
+   */
+  generated_text?: string;
+  /**
+   * Unique identifier for the result
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+}
+
+export interface NextStepUpdateNextStepRequest {
+  /**
+   * AI prompt template for AI type next steps
+   * @example "Generate an invoice based on the meeting summary and action items"
+   */
+  ai_prompt?: string;
+  /**
+   * Color for the next step
+   * @maxLength 50
+   * @example "#FF5733"
+   */
+  color?: string;
+  /**
+   * Description of the next step
+   * @maxLength 1000
+   * @example "Generates an invoice from meeting action items"
+   */
+  description?: string;
+  /**
+   * Icon name for the next step
+   * @maxLength 100
+   * @example "receipt"
+   */
+  icon_name?: string;
+  /**
+   * Whether the next step is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name of the next step
+   * @minLength 1
+   * @maxLength 255
+   * @example "Generate Invoice"
+   */
+  name?: string;
+  /**
+   * Redirect URL for redirect type next steps
+   * @maxLength 2000
+   * @example "https://partner.example.com/invoice"
+   */
+  redirect_url?: string;
+  /**
+   * Type of next step: "ai" or "redirect"
+   * @example "ai"
+   */
+  type?: "ai" | "redirect";
 }
 
 export interface OauthHealthResponse {
@@ -1791,37 +2130,73 @@ export type OpenidConfigurationListData =
 
 export type OpenidConfigurationListError = ErrorsErrorResponse;
 
-export type PartnerAdminAppListData = AdminPartnerAppResponse;
+export type PartnerAdminActionButtonsCreateData =
+  ActionButtonActionButtonResponse;
+
+export type PartnerAdminActionButtonsCreateError = ErrorsPartnerErrorResponse;
+
+export type PartnerAdminActionButtonsDeleteData = any;
+
+export type PartnerAdminActionButtonsDeleteError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminActionButtonsDeleteParams {
+  /** Action button ID */
+  id: string;
+}
+
+export type PartnerAdminActionButtonsDetailData =
+  ActionButtonActionButtonResponse;
+
+export type PartnerAdminActionButtonsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminActionButtonsDetailParams {
+  /** Action button ID */
+  id: string;
+}
+
+export type PartnerAdminActionButtonsListData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseActionButtonActionButtonResponse;
+
+export type PartnerAdminActionButtonsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminActionButtonsListParams {
+  /**
+   * Maximum number of items to return
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerAdminActionButtonsUpdateData =
+  ActionButtonActionButtonResponse;
+
+export type PartnerAdminActionButtonsUpdateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminActionButtonsUpdateParams {
+  /** Action button ID */
+  id: string;
+}
+
+export type PartnerAdminAppListData = SharedPartnerAppResponse;
 
 export type PartnerAdminAppListError = ErrorsPartnerErrorResponse;
 
-export type PartnerAdminAppStatusUpdateData = AdminPartnerAppResponse;
+export type PartnerAdminAppStatusUpdateData = SharedPartnerAppResponse;
 
 export type PartnerAdminAppStatusUpdateError =
-  | AdminUpdateAppStatusError400
+  | AppManagementUpdateAppStatusError400
   | ErrorsPartnerErrorResponse;
 
-export type PartnerAdminAppUpdateData = AdminPartnerAppResponse;
+export type PartnerAdminAppUpdateData = SharedPartnerAppResponse;
 
 export type PartnerAdminAppUpdateError =
-  | AdminUpdateAppError400
+  | AppManagementUpdateAppError400
   | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAppWebhookFilterDeleteData = AdminPartnerAppResponse;
-
-export type PartnerAdminAppWebhookFilterDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAppWebhookFilterUpdateData = AdminPartnerAppResponse;
-
-export type PartnerAdminAppWebhookFilterUpdateError =
-  | AdminUpdateWebhookFilterError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAppWebhookStatusUpdateData = AdminPartnerAppResponse;
-
-export type PartnerAdminAppWebhookStatusUpdateError =
-  ErrorsPartnerErrorResponse;
 
 export type PartnerAdminConnectionsDeleteData = any;
 
@@ -1832,7 +2207,8 @@ export interface PartnerAdminConnectionsDeleteParams {
   connectionId: string;
 }
 
-export type PartnerAdminConnectionsDetailData = AdminUserConnectionResponse;
+export type PartnerAdminConnectionsDetailData =
+  ConnectionUserConnectionResponse;
 
 export type PartnerAdminConnectionsDetailError = ErrorsPartnerErrorResponse;
 
@@ -1842,7 +2218,7 @@ export interface PartnerAdminConnectionsDetailParams {
 }
 
 export type PartnerAdminConnectionsListData =
-  AdminListResponseAdminUserConnectionResponse;
+  RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse;
 
 export type PartnerAdminConnectionsListError = ErrorsPartnerErrorResponse;
 
@@ -1866,18 +2242,28 @@ export interface PartnerAdminConnectionsListParams {
   user_id?: string;
 }
 
+export type PartnerAdminCredentialsApiKeyRollbackCreateData = any;
+
+export type PartnerAdminCredentialsApiKeyRollbackCreateError =
+  ErrorsPartnerErrorResponse;
+
 export type PartnerAdminCredentialsApiKeyRotateCreateData =
-  AdminCredentialRotationResponse;
+  CredentialCredentialRotationResponse;
 
 export type PartnerAdminCredentialsApiKeyRotateCreateError =
-  | AdminRotateAPIKeyError400
+  | CredentialRotateAPIKeyError400
   | ErrorsPartnerErrorResponse;
 
+export type PartnerAdminCredentialsClientSecretRollbackCreateData = any;
+
+export type PartnerAdminCredentialsClientSecretRollbackCreateError =
+  ErrorsPartnerErrorResponse;
+
 export type PartnerAdminCredentialsClientSecretRotateCreateData =
-  AdminCredentialRotationResponse;
+  CredentialCredentialRotationResponse;
 
 export type PartnerAdminCredentialsClientSecretRotateCreateError =
-  | AdminRotateClientSecretError400
+  | CredentialRotateClientSecretError400
   | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminCredentialsHistoryListData = Record<string, unknown>;
@@ -1902,40 +2288,287 @@ export interface PartnerAdminCredentialsHistoryListParams {
 
 export type PartnerAdminCredentialsListData = Record<
   string,
-  AdminCredentialStatusResponse
+  CredentialCredentialStatusResponse
 >;
 
 export type PartnerAdminCredentialsListError = ErrorsPartnerErrorResponse;
 
 export type PartnerAdminCredentialsWebhookSecretRotateCreateData =
-  AdminCredentialRotationResponse;
+  CredentialCredentialRotationResponse;
 
 export type PartnerAdminCredentialsWebhookSecretRotateCreateError =
-  | AdminRotateWebhookSecretError400
+  | CredentialRotateWebhookSecretError400
   | ErrorsPartnerErrorResponse;
 
-export type PartnerAdminIdpCreateData = AdminIdPConfigResponse;
+export type PartnerAdminIdpCreateData = IdpIdPConfigResponse;
 
 export type PartnerAdminIdpCreateError =
-  | AdminCreateIdPConfigError400
+  | IdpCreateIdPConfigError400
   | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminIdpDeleteData = any;
 
 export type PartnerAdminIdpDeleteError = ErrorsPartnerErrorResponse;
 
-export type PartnerAdminIdpListData = AdminIdPConfigResponse;
+export type PartnerAdminIdpListData = IdpIdPConfigResponse;
 
 export type PartnerAdminIdpListError = ErrorsPartnerErrorResponse;
 
-export type PartnerAdminIdpUpdateData = AdminIdPConfigResponse;
+export type PartnerAdminIdpUpdateData = IdpIdPConfigResponse;
 
 export type PartnerAdminIdpUpdateError =
-  | AdminUpdateIdPConfigError400
+  | IdpUpdateIdPConfigError400
   | ErrorsPartnerErrorResponse;
 
+export type PartnerAdminNextStepsActionButtonsCreateData = any;
+
+export type PartnerAdminNextStepsActionButtonsCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsActionButtonsCreateParams {
+  /** Next step ID */
+  nextStepId: string;
+}
+
+export type PartnerAdminNextStepsActionButtonsDeleteData = any;
+
+export type PartnerAdminNextStepsActionButtonsDeleteError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsActionButtonsDeleteParams {
+  /** Action button ID (UUID format) */
+  actionButtonId: string;
+  /** Next step ID (UUID format) */
+  nextStepId: string;
+}
+
+export type PartnerAdminNextStepsActionButtonsListData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseNextStepActionButtonNextStepActionButtonResponse;
+
+export type PartnerAdminNextStepsActionButtonsListError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsActionButtonsListParams {
+  /** Next step ID */
+  nextStepId: string;
+}
+
+export type PartnerAdminNextStepsCreateData = NextStepNextStepResponse;
+
+export type PartnerAdminNextStepsCreateError = ErrorsPartnerErrorResponse;
+
+export type PartnerAdminNextStepsDefaultActionButtonUpdateData = any;
+
+export type PartnerAdminNextStepsDefaultActionButtonUpdateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsDefaultActionButtonUpdateParams {
+  /** Next step ID (UUID format) */
+  nextStepId: string;
+}
+
+export type PartnerAdminNextStepsDeleteData = any;
+
+export type PartnerAdminNextStepsDeleteError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsDeleteParams {
+  /**
+   * Next Step ID
+   * @format uuid
+   */
+  nextStepId: string;
+}
+
+export type PartnerAdminNextStepsDetailData = NextStepNextStepResponse;
+
+export type PartnerAdminNextStepsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsDetailParams {
+  /**
+   * Next Step ID
+   * @format uuid
+   */
+  nextStepId: string;
+}
+
+export type PartnerAdminNextStepsListData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseNextStepNextStepResponse;
+
+export type PartnerAdminNextStepsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsListParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerAdminNextStepsUpdateData = NextStepNextStepResponse;
+
+export type PartnerAdminNextStepsUpdateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminNextStepsUpdateParams {
+  /**
+   * Next Step ID
+   * @format uuid
+   */
+  nextStepId: string;
+}
+
+export type PartnerAdminTemplatesCreateData = TemplateTemplateResponse;
+
+export type PartnerAdminTemplatesCreateError = ErrorsPartnerErrorResponse;
+
+export type PartnerAdminTemplatesDeleteData = any;
+
+export type PartnerAdminTemplatesDeleteError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesDeleteParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminTemplatesDetailData = TemplateTemplateResponse;
+
+export type PartnerAdminTemplatesDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesDetailParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminTemplatesListData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse;
+
+export type PartnerAdminTemplatesListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesListParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerAdminTemplatesNextStepsCreateData = any;
+
+export type PartnerAdminTemplatesNextStepsCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesNextStepsCreateParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminTemplatesNextStepsDeleteData = any;
+
+export type PartnerAdminTemplatesNextStepsDeleteError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesNextStepsDeleteParams {
+  /** Next Step ID */
+  nextStepId: string;
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminTemplatesNextStepsListData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse;
+
+export type PartnerAdminTemplatesNextStepsListError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesNextStepsListParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminTemplatesNextStepsUpdateData = any;
+
+export type PartnerAdminTemplatesNextStepsUpdateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesNextStepsUpdateParams {
+  /** Next Step ID */
+  nextStepId: string;
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminTemplatesUpdateData = TemplateTemplateResponse;
+
+export type PartnerAdminTemplatesUpdateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminTemplatesUpdateParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type PartnerAdminToolkitsCreateData =
+  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type PartnerAdminToolkitsCreateError = ErrorsPartnerErrorResponse;
+
+export type PartnerAdminToolkitsDeleteData = any;
+
+export type PartnerAdminToolkitsDeleteError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminToolkitsDeleteParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type PartnerAdminToolkitsDetailData =
+  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type PartnerAdminToolkitsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminToolkitsDetailParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type PartnerAdminToolkitsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type PartnerAdminToolkitsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminToolkitsListParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerAdminToolkitsUpdateData =
+  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type PartnerAdminToolkitsUpdateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerAdminToolkitsUpdateParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
 export type PartnerAdminWebhookDeliveriesDetailData =
-  AdminWebhookDeliveryResponse;
+  WebhookWebhookDeliveryResponse;
 
 export type PartnerAdminWebhookDeliveriesDetailError =
   ErrorsPartnerErrorResponse;
@@ -1946,7 +2579,7 @@ export interface PartnerAdminWebhookDeliveriesDetailParams {
 }
 
 export type PartnerAdminWebhookDeliveriesListData =
-  AdminWebhookDeliveriesResponse;
+  WebhookWebhookDeliveriesResponse;
 
 export type PartnerAdminWebhookDeliveriesListError = ErrorsPartnerErrorResponse;
 
@@ -1971,10 +2604,24 @@ export interface PartnerAdminWebhookDeliveriesRetryCreateParams {
   deliveryId: string;
 }
 
-export type PartnerAdminWorkflowsCreateData = AdminWorkflowResponse;
+export type PartnerAdminWebhookFilterDeleteData = SharedPartnerAppResponse;
+
+export type PartnerAdminWebhookFilterDeleteError = ErrorsPartnerErrorResponse;
+
+export type PartnerAdminWebhookFilterUpdateData = SharedPartnerAppResponse;
+
+export type PartnerAdminWebhookFilterUpdateError =
+  | AppManagementUpdateWebhookFilterError400
+  | ErrorsPartnerErrorResponse;
+
+export type PartnerAdminWebhookStatusUpdateData = SharedPartnerAppResponse;
+
+export type PartnerAdminWebhookStatusUpdateError = ErrorsPartnerErrorResponse;
+
+export type PartnerAdminWorkflowsCreateData = WorkflowWorkflowResponse;
 
 export type PartnerAdminWorkflowsCreateError =
-  | AdminCreateWorkflowError400
+  | WorkflowCreateWorkflowError400
   | ErrorsPartnerErrorResponse;
 
 export type PartnerAdminWorkflowsDeleteData = any;
@@ -1986,7 +2633,7 @@ export interface PartnerAdminWorkflowsDeleteParams {
   workflowId: string;
 }
 
-export type PartnerAdminWorkflowsDetailData = AdminWorkflowResponse;
+export type PartnerAdminWorkflowsDetailData = WorkflowWorkflowResponse;
 
 export type PartnerAdminWorkflowsDetailError = ErrorsPartnerErrorResponse;
 
@@ -1996,7 +2643,7 @@ export interface PartnerAdminWorkflowsDetailParams {
 }
 
 export type PartnerAdminWorkflowsListData =
-  AdminListResponseAdminWorkflowResponse;
+  RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse;
 
 export type PartnerAdminWorkflowsListError = ErrorsPartnerErrorResponse;
 
@@ -2013,10 +2660,10 @@ export interface PartnerAdminWorkflowsListParams {
   offset?: number;
 }
 
-export type PartnerAdminWorkflowsUpdateData = AdminWorkflowResponse;
+export type PartnerAdminWorkflowsUpdateData = WorkflowWorkflowResponse;
 
 export type PartnerAdminWorkflowsUpdateError =
-  | AdminUpdateWorkflowError400
+  | WorkflowUpdateWorkflowError400
   | ErrorsPartnerErrorResponse;
 
 export interface PartnerAdminWorkflowsUpdateParams {
@@ -2104,7 +2751,7 @@ export interface PartnerUserActionItemsDetailParams {
 }
 
 export type PartnerUserActionItemsListData =
-  SharedListResponseActionItemPartnerActionItemResponse;
+  RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
 
 export type PartnerUserActionItemsListError =
   | ActionItemGetActionItemsError400
@@ -2168,7 +2815,7 @@ export interface PartnerUserCalendarEventsDetailParams {
 }
 
 export type PartnerUserCalendarEventsListData =
-  SharedListResponseCalendarPartnerCalendarEventResponse;
+  RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse;
 
 export type PartnerUserCalendarEventsListError =
   | CalendarGetCalendarEventsError400
@@ -2218,6 +2865,95 @@ export interface PartnerUserCalendarEventsMeetingCreateParams {
   calendarEventId: string;
 }
 
+export type PartnerUserMeetingTemplatesApplyCreateData =
+  MeetingTemplateApplyTemplateResponse;
+
+export type PartnerUserMeetingTemplatesApplyCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingTemplatesApplyCreateParams {
+  /**
+   * Template ID to apply
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingTemplatesDetailData =
+  MeetingTemplatePartnerMeetingTemplateDetailResponse;
+
+export type PartnerUserMeetingTemplatesDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingTemplatesDetailParams {
+  /**
+   * Meeting template ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingTemplatesListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse;
+
+export type PartnerUserMeetingTemplatesListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingTemplatesListParams {
+  /**
+   * Maximum number of items per page
+   * @min 1
+   * @max 100
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @min 0
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerUserMeetingTemplatesNextStepsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse;
+
+export type PartnerUserMeetingTemplatesNextStepsListError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingTemplatesNextStepsListParams {
+  /**
+   * Meeting template ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingsActionButtonsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse;
+
+export type PartnerUserMeetingsActionButtonsListError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsActionButtonsListParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type PartnerUserMeetingsActionButtonsTriggerCreateData =
+  SharedTriggerActionButtonResponse;
+
+export type PartnerUserMeetingsActionButtonsTriggerCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsActionButtonsTriggerCreateParams {
+  /** Action Button ID */
+  buttonId: string;
+  /** Meeting ID */
+  id: string;
+}
+
 export type PartnerUserMeetingsAgendaItemsCreateData =
   MeetingPartnerAgendaItemResponse;
 
@@ -2229,7 +2965,7 @@ export interface PartnerUserMeetingsAgendaItemsCreateParams {
    * Meeting ID
    * @format uuid
    */
-  meetingId: string;
+  id: string;
 }
 
 export type PartnerUserMeetingsAgendaItemsDeleteData = any;
@@ -2239,19 +2975,19 @@ export type PartnerUserMeetingsAgendaItemsDeleteError =
 
 export interface PartnerUserMeetingsAgendaItemsDeleteParams {
   /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
    * Agenda Item ID
    * @format uuid
    */
   itemId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  meetingId: string;
 }
 
 export type PartnerUserMeetingsAgendaItemsListData =
-  SharedListResponseMeetingPartnerAgendaItemResponse;
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse;
 
 export type PartnerUserMeetingsAgendaItemsListError =
   ErrorsPartnerErrorResponse;
@@ -2272,15 +3008,15 @@ export type PartnerUserMeetingsAgendaItemsUpdateError =
 
 export interface PartnerUserMeetingsAgendaItemsUpdateParams {
   /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
    * Agenda Item ID
    * @format uuid
    */
   itemId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  meetingId: string;
 }
 
 export type PartnerUserMeetingsCalendarLinkCreateData =
@@ -2320,10 +3056,10 @@ export type PartnerUserMeetingsContextContentListError =
 
 export interface PartnerUserMeetingsContextContentListParams {
   /**
-   * Document ID
+   * Context ID
    * @format uuid
    */
-  documentId: string;
+  contextId: string;
   /**
    * Meeting ID
    * @format uuid
@@ -2347,11 +3083,11 @@ export interface PartnerUserMeetingsContextCreateParams {
 export interface PartnerUserMeetingsContextCreatePayload {
   /** Logical context type */
   context_type?: string;
-  /** Context document file */
+  /** Context file */
   file: File;
   /** Source format (json,csv,tsv,xml,html,yaml,md,txt) */
   source_format: string;
-  /** Document title */
+  /** Context title */
   title?: string;
 }
 
@@ -2361,10 +3097,10 @@ export type PartnerUserMeetingsContextDeleteError = ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsContextDeleteParams {
   /**
-   * Document ID
+   * Context ID
    * @format uuid
    */
-  documentId: string;
+  contextId: string;
   /**
    * Meeting ID
    * @format uuid
@@ -2379,10 +3115,10 @@ export type PartnerUserMeetingsContextDetailError = ErrorsPartnerErrorResponse;
 
 export interface PartnerUserMeetingsContextDetailParams {
   /**
-   * Document ID
+   * Context ID
    * @format uuid
    */
-  documentId: string;
+  contextId: string;
   /**
    * Meeting ID
    * @format uuid
@@ -2429,7 +3165,7 @@ export interface PartnerUserMeetingsDetailParams {
 }
 
 export type PartnerUserMeetingsListData =
-  SharedListResponseSharedPartnerMeetingResponse;
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
 
 export type PartnerUserMeetingsListError =
   | MeetingGetMeetingsError400
@@ -2456,6 +3192,38 @@ export interface PartnerUserMeetingsListParams {
    * @example ""2023-01-01T00:00:00Z""
    */
   start_date?: string;
+}
+
+export type PartnerUserMeetingsNextStepsExecuteCreateData =
+  SharedExecuteNextStepResponse;
+
+export type PartnerUserMeetingsNextStepsExecuteCreateError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsNextStepsExecuteCreateParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Next Step ID
+   * @format uuid
+   */
+  nextStepId: string;
+}
+
+export type PartnerUserMeetingsNextStepsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse;
+
+export type PartnerUserMeetingsNextStepsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserMeetingsNextStepsListParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
 }
 
 export type PartnerUserMeetingsPartialUpdateData = SharedPartnerMeetingResponse;
@@ -2502,7 +3270,7 @@ export interface PartnerUserMeetingsParticipantsDeleteParams {
 }
 
 export type PartnerUserMeetingsParticipantsListData =
-  SharedListResponseMeetingPartnerMeetingParticipantResponse;
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse;
 
 export type PartnerUserMeetingsParticipantsListError =
   ErrorsPartnerErrorResponse;
@@ -2512,9 +3280,166 @@ export interface PartnerUserMeetingsParticipantsListParams {
   id: string;
 }
 
+export type PartnerUserNextStepResultsDetailData =
+  NextStepResultNextStepResultResponse;
+
+export type PartnerUserNextStepResultsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserNextStepResultsDetailParams {
+  /**
+   * Result ID
+   * @format uuid
+   */
+  resultId: string;
+}
+
 export type PartnerUserProfileListData = ProfileUserProfileResponse;
 
 export type PartnerUserProfileListError = ErrorsPartnerErrorResponse;
+
+export type PartnerUserSessionsCreateData = SessionCreateSessionResponse;
+
+export type PartnerUserSessionsCreateError = ErrorsPartnerErrorResponse;
+
+export type PartnerUserSessionsDetailData = SessionGetSessionResponse;
+
+export type PartnerUserSessionsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserSessionsDetailParams {
+  /**
+   * Session ID
+   * @format uuid
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  id: string;
+  /**
+   * Maximum turns to return (1-200, default: 50)
+   * @min 1
+   * @max 200
+   */
+  turn_limit?: number;
+  /**
+   * Pagination offset for turns
+   * @min 0
+   */
+  turn_offset?: number;
+}
+
+export type PartnerUserSessionsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse;
+
+export type PartnerUserSessionsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserSessionsListParams {
+  /**
+   * Maximum sessions to return (1-100, default: 25)
+   * @min 1
+   * @max 100
+   */
+  limit?: number;
+  /**
+   * Filter by meeting ID
+   * @format uuid
+   */
+  meeting_id?: string;
+  /**
+   * Number of sessions to skip (0-based, default: 0)
+   * @min 0
+   */
+  offset?: number;
+}
+
+export type PartnerUserSessionsTurnsDetailData = SessionGetTurnResponse;
+
+export type PartnerUserSessionsTurnsDetailError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserSessionsTurnsDetailParams {
+  /**
+   * Session ID
+   * @format uuid
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  id: string;
+  /**
+   * Turn ID
+   * @format uuid
+   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+   */
+  turnId: string;
+}
+
+export type PartnerUserSessionsUpdateData = SessionSendMessageResponse;
+
+export type PartnerUserSessionsUpdateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserSessionsUpdateParams {
+  /** Session ID */
+  id: string;
+}
+
+export type PartnerUserToolkitsInstallCreateData = ToolkitInstallationResponse;
+
+export type PartnerUserToolkitsInstallCreateError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserToolkitsInstallCreateParams {
+  /**
+   * Toolkit ID
+   * @format uuid
+   */
+  toolkitId: string;
+}
+
+export type PartnerUserToolkitsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse;
+
+export type PartnerUserToolkitsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserToolkitsListParams {
+  /**
+   * Maximum number of items per page
+   * @min 1
+   * @max 100
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @min 0
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type PartnerUserWorkspacesToolkitsDeleteData = any;
+
+export type PartnerUserWorkspacesToolkitsDeleteError =
+  ErrorsPartnerErrorResponse;
+
+export interface PartnerUserWorkspacesToolkitsDeleteParams {
+  /**
+   * Toolkit ID
+   * @format uuid
+   */
+  toolkitId: string;
+  /**
+   * Workspace ID
+   * @format uuid
+   */
+  workspaceId: string;
+}
+
+export type PartnerUserWorkspacesToolkitsListData =
+  RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse;
+
+export type PartnerUserWorkspacesToolkitsListError = ErrorsPartnerErrorResponse;
+
+export interface PartnerUserWorkspacesToolkitsListParams {
+  /**
+   * Workspace ID
+   * @format uuid
+   */
+  workspaceId: string;
+}
 
 export interface PartnerWorkflowAction {
   /** @example {"url":"https://api.example.com/webhook"} */
@@ -2570,6 +3495,170 @@ export interface RevokeCreatePayload {
   token: string;
   /** Hint about token type (access_token or refresh_token) */
   token_type_hint?: string;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseActionButtonActionButtonResponse {
+  /** Array of items for the current page */
+  items?: ActionButtonActionButtonResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse {
+  /** Array of items for the current page */
+  items?: ConnectionUserConnectionResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseNextStepActionButtonNextStepActionButtonResponse {
+  /** Array of items for the current page */
+  items?: NextStepActionButtonNextStepActionButtonResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseNextStepNextStepResponse {
+  /** Array of items for the current page */
+  items?: NextStepNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse {
+  /** Array of items for the current page */
+  items?: TemplateTemplateNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse {
+  /** Array of items for the current page */
+  items?: TemplateTemplateResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse {
+  /** Array of items for the current page */
+  items?: WorkflowWorkflowResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerAdminToolkitToolkitResponse {
+  /** @example "2023-01-01T00:00:00Z" */
+  created_at?: string;
+  /** @example "Complete sales workflow toolkit" */
+  description?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  id?: string;
+  /** @example true */
+  is_active?: boolean;
+  manifest?: ToolkitToolkitManifestRequest;
+  /** @example "Sales Pipeline Toolkit" */
+  name?: string;
+  /** @example "PARTNER" */
+  ownership_type?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174001" */
+  partner_app_id?: string;
+  /** @example "sales-pipeline" */
+  slug?: string;
+  /** @example "2023-01-01T00:00:00Z" */
+  updated_at?: string;
+  /** @example "1.0.0" */
+  version?: string;
 }
 
 export interface RomeApiControllersExternalPartnerOauthDiscoveryDocument {
@@ -2686,11 +3775,7 @@ export interface RomeApiControllersExternalPartnerOauthUserInfo {
   sub?: string;
 }
 
-export type ScopesListData = OauthScopesResponse;
-
-export type ScopesListError = ErrorsErrorResponse;
-
-export interface SharedListResponseActionItemPartnerActionItemResponse {
+export interface RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse {
   /** Array of items for the current page */
   items?: ActionItemPartnerActionItemResponse[];
   /**
@@ -2710,7 +3795,7 @@ export interface SharedListResponseActionItemPartnerActionItemResponse {
   total?: number;
 }
 
-export interface SharedListResponseCalendarPartnerCalendarEventResponse {
+export interface RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse {
   /** Array of items for the current page */
   items?: CalendarPartnerCalendarEventResponse[];
   /**
@@ -2730,7 +3815,7 @@ export interface SharedListResponseCalendarPartnerCalendarEventResponse {
   total?: number;
 }
 
-export interface SharedListResponseMeetingPartnerAgendaItemResponse {
+export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse {
   /** Array of items for the current page */
   items?: MeetingPartnerAgendaItemResponse[];
   /**
@@ -2750,7 +3835,7 @@ export interface SharedListResponseMeetingPartnerAgendaItemResponse {
   total?: number;
 }
 
-export interface SharedListResponseMeetingPartnerMeetingParticipantResponse {
+export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse {
   /** Array of items for the current page */
   items?: MeetingPartnerMeetingParticipantResponse[];
   /**
@@ -2770,7 +3855,147 @@ export interface SharedListResponseMeetingPartnerMeetingParticipantResponse {
   total?: number;
 }
 
-export interface SharedListResponseSharedPartnerMeetingResponse {
+export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse {
+  /** Array of items for the current page */
+  items?: MeetingTemplatePartnerMeetingTemplateResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse {
+  /** Array of items for the current page */
+  items?: MeetingTemplateTemplateNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse {
+  /** Array of items for the current page */
+  items?: RomeApiControllersExternalPartnerAdminToolkitToolkitResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse {
+  /** Array of items for the current page */
+  items?: RomeApiControllersExternalPartnerUserToolkitToolkitResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse {
+  /** Array of items for the current page */
+  items?: SessionPartnerChatSessionResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse {
+  /** Array of items for the current page */
+  items?: SharedActionButtonResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse {
+  /** Array of items for the current page */
+  items?: SharedNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse {
   /** Array of items for the current page */
   items?: SharedPartnerMeetingResponse[];
   /**
@@ -2788,6 +4013,520 @@ export interface SharedListResponseSharedPartnerMeetingResponse {
    * @example 100
    */
   total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse {
+  /** Array of items for the current page */
+  items?: ToolkitToolkitWithInstallationResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserToolkitToolkitResponse {
+  /**
+   * Number of action buttons in the toolkit
+   * @example 2
+   */
+  action_buttons_count?: number;
+  /**
+   * Timestamp when the toolkit was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description of the toolkit
+   * @example "A comprehensive toolkit for sales meetings"
+   */
+  description?: string;
+  /**
+   * Unique identifier for the toolkit
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether the toolkit is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name of the toolkit
+   * @example "Sales Meeting Toolkit"
+   */
+  name?: string;
+  /**
+   * Number of next steps in the toolkit
+   * @example 5
+   */
+  next_steps_count?: number;
+  /**
+   * Ownership type of the toolkit
+   * @example "PARTNER"
+   */
+  ownership_type?: "SYSTEM" | "PARTNER";
+  /**
+   * URL-friendly slug for the toolkit
+   * @example "sales-meeting-toolkit"
+   */
+  slug?: string;
+  /**
+   * Number of templates in the toolkit
+   * @example 3
+   */
+  templates_count?: number;
+  /**
+   * Timestamp when the toolkit was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * Version of the toolkit
+   * @example "1.0.0"
+   */
+  version?: string;
+}
+
+export type ScopesListData = OauthScopesResponse;
+
+export type ScopesListError = ErrorsErrorResponse;
+
+export interface SessionCreateSessionRequest {
+  /**
+   * Optional context document IDs to prime the agent with specific documents
+   * @example ["d4e5f6a7-b8c9-0123-4567-890abcdef012"]
+   */
+  context_document_ids?: string[];
+  /**
+   * Optional ID of the meeting to associate this session with (user must be a participant)
+   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+   */
+  meeting_id?: string;
+  /**
+   * First user message to start the conversation (1-10,000 characters)
+   * @minLength 1
+   * @maxLength 10000
+   * @example "Summarize the key decisions from this meeting"
+   */
+  message: string;
+  /** Partner-supplied metadata for tracking (max 10 keys, 256 char keys, 1024 char values) */
+  metadata?: Record<string, string>;
+}
+
+export interface SessionCreateSessionResponse {
+  /**
+   * Timestamp when the session was created
+   * @example "2026-03-16T14:30:00Z"
+   */
+  created_at?: string;
+  /**
+   * Unique identifier for the session
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  id?: string;
+  /** Initial turn if message was provided */
+  initial_turn?: SessionPartnerTurnResponse;
+  /**
+   * ID of the associated meeting
+   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+   */
+  meeting_id?: string;
+  /** Partner-supplied metadata */
+  metadata?: Record<string, string>;
+  /**
+   * Current session status: active, closed, or expired
+   * @example "active"
+   */
+  status?: "active" | "closed" | "expired";
+}
+
+export interface SessionGetSessionResponse {
+  /** Session details */
+  session?: SessionPartnerChatSessionResponse;
+  /** Pagination info for turns */
+  turn_pagination?: SessionTurnPaginationResponse;
+  /** Turns in this session (based on turn_limit parameter) */
+  turns?: SessionPartnerTurnResponse[];
+}
+
+export interface SessionGetTurnResponse {
+  /** The requested turn details */
+  turn?: SessionPartnerTurnResponse;
+}
+
+export interface SessionPartnerAgentMetadataResponse {
+  /** Context document IDs the agent referenced */
+  referenced_documents?: string[];
+  /** Token usage statistics */
+  token_usage?: SessionPartnerTokenUsageResponse;
+  /** Tools the agent invoked during this turn */
+  tool_calls?: SessionPartnerToolCallResponse[];
+}
+
+export interface SessionPartnerChatSessionResponse {
+  /**
+   * Timestamp when the session was created
+   * @example "2026-03-16T14:30:00Z"
+   */
+  created_at?: string;
+  /**
+   * Unique identifier for the session
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  id?: string;
+  /**
+   * ID of the associated meeting (if any)
+   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+   */
+  meeting_id?: string;
+  /** Partner-supplied metadata */
+  metadata?: Record<string, string>;
+  /**
+   * Current session status: active, closed, or expired
+   * @example "active"
+   */
+  status?: "active" | "closed" | "expired";
+  /**
+   * Session title (if any)
+   * @example "Quarterly Product Review Planning"
+   */
+  title?: string;
+  /**
+   * Total number of turns in this session (user + agent messages)
+   * @example 4
+   */
+  turn_count?: number;
+  /**
+   * Timestamp when the session was last updated
+   * @example "2026-03-16T14:35:12Z"
+   */
+  updated_at?: string;
+}
+
+export interface SessionPartnerTokenUsageResponse {
+  /**
+   * Number of output tokens
+   * @example 200
+   */
+  completion_tokens?: number;
+  /**
+   * Number of input tokens
+   * @example 150
+   */
+  prompt_tokens?: number;
+  /**
+   * Total tokens used
+   * @example 350
+   */
+  total_tokens?: number;
+}
+
+export interface SessionPartnerToolCallResponse {
+  /**
+   * Name of the tool
+   * @example "search_meeting_notes"
+   */
+  name?: string;
+  /**
+   * Execution status
+   * @example "success"
+   */
+  status?: "success" | "failure";
+}
+
+export interface SessionPartnerTurnErrorResponse {
+  /**
+   * Error code
+   * @example "agent_error"
+   */
+  code?: string;
+  /**
+   * Human-readable error message
+   * @example "Agent processing failed"
+   */
+  message?: string;
+}
+
+export interface SessionPartnerTurnResponse {
+  /** Agent execution metadata (present only for role=agent turns) */
+  agent_metadata?: SessionPartnerAgentMetadataResponse;
+  /**
+   * Timestamp when the turn finished processing (null if not completed)
+   * @example "2026-03-16T14:30:15Z"
+   */
+  completed_at?: string;
+  /**
+   * Message text content
+   * @example "Summarize the key decisions from this meeting"
+   */
+  content?: string;
+  /**
+   * Timestamp when the turn was created/enqueued
+   * @example "2026-03-16T14:30:00Z"
+   */
+  created_at?: string;
+  /** Error details when status=failed */
+  error?: SessionPartnerTurnErrorResponse;
+  /**
+   * Unique identifier for the turn (message ID)
+   * @example "turn-uuid-1234"
+   */
+  id?: string;
+  /**
+   * Role of the message author: user or agent
+   * @example "user"
+   */
+  role?: "user" | "agent";
+  /**
+   * Sequence number in the conversation
+   * @example 1
+   */
+  sequence_number?: number;
+  /**
+   * ID of the session this turn belongs to
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  session_id?: string;
+  /**
+   * Turn processing status: queued, processing, completed, or failed
+   * @example "completed"
+   */
+  status?: "queued" | "processing" | "completed" | "failed";
+}
+
+export interface SessionSendMessageRequest {
+  /**
+   * Optional ID of the meeting to associate this session with (user must be a participant)
+   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+   */
+  meeting_id?: string;
+  /**
+   * User message to add to the conversation (1-10,000 characters)
+   * @minLength 1
+   * @maxLength 10000
+   * @example "Can you create action items from those decisions?"
+   */
+  message: string;
+}
+
+export interface SessionSendMessageResponse {
+  /** The created user turn */
+  turn?: SessionPartnerTurnResponse;
+}
+
+export interface SessionTurnPaginationResponse {
+  /**
+   * Whether there are more turns
+   * @example false
+   */
+  has_more?: boolean;
+  /**
+   * Limit used
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Current offset
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total turns in the session
+   * @example 12
+   */
+  total?: number;
+}
+
+export interface SharedActionButtonResponse {
+  /**
+   * Icon URL for the action button
+   * @example "https://example.com/icon.png"
+   */
+  icon_url?: string;
+  /**
+   * Unique identifier for the action button
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether this is the default action button
+   * @example false
+   */
+  is_default?: boolean;
+  /**
+   * Name of the action button
+   * @example "Send Email"
+   */
+  name?: string;
+}
+
+export interface SharedExecuteNextStepRequest {
+  /**
+   * Action button ID if triggered via a specific action button
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  action_button_id?: string;
+}
+
+export interface SharedExecuteNextStepResponse {
+  /**
+   * Content format of the generated text
+   * @example "markdown"
+   */
+  content_format?: string;
+  /**
+   * Unique identifier for the execution log entry
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  execution_log_id?: string;
+  /**
+   * Generated text content (only included for sync execution of AI-type)
+   * @example "# Meeting Summary
+   *
+   * Key points discussed..."
+   */
+  generated_text?: string;
+  /**
+   * Redirect URL for redirect-type next steps
+   * @example "https://partner.example.com/invoice?meeting_id=abc"
+   */
+  redirect_url?: string;
+  /**
+   * Result ID for AI-type next steps (use to retrieve generated content)
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  result_id?: string;
+  /**
+   * Execution status
+   * @example "completed"
+   */
+  status?: string;
+}
+
+export interface SharedNextStepResponse {
+  /** Action buttons associated with this next step */
+  action_buttons?: SharedActionButtonResponse[];
+  /**
+   * Color for the next step
+   * @example "#FF5733"
+   */
+  color?: string;
+  /**
+   * Description of the next step
+   * @example "Generates an invoice from meeting action items"
+   */
+  description?: string;
+  /**
+   * Icon name for the next step
+   * @example "receipt"
+   */
+  icon_name?: string;
+  /**
+   * Unique identifier for the next step
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Name of the next step
+   * @example "Generate Invoice"
+   */
+  name?: string;
+  /**
+   * Redirect URL for redirect type next steps
+   * @example "https://partner.example.com/invoice"
+   */
+  redirect_url?: string;
+  /**
+   * Display order for sorting
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * Type of next step: "ai" or "redirect"
+   * @example "ai"
+   */
+  type?: string;
+}
+
+export interface SharedPartnerAppResponse {
+  /**
+   * OAuth client ID for this partner app
+   * @example "partner_1234567890_abcdef123456"
+   */
+  client_id?: string;
+  /**
+   * Name of the company that owns this partner app
+   * @example "Acme Corp"
+   */
+  company_name?: string;
+  /**
+   * Timestamp when the partner app was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Default toolkit ID to auto-install when a workspace is provisioned via this partner app
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  default_toolkit_id?: string;
+  /**
+   * Optional description of the partner app
+   * @example "Integrates with our CRM system"
+   */
+  description?: string;
+  /**
+   * Unique identifier for the partner app
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Display name of the partner app
+   * @example "CRM Integration"
+   */
+  name?: string;
+  /**
+   * Primary contact email for this partner app
+   * @example "contact@example.com"
+   */
+  primary_contact_email?: string;
+  /**
+   * URL-friendly slug for the partner app
+   * @example "acme-crm"
+   */
+  slug?: string;
+  /**
+   * Current status (active, inactive, suspended)
+   * @example "active"
+   */
+  status?: string;
+  /**
+   * Timestamp when the partner app was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * Whether webhook delivery is enabled for this partner app
+   * @example true
+   */
+  webhook_enabled?: boolean;
+  /** Optional webhook event filter configuration for this partner app */
+  webhook_filter?: SharedWebhookFilterResponse;
+  /**
+   * Webhook URL for receiving event notifications
+   * @example "https://api.example.com/webhook"
+   */
+  webhook_url?: string;
 }
 
 export interface SharedPartnerMeetingResponse {
@@ -2853,6 +4592,40 @@ export interface SharedPartnerMeetingResponse {
   workspace_id?: string;
 }
 
+export interface SharedTriggerActionButtonRequest {
+  /**
+   * Next step ID if triggered in the context of a next step
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  next_step_id?: string;
+  /**
+   * Result ID if triggered in the context of a next step result
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  result_id?: string;
+}
+
+export interface SharedTriggerActionButtonResponse {
+  /**
+   * Success message
+   * @example "Action button triggered successfully"
+   */
+  message?: string;
+}
+
+export interface SharedWebhookFilterResponse {
+  /**
+   * Event types included in the filter configuration
+   * @example ["meeting.created","action_item.updated"]
+   */
+  events?: string[];
+  /**
+   * Filter mode controlling how events are matched
+   * @example "include"
+   */
+  type?: string;
+}
+
 export interface SsoErrorResponse {
   /** @example "sso_authentication_failed" */
   code?: string;
@@ -2893,6 +4666,106 @@ export interface SsoSessionStatusResponse {
   user_id?: string;
 }
 
+export interface TemplateAddToTemplateRequest {
+  /** @example false */
+  autopilot?: boolean;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  next_step_id: string;
+  /** @example 1 */
+  sort_order?: number;
+}
+
+export interface TemplateCreateTemplateRequest {
+  /**
+   * Optional ID of an existing meeting to use as the source for the template's content.
+   * The meeting's agenda items, participants, and talking points will be copied to the new template.
+   * The partner must have access to the workspace containing the meeting.
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  backing_meeting_id?: string;
+  /**
+   * Optional description of the template
+   * @maxLength 1000
+   * @example "Invoice template for new clients"
+   */
+  description?: string;
+  /**
+   * Name of the template
+   * @minLength 1
+   * @maxLength 255
+   * @example "Invoice Template"
+   */
+  name: string;
+}
+
+export interface TemplateTemplateNextStepResponse {
+  /**
+   * Whether autopilot is enabled for this next step on the template
+   * @example true
+   */
+  autopilot?: boolean;
+  /**
+   * Unique identifier for the next step
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Name of the next step
+   * @example "Generate Invoice"
+   */
+  name?: string;
+  /**
+   * Sort order of the next step
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface TemplateTemplateResponse {
+  /**
+   * BackingMeetingID is the ID of the meeting this template was created from, if any
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  backing_meeting_id?: string;
+  /**
+   * Timestamp when the template was created
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /** @example "Invoice template for new clients" */
+  description?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174001" */
+  id?: string;
+  /** @example "Invoice Template" */
+  name?: string;
+  /**
+   * Timestamp when the template was last updated
+   * @example "2024-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}
+
+export interface TemplateUpdateTemplateNextStepRequest {
+  /** @example true */
+  autopilot?: boolean;
+}
+
+export interface TemplateUpdateTemplateRequest {
+  /**
+   * Optional description of the template
+   * @maxLength 1000
+   * @example "Updated invoice template for new clients"
+   */
+  description?: string;
+  /**
+   * Name of the template
+   * @minLength 1
+   * @maxLength 255
+   * @example "Updated Invoice Template"
+   */
+  name?: string;
+}
+
 export type TokenCreateData =
   RomeApiControllersExternalPartnerOauthTokenResponse;
 
@@ -2913,6 +4786,336 @@ export interface TokenCreatePayload {
   redirect_uri: string;
 }
 
+export interface ToolkitCreateToolkitRequest {
+  /**
+   * @maxLength 1000
+   * @example "Complete sales workflow toolkit"
+   */
+  description?: string;
+  manifest: ToolkitToolkitManifestRequest;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Sales Pipeline Toolkit"
+   */
+  name: string;
+  /**
+   * @minLength 1
+   * @maxLength 100
+   * @example "sales-pipeline"
+   */
+  slug: string;
+  /** @example "1.0.0" */
+  version: string;
+}
+
+export interface ToolkitInstallationResponse {
+  /**
+   * Unique identifier for the installation
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Timestamp when the toolkit was installed
+   * @example "2023-01-01T00:00:00Z"
+   */
+  installed_at?: string;
+  /**
+   * ID of the user who installed the toolkit
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  installed_by?: string;
+  /**
+   * ID of the installed toolkit
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  toolkit_id?: string;
+  /**
+   * ID of the workspace where the toolkit is installed
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  workspace_id?: string;
+}
+
+export interface ToolkitManifestActionButton {
+  /**
+   * ID references an existing action button (mutually exclusive with Spec)
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /** Spec defines a new action button to create on installation (mutually exclusive with ID) */
+  spec?: ToolkitManifestActionButtonSpec;
+}
+
+export interface ToolkitManifestActionButtonSpec {
+  /**
+   * RefID is the manifest-internal identifier for this entity (used by $ref in other entries)
+   * @maxLength 100
+   * @example "my-action-button"
+   */
+  $id?: string;
+  /**
+   * Content format: rich_text, markdown, plain_text, html
+   * @example "plain_text"
+   */
+  content_format: "rich_text" | "markdown" | "plain_text" | "html";
+  /**
+   * Delivery mechanism: clipboard, email, os_email_client, file_download, integration, webhook, redirect
+   * @example "webhook"
+   */
+  delivery_mechanism:
+    | "clipboard"
+    | "email"
+    | "os_email_client"
+    | "file_download"
+    | "integration"
+    | "webhook"
+    | "redirect";
+  /**
+   * File format for file delivery
+   * @maxLength 50
+   * @example "pdf"
+   */
+  file_format?: string;
+  /**
+   * Icon URL for display
+   * @maxLength 2000
+   * @example "https://cdn.example.com/icon.png"
+   */
+  icon_url?: string;
+  /**
+   * Integration type
+   * @maxLength 100
+   * @example "salesforce"
+   */
+  integration_type?: string;
+  /**
+   * Whether this is the default action for a next step
+   * @example false
+   */
+  is_default_for_next_step?: boolean;
+  /**
+   * Name of the action button
+   * @minLength 1
+   * @maxLength 255
+   * @example "Send to CRM"
+   */
+  name: string;
+  /**
+   * Redirect URL for redirect delivery
+   * @maxLength 2000
+   * @example "https://app.example.com/action"
+   */
+  redirect_url?: string;
+  /**
+   * Whether this action requires a connected integration
+   * @example false
+   */
+  requires_connected_integration?: boolean;
+  /**
+   * Sort order for display
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * Webhook URL for webhook delivery
+   * @maxLength 2000
+   * @example "https://api.example.com/webhook"
+   */
+  webhook_url?: string;
+}
+
+export interface ToolkitManifestNextStep {
+  /** ActionButtons defines the action buttons to attach to this next step with junction fields */
+  action_buttons?: ToolkitNextStepActionButtonRelation[];
+  /** DefaultActionButton specifies the default action button for this next step (by $ref or $id) */
+  default_action_button?: ToolkitManifestRef;
+  /**
+   * ID references an existing next step (mutually exclusive with Spec)
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /** Spec defines a new next step to create on installation (mutually exclusive with ID) */
+  spec?: ToolkitManifestNextStepSpec;
+}
+
+export interface ToolkitManifestNextStepSpec {
+  /**
+   * RefID is the manifest-internal identifier for this entity (used by $ref in other entries)
+   * @maxLength 100
+   * @example "my-next-step"
+   */
+  $id?: string;
+  /**
+   * AI prompt for AI-type next steps
+   * @example "Generate an invoice..."
+   */
+  ai_prompt?: string;
+  /**
+   * Color for display
+   * @maxLength 50
+   * @example "#FF5733"
+   */
+  color?: string;
+  /**
+   * Description of the next step
+   * @maxLength 1000
+   * @example "Generates an invoice from meeting notes"
+   */
+  description?: string;
+  /**
+   * Icon name for display
+   * @maxLength 100
+   * @example "receipt"
+   */
+  icon_name?: string;
+  /**
+   * Name of the next step
+   * @minLength 1
+   * @maxLength 255
+   * @example "Generate Invoice"
+   */
+  name: string;
+  /**
+   * Redirect URL for redirect-type next steps
+   * @maxLength 2000
+   * @example "https://partner.example.com/invoice"
+   */
+  redirect_url?: string;
+  /**
+   * Sort order for display
+   * @example 1
+   */
+  sort_order?: number;
+  /**
+   * Type of next step: "ai" or "redirect"
+   * @example "ai"
+   */
+  type: "ai" | "redirect";
+}
+
+export interface ToolkitManifestRef {
+  /**
+   * ID references an existing entity by its database ID
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  $id?: string;
+  /**
+   * Ref references an entity defined in the same manifest via its $id value
+   * @example "my-next-step"
+   */
+  $ref?: string;
+}
+
+export interface ToolkitManifestTemplate {
+  /**
+   * ID references an existing template (mutually exclusive with Spec)
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /** NextSteps defines the next steps to attach to this template with junction fields */
+  next_steps?: ToolkitTemplateNextStepRelation[];
+  /** Spec defines a new template to create on installation (mutually exclusive with ID) */
+  spec?: ToolkitManifestTemplateSpec;
+}
+
+export interface ToolkitManifestTemplateSpec {
+  /**
+   * RefID is the manifest-internal identifier for this entity (used by $ref in other entries)
+   * @maxLength 100
+   * @example "my-template"
+   */
+  $id?: string;
+  /**
+   * BackingMeetingID references an existing meeting to use as the content source for this template.
+   * When specified, the meeting's agenda items, participants, documents, and talking points
+   * are copied to the new template's backing meeting during toolkit installation.
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  backing_meeting_id?: string;
+  /**
+   * Description of the template
+   * @maxLength 1000
+   * @example "Template for sales meetings"
+   */
+  description?: string;
+  /**
+   * Name of the template
+   * @minLength 1
+   * @maxLength 255
+   * @example "Sales Meeting Template"
+   */
+  name: string;
+}
+
+export interface ToolkitNextStepActionButtonRelation {
+  /** ActionButton is the reference to the action button entity ($ref or $id) */
+  action_button: ToolkitManifestRef;
+  /**
+   * SortOrder is the display order of the action button within the next step
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface ToolkitTemplateNextStepRelation {
+  /**
+   * Autopilot indicates if the next step should auto-execute when the meeting is finalized
+   * @example false
+   */
+  autopilot?: boolean;
+  /** NextStep is the reference to the next step entity ($ref or $id) */
+  next_step: ToolkitManifestRef;
+  /**
+   * SortOrder is the display order of the next step within the template
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface ToolkitToolkitManifestRequest {
+  /**
+   * Action buttons included in the toolkit
+   * Note: No omitempty - empty slices should serialize as [] for API consistency
+   */
+  action_buttons?: ToolkitManifestActionButton[];
+  /**
+   * Next steps included in the toolkit
+   * Note: No omitempty - empty slices should serialize as [] for API consistency
+   */
+  next_steps?: ToolkitManifestNextStep[];
+  /**
+   * Templates included in the toolkit
+   * Note: No omitempty - empty slices should serialize as [] for API consistency
+   */
+  templates?: ToolkitManifestTemplate[];
+}
+
+export interface ToolkitToolkitWithInstallationResponse {
+  /** Installation details (nil if not installed) */
+  installation?: ToolkitInstallationResponse;
+  /** Toolkit details */
+  toolkit?: RomeApiControllersExternalPartnerUserToolkitToolkitResponse;
+}
+
+export interface ToolkitUpdateToolkitRequest {
+  /**
+   * @maxLength 1000
+   * @example "Updated description"
+   */
+  description?: string;
+  is_active?: boolean;
+  manifest?: ToolkitToolkitManifestRequest;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Updated Toolkit Name"
+   */
+  name?: string;
+  /** @example "1.1.0" */
+  version?: string;
+}
+
 export type UserInfoListData = RomeApiControllersExternalPartnerOauthUserInfo;
 
 export type UserInfoListError = ErrorsErrorResponse;
@@ -2920,3 +5123,211 @@ export type UserInfoListError = ErrorsErrorResponse;
 export type VerifyCreateData = OauthPartnerAuthResponse;
 
 export type VerifyCreateError = ErrorsErrorResponse;
+
+export interface WebhookWebhookDeliveriesResponse {
+  /** Array of webhook delivery records */
+  deliveries?: WebhookWebhookDeliveryResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of deliveries matching the filter
+   * @example 25
+   */
+  total?: number;
+}
+
+export interface WebhookWebhookDeliveryResponse {
+  /**
+   * Timestamp when the delivery was created
+   * @example "2024-01-14T10:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * When the webhook was successfully delivered
+   * @example "2024-01-14T10:30:00Z"
+   */
+  delivered_at?: string;
+  /**
+   * Current delivery status (pending, delivered, failed, abandoned)
+   * @example "delivered"
+   */
+  delivery_status?: string;
+  /**
+   * Error message if delivery failed
+   * @example ""
+   */
+  error_message?: string;
+  /**
+   * ID of the event that triggered this delivery
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
+  event_id?: string;
+  /**
+   * Type of event that triggered this webhook
+   * @example "action_item_created"
+   */
+  event_type?: string;
+  /**
+   * HTTP status code returned by the webhook endpoint
+   * @example 200
+   */
+  http_status_code?: number;
+  /**
+   * Unique identifier for the webhook delivery
+   * @example "123e4567-e89b-12d3-a456-426614174005"
+   */
+  id?: string;
+  /**
+   * When the next retry attempt will be made (if applicable)
+   * @example "2024-01-15T10:30:00Z"
+   */
+  next_retry_at?: string;
+  /**
+   * ID of the partner app this delivery belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  partner_app_id?: string;
+  /**
+   * Number of retry attempts made
+   * @example 0
+   */
+  retry_count?: number;
+}
+
+/** Bad request error for creating a workflow */
+export interface WorkflowCreateWorkflowError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_request_body"
+   */
+  code?: "invalid_request_body" | "validation_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid request body"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface WorkflowCreateWorkflowRequest {
+  /** @minItems 1 */
+  actions: PartnerWorkflowAction[];
+  /**
+   * @maxLength 1000
+   * @example "Sync action items to CRM"
+   */
+  description?: string;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "CRM Integration"
+   */
+  name: string;
+  trigger_type:
+    | "action_item_created"
+    | "action_item_updated"
+    | "action_item_completed"
+    | "meeting_ended"
+    | "meeting_summary_ready";
+}
+
+/** Bad request error for updating a workflow */
+export interface WorkflowUpdateWorkflowError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_workflow_id"
+   */
+  code?: "invalid_workflow_id" | "invalid_request_body" | "validation_error";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid workflow ID format"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface WorkflowUpdateWorkflowRequest {
+  /** @minItems 1 */
+  actions?: PartnerWorkflowAction[];
+  /**
+   * @maxLength 1000
+   * @example "Updated description"
+   */
+  description?: string;
+  is_active?: boolean;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Updated CRM Integration"
+   */
+  name?: string;
+  /** @example "active" */
+  status?: "active" | "inactive";
+  trigger_type?:
+    | "action_item_created"
+    | "action_item_updated"
+    | "action_item_completed"
+    | "meeting_ended"
+    | "meeting_summary_ready";
+}
+
+export interface WorkflowWorkflowResponse {
+  /** Actions to execute when the workflow is triggered */
+  actions?: PartnerWorkflowAction[];
+  /**
+   * Timestamp when the workflow was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Optional description of what the workflow does
+   * @example "Sync action items to CRM"
+   */
+  description?: string;
+  /**
+   * Unique identifier for the workflow
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  id?: string;
+  /**
+   * Name of the workflow
+   * @example "CRM Integration"
+   */
+  name?: string;
+  /**
+   * ID of the partner app that owns this workflow
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  partner_app_id?: string;
+  /**
+   * Current status (active or inactive)
+   * @example "active"
+   */
+  status?: string;
+  /**
+   * Event type that triggers this workflow
+   * @example "action_item_created"
+   */
+  trigger_type?: string;
+  /**
+   * Timestamp when the workflow was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+}

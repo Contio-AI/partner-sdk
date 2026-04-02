@@ -12,7 +12,7 @@
 asyncapi: 2.6.0
 info:
     title: Contio Partner Webhook Events
-    version: 1.4.0
+    version: 1.5.0
     description: AsyncAPI specification for Contio Partner webhook events.
     contact:
         name: Contio Partner Support
@@ -23,6 +23,14 @@ servers:
         protocol: https
         description: Your Contio webhook callback endpoint (configured via Contio Partner Admin API)
 channels:
+    action_button.triggered:
+        subscribe:
+            summary: Sent when a partner's action button is triggered
+            operationId: onActionButtonTriggered
+            message:
+                name: action_button.triggered
+                payload:
+                    $ref: '#/components/schemas/ActionButtonTriggeredPayload'
     action_item.completed:
         subscribe:
             summary: Sent when an action item is marked as completed
@@ -103,6 +111,30 @@ channels:
                 name: meeting.completed
                 payload:
                     $ref: '#/components/schemas/MeetingCompletedPayload'
+    meeting.context.created:
+        subscribe:
+            summary: Sent when a partner uploads context data to a meeting
+            operationId: onMeetingContextCreated
+            message:
+                name: meeting.context.created
+                payload:
+                    $ref: '#/components/schemas/MeetingContextCreatedPayload'
+    meeting.context.deleted:
+        subscribe:
+            summary: Sent when context data is removed from a meeting
+            operationId: onMeetingContextDeleted
+            message:
+                name: meeting.context.deleted
+                payload:
+                    $ref: '#/components/schemas/MeetingContextDeletedPayload'
+    meeting.context.processed:
+        subscribe:
+            summary: Sent when uploaded context data has been preprocessed
+            operationId: onMeetingContextProcessed
+            message:
+                name: meeting.context.processed
+                payload:
+                    $ref: '#/components/schemas/MeetingContextProcessedPayload'
     meeting.created:
         subscribe:
             summary: Sent when a new meeting is created
@@ -119,6 +151,22 @@ channels:
                 name: meeting.updated
                 payload:
                     $ref: '#/components/schemas/MeetingUpdatedPayload'
+    meeting_template.applied:
+        subscribe:
+            summary: Sent when a meeting template is applied to a meeting
+            operationId: onMeetingTemplateApplied
+            message:
+                name: meeting_template.applied
+                payload:
+                    $ref: '#/components/schemas/MeetingTemplateAppliedPayload'
+    next_step.completed:
+        subscribe:
+            summary: Sent when a Next Step execution completes
+            operationId: onNextStepCompleted
+            message:
+                name: next_step.completed
+                payload:
+                    $ref: '#/components/schemas/NextStepCompletedPayload'
     participant.added:
         subscribe:
             summary: Sent when one or more participants are added to a meeting
@@ -177,20 +225,67 @@ channels:
                     $ref: '#/components/schemas/WorkflowAssignmentCreatedPayload'
 components:
     schemas:
+        ActionButtonTriggeredData:
+            type: object
+            required:
+                - action_button_id
+                - action_button_name
+                - meeting_id
+                - trigger_mode
+                - triggered_at
+                - triggered_by
+            properties:
+                action_button_id:
+                    type: string
+                    format: uuid
+                action_button_name:
+                    type: string
+                meeting_id:
+                    type: string
+                    format: uuid
+                next_step_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                result_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                trigger_mode:
+                    type: string
+                triggered_at:
+                    type: string
+                    format: date-time
+                triggered_by:
+                    type: string
+        ActionButtonTriggeredPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/ActionButtonTriggeredData'
+                    event_type:
+                        const: action_button.triggered
+                  type: object
         ActionItemCompletedData:
             type: object
             required:
                 - action_item_id
-                - assignee_id
                 - completed_at
                 - completed_by_user_id
                 - meeting_id
+                - title
+                - workspace_id
             properties:
                 action_item_id:
                     type: string
                     format: uuid
                 assignee_id:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: uuid
                 completed_at:
                     type: string
@@ -199,6 +294,11 @@ components:
                     type: string
                     format: uuid
                 meeting_id:
+                    type: string
+                    format: uuid
+                title:
+                    type: string
+                workspace_id:
                     type: string
                     format: uuid
         ActionItemCompletedPayload:
@@ -217,12 +317,15 @@ components:
                 - created_at
                 - meeting_id
                 - title
+                - workspace_id
             properties:
                 action_item_id:
                     type: string
                     format: uuid
                 assignee_id:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: uuid
                 created_at:
                     type: string
@@ -232,6 +335,9 @@ components:
                     format: uuid
                 title:
                     type: string
+                workspace_id:
+                    type: string
+                    format: uuid
         ActionItemCreatedPayload:
             allOf:
                 - $ref: '#/components/schemas/WebhookPayloadBase'
@@ -263,6 +369,11 @@ components:
             properties:
                 action_item_id:
                     type: string
+                    format: uuid
+                assignee_id:
+                    type:
+                        - string
+                        - "null"
                     format: uuid
                 is_completed:
                     type: boolean
@@ -303,7 +414,9 @@ components:
                 item_type:
                     type: string
                 meeting_id:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: uuid
                 title:
                     type: string
@@ -329,7 +442,9 @@ components:
                     type: string
                     format: date-time
                 meeting_id:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: uuid
         AgendaItemDeletedPayload:
             allOf:
@@ -355,7 +470,9 @@ components:
                 item_type:
                     type: string
                 meeting_id:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: uuid
                 status:
                     type: string
@@ -486,6 +603,121 @@ components:
                     event_type:
                         const: meeting.completed
                   type: object
+        MeetingContextCreatedData:
+            type: object
+            required:
+                - context_id
+                - created_at
+                - meeting_id
+                - workspace_id
+            properties:
+                context_id:
+                    type: string
+                    format: uuid
+                created_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type: string
+                    format: uuid
+                title:
+                    type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        MeetingContextCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/MeetingContextCreatedData'
+                    event_type:
+                        const: meeting.context.created
+                  type: object
+        MeetingContextDeletedData:
+            type: object
+            required:
+                - context_id
+                - deleted_at
+                - meeting_id
+                - workspace_id
+            properties:
+                context_id:
+                    type: string
+                    format: uuid
+                deleted_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type: string
+                    format: uuid
+                workspace_id:
+                    type: string
+                    format: uuid
+        MeetingContextDeletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/MeetingContextDeletedData'
+                    event_type:
+                        const: meeting.context.deleted
+                  type: object
+        MeetingContextProcessedData:
+            type: object
+            required:
+                - context_id
+                - meeting_id
+                - processed_at
+                - sanitization_report
+                - workspace_id
+            properties:
+                context_id:
+                    type: string
+                    format: uuid
+                meeting_id:
+                    type: string
+                    format: uuid
+                processed_at:
+                    type: string
+                    format: date-time
+                sanitization_report:
+                    type: object
+                    required:
+                        - formula_escaped
+                        - pii_detected
+                        - secrets_detected
+                    properties:
+                        formula_escaped:
+                            type: boolean
+                        pii_detected:
+                            type: boolean
+                        redactions:
+                            type: array
+                            items:
+                                type: object
+                                required:
+                                    - count
+                                    - type
+                                properties:
+                                    count:
+                                        type: integer
+                                    type:
+                                        type: string
+                        secrets_detected:
+                            type: boolean
+                workspace_id:
+                    type: string
+                    format: uuid
+        MeetingContextProcessedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/MeetingContextProcessedData'
+                    event_type:
+                        const: meeting.context.processed
+                  type: object
         MeetingCreatedData:
             type: object
             required:
@@ -518,6 +750,52 @@ components:
                     event_type:
                         const: meeting.created
                   type: object
+        MeetingTemplateAppliedData:
+            type: object
+            required:
+                - applied_at
+                - applied_by_user_id
+                - applied_items
+                - meeting_id
+                - template_id
+                - template_name
+            properties:
+                applied_at:
+                    type: string
+                    format: date-time
+                applied_by_user_id:
+                    type: string
+                    format: uuid
+                applied_items:
+                    type: object
+                    required:
+                        - agenda_items
+                        - documents
+                        - participants
+                    properties:
+                        agenda_items:
+                            type: integer
+                        documents:
+                            type: integer
+                        participants:
+                            type: integer
+                meeting_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type: string
+                    format: uuid
+                template_name:
+                    type: string
+        MeetingTemplateAppliedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/MeetingTemplateAppliedData'
+                    event_type:
+                        const: meeting_template.applied
+                  type: object
         MeetingUpdatedData:
             type: object
             required:
@@ -530,7 +808,9 @@ components:
                     type: string
                     format: uuid
                 scheduled_start:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: date-time
                 title:
                     type: string
@@ -549,12 +829,51 @@ components:
                     event_type:
                         const: meeting.updated
                   type: object
+        NextStepCompletedData:
+            type: object
+            required:
+                - executed_at
+                - executed_by
+                - execution_mode
+                - meeting_id
+                - next_step_id
+                - next_step_name
+                - result_id
+            properties:
+                executed_at:
+                    type: string
+                    format: date-time
+                executed_by:
+                    type: string
+                execution_mode:
+                    type: string
+                meeting_id:
+                    type: string
+                    format: uuid
+                next_step_id:
+                    type: string
+                    format: uuid
+                next_step_name:
+                    type: string
+                result_id:
+                    type: string
+                    format: uuid
+        NextStepCompletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/NextStepCompletedData'
+                    event_type:
+                        const: next_step.completed
+                  type: object
         ParticipantAddedData:
             type: object
             required:
                 - added_at
                 - meeting_id
                 - participants
+                - workspace_id
             properties:
                 added_at:
                     type: string
@@ -566,6 +885,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ParticipantInfo'
+                workspace_id:
+                    type: string
+                    format: uuid
         ParticipantAddedPayload:
             allOf:
                 - $ref: '#/components/schemas/WebhookPayloadBase'
@@ -582,7 +904,9 @@ components:
                 - role
             properties:
                 guest_email:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: email
                 participant_id:
                     type: string
@@ -590,7 +914,9 @@ components:
                 role:
                     type: string
                 user_id:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: uuid
         ParticipantRemovedData:
             type: object
@@ -598,9 +924,12 @@ components:
                 - meeting_id
                 - participant_id
                 - removed_at
+                - workspace_id
             properties:
                 guest_email:
-                    type: string
+                    type:
+                        - string
+                        - "null"
                     format: email
                 meeting_id:
                     type: string
@@ -612,6 +941,11 @@ components:
                     type: string
                     format: date-time
                 user_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                workspace_id:
                     type: string
                     format: uuid
         ParticipantRemovedPayload:
@@ -633,6 +967,111 @@ components:
                     type: string
                 title:
                     type: string
+        SessionExpiredData:
+            type: object
+            required:
+                - expired_at
+                - last_activity_at
+                - session_id
+                - turn_count
+            properties:
+                expired_at:
+                    type: string
+                    format: date-time
+                last_activity_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                session_id:
+                    type: string
+                    format: uuid
+                turn_count:
+                    type: integer
+        SessionExpiredPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/SessionExpiredData'
+                    event_type:
+                        const: session.expired
+                  type: object
+        SessionTurnCompletedData:
+            type: object
+            required:
+                - completed_at
+                - sequence_number
+                - session_id
+                - turn_id
+            properties:
+                completed_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                sequence_number:
+                    type: integer
+                session_id:
+                    type: string
+                    format: uuid
+                turn_id:
+                    type: string
+                    format: uuid
+        SessionTurnCompletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/SessionTurnCompletedData'
+                    event_type:
+                        const: session.turn.completed
+                  type: object
+        SessionTurnFailedData:
+            type: object
+            required:
+                - error_code
+                - error_message
+                - failed_at
+                - sequence_number
+                - session_id
+                - turn_id
+            properties:
+                error_code:
+                    type: string
+                error_message:
+                    type: string
+                failed_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                sequence_number:
+                    type: integer
+                session_id:
+                    type: string
+                    format: uuid
+                turn_id:
+                    type: string
+                    format: uuid
+        SessionTurnFailedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/SessionTurnFailedData'
+                    event_type:
+                        const: session.turn.failed
+                  type: object
         UserConnectionRevokedData:
             type: object
             required:
@@ -738,167 +1177,4 @@ components:
                         $ref: '#/components/schemas/WorkflowAssignmentCreatedData'
                     event_type:
                         const: workflow.assignment.created
-                  type: object
-        SessionTurnCompletedData:
-            type: object
-            required:
-                - session_id
-                - turn_id
-                - session_status
-                - turn_sequence_number
-                - turn_role
-                - turn_status
-                - turn_content
-                - turn_created_at
-            properties:
-                session_id:
-                    type: string
-                    format: uuid
-                turn_id:
-                    type: string
-                    format: uuid
-                session_status:
-                    type: string
-                    enum:
-                        - active
-                        - closed
-                        - expired
-                turn_sequence_number:
-                    type: integer
-                turn_role:
-                    type: string
-                    enum:
-                        - user
-                        - agent
-                turn_status:
-                    type: string
-                    enum:
-                        - completed
-                turn_content:
-                    type: string
-                turn_created_at:
-                    type: string
-                    format: date-time
-                turn_completed_at:
-                    type: string
-                    format: date-time
-                agent_metadata:
-                    type: object
-                    nullable: true
-                    properties:
-                        tool_calls:
-                            type: array
-                            items:
-                                type: object
-                                properties:
-                                    name:
-                                        type: string
-                                    status:
-                                        type: string
-                                        enum:
-                                            - success
-                                            - failed
-                        referenced_documents:
-                            type: array
-                            items:
-                                type: string
-                                format: uuid
-                        model:
-                            type: string
-                        token_usage:
-                            type: object
-                            properties:
-                                prompt_tokens:
-                                    type: integer
-                                completion_tokens:
-                                    type: integer
-        SessionTurnCompletedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/SessionTurnCompletedData'
-                    event_type:
-                        const: session.turn.completed
-                  type: object
-        SessionTurnFailedData:
-            type: object
-            required:
-                - session_id
-                - turn_id
-                - turn_sequence_number
-                - turn_status
-                - error
-                - turn_created_at
-            properties:
-                session_id:
-                    type: string
-                    format: uuid
-                turn_id:
-                    type: string
-                    format: uuid
-                turn_sequence_number:
-                    type: integer
-                turn_status:
-                    type: string
-                    enum:
-                        - failed
-                error:
-                    type: object
-                    required:
-                        - code
-                        - message
-                    properties:
-                        code:
-                            type: string
-                            enum:
-                                - agent_error
-                                - timeout
-                                - context_too_large
-                                - rate_limited
-                        message:
-                            type: string
-                turn_created_at:
-                    type: string
-                    format: date-time
-                turn_completed_at:
-                    type: string
-                    format: date-time
-                    nullable: true
-        SessionTurnFailedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/SessionTurnFailedData'
-                    event_type:
-                        const: session.turn.failed
-                  type: object
-        SessionExpiredData:
-            type: object
-            required:
-                - session_id
-                - meeting_id
-                - expired_at
-                - turn_count
-            properties:
-                session_id:
-                    type: string
-                    format: uuid
-                meeting_id:
-                    type: string
-                    format: uuid
-                expired_at:
-                    type: string
-                    format: date-time
-                turn_count:
-                    type: integer
-        SessionExpiredPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/SessionExpiredData'
-                    event_type:
-                        const: session.expired
                   type: object

@@ -1,5 +1,5 @@
 /**
- * Contio Partner SDK
+ * Contio Partner Apps Program
  *
  * Official SDK for integrating with the Contio MeetingOS Partner API
  */
