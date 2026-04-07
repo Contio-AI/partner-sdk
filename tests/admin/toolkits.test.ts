@@ -7,6 +7,9 @@ import {
   ToolkitListResponse,
   CreateToolkitRequest,
   UpdateToolkitRequest,
+  ToolkitVersion,
+  CreateToolkitVersionRequest,
+  UpdateToolkitVersionRequest,
 } from '../../src/models';
 import { createAdminTestContext, AdminTestContext } from './setup';
 
@@ -136,6 +139,161 @@ describe('PartnerAdminClient › Toolkits', () => {
 
       expect(ctx.mockAxios.history.delete).toHaveLength(1);
       expect(ctx.mockAxios.history.delete[0].url).toBe('/toolkits/toolkit-123');
+    });
+  });
+});
+
+describe('PartnerAdminClient › Toolkit Versions', () => {
+  let ctx: AdminTestContext;
+
+  beforeEach(() => {
+    ctx = createAdminTestContext();
+  });
+
+  afterEach(() => {
+    ctx.mockAxios.reset();
+  });
+
+  const mockVersion: ToolkitVersion = {
+    id: 'version-456',
+    toolkit_id: 'toolkit-123',
+    version_number: 2,
+    version_label: '2.0.0',
+    status: 'DRAFT',
+    manifest: {
+      templates: [],
+      next_steps: [],
+      action_buttons: [],
+    },
+    changelog: 'New features added',
+    created_at: '2025-02-01T10:00:00Z',
+    updated_at: '2025-02-01T10:00:00Z',
+  };
+
+  describe('listToolkitVersions', () => {
+    it('should list all versions for a toolkit', async () => {
+      ctx.mockAxios.onGet('/toolkits/toolkit-123/versions').reply(200, [mockVersion]);
+
+      const versions = await ctx.adminClient.listToolkitVersions('toolkit-123');
+
+      expect(versions).toHaveLength(1);
+      expect(versions[0].id).toBe('version-456');
+      expect(versions[0].version_label).toBe('2.0.0');
+      expect(versions[0].status).toBe('DRAFT');
+    });
+
+    it('should return empty array when no versions exist', async () => {
+      ctx.mockAxios.onGet('/toolkits/toolkit-123/versions').reply(200, []);
+
+      const versions = await ctx.adminClient.listToolkitVersions('toolkit-123');
+
+      expect(versions).toHaveLength(0);
+    });
+  });
+
+  describe('createToolkitVersion', () => {
+    const createRequest: CreateToolkitVersionRequest = {
+      version_label: '2.0.0',
+      manifest: { templates: [], next_steps: [], action_buttons: [] },
+      changelog: 'New features added',
+    };
+
+    it('should create a new draft version', async () => {
+      ctx.mockAxios.onPost('/toolkits/toolkit-123/versions').reply(201, mockVersion);
+
+      const version = await ctx.adminClient.createToolkitVersion('toolkit-123', createRequest);
+
+      expect(version.id).toBe('version-456');
+      expect(version.status).toBe('DRAFT');
+      expect(version.version_number).toBe(2);
+    });
+
+    it('should send correct request body', async () => {
+      ctx.mockAxios.onPost('/toolkits/toolkit-123/versions').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.version_label).toBe('2.0.0');
+        expect(body.changelog).toBe('New features added');
+        return [201, mockVersion];
+      });
+
+      await ctx.adminClient.createToolkitVersion('toolkit-123', createRequest);
+    });
+  });
+
+  describe('getToolkitVersion', () => {
+    it('should get a specific version by ID', async () => {
+      ctx.mockAxios.onGet('/toolkits/toolkit-123/versions/version-456').reply(200, mockVersion);
+
+      const version = await ctx.adminClient.getToolkitVersion('toolkit-123', 'version-456');
+
+      expect(version.id).toBe('version-456');
+      expect(version.toolkit_id).toBe('toolkit-123');
+    });
+  });
+
+  describe('updateToolkitVersion', () => {
+    const updateRequest: UpdateToolkitVersionRequest = {
+      version_label: '2.0.1',
+      changelog: 'Bug fixes',
+    };
+
+    const updatedVersion: ToolkitVersion = {
+      ...mockVersion,
+      version_label: '2.0.1',
+      changelog: 'Bug fixes',
+    };
+
+    it('should update a draft version', async () => {
+      ctx.mockAxios.onPatch('/toolkits/toolkit-123/versions/version-456').reply(200, updatedVersion);
+
+      const version = await ctx.adminClient.updateToolkitVersion('toolkit-123', 'version-456', updateRequest);
+
+      expect(version.version_label).toBe('2.0.1');
+      expect(version.changelog).toBe('Bug fixes');
+    });
+
+    it('should send correct PATCH request body', async () => {
+      ctx.mockAxios.onPatch('/toolkits/toolkit-123/versions/version-456').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.version_label).toBe('2.0.1');
+        expect(body.changelog).toBe('Bug fixes');
+        return [200, updatedVersion];
+      });
+
+      await ctx.adminClient.updateToolkitVersion('toolkit-123', 'version-456', updateRequest);
+    });
+  });
+
+  describe('publishToolkitVersion', () => {
+    it('should publish a draft version', async () => {
+      ctx.mockAxios.onPost('/toolkits/toolkit-123/versions/version-456/publish').reply(204);
+
+      await ctx.adminClient.publishToolkitVersion('toolkit-123', 'version-456');
+
+      expect(ctx.mockAxios.history.post).toHaveLength(1);
+      expect(ctx.mockAxios.history.post[0].url).toBe('/toolkits/toolkit-123/versions/version-456/publish');
+    });
+  });
+
+  describe('republishToolkitVersion', () => {
+    it('should republish a deprecated version', async () => {
+      ctx.mockAxios.onPost('/toolkits/toolkit-123/versions/version-456/republish').reply(204);
+
+      await ctx.adminClient.republishToolkitVersion('toolkit-123', 'version-456');
+
+      expect(ctx.mockAxios.history.post).toHaveLength(1);
+      expect(ctx.mockAxios.history.post[0].url).toBe('/toolkits/toolkit-123/versions/version-456/republish');
+    });
+  });
+
+  describe('discardToolkitVersion', () => {
+    it('should discard a draft version', async () => {
+      ctx.mockAxios.onDelete('/toolkits/toolkit-123/versions/version-456').reply(204);
+
+      await ctx.adminClient.discardToolkitVersion('toolkit-123', 'version-456');
+
+      expect(ctx.mockAxios.history.delete).toHaveLength(1);
+      expect(ctx.mockAxios.history.delete[0].url).toBe('/toolkits/toolkit-123/versions/version-456');
     });
   });
 });
