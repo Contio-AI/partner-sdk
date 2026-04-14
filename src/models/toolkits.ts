@@ -129,8 +129,22 @@ export interface CreateToolkitRequest {
 export interface UpdateToolkitRequest {
   name?: string;
   description?: string;
-  version?: string;
   is_active?: boolean;
+  /**
+   * @deprecated Use the toolkit versioning API instead.
+   * Create a new draft version (POST /v1/partner/admin/toolkits/{id}/versions),
+   * update the draft (PATCH /v1/partner/admin/toolkits/{id}/versions/{versionId}),
+   * then publish it (POST /v1/partner/admin/toolkits/{id}/versions/{versionId}/publish).
+   * Passing this field to UpdateToolkit will return a 409 Conflict error.
+   */
+  version?: string;
+  /**
+   * @deprecated Use the toolkit versioning API instead.
+   * Create a new draft version (POST /v1/partner/admin/toolkits/{id}/versions),
+   * update the draft (PATCH /v1/partner/admin/toolkits/{id}/versions/{versionId}),
+   * then publish it (POST /v1/partner/admin/toolkits/{id}/versions/{versionId}/publish).
+   * Passing this field to UpdateToolkit will return a 409 Conflict error.
+   */
   manifest?: ToolkitManifest;
 }
 
@@ -144,6 +158,54 @@ export interface ToolkitListResponse {
   total: number;
   limit: number;
   offset: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Toolkit Versioning Types (Admin API)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Status values for a toolkit version following the versioning lifecycle. */
+export type ToolkitVersionStatus = 'DRAFT' | 'PUBLISHED' | 'DEPRECATED';
+
+/**
+ * Represents a single version of a toolkit.
+ *
+ * The versioning lifecycle is: DRAFT → PUBLISHED → DEPRECATED.
+ * Use the versioning API to create, update, publish, or discard versions.
+ */
+export interface ToolkitVersion {
+  id: string;
+  toolkit_id: string;
+  version_number: number;
+  version_label: string;
+  status: ToolkitVersionStatus;
+  manifest: ToolkitManifest;
+  changelog?: string;
+  created_by?: string;
+  published_at?: string;
+  deprecated_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Request body for creating a new draft toolkit version. */
+export interface CreateToolkitVersionRequest {
+  /** Human-readable label for this version (e.g. "2.0.0"). */
+  version_label: string;
+  /** The toolkit manifest for this version. */
+  manifest: ToolkitManifest;
+  /** Optional changelog describing what changed in this version. */
+  changelog?: string;
+}
+
+/** Request body for updating a draft toolkit version. All fields are optional. */
+export interface UpdateToolkitVersionRequest {
+  /** Updated human-readable label for this version. */
+  version_label?: string;
+  /** Updated toolkit manifest for this version. */
+  manifest?: ToolkitManifest;
+  /** Updated changelog for this version. */
+  changelog?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

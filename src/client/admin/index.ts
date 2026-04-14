@@ -44,6 +44,9 @@ import {
   ToolkitListResponse,
   CreateToolkitRequest,
   UpdateToolkitRequest,
+  ToolkitVersion,
+  CreateToolkitVersionRequest,
+  UpdateToolkitVersionRequest,
   // Template-related imports
   Template,
   TemplateListParams,
@@ -745,6 +748,106 @@ export class PartnerAdminClient extends BaseClient {
    */
   async deleteToolkit(toolkitId: string): Promise<void> {
     return toolkits.deleteToolkit(this.http, toolkitId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Toolkit Version endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List all versions for a toolkit.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @returns Array of all versions ordered by version number
+   * @throws {ContioAPIError} If the toolkit is not found
+   */
+  async listToolkitVersions(toolkitId: string): Promise<ToolkitVersion[]> {
+    return toolkits.listToolkitVersions(this.http, toolkitId);
+  }
+
+  /**
+   * Create a new draft version for a toolkit.
+   *
+   * Only one DRAFT version can exist at a time. Once created, update the draft
+   * with {@link updateToolkitVersion} and publish it with {@link publishToolkitVersion}.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param data - Version creation data (version_label, manifest, optional changelog)
+   * @returns The newly created draft version
+   * @throws {ContioAPIError} 409 if a draft version already exists
+   */
+  async createToolkitVersion(toolkitId: string, data: CreateToolkitVersionRequest): Promise<ToolkitVersion> {
+    return toolkits.createToolkitVersion(this.http, toolkitId, data);
+  }
+
+  /**
+   * Get a specific toolkit version by ID.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param versionId - The unique version ID
+   * @returns The toolkit version with full details
+   * @throws {ContioAPIError} If the version is not found
+   */
+  async getToolkitVersion(toolkitId: string, versionId: string): Promise<ToolkitVersion> {
+    return toolkits.getToolkitVersion(this.http, toolkitId, versionId);
+  }
+
+  /**
+   * Update a draft toolkit version.
+   *
+   * Only DRAFT versions can be updated. Use this to revise the manifest, label,
+   * or changelog before publishing.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param versionId - The unique version ID (must be in DRAFT status)
+   * @param data - Fields to update (all optional)
+   * @returns The updated draft version
+   * @throws {ContioAPIError} 400 if the version is not in DRAFT status
+   */
+  async updateToolkitVersion(toolkitId: string, versionId: string, data: UpdateToolkitVersionRequest): Promise<ToolkitVersion> {
+    return toolkits.updateToolkitVersion(this.http, toolkitId, versionId, data);
+  }
+
+  /**
+   * Publish a draft toolkit version.
+   *
+   * Transitions the version from DRAFT to PUBLISHED. Any previously published
+   * version is automatically deprecated.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param versionId - The unique version ID (must be in DRAFT status)
+   * @throws {ContioAPIError} 400 if the version is not in DRAFT status
+   */
+  async publishToolkitVersion(toolkitId: string, versionId: string): Promise<void> {
+    return toolkits.publishToolkitVersion(this.http, toolkitId, versionId);
+  }
+
+  /**
+   * Republish a deprecated toolkit version.
+   *
+   * Transitions the version from DEPRECATED back to PUBLISHED. Any currently
+   * published version is automatically deprecated.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param versionId - The unique version ID (must be in DEPRECATED status)
+   * @throws {ContioAPIError} 400 if the version is not in DEPRECATED status
+   */
+  async republishToolkitVersion(toolkitId: string, versionId: string): Promise<void> {
+    return toolkits.republishToolkitVersion(this.http, toolkitId, versionId);
+  }
+
+  /**
+   * Discard a draft toolkit version.
+   *
+   * Permanently deletes a DRAFT version. Only draft versions can be discarded.
+   * This action is irreversible.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param versionId - The unique version ID (must be in DRAFT status)
+   * @throws {ContioAPIError} 400 if the version is not in DRAFT status
+   */
+  async discardToolkitVersion(toolkitId: string, versionId: string): Promise<void> {
+    return toolkits.discardToolkitVersion(this.http, toolkitId, versionId);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
