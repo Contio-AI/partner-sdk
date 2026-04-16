@@ -13,11 +13,11 @@ import { BaseClient, ClientConfig, RequestOptions } from '../base';
 import { HttpTransport } from '../_http';
 import { ApiKeyClient } from '../../auth/apiKey';
 import {
-  Workflow,
-  WorkflowListParams,
-  WorkflowListResponse,
-  CreateWorkflowRequest,
-  UpdateWorkflowRequest,
+  Automation,
+  AutomationListParams,
+  AutomationListResponse,
+  CreateAutomationRequest,
+  UpdateAutomationRequest,
   WebhookDelivery,
   WebhookDeliveryListParams,
   WebhookDeliveryListResponse,
@@ -77,7 +77,7 @@ import {
   UpdateActionButtonRequest,
 } from '../../models';
 
-import * as workflows from './workflows';
+import * as automations from './automations';
 import * as app from './app';
 import * as webhooks from './webhooks';
 import * as connections from './connections';
@@ -91,7 +91,7 @@ import * as actionButtons from './actionButtons';
 /**
  * Partner Admin API client for API key-authenticated admin endpoints.
  *
- * Provides access to partner app configuration, workflows, webhook deliveries,
+ * Provides access to partner app configuration, automations, webhook deliveries,
  * user connections, credential management, and IdP configuration.
  * Requires an API key for authentication.
  *
@@ -102,7 +102,7 @@ import * as actionButtons from './actionButtons';
  * });
  *
  * const app = await admin.getApp();
- * const workflows = await admin.getWorkflows();
+ * const automations = await admin.getAutomations();
  * ```
  */
 export class PartnerAdminClient extends BaseClient {
@@ -144,72 +144,72 @@ export class PartnerAdminClient extends BaseClient {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Workflow endpoints
+  // Automation endpoints
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Create a new workflow.
+   * Create a new automation.
    *
-   * Workflows define automated actions triggered by events in Contio.
+   * Automations define automated actions triggered by events in Contio.
    *
-   * @param data - Workflow creation data
-   * @param data.name - Workflow name (required)
-   * @param data.description - Optional workflow description
-   * @param data.trigger_type - Event that triggers the workflow (e.g., 'action_item_match')
+   * @param data - Automation creation data
+   * @param data.name - Automation name (required)
+   * @param data.description - Optional automation description
+   * @param data.trigger_type - Event that triggers the automation (e.g., 'action_item_match')
    * @param data.actions - Actions to perform when triggered
-   * @returns The newly created workflow
+   * @returns The newly created automation
    * @throws {ContioAPIError} If validation fails
    */
-  async createWorkflow(data: CreateWorkflowRequest): Promise<Workflow> {
-    return workflows.createWorkflow(this.http, data);
+  async createAutomation(data: CreateAutomationRequest): Promise<Automation> {
+    return automations.createAutomation(this.http, data);
   }
 
   /**
-   * Get a paginated list of workflows.
+   * Get a paginated list of automations.
    *
    * @param params - Optional filter and pagination parameters
-   * @param params.limit - Maximum number of workflows to return
-   * @param params.offset - Number of workflows to skip for pagination
-   * @returns Paginated list of workflows
+   * @param params.limit - Maximum number of automations to return
+   * @param params.offset - Number of automations to skip for pagination
+   * @returns Paginated list of automations
    * @throws {ContioAPIError} If the request fails
    */
-  async getWorkflows(params?: WorkflowListParams): Promise<WorkflowListResponse> {
-    return workflows.getWorkflows(this.http, params);
+  async getAutomations(params?: AutomationListParams): Promise<AutomationListResponse> {
+    return automations.getAutomations(this.http, params);
   }
 
   /**
-   * Get a specific workflow by ID.
+   * Get a specific automation by ID.
    *
-   * @param workflowId - The unique workflow ID
-   * @returns The workflow with full details
-   * @throws {ContioAPIError} If the workflow is not found
+   * @param automationId - The unique automation ID
+   * @returns The automation with full details
+   * @throws {ContioAPIError} If the automation is not found
    */
-  async getWorkflow(workflowId: string): Promise<Workflow> {
-    return workflows.getWorkflow(this.http, workflowId);
+  async getAutomation(automationId: string): Promise<Automation> {
+    return automations.getAutomation(this.http, automationId);
   }
 
 
 
   /**
-   * Update a workflow.
+   * Update a automation.
    *
-   * @param workflowId - The unique workflow ID to update
+   * @param automationId - The unique automation ID to update
    * @param data - Fields to update
-   * @returns The updated workflow
-   * @throws {ContioAPIError} If the workflow is not found or validation fails
+   * @returns The updated automation
+   * @throws {ContioAPIError} If the automation is not found or validation fails
    */
-  async updateWorkflow(workflowId: string, data: UpdateWorkflowRequest): Promise<Workflow> {
-    return workflows.updateWorkflow(this.http, workflowId, data);
+  async updateAutomation(automationId: string, data: UpdateAutomationRequest): Promise<Automation> {
+    return automations.updateAutomation(this.http, automationId, data);
   }
 
   /**
-   * Delete a workflow.
+   * Delete a automation.
    *
-   * @param workflowId - The unique workflow ID to delete
-   * @throws {ContioAPIError} If the workflow is not found
+   * @param automationId - The unique automation ID to delete
+   * @throws {ContioAPIError} If the automation is not found
    */
-  async deleteWorkflow(workflowId: string): Promise<void> {
-    return workflows.deleteWorkflow(this.http, workflowId);
+  async deleteAutomation(automationId: string): Promise<void> {
+    return automations.deleteAutomation(this.http, automationId);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -266,7 +266,7 @@ export class PartnerAdminClient extends BaseClient {
    * @param params.limit - Maximum number of deliveries to return (default 50, max 100)
    * @param params.offset - Number of deliveries to skip for pagination (default 0)
    * @param params.status - Filter by delivery status (pending, delivered, failed, abandoned)
-   * @param params.event_type - Filter by event type (e.g., meeting.created, workflow.assignment.created)
+   * @param params.event_type - Filter by event type (e.g., meeting.created, automation.assignment.created)
    * @returns Paginated list of webhook deliveries
    * @throws {ContioAPIError} If the request fails
    *

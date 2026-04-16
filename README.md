@@ -80,7 +80,7 @@ const { admin } = ContioPartnerSDK.forAdmin({
   apiKey: 'your-api-key'
 });
 
-const workflows = await admin.getWorkflows();
+const automations = await admin.getAutomations();
 const stats = await admin.getStats();
 ```
 
@@ -151,7 +151,7 @@ The SDK supports all Partner API webhook events with full TypeScript typing:
 - `action_item.completed` - Action item marked as completed
 
 **Other Events:**
-- `workflow.assignment.created` - Action item assigned to your workflow
+- `automation.assignment.created` - Action item assigned to your automation
 - `participant.added` - Participant(s) added to meeting
 - `participant.removed` - Participant removed from meeting
 - `user.connection.revoked` - User revoked connection to your app

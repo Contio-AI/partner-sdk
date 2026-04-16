@@ -28,7 +28,7 @@
 import { WebhookVerifier } from './verifier';
 import {
   ContioWebhookEvent,
-  WorkflowAssignmentCreatedPayload,
+  AutomationAssignmentCreatedPayload,
   ActionItemUpdatedPayload,
   ActionItemCreatedPayload,
   ActionItemCompletedPayload,
@@ -54,7 +54,7 @@ import {
  * Map of event types to their corresponding webhook payload types
  */
 export interface WebhookEventMap {
-  'workflow.assignment.created': WorkflowAssignmentCreatedPayload;
+  'automation.assignment.created': AutomationAssignmentCreatedPayload;
   'action_item.created': ActionItemCreatedPayload;
   'action_item.updated': ActionItemUpdatedPayload;
   'action_item.completed': ActionItemCompletedPayload;

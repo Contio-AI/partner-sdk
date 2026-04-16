@@ -184,10 +184,10 @@ export type WebhookHandler<T extends ContioWebhookEvent = ContioWebhookEvent> = 
 // =============================================================================
 
 /**
- * @deprecated Use WorkflowAssignmentCreatedPayload instead.
+ * @deprecated Use AutomationAssignmentCreatedPayload instead.
  * Note: Data structure has changed - fields are now at data.X instead of data.assignment.X
  */
-export type WorkflowAssignmentCreatedWebhook = WorkflowAssignmentCreatedPayload;
+export type AutomationAssignmentCreatedWebhook = AutomationAssignmentCreatedPayload;
 
 /**
  * @deprecated Use ActionItemUpdatedPayload instead.

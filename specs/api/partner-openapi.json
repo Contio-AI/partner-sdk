@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.4.7"
+    "version": "1.5.1"
   },
   "host": "api.contio.ai",
   "basePath": "/",
@@ -612,314 +612,6 @@
         }
       }
     },
-    "/v1/partner/admin/action-buttons": {
-      "get": {
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "description": "Returns a paginated list of action buttons for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Action Buttons"
-        ],
-        "summary": "List action buttons",
-        "parameters": [
-          {
-            "type": "integer",
-            "default": 25,
-            "description": "Maximum number of items to return",
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "default": 0,
-            "description": "Number of items to skip",
-            "name": "offset",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-action_button_ActionButtonResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "description": "Creates a new action button for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Action Buttons"
-        ],
-        "summary": "Create action button",
-        "parameters": [
-          {
-            "description": "Action button details",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/action_button.CreateActionButtonRequest"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/action_button.ActionButtonResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "409": {
-            "description": "Conflict - a default action button already exists",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/action-buttons/{id}": {
-      "get": {
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "description": "Retrieves a single action button by ID for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Action Buttons"
-        ],
-        "summary": "Get action button",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Action button ID",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/action_button.ActionButtonResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "description": "Updates an existing action button for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Action Buttons"
-        ],
-        "summary": "Update action button",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Action button ID",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Action button update details",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/action_button.UpdateActionButtonRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/action_button.ActionButtonResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Action button not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "409": {
-            "description": "Conflict - a default action button already exists",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "description": "Soft-deletes an action button for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Action Buttons"
-        ],
-        "summary": "Delete action button",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Action button ID",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
     "/v1/partner/admin/app": {
       "get": {
         "security": [
@@ -1065,6 +757,305 @@
           },
           "401": {
             "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/automation": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Retrieves all automations for the authenticated partner app",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Automation Management"
+        ],
+        "summary": "Get automations",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "description": "Limit",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Offset",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-automation_AutomationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Creates a new automation for action item matching",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Automation Management"
+        ],
+        "summary": "Create a new automation",
+        "parameters": [
+          {
+            "description": "Automation data",
+            "name": "automation",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/automation.CreateAutomationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/automation.AutomationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "schema": {
+              "$ref": "#/definitions/automation.CreateAutomationError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/automation/{automationId}": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Retrieves a specific automation by ID for the authenticated partner app",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Automation Management"
+        ],
+        "summary": "Get automation by ID",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Automation ID",
+            "name": "automationId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/automation.AutomationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid automation ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Automation not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Updates a specific automation for the authenticated partner app",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Automation Management"
+        ],
+        "summary": "Update automation",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Automation ID",
+            "name": "automationId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Automation update data",
+            "name": "automation",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/automation.UpdateAutomationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/automation.AutomationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "schema": {
+              "$ref": "#/definitions/automation.UpdateAutomationError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Automation not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Deletes an automation by ID",
+        "tags": [
+          "Automation Management"
+        ],
+        "summary": "Delete automation",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Automation ID",
+            "name": "automationId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Automation not found",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -1929,593 +1920,6 @@
         }
       }
     },
-    "/v1/partner/admin/next-steps": {
-      "get": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Retrieves a paginated list of next steps for the authenticated partner app",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Next Steps"
-        ],
-        "summary": "List next steps",
-        "parameters": [
-          {
-            "type": "integer",
-            "default": 50,
-            "description": "Limit",
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "default": 0,
-            "description": "Offset",
-            "name": "offset",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-next_step_NextStepResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request parameters",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Creates a new next step for the authenticated partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Next Steps"
-        ],
-        "summary": "Create a next step",
-        "parameters": [
-          {
-            "description": "Next step creation request",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/next_step.CreateNextStepRequest"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/next_step.NextStepResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request body",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/next-steps/{nextStepId}": {
-      "get": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Retrieves a specific next step by ID for the authenticated partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Next Steps"
-        ],
-        "summary": "Get a next step",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "Next Step ID",
-            "name": "nextStepId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/next_step.NextStepResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request parameters",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Updates an existing next step for the authenticated partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Next Steps"
-        ],
-        "summary": "Update a next step",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "Next Step ID",
-            "name": "nextStepId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Update next step request",
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/next_step.UpdateNextStepRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/next_step.NextStepResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request parameters",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Deletes a next step for the authenticated partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Partner Admin - Next Steps"
-        ],
-        "summary": "Delete a next step",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "Next Step ID",
-            "name": "nextStepId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Invalid request parameters",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/next-steps/{nextStepId}/action-buttons": {
-      "get": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Retrieves all action buttons associated with a next step for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Template Management"
-        ],
-        "summary": "Get action buttons for a next step",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Next step ID",
-            "name": "nextStepId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-next_step_action_button_NextStepActionButtonResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid next step ID",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Adds an action button to a next step for the partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Template Management"
-        ],
-        "summary": "Add action button to next step",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Next step ID",
-            "name": "nextStepId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Action button association details",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/next_step_action_button.AddActionButtonToNextStepRequest"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Action button added successfully"
-          },
-          "400": {
-            "description": "Invalid request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step or action button not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/next-steps/{next_step_id}/action-buttons/{action_button_id}": {
-      "delete": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Removes an action button from a next step. The action button must belong to the partner.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Template Management"
-        ],
-        "summary": "Remove action button from next step",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Next step ID (UUID format)",
-            "name": "next_step_id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "Action button ID (UUID format)",
-            "name": "action_button_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Action button removed from next step"
-          },
-          "400": {
-            "description": "Invalid request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step or action button not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/next-steps/{next_step_id}/default-action-button": {
-      "put": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Sets an action button as the default for a next step. The action button must already be associated with the next step.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Template Management"
-        ],
-        "summary": "Set default action button for next step",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Next step ID (UUID format)",
-            "name": "next_step_id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Default action button request",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/next_step_action_button.SetDefaultActionButtonRequest"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Default action button set"
-          },
-          "400": {
-            "description": "Invalid request",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Next step or action button not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
     "/v1/partner/admin/templates": {
       "get": {
         "security": [
@@ -3163,7 +2567,7 @@
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Creates a new toolkit for the authenticated partner app",
+        "description": "Creates a new toolkit for the authenticated partner app. Set dry_run=true to validate without creating.",
         "consumes": [
           "application/json"
         ],
@@ -3186,14 +2590,80 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "Dry-run validation result",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse"
+              "$ref": "#/definitions/toolkit.CreateToolkitResponse"
+            }
+          },
+          "201": {
+            "description": "Toolkit created",
+            "schema": {
+              "$ref": "#/definitions/toolkit.CreateToolkitResponse"
             }
           },
           "400": {
             "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/toolkits/export": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Builds a portable toolkit manifest from selected entity IDs. Dependencies are auto-discovered.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Export entities as a portable manifest",
+        "parameters": [
+          {
+            "description": "Export request with entity IDs",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/toolkit.ExportEntitiesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/toolkit.ExportResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or no entities specified",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -3282,7 +2752,7 @@
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Updates an existing toolkit for the authenticated partner app",
+        "description": "Updates an existing toolkit's metadata (name, description, is_active) for the authenticated partner app.\nThe 'manifest' and 'version' fields are deprecated and no longer accepted; use the toolkit versioning API instead.",
         "consumes": [
           "application/json"
         ],
@@ -3332,6 +2802,12 @@
           },
           "404": {
             "description": "Toolkit not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Deprecated fields provided — use the versioning API",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -3398,6 +2874,545 @@
         }
       }
     },
+    "/v1/partner/admin/toolkits/{toolkitId}/export": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Resolves an existing toolkit's manifest into a portable format with $id/$ref identifiers.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Export a toolkit as a portable manifest",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/toolkit.ExportResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Toolkit not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/toolkits/{toolkitId}/versions": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Lists all versions for a toolkit owned by the authenticated partner app",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "List toolkit versions",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/toolkit.VersionResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid toolkit ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Toolkit not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Creates a new draft version for a toolkit owned by the authenticated partner app. Set dry_run=true to validate without creating.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Create a toolkit version",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Version creation request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/toolkit.CreateVersionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dry-run validation result",
+            "schema": {
+              "$ref": "#/definitions/toolkit.CreateVersionResponse"
+            }
+          },
+          "201": {
+            "description": "Version created",
+            "schema": {
+              "$ref": "#/definitions/toolkit.CreateVersionResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Toolkit not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Draft version already exists",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/toolkits/{toolkitId}/versions/{versionId}": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Retrieves a specific version for a toolkit owned by the authenticated partner app",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Get a toolkit version",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Version ID",
+            "name": "versionId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/toolkit.VersionResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Version not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Permanently deletes a draft version. Only draft versions can be discarded.",
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Discard a draft toolkit version",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Version ID",
+            "name": "versionId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Version discarded"
+          },
+          "400": {
+            "description": "Version is not in draft status",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Version not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Updates the manifest, label, or changelog of a draft version",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Update a draft toolkit version",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Version ID",
+            "name": "versionId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Version update request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/toolkit.UpdateVersionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/toolkit.VersionResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Version not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/toolkits/{toolkitId}/versions/{versionId}/publish": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Transitions a draft version to PUBLISHED status. Deprecates any previously published version.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Publish a toolkit version",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Version ID",
+            "name": "versionId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Version published"
+          },
+          "400": {
+            "description": "Version is not in draft status",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Version not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/toolkits/{toolkitId}/versions/{versionId}/republish": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": []
+          },
+          {
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Transitions a deprecated version back to PUBLISHED status. Deprecates any currently published version.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Republish a toolkit version",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Version ID",
+            "name": "versionId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Version republished"
+          },
+          "400": {
+            "description": "Version is not in deprecated status",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Version not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/admin/webhook-deliveries": {
       "get": {
         "security": [
@@ -3425,7 +3440,7 @@
           },
           {
             "type": "string",
-            "description": "Filter by event type (e.g., meeting.created, workflow.assignment.created)",
+            "description": "Filter by event type (e.g., meeting.created, automation.assignment.created)",
             "name": "event_type",
             "in": "query"
           },
@@ -3720,305 +3735,6 @@
           },
           "401": {
             "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/workflows": {
-      "get": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Retrieves all workflows for the authenticated partner app",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Workflow Management"
-        ],
-        "summary": "Get workflows",
-        "parameters": [
-          {
-            "type": "integer",
-            "default": 50,
-            "description": "Limit",
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "default": 0,
-            "description": "Offset",
-            "name": "offset",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-workflow_WorkflowResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request parameters",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Creates a new workflow for action item matching",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Workflow Management"
-        ],
-        "summary": "Create a new workflow",
-        "parameters": [
-          {
-            "description": "Workflow data",
-            "name": "workflow",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/workflow.CreateWorkflowRequest"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/workflow.WorkflowResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request body or validation error",
-            "schema": {
-              "$ref": "#/definitions/workflow.CreateWorkflowError400"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/v1/partner/admin/workflows/{workflowId}": {
-      "get": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Retrieves a specific workflow by ID for the authenticated partner app",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Workflow Management"
-        ],
-        "summary": "Get workflow by ID",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Workflow ID",
-            "name": "workflowId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/workflow.WorkflowResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid workflow ID",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Workflow not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Updates a specific workflow for the authenticated partner app",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Workflow Management"
-        ],
-        "summary": "Update workflow",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Workflow ID",
-            "name": "workflowId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Workflow update data",
-            "name": "workflow",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/workflow.UpdateWorkflowRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/workflow.WorkflowResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid request body or validation error",
-            "schema": {
-              "$ref": "#/definitions/workflow.UpdateWorkflowError400"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Workflow not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Deletes a workflow by ID",
-        "tags": [
-          "Workflow Management"
-        ],
-        "summary": "Delete workflow",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Workflow ID",
-            "name": "workflowId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Workflow not found",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -7403,260 +7119,6 @@
     }
   },
   "definitions": {
-    "action_button.ActionButtonResponse": {
-      "type": "object",
-      "properties": {
-        "content_format": {
-          "description": "Content format: rich_text, markdown, plain_text, html",
-          "type": "string",
-          "example": "markdown"
-        },
-        "created_at": {
-          "description": "When the action button was created",
-          "type": "string",
-          "example": "2024-01-01T00:00:00Z"
-        },
-        "delivery_mechanism": {
-          "description": "Delivery mechanism: webhook, redirect, email, clipboard, file_download, integration, os_email_client",
-          "type": "string",
-          "example": "webhook"
-        },
-        "file_format": {
-          "description": "File format for file_download delivery mechanism",
-          "type": "string",
-          "example": "pdf"
-        },
-        "icon_url": {
-          "description": "Icon URL for the action button",
-          "type": "string",
-          "example": "https://cdn.example.com/icon.png"
-        },
-        "id": {
-          "description": "Unique identifier for the action button",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "integration_type": {
-          "description": "Integration type for integration delivery mechanism",
-          "type": "string",
-          "example": "slack"
-        },
-        "is_active": {
-          "description": "Whether the action button is active",
-          "type": "boolean",
-          "example": true
-        },
-        "is_default_for_next_step": {
-          "description": "Whether this is the default action button for next steps",
-          "type": "boolean",
-          "example": false
-        },
-        "name": {
-          "description": "Name of the action button",
-          "type": "string",
-          "example": "Send to Slack"
-        },
-        "redirect_url": {
-          "description": "Redirect URL for redirect delivery mechanism",
-          "type": "string",
-          "example": "https://partner.example.com/action"
-        },
-        "requires_connected_integration": {
-          "description": "Whether the action button requires a connected integration",
-          "type": "boolean",
-          "example": false
-        },
-        "sort_order": {
-          "description": "Sort order for display",
-          "type": "integer",
-          "example": 1
-        },
-        "updated_at": {
-          "description": "When the action button was last updated",
-          "type": "string",
-          "example": "2024-01-01T00:00:00Z"
-        },
-        "webhook_url": {
-          "description": "Webhook URL for webhook delivery mechanism",
-          "type": "string",
-          "example": "https://partner.example.com/webhook"
-        }
-      }
-    },
-    "action_button.CreateActionButtonRequest": {
-      "type": "object",
-      "required": [
-        "content_format",
-        "delivery_mechanism",
-        "name"
-      ],
-      "properties": {
-        "content_format": {
-          "description": "Content format: rich_text, markdown, plain_text, html",
-          "type": "string",
-          "enum": [
-            "rich_text",
-            "markdown",
-            "plain_text",
-            "html"
-          ],
-          "example": "markdown"
-        },
-        "delivery_mechanism": {
-          "description": "Delivery mechanism: webhook, redirect, email, clipboard, file_download, integration, os_email_client",
-          "type": "string",
-          "enum": [
-            "webhook",
-            "redirect",
-            "email",
-            "clipboard",
-            "file_download",
-            "integration",
-            "os_email_client"
-          ],
-          "example": "webhook"
-        },
-        "file_format": {
-          "description": "File format for file_download delivery mechanism",
-          "type": "string",
-          "maxLength": 50,
-          "example": "pdf"
-        },
-        "icon_url": {
-          "description": "Optional icon URL for the action button",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://cdn.example.com/icon.png"
-        },
-        "integration_type": {
-          "description": "Integration type for integration delivery mechanism",
-          "type": "string",
-          "maxLength": 100,
-          "example": "slack"
-        },
-        "is_default_for_next_step": {
-          "description": "Whether this is the default action button for next steps",
-          "type": "boolean",
-          "example": false
-        },
-        "name": {
-          "description": "Name of the action button",
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1,
-          "example": "Send to Slack"
-        },
-        "redirect_url": {
-          "description": "Redirect URL for redirect delivery mechanism",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://partner.example.com/action"
-        },
-        "requires_connected_integration": {
-          "description": "Whether the action button requires a connected integration",
-          "type": "boolean",
-          "example": false
-        },
-        "sort_order": {
-          "description": "Sort order for display",
-          "type": "integer",
-          "example": 1
-        },
-        "webhook_url": {
-          "description": "Webhook URL for webhook delivery mechanism",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://partner.example.com/webhook"
-        }
-      }
-    },
-    "action_button.UpdateActionButtonRequest": {
-      "type": "object",
-      "properties": {
-        "content_format": {
-          "description": "Content format: rich_text, markdown, plain_text, html",
-          "type": "string",
-          "enum": [
-            "rich_text",
-            "markdown",
-            "plain_text",
-            "html"
-          ],
-          "example": "markdown"
-        },
-        "delivery_mechanism": {
-          "description": "Delivery mechanism: webhook, redirect, email, clipboard, file_download, integration, os_email_client",
-          "type": "string",
-          "enum": [
-            "webhook",
-            "redirect",
-            "email",
-            "clipboard",
-            "file_download",
-            "integration",
-            "os_email_client"
-          ],
-          "example": "webhook"
-        },
-        "file_format": {
-          "description": "File format for file_download delivery mechanism",
-          "type": "string",
-          "maxLength": 50,
-          "example": "pdf"
-        },
-        "icon_url": {
-          "description": "Icon URL for the action button",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://cdn.example.com/icon.png"
-        },
-        "integration_type": {
-          "description": "Integration type for integration delivery mechanism",
-          "type": "string",
-          "maxLength": 100,
-          "example": "slack"
-        },
-        "is_active": {
-          "description": "Whether the action button is active",
-          "type": "boolean",
-          "example": true
-        },
-        "is_default_for_next_step": {
-          "description": "Whether this is the default action button for next steps",
-          "type": "boolean",
-          "example": false
-        },
-        "name": {
-          "description": "Name of the action button",
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1,
-          "example": "Send to Slack"
-        },
-        "redirect_url": {
-          "description": "Redirect URL for redirect delivery mechanism",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://partner.example.com/action"
-        },
-        "requires_connected_integration": {
-          "description": "Whether the action button requires a connected integration",
-          "type": "boolean",
-          "example": false
-        },
-        "sort_order": {
-          "description": "Sort order for display",
-          "type": "integer",
-          "example": 1
-        },
-        "webhook_url": {
-          "description": "Webhook URL for webhook delivery mechanism",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://partner.example.com/webhook"
-        }
-      }
-    },
     "action_item.CreateActionItemError400": {
       "description": "Bad request error for creating an action item",
       "type": "object",
@@ -7782,7 +7244,7 @@
           "example": "2023-01-08"
         },
         "has_partner_assignment": {
-          "description": "Whether this action item was assigned via partner workflow",
+          "description": "Whether this action item was assigned via partner automation",
           "type": "boolean",
           "example": true
         },
@@ -8067,6 +7529,191 @@
             "abandon"
           ],
           "example": "abandon"
+        }
+      }
+    },
+    "automation.AutomationResponse": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "description": "Actions to execute when the automation is triggered",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/partner.AutomationAction"
+          }
+        },
+        "created_at": {
+          "description": "Timestamp when the automation was created",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "description": {
+          "description": "Optional description of what the automation does",
+          "type": "string",
+          "example": "Sync action items to CRM"
+        },
+        "id": {
+          "description": "Unique identifier for the automation",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        "name": {
+          "description": "Name of the automation",
+          "type": "string",
+          "example": "CRM Integration"
+        },
+        "partner_app_id": {
+          "description": "ID of the partner app that owns this automation",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "status": {
+          "description": "Current status (active or inactive)",
+          "type": "string",
+          "example": "active"
+        },
+        "trigger_type": {
+          "description": "Event type that triggers this automation",
+          "type": "string",
+          "example": "action_item_created"
+        },
+        "updated_at": {
+          "description": "Timestamp when the automation was last updated",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        }
+      }
+    },
+    "automation.CreateAutomationError400": {
+      "description": "Bad request error for creating an automation",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Unique identifier for the error type",
+          "type": "string",
+          "enum": [
+            "invalid_request_body",
+            "validation_error"
+          ],
+          "example": "invalid_request_body"
+        },
+        "error": {
+          "description": "User-friendly description of what went wrong",
+          "type": "string",
+          "example": "Invalid request body"
+        },
+        "request_id": {
+          "description": "Request identifier to correlate errors with logs",
+          "type": "string",
+          "example": "abc123xyz"
+        }
+      }
+    },
+    "automation.CreateAutomationRequest": {
+      "type": "object",
+      "required": [
+        "actions",
+        "name",
+        "trigger_type"
+      ],
+      "properties": {
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/partner.AutomationAction"
+          }
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 1000,
+          "example": "Sync action items to CRM"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "CRM Integration"
+        },
+        "trigger_type": {
+          "type": "string",
+          "enum": [
+            "action_item_created",
+            "action_item_updated",
+            "action_item_completed",
+            "meeting_ended",
+            "meeting_summary_ready"
+          ]
+        }
+      }
+    },
+    "automation.UpdateAutomationError400": {
+      "description": "Bad request error for updating an automation",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Unique identifier for the error type",
+          "type": "string",
+          "enum": [
+            "invalid_automation_id",
+            "invalid_request_body",
+            "validation_error"
+          ],
+          "example": "invalid_automation_id"
+        },
+        "error": {
+          "description": "User-friendly description of what went wrong",
+          "type": "string",
+          "example": "Invalid automation ID format"
+        },
+        "request_id": {
+          "description": "Request identifier to correlate errors with logs",
+          "type": "string",
+          "example": "abc123xyz"
+        }
+      }
+    },
+    "automation.UpdateAutomationRequest": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/partner.AutomationAction"
+          }
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 1000,
+          "example": "Updated description"
+        },
+        "is_active": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "Updated CRM Integration"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "inactive"
+          ],
+          "example": "active"
+        },
+        "trigger_type": {
+          "type": "string",
+          "enum": [
+            "action_item_created",
+            "action_item_updated",
+            "action_item_completed",
+            "meeting_ended",
+            "meeting_summary_ready"
+          ]
         }
       }
     },
@@ -9623,246 +9270,6 @@
         }
       }
     },
-    "next_step.CreateNextStepRequest": {
-      "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
-      "properties": {
-        "ai_prompt": {
-          "description": "AI prompt template for AI type next steps",
-          "type": "string",
-          "example": "Generate an invoice based on the meeting summary and action items"
-        },
-        "color": {
-          "description": "Optional color for the next step",
-          "type": "string",
-          "maxLength": 50,
-          "example": "#FF5733"
-        },
-        "description": {
-          "description": "Optional description of the next step",
-          "type": "string",
-          "maxLength": 1000,
-          "example": "Generates an invoice from meeting action items"
-        },
-        "icon_name": {
-          "description": "Optional icon name for the next step",
-          "type": "string",
-          "maxLength": 100,
-          "example": "receipt"
-        },
-        "name": {
-          "description": "Name of the next step",
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1,
-          "example": "Generate Invoice"
-        },
-        "redirect_url": {
-          "description": "Redirect URL for redirect type next steps",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://partner.example.com/invoice"
-        },
-        "type": {
-          "description": "Type of next step: \"ai\" or \"redirect\"",
-          "type": "string",
-          "enum": [
-            "ai",
-            "redirect"
-          ],
-          "example": "ai"
-        }
-      }
-    },
-    "next_step.NextStepResponse": {
-      "type": "object",
-      "properties": {
-        "ai_prompt": {
-          "description": "AI prompt template",
-          "type": "string",
-          "example": "Generate an invoice based on the meeting summary"
-        },
-        "color": {
-          "description": "Color for the next step",
-          "type": "string",
-          "example": "#FF5733"
-        },
-        "created_at": {
-          "description": "When the next step was created",
-          "type": "string",
-          "example": "2024-01-01T00:00:00Z"
-        },
-        "description": {
-          "description": "Description of the next step",
-          "type": "string",
-          "example": "Generates an invoice from meeting action items"
-        },
-        "icon_name": {
-          "description": "Icon name for the next step",
-          "type": "string",
-          "example": "receipt"
-        },
-        "id": {
-          "description": "Unique identifier for the next step",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "is_active": {
-          "description": "Whether the next step is active",
-          "type": "boolean",
-          "example": true
-        },
-        "name": {
-          "description": "Name of the next step",
-          "type": "string",
-          "example": "Generate Invoice"
-        },
-        "redirect_url": {
-          "description": "Redirect URL for redirect type next steps",
-          "type": "string",
-          "example": "https://partner.example.com/invoice"
-        },
-        "sort_order": {
-          "description": "Display order for sorting",
-          "type": "integer",
-          "example": 1
-        },
-        "type": {
-          "description": "Type of next step: \"ai\" or \"redirect\"",
-          "type": "string",
-          "example": "ai"
-        },
-        "updated_at": {
-          "description": "When the next step was last updated",
-          "type": "string",
-          "example": "2024-01-01T00:00:00Z"
-        }
-      }
-    },
-    "next_step.UpdateNextStepRequest": {
-      "type": "object",
-      "properties": {
-        "ai_prompt": {
-          "description": "AI prompt template for AI type next steps",
-          "type": "string",
-          "example": "Generate an invoice based on the meeting summary and action items"
-        },
-        "color": {
-          "description": "Color for the next step",
-          "type": "string",
-          "maxLength": 50,
-          "example": "#FF5733"
-        },
-        "description": {
-          "description": "Description of the next step",
-          "type": "string",
-          "maxLength": 1000,
-          "example": "Generates an invoice from meeting action items"
-        },
-        "icon_name": {
-          "description": "Icon name for the next step",
-          "type": "string",
-          "maxLength": 100,
-          "example": "receipt"
-        },
-        "is_active": {
-          "description": "Whether the next step is active",
-          "type": "boolean",
-          "example": true
-        },
-        "name": {
-          "description": "Name of the next step",
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1,
-          "example": "Generate Invoice"
-        },
-        "redirect_url": {
-          "description": "Redirect URL for redirect type next steps",
-          "type": "string",
-          "maxLength": 2000,
-          "example": "https://partner.example.com/invoice"
-        },
-        "type": {
-          "description": "Type of next step: \"ai\" or \"redirect\"",
-          "type": "string",
-          "enum": [
-            "ai",
-            "redirect"
-          ],
-          "example": "ai"
-        }
-      }
-    },
-    "next_step_action_button.AddActionButtonToNextStepRequest": {
-      "type": "object",
-      "required": [
-        "action_button_id"
-      ],
-      "properties": {
-        "action_button_id": {
-          "description": "ID of the action button to add",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174001"
-        },
-        "sort_order": {
-          "description": "Sort order for the action button (optional, defaults to 0)",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "next_step_action_button.NextStepActionButtonResponse": {
-      "type": "object",
-      "properties": {
-        "delivery_mechanism": {
-          "description": "Delivery mechanism",
-          "type": "string",
-          "example": "webhook"
-        },
-        "icon_url": {
-          "description": "Icon URL for the action button",
-          "type": "string",
-          "example": "https://cdn.example.com/icon.png"
-        },
-        "id": {
-          "description": "Unique identifier for the action button",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "is_default": {
-          "description": "Whether this is the default action button for the next step",
-          "type": "boolean",
-          "example": true
-        },
-        "name": {
-          "description": "Name of the action button",
-          "type": "string",
-          "example": "Send to Slack"
-        },
-        "sort_order": {
-          "description": "Sort order within the next step",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "next_step_action_button.SetDefaultActionButtonRequest": {
-      "type": "object",
-      "required": [
-        "action_button_id"
-      ],
-      "properties": {
-        "action_button_id": {
-          "description": "ID of the action button to set as default",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174001"
-        }
-      }
-    },
     "next_step_result.NextStepResultResponse": {
       "type": "object",
       "properties": {
@@ -10198,7 +9605,7 @@
         }
       }
     },
-    "partner.WorkflowAction": {
+    "partner.AutomationAction": {
       "type": "object",
       "required": [
         "type"
@@ -10259,14 +9666,14 @@
         }
       }
     },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-action_button_ActionButtonResponse": {
+    "rome_api_controllers_external_partner_admin_shared.ListResponse-automation_AutomationResponse": {
       "type": "object",
       "properties": {
         "items": {
           "description": "Array of items for the current page",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/action_button.ActionButtonResponse"
+            "$ref": "#/definitions/automation.AutomationResponse"
           }
         },
         "limit": {
@@ -10294,60 +9701,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/connection.UserConnectionResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-next_step_NextStepResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/next_step.NextStepResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-next_step_action_button_NextStepActionButtonResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/next_step_action_button.NextStepActionButtonResponse"
           }
         },
         "limit": {
@@ -10402,33 +9755,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/template.TemplateResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-workflow_WorkflowResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/workflow.WorkflowResponse"
           }
         },
         "limit": {
@@ -12078,6 +11404,36 @@
         }
       }
     },
+    "toolkit.ConflictInfoResponse": {
+      "type": "object",
+      "properties": {
+        "conflict_type": {
+          "type": "string",
+          "example": "name_collision"
+        },
+        "entity_name": {
+          "type": "string",
+          "example": "Generate Invoice"
+        },
+        "entity_type": {
+          "type": "string",
+          "example": "next_step"
+        },
+        "existing_entity_id": {
+          "type": "string",
+          "example": "abc-123"
+        },
+        "message": {
+          "description": "separated due to formatting for long example",
+          "type": "string",
+          "example": "A next step with this name already exists for this partner app"
+        },
+        "resolution": {
+          "type": "string",
+          "example": "informational"
+        }
+      }
+    },
     "toolkit.CreateToolkitRequest": {
       "type": "object",
       "required": [
@@ -12091,6 +11447,10 @@
           "type": "string",
           "maxLength": 1000,
           "example": "Complete sales workflow toolkit"
+        },
+        "dry_run": {
+          "description": "DryRun validates the manifest without creating the toolkit",
+          "type": "boolean"
         },
         "manifest": {
           "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
@@ -12113,9 +11473,238 @@
         }
       }
     },
+    "toolkit.CreateToolkitResponse": {
+      "type": "object",
+      "properties": {
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ConflictInfoResponse"
+          }
+        },
+        "summary": {
+          "$ref": "#/definitions/toolkit.ManifestSummaryResponse"
+        },
+        "toolkit": {
+          "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse"
+        },
+        "validation": {
+          "$ref": "#/definitions/toolkit.ValidationResultResponse"
+        }
+      }
+    },
+    "toolkit.CreateVersionRequest": {
+      "type": "object",
+      "required": [
+        "manifest",
+        "version_label"
+      ],
+      "properties": {
+        "changelog": {
+          "description": "Changelog describes the changes in this version",
+          "type": "string",
+          "maxLength": 5000,
+          "example": "Added new action button for CRM sync"
+        },
+        "dry_run": {
+          "description": "DryRun validates the manifest without creating the version",
+          "type": "boolean"
+        },
+        "manifest": {
+          "description": "Manifest is the toolkit manifest for this version",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+            }
+          ]
+        },
+        "version_label": {
+          "description": "VersionLabel is a human-readable label for this version (e.g., \"2.0.0\")",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 1,
+          "example": "2.0.0"
+        }
+      }
+    },
+    "toolkit.CreateVersionResponse": {
+      "type": "object",
+      "properties": {
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ConflictInfoResponse"
+          }
+        },
+        "summary": {
+          "$ref": "#/definitions/toolkit.ManifestSummaryResponse"
+        },
+        "validation": {
+          "$ref": "#/definitions/toolkit.ValidationResultResponse"
+        },
+        "version": {
+          "$ref": "#/definitions/toolkit.VersionResponse"
+        }
+      }
+    },
+    "toolkit.EntityMapResponse": {
+      "type": "object",
+      "properties": {
+        "action_buttons": {
+          "description": "Action button RefID → database UUID mappings",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "next_steps": {
+          "description": "Next step RefID → database UUID mappings",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "shortcuts": {
+          "description": "Shortcut RefID → database UUID mappings",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "templates": {
+          "description": "Template RefID → database UUID mappings",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "toolkit.ExportEntitiesRequest": {
+      "type": "object",
+      "properties": {
+        "action_button_ids": {
+          "description": "ActionButtonIDs lists standalone action button IDs to include",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "description": "Description is an optional description for the exported manifest metadata",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "name": {
+          "description": "Name is an optional name for the exported manifest metadata",
+          "type": "string",
+          "maxLength": 255
+        },
+        "next_step_ids": {
+          "description": "NextStepIDs lists next step IDs to include (auto-discovers action buttons)",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shortcut_ids": {
+          "description": "ShortcutIDs lists shortcut IDs to include",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "template_ids": {
+          "description": "TemplateIDs lists meeting template IDs to include (auto-discovers next steps and action buttons)",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "toolkit.ExportMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "toolkit.ExportResponse": {
+      "type": "object",
+      "properties": {
+        "manifest": {
+          "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+        },
+        "metadata": {
+          "$ref": "#/definitions/toolkit.ExportMetadataResponse"
+        },
+        "summary": {
+          "$ref": "#/definitions/toolkit.ExportSummaryResponse"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ExportWarningResponse"
+          }
+        }
+      }
+    },
+    "toolkit.ExportSummaryResponse": {
+      "type": "object",
+      "properties": {
+        "action_buttons": {
+          "type": "integer"
+        },
+        "next_steps": {
+          "type": "integer"
+        },
+        "shortcuts": {
+          "type": "integer"
+        },
+        "templates": {
+          "type": "integer"
+        }
+      }
+    },
+    "toolkit.ExportWarningResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "entity_name": {
+          "type": "string"
+        },
+        "entity_type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "toolkit.InstallationResponse": {
       "type": "object",
       "properties": {
+        "entities": {
+          "description": "Mapping of manifest $id values to database UUIDs for entities created during installation",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.EntityMapResponse"
+            }
+          ]
+        },
         "id": {
           "description": "Unique identifier for the installation",
           "type": "string",
@@ -12254,6 +11843,52 @@
         }
       }
     },
+    "toolkit.ManifestAgendaItemSpec": {
+      "type": "object",
+      "required": [
+        "item_type",
+        "title"
+      ],
+      "properties": {
+        "content": {
+          "description": "Content is the rich text body content (markdown) for DISCUSSION-type items",
+          "type": "string"
+        },
+        "description": {
+          "description": "Description is an optional short description/subtitle",
+          "type": "string",
+          "maxLength": 1000,
+          "example": "Review current quarter pipeline status"
+        },
+        "item_type": {
+          "description": "ItemType is the agenda item type (DISCUSSION, ACTION_ITEM_RECAP, BREAK, ADJOURN, etc.)",
+          "type": "string",
+          "example": "DISCUSSION"
+        },
+        "restricted_to_leads": {
+          "description": "RestrictedToLeads indicates whether only meeting leads can see this item",
+          "type": "boolean",
+          "example": false
+        },
+        "sequence": {
+          "description": "Sequence controls the display order",
+          "type": "string",
+          "example": "1"
+        },
+        "time_allocation_minutes": {
+          "description": "TimeAllocationMinutes is the suggested time allocation in minutes",
+          "type": "number",
+          "example": 15
+        },
+        "title": {
+          "description": "Title is the agenda item's title",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "Pipeline Review"
+        }
+      }
+    },
     "toolkit.ManifestNextStep": {
       "type": "object",
       "properties": {
@@ -12352,6 +11987,37 @@
         }
       }
     },
+    "toolkit.ManifestParticipantSpec": {
+      "type": "object",
+      "required": [
+        "email",
+        "name",
+        "role"
+      ],
+      "properties": {
+        "email": {
+          "description": "Email is the participant's email address",
+          "type": "string",
+          "example": "sarah@acme.com"
+        },
+        "name": {
+          "description": "Name is the participant's display name",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "Sarah Chen"
+        },
+        "role": {
+          "description": "Role is the participant's meeting role (EDITOR or VIEWER)",
+          "type": "string",
+          "enum": [
+            "EDITOR",
+            "VIEWER"
+          ],
+          "example": "EDITOR"
+        }
+      }
+    },
     "toolkit.ManifestRef": {
       "type": "object",
       "properties": {
@@ -12364,6 +12030,115 @@
           "description": "Ref references an entity defined in the same manifest via its $id value",
           "type": "string",
           "example": "my-next-step"
+        }
+      }
+    },
+    "toolkit.ManifestShortcut": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID references an existing shortcut (mutually exclusive with Spec)",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "spec": {
+          "description": "Spec defines a new shortcut to create on installation (mutually exclusive with ID)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ManifestShortcutSpec"
+            }
+          ]
+        }
+      }
+    },
+    "toolkit.ManifestShortcutSpec": {
+      "type": "object",
+      "required": [
+        "name",
+        "prompt"
+      ],
+      "properties": {
+        "$id": {
+          "description": "RefID is the manifest-internal identifier for this entity (used by $ref in other entries)",
+          "type": "string",
+          "maxLength": 100,
+          "example": "my-shortcut"
+        },
+        "color": {
+          "description": "Color for display",
+          "type": "string",
+          "maxLength": 50,
+          "example": "#4F46E5"
+        },
+        "description": {
+          "description": "Description of the shortcut",
+          "type": "string",
+          "maxLength": 1000,
+          "example": "Generates a concise meeting summary"
+        },
+        "icon": {
+          "description": "Icon name for display",
+          "type": "string",
+          "maxLength": 100,
+          "example": "sparkles"
+        },
+        "name": {
+          "description": "Name of the shortcut",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "Summarize Meeting"
+        },
+        "prompt": {
+          "description": "AI prompt template",
+          "type": "string",
+          "example": "Summarize the key points discussed in this meeting."
+        },
+        "surfaces": {
+          "description": "Surfaces defines which UI surfaces this shortcut should appear on",
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/definitions/toolkit.ManifestShortcutSurfaceInput"
+          }
+        }
+      }
+    },
+    "toolkit.ManifestShortcutSurfaceInput": {
+      "type": "object",
+      "required": [
+        "position",
+        "surface"
+      ],
+      "properties": {
+        "position": {
+          "description": "Position on the surface (1-10)",
+          "type": "integer",
+          "maximum": 10,
+          "minimum": 1,
+          "example": 1
+        },
+        "surface": {
+          "description": "Surface name (HOME, MEETING_PREPARE, MEETING_RUN, MEETING_REVIEW, CANVAS)",
+          "type": "string",
+          "example": "HOME"
+        }
+      }
+    },
+    "toolkit.ManifestSummaryResponse": {
+      "type": "object",
+      "properties": {
+        "action_buttons": {
+          "type": "integer"
+        },
+        "next_steps": {
+          "type": "integer"
+        },
+        "shortcuts": {
+          "type": "integer"
+        },
+        "templates": {
+          "type": "integer"
         }
       }
     },
@@ -12404,8 +12179,15 @@
           "maxLength": 100,
           "example": "my-template"
         },
+        "agenda_items": {
+          "description": "AgendaItems defines the template's agenda items",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ManifestAgendaItemSpec"
+          }
+        },
         "backing_meeting_id": {
-          "description": "BackingMeetingID references an existing meeting to use as the content source for this template.\nWhen specified, the meeting's agenda items, participants, documents, and talking points\nare copied to the new template's backing meeting during toolkit installation.",
+          "description": "BackingMeetingID references an existing meeting to use as the content source for this template.\nMutually exclusive with inline content fields.",
           "type": "string",
           "example": "123e4567-e89b-12d3-a456-426614174000"
         },
@@ -12415,12 +12197,62 @@
           "maxLength": 1000,
           "example": "Template for sales meetings"
         },
+        "detail_level": {
+          "description": "DetailLevel controls the granularity of meeting notes",
+          "type": "string",
+          "enum": [
+            "BULLET_POINTS",
+            "STANDARD",
+            "VERBATIM"
+          ],
+          "example": "STANDARD"
+        },
+        "meeting_duration_seconds": {
+          "description": "MeetingDurationSeconds is the default meeting duration in seconds",
+          "type": "integer",
+          "example": 3600
+        },
         "name": {
           "description": "Name of the template",
           "type": "string",
           "maxLength": 255,
           "minLength": 1,
           "example": "Sales Meeting Template"
+        },
+        "participants": {
+          "description": "Participants defines the template's default participants",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ManifestParticipantSpec"
+          }
+        },
+        "start_time_offset_seconds": {
+          "description": "StartTimeOffsetSeconds is the default start time as seconds from UTC midnight (-1 means untimed)",
+          "type": "integer",
+          "example": 36000
+        },
+        "title": {
+          "description": "--- Inline meeting content (portable) ---\nTitle is the meeting title for the template",
+          "type": "string",
+          "maxLength": 255,
+          "example": "Weekly Sales Standup"
+        }
+      }
+    },
+    "toolkit.ManifestValidationErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "MISSING_REQUIRED"
+        },
+        "message": {
+          "type": "string",
+          "example": "name is required"
+        },
+        "path": {
+          "type": "string",
+          "example": "next_steps[0]"
         }
       }
     },
@@ -12488,12 +12320,23 @@
             "$ref": "#/definitions/toolkit.ManifestNextStep"
           }
         },
+        "shortcuts": {
+          "description": "Shortcuts included in the toolkit\nNote: No omitempty - empty slices should serialize as [] for API consistency",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ManifestShortcut"
+          }
+        },
         "templates": {
           "description": "Templates included in the toolkit\nNote: No omitempty - empty slices should serialize as [] for API consistency",
           "type": "array",
           "items": {
             "$ref": "#/definitions/toolkit.ManifestTemplate"
           }
+        },
+        "toolkit_prompt": {
+          "description": "Default AI persona/behavioral instructions for the toolkit",
+          "type": "string"
         }
       }
     },
@@ -12530,7 +12373,12 @@
           "type": "boolean"
         },
         "manifest": {
-          "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+          "description": "Deprecated: Manifest is no longer accepted via this endpoint. Use the toolkit versioning\nAPI instead: POST /v1/partner/admin/toolkits/{toolkitId}/versions to create a draft,\nthen POST /v1/partner/admin/toolkits/{toolkitId}/versions/{versionId}/publish to publish it.\nProviding this field will return HTTP 409 Conflict.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+            }
+          ]
         },
         "name": {
           "type": "string",
@@ -12539,8 +12387,107 @@
           "example": "Updated Toolkit Name"
         },
         "version": {
+          "description": "Deprecated: Version is no longer accepted via this endpoint. Use the toolkit versioning\nAPI instead: POST /v1/partner/admin/toolkits/{toolkitId}/versions to create a draft,\nthen POST /v1/partner/admin/toolkits/{toolkitId}/versions/{versionId}/publish to publish it.\nProviding this field will return HTTP 409 Conflict.",
           "type": "string",
           "example": "1.1.0"
+        }
+      }
+    },
+    "toolkit.UpdateVersionRequest": {
+      "type": "object",
+      "properties": {
+        "changelog": {
+          "description": "Changelog describes the changes in this version",
+          "type": "string",
+          "maxLength": 5000,
+          "example": "Bug fixes and improvements"
+        },
+        "manifest": {
+          "description": "Manifest is the toolkit manifest for this version",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+            }
+          ]
+        },
+        "version_label": {
+          "description": "VersionLabel is a human-readable label for this version",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 1,
+          "example": "2.0.1"
+        }
+      }
+    },
+    "toolkit.ValidationResultResponse": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ManifestValidationErrorResponse"
+          }
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ManifestValidationErrorResponse"
+          }
+        }
+      }
+    },
+    "toolkit.VersionResponse": {
+      "type": "object",
+      "properties": {
+        "changelog": {
+          "type": "string",
+          "example": "Added new features"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "created_by": {
+          "type": "string",
+          "example": "user-123"
+        },
+        "deprecated_at": {
+          "type": "string",
+          "example": "2023-06-01T00:00:00Z"
+        },
+        "id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "manifest": {
+          "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+        },
+        "published_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "status": {
+          "type": "string",
+          "example": "DRAFT"
+        },
+        "toolkit_id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "version_label": {
+          "type": "string",
+          "example": "2.0.0"
+        },
+        "version_number": {
+          "type": "integer",
+          "example": 2
         }
       }
     },
@@ -12630,191 +12577,6 @@
           "example": 0
         }
       }
-    },
-    "workflow.CreateWorkflowError400": {
-      "description": "Bad request error for creating a workflow",
-      "type": "object",
-      "properties": {
-        "code": {
-          "description": "Unique identifier for the error type",
-          "type": "string",
-          "enum": [
-            "invalid_request_body",
-            "validation_error"
-          ],
-          "example": "invalid_request_body"
-        },
-        "error": {
-          "description": "User-friendly description of what went wrong",
-          "type": "string",
-          "example": "Invalid request body"
-        },
-        "request_id": {
-          "description": "Request identifier to correlate errors with logs",
-          "type": "string",
-          "example": "abc123xyz"
-        }
-      }
-    },
-    "workflow.CreateWorkflowRequest": {
-      "type": "object",
-      "required": [
-        "actions",
-        "name",
-        "trigger_type"
-      ],
-      "properties": {
-        "actions": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/definitions/partner.WorkflowAction"
-          }
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 1000,
-          "example": "Sync action items to CRM"
-        },
-        "name": {
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1,
-          "example": "CRM Integration"
-        },
-        "trigger_type": {
-          "type": "string",
-          "enum": [
-            "action_item_created",
-            "action_item_updated",
-            "action_item_completed",
-            "meeting_ended",
-            "meeting_summary_ready"
-          ]
-        }
-      }
-    },
-    "workflow.UpdateWorkflowError400": {
-      "description": "Bad request error for updating a workflow",
-      "type": "object",
-      "properties": {
-        "code": {
-          "description": "Unique identifier for the error type",
-          "type": "string",
-          "enum": [
-            "invalid_workflow_id",
-            "invalid_request_body",
-            "validation_error"
-          ],
-          "example": "invalid_workflow_id"
-        },
-        "error": {
-          "description": "User-friendly description of what went wrong",
-          "type": "string",
-          "example": "Invalid workflow ID format"
-        },
-        "request_id": {
-          "description": "Request identifier to correlate errors with logs",
-          "type": "string",
-          "example": "abc123xyz"
-        }
-      }
-    },
-    "workflow.UpdateWorkflowRequest": {
-      "type": "object",
-      "properties": {
-        "actions": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/definitions/partner.WorkflowAction"
-          }
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 1000,
-          "example": "Updated description"
-        },
-        "is_active": {
-          "type": "boolean"
-        },
-        "name": {
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1,
-          "example": "Updated CRM Integration"
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "active",
-            "inactive"
-          ],
-          "example": "active"
-        },
-        "trigger_type": {
-          "type": "string",
-          "enum": [
-            "action_item_created",
-            "action_item_updated",
-            "action_item_completed",
-            "meeting_ended",
-            "meeting_summary_ready"
-          ]
-        }
-      }
-    },
-    "workflow.WorkflowResponse": {
-      "type": "object",
-      "properties": {
-        "actions": {
-          "description": "Actions to execute when the workflow is triggered",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/partner.WorkflowAction"
-          }
-        },
-        "created_at": {
-          "description": "Timestamp when the workflow was created",
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        },
-        "description": {
-          "description": "Optional description of what the workflow does",
-          "type": "string",
-          "example": "Sync action items to CRM"
-        },
-        "id": {
-          "description": "Unique identifier for the workflow",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174001"
-        },
-        "name": {
-          "description": "Name of the workflow",
-          "type": "string",
-          "example": "CRM Integration"
-        },
-        "partner_app_id": {
-          "description": "ID of the partner app that owns this workflow",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "status": {
-          "description": "Current status (active or inactive)",
-          "type": "string",
-          "example": "active"
-        },
-        "trigger_type": {
-          "description": "Event type that triggers this workflow",
-          "type": "string",
-          "example": "action_item_created"
-        },
-        "updated_at": {
-          "description": "Timestamp when the workflow was last updated",
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        }
-      }
     }
   },
   "securityDefinitions": {
@@ -12856,13 +12618,13 @@
       "name": "Partner Admin API",
       "tags": [
         "App Management",
+        "Automation Management",
         "Connection Management",
         "Credential Management",
         "IdP Management",
         "Template Management",
         "Toolkit Management",
-        "Webhook Management",
-        "Workflow Management"
+        "Webhook Management"
       ]
     },
     {
@@ -12895,6 +12657,10 @@
       "description": "Create, update, and inspect your partner application registration. The partner app record stores your webhook URL, OAuth redirect URIs, event filter settings, and branding configuration."
     },
     {
+      "name": "Automation Management",
+      "description": "Define and manage meeting automation. Automation workflows let you trigger custom logic — such as CRM updates or task creation — based on meeting lifecycle events like transcription completion or action-item extraction."
+    },
+    {
       "name": "Connection Management",
       "description": "List and manage the OAuth connections that link individual Contio users to your partner application. A connection is created the first time a user completes the OAuth authorization flow and is revoked when the user disconnects."
     },
@@ -12917,10 +12683,6 @@
     {
       "name": "Webhook Management",
       "description": "Configure the webhook endpoint that Contio uses to deliver real-time event notifications. You can also filter which event types are delivered and inspect recent delivery attempts.\n\nSee the [Webhook Events reference](/partner-api/api-reference/webhooks/) for the full list of supported event types and payload schemas."
-    },
-    {
-      "name": "Workflow Management",
-      "description": "Define and manage meeting workflow automations. Workflows let you trigger custom logic — such as CRM updates or task creation — based on meeting lifecycle events like transcription completion or action-item extraction."
     },
     {
       "name": "Action Items",

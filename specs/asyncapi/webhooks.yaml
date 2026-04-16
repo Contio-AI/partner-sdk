@@ -79,6 +79,14 @@ channels:
                 name: agenda_item.updated
                 payload:
                     $ref: '#/components/schemas/AgendaItemUpdatedPayload'
+    automation.assignment.created:
+        subscribe:
+            summary: Sent when an action item is assigned to your automation
+            operationId: onAutomationAssignmentCreated
+            message:
+                name: automation.assignment.created
+                payload:
+                    $ref: '#/components/schemas/AutomationAssignmentCreatedPayload'
     calendar_event.created:
         subscribe:
             summary: Sent when a calendar event is synced from an external calendar
@@ -215,14 +223,6 @@ channels:
                 name: user.connection.revoked
                 payload:
                     $ref: '#/components/schemas/UserConnectionRevokedPayload'
-    workflow.assignment.created:
-        subscribe:
-            summary: Sent when an action item is assigned to your workflow
-            operationId: onWorkflowAssignmentCreated
-            message:
-                name: workflow.assignment.created
-                payload:
-                    $ref: '#/components/schemas/WorkflowAssignmentCreatedPayload'
 components:
     schemas:
         ActionButtonTriggeredData:
@@ -489,6 +489,54 @@ components:
                         $ref: '#/components/schemas/AgendaItemUpdatedData'
                     event_type:
                         const: agenda_item.updated
+                  type: object
+        AutomationAssignmentCreatedData:
+            type: object
+            required:
+                - action_item_id
+                - assignment_id
+                - automation_id
+                - automation_name
+                - created_at
+                - meeting_id
+                - status
+                - workspace_id
+            properties:
+                action_item_id:
+                    type: string
+                    format: uuid
+                assignment_id:
+                    type: string
+                    format: uuid
+                automation_data_payload:
+                    type: object
+                    additionalProperties: true
+                automation_id:
+                    type: string
+                    format: uuid
+                automation_name:
+                    type: string
+                confidence_score:
+                    type: number
+                created_at:
+                    type: string
+                    format: date-time
+                meeting_id:
+                    type: string
+                    format: uuid
+                status:
+                    type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        AutomationAssignmentCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/AutomationAssignmentCreatedData'
+                    event_type:
+                        const: automation.assignment.created
                   type: object
         CalendarEventCreatedData:
             type: object
@@ -1130,51 +1178,3 @@ components:
                 id:
                     type: string
                     format: uuid
-        WorkflowAssignmentCreatedData:
-            type: object
-            required:
-                - action_item_id
-                - assignment_id
-                - created_at
-                - meeting_id
-                - status
-                - workflow_id
-                - workflow_name
-                - workspace_id
-            properties:
-                action_item_id:
-                    type: string
-                    format: uuid
-                assignment_id:
-                    type: string
-                    format: uuid
-                confidence_score:
-                    type: number
-                created_at:
-                    type: string
-                    format: date-time
-                meeting_id:
-                    type: string
-                    format: uuid
-                status:
-                    type: string
-                workflow_data_payload:
-                    type: object
-                    additionalProperties: true
-                workflow_id:
-                    type: string
-                    format: uuid
-                workflow_name:
-                    type: string
-                workspace_id:
-                    type: string
-                    format: uuid
-        WorkflowAssignmentCreatedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowAssignmentCreatedData'
-                    event_type:
-                        const: workflow.assignment.created
-                  type: object

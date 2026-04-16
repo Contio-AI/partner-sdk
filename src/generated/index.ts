@@ -50,25 +50,25 @@ export type UpdateActionItemRequest = ActionItemUpdateActionItemRequest;
 /** @deprecated Use RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
 export type ActionItemListResponse = RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
 
-// --- Workflows ---
+// --- Automations ---
 import type {
-  WorkflowWorkflowResponse,
-  WorkflowCreateWorkflowRequest,
-  WorkflowUpdateWorkflowRequest,
-  RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse,
-  PartnerWorkflowAction,
+  AutomationAutomationResponse,
+  AutomationCreateAutomationRequest,
+  AutomationUpdateAutomationRequest,
+  RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse,
+  PartnerAutomationAction,
 } from './api-types';
 
-/** @deprecated Use WorkflowWorkflowResponse - kept for backwards compatibility */
-export type Workflow = WorkflowWorkflowResponse;
-/** @deprecated Use WorkflowCreateWorkflowRequest - kept for backwards compatibility */
-export type CreateWorkflowRequest = WorkflowCreateWorkflowRequest;
-/** @deprecated Use WorkflowUpdateWorkflowRequest - kept for backwards compatibility */
-export type UpdateWorkflowRequest = WorkflowUpdateWorkflowRequest;
-/** @deprecated Use RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse - kept for backwards compatibility */
-export type WorkflowListResponse = RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowWorkflowResponse;
-/** @deprecated Use PartnerWorkflowAction - kept for backwards compatibility */
-export type WorkflowAction = PartnerWorkflowAction;
+/** @deprecated Use AutomationAutomationResponse - kept for backwards compatibility */
+export type Automation = AutomationAutomationResponse;
+/** @deprecated Use AutomationCreateAutomationRequest - kept for backwards compatibility */
+export type CreateAutomationRequest = AutomationCreateAutomationRequest;
+/** @deprecated Use AutomationUpdateAutomationRequest - kept for backwards compatibility */
+export type UpdateAutomationRequest = AutomationUpdateAutomationRequest;
+/** @deprecated Use RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse - kept for backwards compatibility */
+export type AutomationListResponse = RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse;
+/** @deprecated Use PartnerAutomationAction - kept for backwards compatibility */
+export type AutomationAction = PartnerAutomationAction;
 
 // --- Partner App ---
 import type {

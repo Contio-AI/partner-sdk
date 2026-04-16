@@ -6,7 +6,7 @@ import * as crypto from 'crypto';
 import { WebhookVerifier, verifyWebhookSignature, parseWebhook } from '../src/webhooks/verifier';
 import {
   ContioWebhookEvent,
-  WorkflowAssignmentCreatedPayload,
+  AutomationAssignmentCreatedPayload,
   ActionItemUpdatedPayload,
   WEBHOOK_EVENTS,
 } from '../src/webhooks/types';
@@ -35,7 +35,7 @@ describe('WebhookVerifier', () => {
 
   describe('verifySignature', () => {
     const testPayload = JSON.stringify({
-      event_type: 'workflow.assignment.created',
+      event_type: 'automation.assignment.created',
       event_id: 'evt_123',
       timestamp: '2025-01-08T12:00:00Z',
       partner_app_id: 'app_456',
@@ -134,18 +134,18 @@ describe('WebhookVerifier', () => {
   });
 
   describe('parseWebhook', () => {
-    const workflowAssignmentEvent: WorkflowAssignmentCreatedPayload = {
-      event_type: 'workflow.assignment.created',
-      event_id: 'evt_workflow_123',
+    const automationAssignmentEvent: AutomationAssignmentCreatedPayload = {
+      event_type: 'automation.assignment.created',
+      event_id: 'evt_automation_123',
       timestamp: '2025-01-08T12:00:00Z',
       partner_app_id: 'app_456',
       data: {
         assignment_id: 'assign_789',
         action_item_id: 'action_101',
-        workflow_id: 'workflow_202',
-        workflow_name: 'Create Jira Ticket',
+        automation_id: 'automation_202',
+        automation_name: 'Create Jira Ticket',
         confidence_score: 0.95,
-        workflow_data_payload: {
+        automation_data_payload: {
           project: 'PROJ',
           issue_type: 'Task',
         },
@@ -179,20 +179,20 @@ describe('WebhookVerifier', () => {
       return 'sha256=' + hmac.digest('hex'); // Include sha256= prefix
     }
 
-    it('should parse valid workflow assignment webhook', () => {
-      const payloadString = JSON.stringify(workflowAssignmentEvent);
-      const signature = signPayload(workflowAssignmentEvent, testSecret);
+    it('should parse valid automation assignment webhook', () => {
+      const payloadString = JSON.stringify(automationAssignmentEvent);
+      const signature = signPayload(automationAssignmentEvent, testSecret);
 
       const event = verifier.parseWebhook(payloadString, signature);
 
       expect(event).toBeDefined();
-      expect(event?.event_type).toBe('workflow.assignment.created');
-      expect(event?.event_id).toBe('evt_workflow_123');
+      expect(event?.event_type).toBe('automation.assignment.created');
+      expect(event?.event_id).toBe('evt_automation_123');
       expect(event?.partner_app_id).toBe('app_456');
 
-      const typedEvent = event as WorkflowAssignmentCreatedPayload;
+      const typedEvent = event as AutomationAssignmentCreatedPayload;
       expect(typedEvent.data.assignment_id).toBe('assign_789');
-      expect(typedEvent.data.workflow_name).toBe('Create Jira Ticket');
+      expect(typedEvent.data.automation_name).toBe('Create Jira Ticket');
     });
 
     it('should parse valid action item webhook', () => {
@@ -301,18 +301,18 @@ describe('WebhookVerifier', () => {
     });
 
     it('should parse webhook with Buffer payload', () => {
-      const payloadString = JSON.stringify(workflowAssignmentEvent);
+      const payloadString = JSON.stringify(automationAssignmentEvent);
       const bufferPayload = Buffer.from(payloadString, 'utf8');
-      const signature = signPayload(workflowAssignmentEvent, testSecret);
+      const signature = signPayload(automationAssignmentEvent, testSecret);
 
       const event = verifier.parseWebhook(bufferPayload, signature);
 
       expect(event).toBeDefined();
-      expect(event?.event_type).toBe('workflow.assignment.created');
+      expect(event?.event_type).toBe('automation.assignment.created');
     });
 
     it('should throw error for invalid signature', () => {
-      const payloadString = JSON.stringify(workflowAssignmentEvent);
+      const payloadString = JSON.stringify(automationAssignmentEvent);
       const invalidSignature = 'sha256=invalid-signature-000000000000000000000000000000000000000000000000';
 
       expect(() => {
@@ -322,7 +322,7 @@ describe('WebhookVerifier', () => {
 
     it('should throw error for missing required fields', () => {
       const invalidPayload = {
-        event_type: 'workflow.assignment.created',
+        event_type: 'automation.assignment.created',
         // Missing event_id, timestamp, partner_app_id
         data: { assignment: {} },
       };
@@ -348,7 +348,7 @@ describe('WebhookVerifier', () => {
 
     it('should validate all required fields are present', () => {
       const validPayload = {
-        event_type: 'workflow.assignment.created',
+        event_type: 'automation.assignment.created',
         event_id: 'evt_123',
         timestamp: '2025-01-08T12:00:00Z',
         partner_app_id: 'app_456',
@@ -360,7 +360,7 @@ describe('WebhookVerifier', () => {
       const event = verifier.parseWebhook(payloadString, signature);
 
       expect(event).toBeDefined();
-      expect(event?.event_type).toBe('workflow.assignment.created');
+      expect(event?.event_type).toBe('automation.assignment.created');
       expect(event?.event_id).toBe('evt_123');
       expect(event?.timestamp).toBe('2025-01-08T12:00:00Z');
       expect(event?.partner_app_id).toBe('app_456');
@@ -369,7 +369,7 @@ describe('WebhookVerifier', () => {
 
   describe('convenience functions', () => {
     const testPayload = JSON.stringify({
-      event_type: 'workflow.assignment.created',
+      event_type: 'automation.assignment.created',
       event_id: 'evt_123',
       timestamp: '2025-01-08T12:00:00Z',
       partner_app_id: 'app_456',
@@ -403,7 +403,7 @@ describe('WebhookVerifier', () => {
         const event = parseWebhook(testPayload, signature, testSecret);
 
         expect(event).toBeDefined();
-        expect(event.event_type).toBe('workflow.assignment.created');
+        expect(event.event_type).toBe('automation.assignment.created');
         expect(event.event_id).toBe('evt_123');
       });
 

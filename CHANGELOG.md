@@ -51,8 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `meeting.context.processed` — fired when uploaded context data finishes preprocessing (includes sanitization report); payload typed as `MeetingContextProcessedPayload`
   - `meeting_template.applied` — fired when a template is applied to a meeting; payload typed as `MeetingTemplateAppliedPayload`
   - `next_step.completed` — fired when a Next Step execution completes; payload typed as `NextStepCompletedPayload`
-  - `workflow.assignment.created` — fired when a workflow assignment is created; payload typed as `WorkflowAssignmentCreatedPayload`
-- New `WEBHOOK_EVENTS` constants: `ACTION_BUTTON_TRIGGERED`, `MEETING_CONTEXT_CREATED`, `MEETING_CONTEXT_DELETED`, `MEETING_CONTEXT_PROCESSED`, `MEETING_TEMPLATE_APPLIED`, `NEXT_STEP_COMPLETED`, `WORKFLOW_ASSIGNMENT_CREATED`
+  - `automation.assignment.created` — fired when an automation assignment is created; payload typed as `AutomationAssignmentCreatedPayload`
+- New `WEBHOOK_EVENTS` constants: `ACTION_BUTTON_TRIGGERED`, `MEETING_CONTEXT_CREATED`, `MEETING_CONTEXT_DELETED`, `MEETING_CONTEXT_PROCESSED`, `MEETING_TEMPLATE_APPLIED`, `NEXT_STEP_COMPLETED`, `AUTOMATION_ASSIGNMENT_CREATED`
 - **Automated webhook spec sync** — new CI workflow (`.github/workflows/sync-webhook-spec.yml`) that checks for upstream AsyncAPI spec updates on weekdays and opens a PR with regenerated types
 
 ### Changed
@@ -246,7 +246,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of the Contio Partner SDK
 - **OAuth 2.0 client**: Authorization code flow, token refresh, client credentials
 - **User API client**: Meetings and action items CRUD operations
-- **Admin API client**: Workflows, webhook deliveries, user connections
+- **Admin API client**: Automations, webhook deliveries, user connections
 - **Webhook verification**: HMAC-SHA256 signature verification
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures

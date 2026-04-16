@@ -17,8 +17,8 @@
  *     const event = parseWebhook(payload, signature, process.env.WEBHOOK_SECRET!);
  *
  *     switch (event.event_type) {
- *       case WEBHOOK_EVENTS.WORKFLOW_ASSIGNMENT_CREATED:
- *         await handleWorkflowAssignment(event);
+ *       case WEBHOOK_EVENTS.AUTOMATION_ASSIGNMENT_CREATED:
+ *         await handleWAutomationAssignment(event);
  *         break;
  *       case WEBHOOK_EVENTS.ACTION_ITEM_UPDATED:
  *         await handleActionItemUpdate(event);
