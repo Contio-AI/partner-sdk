@@ -36,7 +36,7 @@ export type {
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
-  WorkflowAssignmentCreatedPayload,
+  AutomationAssignmentCreatedPayload,
   // Data types (event-specific data)
   ActionButtonTriggeredData,
   ActionItemCompletedData,
@@ -62,7 +62,7 @@ export type {
   SessionTurnCompletedData,
   SessionTurnFailedData,
   UserConnectionRevokedData,
-  WorkflowAssignmentCreatedData,
+  AutomationAssignmentCreatedData,
   // Shared types
   WebhookUserContext,
   ParticipantInfo,
@@ -98,7 +98,7 @@ import type {
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
-  WorkflowAssignmentCreatedPayload,
+  AutomationAssignmentCreatedPayload,
 } from '../generated/webhook-types';
 
 /**
@@ -129,7 +129,7 @@ export type ContioWebhookEvent =
   | SessionTurnCompletedPayload
   | SessionTurnFailedPayload
   | UserConnectionRevokedPayload
-  | WorkflowAssignmentCreatedPayload;
+  | AutomationAssignmentCreatedPayload;
 
 /**
  * Webhook event type constants (object form for backward compatibility)
