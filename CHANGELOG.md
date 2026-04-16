@@ -6,6 +6,30 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-04-16
+
+### Added
+
+- **Toolkit export (portable manifests)** — two new methods on `PartnerAdminClient` ([CON-3359](https://linear.app/contio/issue/CON-3359)):
+  - `exportEntities(data)` — assembly-mode export; builds a portable manifest from selected entity IDs (templates, next steps, action buttons, shortcuts). Dependencies are auto-discovered.
+  - `exportToolkit(toolkitId)` — toolkit-mode export; resolves an existing toolkit into a portable manifest with `$id`/`$ref` identifiers suitable for re-import.
+- **New model types**: `ExportEntitiesRequest`, `ExportResponse`, `ExportMetadata`, `ExportSummary`, `ExportWarning`
+
+### Removed
+
+- **Standalone Next Step admin CRUD** — Next steps are now managed exclusively through the Toolkit manifest lifecycle. The following `PartnerAdminClient` methods have been removed:
+  - `createNextStep()`, `getNextSteps()`, `getNextStep()`, `updateNextStep()`, `deleteNextStep()`
+- **Standalone Action Button admin CRUD** — Action buttons are now managed exclusively through the Toolkit manifest lifecycle. The following `PartnerAdminClient` methods have been removed:
+  - `createActionButton()`, `getActionButtons()`, `getActionButton()`, `updateActionButton()`, `deleteActionButton()`
+- **Next Step ↔ Action Button association endpoints** — associations are now defined in the Toolkit manifest. The following `PartnerAdminClient` methods have been removed:
+  - `getNextStepActionButtons()`, `addNextStepActionButton()`, `updateNextStepActionButton()`, `removeNextStepActionButton()`
+- **Removed admin model types**: `NextStep`, `NextStepListParams`, `NextStepListResponse`, `CreateNextStepRequest`, `UpdateNextStepRequest`, `NextStepActionButton`, `NextStepActionButtonListParams`, `NextStepActionButtonListResponse`, `AddNextStepActionButtonRequest`, `UpdateNextStepActionButtonRequest`, `ActionButton`, `ActionButtonListParams`, `ActionButtonListResponse`, `CreateActionButtonRequest`, `UpdateActionButtonRequest`
+
+### Unchanged
+
+- **User-facing meeting endpoints** are unaffected — `getMeetingNextSteps()`, `executeNextStep()`, `getNextStepResult()`, `getMeetingActionButtons()`, and `triggerActionButton()` on `PartnerUserClient` continue to work as before.
+- **User-facing model types** are preserved: `MeetingNextStep`, `MeetingActionButton`, `ExecuteNextStepRequest`, `NextStepResult`, `TriggerActionButtonRequest`, etc.
+
 ## [1.5.0] - 2026-04-03
 
 ### Added
@@ -251,6 +275,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.6.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.7...v1.5.0
 [1.4.7]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.5...v1.4.6

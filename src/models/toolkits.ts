@@ -232,3 +232,58 @@ export interface ToolkitWithInstallationListResponse {
   offset: number;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Export Types (Admin API)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Request body for the assembly-mode export endpoint (`POST /toolkits/export`).
+ * At least one entity ID array must be non-empty.
+ */
+export interface ExportEntitiesRequest {
+  /** Template IDs to include (auto-discovers linked next steps and action buttons). */
+  template_ids?: string[];
+  /** Next step IDs to include (auto-discovers linked action buttons). */
+  next_step_ids?: string[];
+  /** Standalone action button IDs to include. */
+  action_button_ids?: string[];
+  /** Shortcut IDs to include. */
+  shortcut_ids?: string[];
+  /** Optional name for the exported manifest metadata. */
+  name?: string;
+  /** Optional description for the exported manifest metadata. */
+  description?: string;
+}
+
+/** Metadata envelope in an export response. */
+export interface ExportMetadata {
+  name: string;
+  slug?: string;
+  description?: string;
+  version?: string;
+}
+
+/** Entity count summary in an export response. */
+export interface ExportSummary {
+  templates: number;
+  next_steps: number;
+  action_buttons: number;
+  shortcuts: number;
+}
+
+/** A warning produced during export (e.g. missing references). */
+export interface ExportWarning {
+  entity_type: string;
+  entity_name: string;
+  code: string;
+  message: string;
+}
+
+/** Response from both assembly-mode and toolkit-mode export endpoints. */
+export interface ExportResponse {
+  metadata?: ExportMetadata;
+  manifest: ToolkitManifest;
+  summary: ExportSummary;
+  warnings?: ExportWarning[];
+}
+

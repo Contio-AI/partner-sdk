@@ -47,6 +47,8 @@ import {
   ToolkitVersion,
   CreateToolkitVersionRequest,
   UpdateToolkitVersionRequest,
+  ExportEntitiesRequest,
+  ExportResponse,
   // Template-related imports
   Template,
   TemplateListParams,
@@ -58,23 +60,6 @@ import {
   TemplateNextStepListResponse,
   AddTemplateNextStepRequest,
   UpdateTemplateNextStepRequest,
-  // Next Step-related imports
-  NextStep,
-  NextStepListParams,
-  NextStepListResponse,
-  CreateNextStepRequest,
-  UpdateNextStepRequest,
-  NextStepActionButton,
-  NextStepActionButtonListParams,
-  NextStepActionButtonListResponse,
-  AddNextStepActionButtonRequest,
-  UpdateNextStepActionButtonRequest,
-  // Action Button-related imports
-  ActionButton,
-  ActionButtonListParams,
-  ActionButtonListResponse,
-  CreateActionButtonRequest,
-  UpdateActionButtonRequest,
 } from '../../models';
 
 import * as automations from './automations';
@@ -85,8 +70,6 @@ import * as credentials from './credentials';
 import * as idp from './idp';
 import * as toolkits from './toolkits';
 import * as templates from './templates';
-import * as nextSteps from './nextSteps';
-import * as actionButtons from './actionButtons';
 
 /**
  * Partner Admin API client for API key-authenticated admin endpoints.
@@ -970,185 +953,56 @@ export class PartnerAdminClient extends BaseClient {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Next Step endpoints
+  // Toolkit Export endpoints
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Create a new next step.
+   * Export a portable manifest from selected entity IDs (assembly-mode).
    *
-   * Next steps define actions that can be taken after a meeting.
+   * Builds a portable toolkit manifest from the given entity IDs. Dependencies
+   * (e.g. action buttons referenced by next steps) are auto-discovered.
    *
-   * @param data - Next step creation data
-   * @returns The newly created next step
-   * @throws {ContioAPIError} If validation fails
+   * @param data - Export request with entity IDs (at least one array must be non-empty)
+   * @returns The portable manifest with metadata, summary, and optional warnings
+   * @throws {ContioAPIError} If no entities are specified or entities are not found
+   *
+   * @example
+   * ```typescript
+   * const exported = await admin.exportEntities({
+   *   template_ids: ['template-uuid'],
+   *   name: 'My Exported Bundle',
+   * });
+   * console.log(exported.manifest);
+   * ```
    */
-  async createNextStep(data: CreateNextStepRequest): Promise<NextStep> {
-    return nextSteps.createNextStep(this.http, data);
+  async exportEntities(data: ExportEntitiesRequest): Promise<ExportResponse> {
+    return toolkits.exportEntities(this.http, data);
   }
 
   /**
-   * Get a paginated list of next steps.
+   * Export an existing toolkit as a portable manifest.
    *
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of next steps
-   * @throws {ContioAPIError} If the request fails
+   * Resolves the toolkit's manifest into a portable format with `$id`/`$ref`
+   * identifiers, suitable for re-import into a different toolkit.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @returns The portable manifest with metadata, summary, and optional warnings
+   * @throws {ContioAPIError} If the toolkit is not found
+   *
+   * @example
+   * ```typescript
+   * const exported = await admin.exportToolkit('toolkit-uuid');
+   *
+   * // Re-import into a new toolkit
+   * const newToolkit = await admin.createToolkit({
+   *   name: 'Cloned Toolkit',
+   *   slug: 'cloned-toolkit',
+   *   version: '1.0.0',
+   *   manifest: exported.manifest,
+   * });
+   * ```
    */
-  async getNextSteps(params?: NextStepListParams): Promise<NextStepListResponse> {
-    return nextSteps.getNextSteps(this.http, params);
-  }
-
-  /**
-   * Get a specific next step by ID.
-   *
-   * @param nextStepId - The unique next step ID
-   * @returns The next step with full details
-   * @throws {ContioAPIError} If the next step is not found
-   */
-  async getNextStep(nextStepId: string): Promise<NextStep> {
-    return nextSteps.getNextStep(this.http, nextStepId);
-  }
-
-  /**
-   * Update a next step.
-   *
-   * @param nextStepId - The unique next step ID to update
-   * @param data - Fields to update
-   * @returns The updated next step
-   * @throws {ContioAPIError} If the next step is not found or validation fails
-   */
-  async updateNextStep(nextStepId: string, data: UpdateNextStepRequest): Promise<NextStep> {
-    return nextSteps.updateNextStep(this.http, nextStepId, data);
-  }
-
-  /**
-   * Delete a next step.
-   *
-   * @param nextStepId - The unique next step ID to delete
-   * @throws {ContioAPIError} If the next step is not found
-   */
-  async deleteNextStep(nextStepId: string): Promise<void> {
-    return nextSteps.deleteNextStep(this.http, nextStepId);
-  }
-
-  /**
-   * Get action buttons associated with a next step.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of next step action buttons
-   * @throws {ContioAPIError} If the next step is not found
-   */
-  async getNextStepActionButtons(
-    nextStepId: string,
-    params?: NextStepActionButtonListParams,
-  ): Promise<NextStepActionButtonListResponse> {
-    return nextSteps.getNextStepActionButtons(this.http, nextStepId, params);
-  }
-
-  /**
-   * Add an action button to a next step.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param data - Action button association data
-   * @returns The next step action button association
-   * @throws {ContioAPIError} If the next step or action button is not found
-   */
-  async addNextStepActionButton(
-    nextStepId: string,
-    data: AddNextStepActionButtonRequest,
-  ): Promise<NextStepActionButton> {
-    return nextSteps.addNextStepActionButton(this.http, nextStepId, data);
-  }
-
-  /**
-   * Update a next step action button association.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param actionButtonId - The unique action button ID
-   * @param data - Fields to update (is_default setting)
-   * @returns The updated next step action button association
-   * @throws {ContioAPIError} If the association is not found
-   */
-  async updateNextStepActionButton(
-    nextStepId: string,
-    actionButtonId: string,
-    data: UpdateNextStepActionButtonRequest,
-  ): Promise<NextStepActionButton> {
-    return nextSteps.updateNextStepActionButton(this.http, nextStepId, actionButtonId, data);
-  }
-
-  /**
-   * Remove an action button from a next step.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param actionButtonId - The unique action button ID to remove
-   * @throws {ContioAPIError} If the association is not found
-   */
-  async removeNextStepActionButton(nextStepId: string, actionButtonId: string): Promise<void> {
-    return nextSteps.removeNextStepActionButton(this.http, nextStepId, actionButtonId);
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Action Button endpoints
-  // ─────────────────────────────────────────────────────────────────────────────
-
-  /**
-   * Create a new action button.
-   *
-   * Action buttons define delivery mechanisms for next step outputs.
-   *
-   * @param data - Action button creation data
-   * @returns The newly created action button
-   * @throws {ContioAPIError} If validation fails
-   */
-  async createActionButton(data: CreateActionButtonRequest): Promise<ActionButton> {
-    return actionButtons.createActionButton(this.http, data);
-  }
-
-  /**
-   * Get a paginated list of action buttons.
-   *
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of action buttons
-   * @throws {ContioAPIError} If the request fails
-   */
-  async getActionButtons(params?: ActionButtonListParams): Promise<ActionButtonListResponse> {
-    return actionButtons.getActionButtons(this.http, params);
-  }
-
-  /**
-   * Get a specific action button by ID.
-   *
-   * @param actionButtonId - The unique action button ID
-   * @returns The action button with full details
-   * @throws {ContioAPIError} If the action button is not found
-   */
-  async getActionButton(actionButtonId: string): Promise<ActionButton> {
-    return actionButtons.getActionButton(this.http, actionButtonId);
-  }
-
-  /**
-   * Update an action button.
-   *
-   * @param actionButtonId - The unique action button ID to update
-   * @param data - Fields to update
-   * @returns The updated action button
-   * @throws {ContioAPIError} If the action button is not found or validation fails
-   */
-  async updateActionButton(
-    actionButtonId: string,
-    data: UpdateActionButtonRequest,
-  ): Promise<ActionButton> {
-    return actionButtons.updateActionButton(this.http, actionButtonId, data);
-  }
-
-  /**
-   * Delete an action button.
-   *
-   * @param actionButtonId - The unique action button ID to delete
-   * @throws {ContioAPIError} If the action button is not found
-   */
-  async deleteActionButton(actionButtonId: string): Promise<void> {
-    return actionButtons.deleteActionButton(this.http, actionButtonId);
+  async exportToolkit(toolkitId: string): Promise<ExportResponse> {
+    return toolkits.exportToolkit(this.http, toolkitId);
   }
 }

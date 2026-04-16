@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.5.1"
+    "version": "1.6.0"
   },
   "host": "api.contio.ai",
   "basePath": "/",

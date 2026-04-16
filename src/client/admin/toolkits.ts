@@ -15,6 +15,8 @@ import {
   ToolkitVersion,
   CreateToolkitVersionRequest,
   UpdateToolkitVersionRequest,
+  ExportEntitiesRequest,
+  ExportResponse,
 } from '../../models';
 
 export async function createToolkit(
@@ -109,5 +111,21 @@ export async function discardToolkitVersion(
   versionId: string,
 ): Promise<void> {
   await http.delete(`/toolkits/${toolkitId}/versions/${versionId}`);
+}
+
+// ─── Toolkit Export ──────────────────────────────────────────────────────────
+
+export async function exportEntities(
+  http: HttpTransport,
+  data: ExportEntitiesRequest,
+): Promise<ExportResponse> {
+  return http.post<ExportResponse>('/toolkits/export', data);
+}
+
+export async function exportToolkit(
+  http: HttpTransport,
+  toolkitId: string,
+): Promise<ExportResponse> {
+  return http.get<ExportResponse>(`/toolkits/${toolkitId}/export`);
 }
 
