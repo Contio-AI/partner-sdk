@@ -6,6 +6,30 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-04-16
+
+### Added
+
+- **Toolkit export (portable manifests)** — two new methods on `PartnerAdminClient` ([CON-3359](https://linear.app/contio/issue/CON-3359)):
+  - `exportEntities(data)` — assembly-mode export; builds a portable manifest from selected entity IDs (templates, next steps, action buttons, shortcuts). Dependencies are auto-discovered.
+  - `exportToolkit(toolkitId)` — toolkit-mode export; resolves an existing toolkit into a portable manifest with `$id`/`$ref` identifiers suitable for re-import.
+- **New model types**: `ExportEntitiesRequest`, `ExportResponse`, `ExportMetadata`, `ExportSummary`, `ExportWarning`
+
+### Removed
+
+- **Standalone Next Step admin CRUD** — Next steps are now managed exclusively through the Toolkit manifest lifecycle. The following `PartnerAdminClient` methods have been removed:
+  - `createNextStep()`, `getNextSteps()`, `getNextStep()`, `updateNextStep()`, `deleteNextStep()`
+- **Standalone Action Button admin CRUD** — Action buttons are now managed exclusively through the Toolkit manifest lifecycle. The following `PartnerAdminClient` methods have been removed:
+  - `createActionButton()`, `getActionButtons()`, `getActionButton()`, `updateActionButton()`, `deleteActionButton()`
+- **Next Step ↔ Action Button association endpoints** — associations are now defined in the Toolkit manifest. The following `PartnerAdminClient` methods have been removed:
+  - `getNextStepActionButtons()`, `addNextStepActionButton()`, `updateNextStepActionButton()`, `removeNextStepActionButton()`
+- **Removed admin model types**: `NextStep`, `NextStepListParams`, `NextStepListResponse`, `CreateNextStepRequest`, `UpdateNextStepRequest`, `NextStepActionButton`, `NextStepActionButtonListParams`, `NextStepActionButtonListResponse`, `AddNextStepActionButtonRequest`, `UpdateNextStepActionButtonRequest`, `ActionButton`, `ActionButtonListParams`, `ActionButtonListResponse`, `CreateActionButtonRequest`, `UpdateActionButtonRequest`
+
+### Unchanged
+
+- **User-facing meeting endpoints** are unaffected — `getMeetingNextSteps()`, `executeNextStep()`, `getNextStepResult()`, `getMeetingActionButtons()`, and `triggerActionButton()` on `PartnerUserClient` continue to work as before.
+- **User-facing model types** are preserved: `MeetingNextStep`, `MeetingActionButton`, `ExecuteNextStepRequest`, `NextStepResult`, `TriggerActionButtonRequest`, etc.
+
 ## [1.5.0] - 2026-04-03
 
 ### Added
@@ -51,8 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `meeting.context.processed` — fired when uploaded context data finishes preprocessing (includes sanitization report); payload typed as `MeetingContextProcessedPayload`
   - `meeting_template.applied` — fired when a template is applied to a meeting; payload typed as `MeetingTemplateAppliedPayload`
   - `next_step.completed` — fired when a Next Step execution completes; payload typed as `NextStepCompletedPayload`
-  - `workflow.assignment.created` — fired when a workflow assignment is created; payload typed as `WorkflowAssignmentCreatedPayload`
-- New `WEBHOOK_EVENTS` constants: `ACTION_BUTTON_TRIGGERED`, `MEETING_CONTEXT_CREATED`, `MEETING_CONTEXT_DELETED`, `MEETING_CONTEXT_PROCESSED`, `MEETING_TEMPLATE_APPLIED`, `NEXT_STEP_COMPLETED`, `WORKFLOW_ASSIGNMENT_CREATED`
+  - `automation.assignment.created` — fired when an automation assignment is created; payload typed as `AutomationAssignmentCreatedPayload`
+- New `WEBHOOK_EVENTS` constants: `ACTION_BUTTON_TRIGGERED`, `MEETING_CONTEXT_CREATED`, `MEETING_CONTEXT_DELETED`, `MEETING_CONTEXT_PROCESSED`, `MEETING_TEMPLATE_APPLIED`, `NEXT_STEP_COMPLETED`, `AUTOMATION_ASSIGNMENT_CREATED`
 - **Automated webhook spec sync** — new CI workflow (`.github/workflows/sync-webhook-spec.yml`) that checks for upstream AsyncAPI spec updates on weekdays and opens a PR with regenerated types
 
 ### Changed
@@ -246,11 +270,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of the Contio Partner SDK
 - **OAuth 2.0 client**: Authorization code flow, token refresh, client credentials
 - **User API client**: Meetings and action items CRUD operations
-- **Admin API client**: Workflows, webhook deliveries, user connections
+- **Admin API client**: Automations, webhook deliveries, user connections
 - **Webhook verification**: HMAC-SHA256 signature verification
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.6.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.7...v1.5.0
 [1.4.7]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.5...v1.4.6

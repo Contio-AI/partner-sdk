@@ -5,7 +5,7 @@
  *
  * Source: specs/asyncapi/webhooks.yaml
  * Spec version: 1.5.0
- * Generated: 2026-04-01T21:35:30.949Z
+ * Generated: 2026-04-16T18:20:25.284Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -158,6 +158,30 @@ export interface AgendaItemUpdatedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
+export interface AutomationAssignmentCreatedPayload {
+  'data': AutomationAssignmentCreatedData;
+  'event_id': string;
+  'event_type': 'automation.assignment.created';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AutomationAssignmentCreatedData {
+  'action_item_id': string;
+  'assignment_id': string;
+  'automation_data_payload'?: Record<string, unknown>;
+  'automation_id': string;
+  'automation_name': string;
+  'confidence_score'?: number;
+  'created_at': string;
+  'meeting_id': string;
+  'status': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
 export interface CalendarEventCreatedPayload {
   'data': CalendarEventCreatedData;
   'event_id': string;
@@ -282,20 +306,20 @@ export interface MeetingContextProcessedData {
   'context_id': string;
   'meeting_id': string;
   'processed_at': string;
-  'sanitization_report': AnonymousSchema_105;
+  'sanitization_report': AnonymousSchema_117;
   'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_105 {
+export interface AnonymousSchema_117 {
   'formula_escaped': boolean;
   'pii_detected': boolean;
-  'redactions'?: AnonymousSchema_109[];
+  'redactions'?: AnonymousSchema_121[];
   'secrets_detected': boolean;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_109 {
+export interface AnonymousSchema_121 {
   'count': number;
   'type': string;
   'additionalProperties'?: Record<string, unknown>;
@@ -352,14 +376,14 @@ export interface MeetingTemplateAppliedPayload {
 export interface MeetingTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_132;
+  'applied_items': AnonymousSchema_144;
   'meeting_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_132 {
+export interface AnonymousSchema_144 {
   'agenda_items': number;
   'documents': number;
   'participants': number;
@@ -508,30 +532,6 @@ export interface UserConnectionRevokedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface WorkflowAssignmentCreatedPayload {
-  'data': WorkflowAssignmentCreatedData;
-  'event_id': string;
-  'event_type': 'workflow.assignment.created';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowAssignmentCreatedData {
-  'action_item_id': string;
-  'assignment_id': string;
-  'confidence_score'?: number;
-  'created_at': string;
-  'meeting_id': string;
-  'status': string;
-  'workflow_data_payload'?: Record<string, unknown>;
-  'workflow_id': string;
-  'workflow_name': string;
-  'workspace_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
 /**
  * All webhook event type names
  */
@@ -543,6 +543,7 @@ export const WEBHOOK_EVENT_TYPES = [
   'agenda_item.created',
   'agenda_item.deleted',
   'agenda_item.updated',
+  'automation.assignment.created',
   'calendar_event.created',
   'calendar_event.deleted',
   'calendar_event.updated',
@@ -560,7 +561,6 @@ export const WEBHOOK_EVENT_TYPES = [
   'session.turn.completed',
   'session.turn.failed',
   'user.connection.revoked',
-  'workflow.assignment.created',
 ] as const;
 
 export type WebhookEventType = typeof WEBHOOK_EVENT_TYPES[number];

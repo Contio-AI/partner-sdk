@@ -1,5 +1,5 @@
 /**
- * Workflow-related type definitions for the Contio Partner API
+ * Automation-related type definitions for the Contio Partner API
  */
 
 import { ErrorResponse } from './auth';
@@ -12,12 +12,12 @@ export interface PhraseMatchConfig {
 }
 
 /**
- * Workflow action definition
+ * Automation action definition
  *
  * Currently supported action types:
  * - `phrase_match`: Matches action items based on phrase matching
  */
-export interface WorkflowAction {
+export interface AutomationAction {
   type: string;
   config?: Record<string, unknown>;
 }
@@ -31,34 +31,34 @@ export interface PhraseMatchAction {
 }
 
 /**
- * Workflow definition
+ * Automation definition
  *
- * Workflows enable automatic action item assignment based on phrase matching.
- * When an action item from a meeting matches the workflow's phrases, a workflow
+ * Automations enable automatic action item assignment based on phrase matching.
+ * When an action item from a meeting matches the automation's phrases, a automation
  * assignment is created and a webhook is sent to the partner app.
  */
-export interface Workflow {
+export interface Automation {
   id: string;
   partner_app_id: string;
   name: string;
   description?: string;
   /** Currently only 'action_item_match' is supported */
   trigger_type: string;
-  /** Array of workflow actions (currently supports phrase_match type) */
-  actions: WorkflowAction[];
-  status: WorkflowStatus;
+  /** Array of automation actions (currently supports phrase_match type) */
+  actions: AutomationAction[];
+  status: AutomationStatus;
   created_at: string;
   updated_at: string;
 }
 
-export type WorkflowStatus = 'active' | 'inactive';
+export type AutomationStatus = 'active' | 'inactive';
 
 /**
- * Request to create a new workflow
+ * Request to create a new automation
  *
  * Example:
  * ```typescript
- * const workflow = await adminClient.createWorkflow({
+ * const automation = await adminClient.createAutomation({
  *   name: 'Create CRM Contact',
  *   description: 'Create contacts from meeting action items',
  *   trigger_type: 'action_item_match',
@@ -73,31 +73,31 @@ export type WorkflowStatus = 'active' | 'inactive';
  * });
  * ```
  */
-export interface CreateWorkflowRequest {
+export interface CreateAutomationRequest {
   name: string;
   description?: string;
   /** Use 'action_item_match' for phrase-based matching */
   trigger_type: string;
-  /** Array of workflow actions */
-  actions: WorkflowAction[];
+  /** Array of automation actions */
+  actions: AutomationAction[];
 }
 
-export interface UpdateWorkflowRequest {
+export interface UpdateAutomationRequest {
   name?: string;
   description?: string;
   trigger_type?: string;
-  actions?: WorkflowAction[];
-  status?: WorkflowStatus;
+  actions?: AutomationAction[];
+  status?: AutomationStatus;
   is_active?: boolean;
 }
 
-export interface WorkflowListParams {
+export interface AutomationListParams {
   limit?: number;
   offset?: number;
 }
 
-export interface WorkflowListResponse {
-  items: Workflow[];
+export interface AutomationListResponse {
+  items: Automation[];
   total: number;
   limit: number;
   offset: number;
@@ -122,7 +122,7 @@ export interface WebhookDeliveryListParams {
   offset?: number;
   /** Filter by delivery status (pending, delivered, failed, abandoned) */
   status?: string;
-  /** Filter by event type (e.g., meeting.created, workflow.assignment.created) */
+  /** Filter by event type (e.g., meeting.created, automation.assignment.created) */
   event_type?: string;
 }
 

@@ -13,11 +13,11 @@ import { BaseClient, ClientConfig, RequestOptions } from '../base';
 import { HttpTransport } from '../_http';
 import { ApiKeyClient } from '../../auth/apiKey';
 import {
-  Workflow,
-  WorkflowListParams,
-  WorkflowListResponse,
-  CreateWorkflowRequest,
-  UpdateWorkflowRequest,
+  Automation,
+  AutomationListParams,
+  AutomationListResponse,
+  CreateAutomationRequest,
+  UpdateAutomationRequest,
   WebhookDelivery,
   WebhookDeliveryListParams,
   WebhookDeliveryListResponse,
@@ -47,6 +47,8 @@ import {
   ToolkitVersion,
   CreateToolkitVersionRequest,
   UpdateToolkitVersionRequest,
+  ExportEntitiesRequest,
+  ExportResponse,
   // Template-related imports
   Template,
   TemplateListParams,
@@ -58,26 +60,9 @@ import {
   TemplateNextStepListResponse,
   AddTemplateNextStepRequest,
   UpdateTemplateNextStepRequest,
-  // Next Step-related imports
-  NextStep,
-  NextStepListParams,
-  NextStepListResponse,
-  CreateNextStepRequest,
-  UpdateNextStepRequest,
-  NextStepActionButton,
-  NextStepActionButtonListParams,
-  NextStepActionButtonListResponse,
-  AddNextStepActionButtonRequest,
-  UpdateNextStepActionButtonRequest,
-  // Action Button-related imports
-  ActionButton,
-  ActionButtonListParams,
-  ActionButtonListResponse,
-  CreateActionButtonRequest,
-  UpdateActionButtonRequest,
 } from '../../models';
 
-import * as workflows from './workflows';
+import * as automations from './automations';
 import * as app from './app';
 import * as webhooks from './webhooks';
 import * as connections from './connections';
@@ -85,13 +70,11 @@ import * as credentials from './credentials';
 import * as idp from './idp';
 import * as toolkits from './toolkits';
 import * as templates from './templates';
-import * as nextSteps from './nextSteps';
-import * as actionButtons from './actionButtons';
 
 /**
  * Partner Admin API client for API key-authenticated admin endpoints.
  *
- * Provides access to partner app configuration, workflows, webhook deliveries,
+ * Provides access to partner app configuration, automations, webhook deliveries,
  * user connections, credential management, and IdP configuration.
  * Requires an API key for authentication.
  *
@@ -102,7 +85,7 @@ import * as actionButtons from './actionButtons';
  * });
  *
  * const app = await admin.getApp();
- * const workflows = await admin.getWorkflows();
+ * const automations = await admin.getAutomations();
  * ```
  */
 export class PartnerAdminClient extends BaseClient {
@@ -144,72 +127,72 @@ export class PartnerAdminClient extends BaseClient {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Workflow endpoints
+  // Automation endpoints
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Create a new workflow.
+   * Create a new automation.
    *
-   * Workflows define automated actions triggered by events in Contio.
+   * Automations define automated actions triggered by events in Contio.
    *
-   * @param data - Workflow creation data
-   * @param data.name - Workflow name (required)
-   * @param data.description - Optional workflow description
-   * @param data.trigger_type - Event that triggers the workflow (e.g., 'action_item_match')
+   * @param data - Automation creation data
+   * @param data.name - Automation name (required)
+   * @param data.description - Optional automation description
+   * @param data.trigger_type - Event that triggers the automation (e.g., 'action_item_match')
    * @param data.actions - Actions to perform when triggered
-   * @returns The newly created workflow
+   * @returns The newly created automation
    * @throws {ContioAPIError} If validation fails
    */
-  async createWorkflow(data: CreateWorkflowRequest): Promise<Workflow> {
-    return workflows.createWorkflow(this.http, data);
+  async createAutomation(data: CreateAutomationRequest): Promise<Automation> {
+    return automations.createAutomation(this.http, data);
   }
 
   /**
-   * Get a paginated list of workflows.
+   * Get a paginated list of automations.
    *
    * @param params - Optional filter and pagination parameters
-   * @param params.limit - Maximum number of workflows to return
-   * @param params.offset - Number of workflows to skip for pagination
-   * @returns Paginated list of workflows
+   * @param params.limit - Maximum number of automations to return
+   * @param params.offset - Number of automations to skip for pagination
+   * @returns Paginated list of automations
    * @throws {ContioAPIError} If the request fails
    */
-  async getWorkflows(params?: WorkflowListParams): Promise<WorkflowListResponse> {
-    return workflows.getWorkflows(this.http, params);
+  async getAutomations(params?: AutomationListParams): Promise<AutomationListResponse> {
+    return automations.getAutomations(this.http, params);
   }
 
   /**
-   * Get a specific workflow by ID.
+   * Get a specific automation by ID.
    *
-   * @param workflowId - The unique workflow ID
-   * @returns The workflow with full details
-   * @throws {ContioAPIError} If the workflow is not found
+   * @param automationId - The unique automation ID
+   * @returns The automation with full details
+   * @throws {ContioAPIError} If the automation is not found
    */
-  async getWorkflow(workflowId: string): Promise<Workflow> {
-    return workflows.getWorkflow(this.http, workflowId);
+  async getAutomation(automationId: string): Promise<Automation> {
+    return automations.getAutomation(this.http, automationId);
   }
 
 
 
   /**
-   * Update a workflow.
+   * Update a automation.
    *
-   * @param workflowId - The unique workflow ID to update
+   * @param automationId - The unique automation ID to update
    * @param data - Fields to update
-   * @returns The updated workflow
-   * @throws {ContioAPIError} If the workflow is not found or validation fails
+   * @returns The updated automation
+   * @throws {ContioAPIError} If the automation is not found or validation fails
    */
-  async updateWorkflow(workflowId: string, data: UpdateWorkflowRequest): Promise<Workflow> {
-    return workflows.updateWorkflow(this.http, workflowId, data);
+  async updateAutomation(automationId: string, data: UpdateAutomationRequest): Promise<Automation> {
+    return automations.updateAutomation(this.http, automationId, data);
   }
 
   /**
-   * Delete a workflow.
+   * Delete a automation.
    *
-   * @param workflowId - The unique workflow ID to delete
-   * @throws {ContioAPIError} If the workflow is not found
+   * @param automationId - The unique automation ID to delete
+   * @throws {ContioAPIError} If the automation is not found
    */
-  async deleteWorkflow(workflowId: string): Promise<void> {
-    return workflows.deleteWorkflow(this.http, workflowId);
+  async deleteAutomation(automationId: string): Promise<void> {
+    return automations.deleteAutomation(this.http, automationId);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -266,7 +249,7 @@ export class PartnerAdminClient extends BaseClient {
    * @param params.limit - Maximum number of deliveries to return (default 50, max 100)
    * @param params.offset - Number of deliveries to skip for pagination (default 0)
    * @param params.status - Filter by delivery status (pending, delivered, failed, abandoned)
-   * @param params.event_type - Filter by event type (e.g., meeting.created, workflow.assignment.created)
+   * @param params.event_type - Filter by event type (e.g., meeting.created, automation.assignment.created)
    * @returns Paginated list of webhook deliveries
    * @throws {ContioAPIError} If the request fails
    *
@@ -970,185 +953,56 @@ export class PartnerAdminClient extends BaseClient {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Next Step endpoints
+  // Toolkit Export endpoints
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Create a new next step.
+   * Export a portable manifest from selected entity IDs (assembly-mode).
    *
-   * Next steps define actions that can be taken after a meeting.
+   * Builds a portable toolkit manifest from the given entity IDs. Dependencies
+   * (e.g. action buttons referenced by next steps) are auto-discovered.
    *
-   * @param data - Next step creation data
-   * @returns The newly created next step
-   * @throws {ContioAPIError} If validation fails
+   * @param data - Export request with entity IDs (at least one array must be non-empty)
+   * @returns The portable manifest with metadata, summary, and optional warnings
+   * @throws {ContioAPIError} If no entities are specified or entities are not found
+   *
+   * @example
+   * ```typescript
+   * const exported = await admin.exportEntities({
+   *   template_ids: ['template-uuid'],
+   *   name: 'My Exported Bundle',
+   * });
+   * console.log(exported.manifest);
+   * ```
    */
-  async createNextStep(data: CreateNextStepRequest): Promise<NextStep> {
-    return nextSteps.createNextStep(this.http, data);
+  async exportEntities(data: ExportEntitiesRequest): Promise<ExportResponse> {
+    return toolkits.exportEntities(this.http, data);
   }
 
   /**
-   * Get a paginated list of next steps.
+   * Export an existing toolkit as a portable manifest.
    *
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of next steps
-   * @throws {ContioAPIError} If the request fails
+   * Resolves the toolkit's manifest into a portable format with `$id`/`$ref`
+   * identifiers, suitable for re-import into a different toolkit.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @returns The portable manifest with metadata, summary, and optional warnings
+   * @throws {ContioAPIError} If the toolkit is not found
+   *
+   * @example
+   * ```typescript
+   * const exported = await admin.exportToolkit('toolkit-uuid');
+   *
+   * // Re-import into a new toolkit
+   * const newToolkit = await admin.createToolkit({
+   *   name: 'Cloned Toolkit',
+   *   slug: 'cloned-toolkit',
+   *   version: '1.0.0',
+   *   manifest: exported.manifest,
+   * });
+   * ```
    */
-  async getNextSteps(params?: NextStepListParams): Promise<NextStepListResponse> {
-    return nextSteps.getNextSteps(this.http, params);
-  }
-
-  /**
-   * Get a specific next step by ID.
-   *
-   * @param nextStepId - The unique next step ID
-   * @returns The next step with full details
-   * @throws {ContioAPIError} If the next step is not found
-   */
-  async getNextStep(nextStepId: string): Promise<NextStep> {
-    return nextSteps.getNextStep(this.http, nextStepId);
-  }
-
-  /**
-   * Update a next step.
-   *
-   * @param nextStepId - The unique next step ID to update
-   * @param data - Fields to update
-   * @returns The updated next step
-   * @throws {ContioAPIError} If the next step is not found or validation fails
-   */
-  async updateNextStep(nextStepId: string, data: UpdateNextStepRequest): Promise<NextStep> {
-    return nextSteps.updateNextStep(this.http, nextStepId, data);
-  }
-
-  /**
-   * Delete a next step.
-   *
-   * @param nextStepId - The unique next step ID to delete
-   * @throws {ContioAPIError} If the next step is not found
-   */
-  async deleteNextStep(nextStepId: string): Promise<void> {
-    return nextSteps.deleteNextStep(this.http, nextStepId);
-  }
-
-  /**
-   * Get action buttons associated with a next step.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of next step action buttons
-   * @throws {ContioAPIError} If the next step is not found
-   */
-  async getNextStepActionButtons(
-    nextStepId: string,
-    params?: NextStepActionButtonListParams,
-  ): Promise<NextStepActionButtonListResponse> {
-    return nextSteps.getNextStepActionButtons(this.http, nextStepId, params);
-  }
-
-  /**
-   * Add an action button to a next step.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param data - Action button association data
-   * @returns The next step action button association
-   * @throws {ContioAPIError} If the next step or action button is not found
-   */
-  async addNextStepActionButton(
-    nextStepId: string,
-    data: AddNextStepActionButtonRequest,
-  ): Promise<NextStepActionButton> {
-    return nextSteps.addNextStepActionButton(this.http, nextStepId, data);
-  }
-
-  /**
-   * Update a next step action button association.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param actionButtonId - The unique action button ID
-   * @param data - Fields to update (is_default setting)
-   * @returns The updated next step action button association
-   * @throws {ContioAPIError} If the association is not found
-   */
-  async updateNextStepActionButton(
-    nextStepId: string,
-    actionButtonId: string,
-    data: UpdateNextStepActionButtonRequest,
-  ): Promise<NextStepActionButton> {
-    return nextSteps.updateNextStepActionButton(this.http, nextStepId, actionButtonId, data);
-  }
-
-  /**
-   * Remove an action button from a next step.
-   *
-   * @param nextStepId - The unique next step ID
-   * @param actionButtonId - The unique action button ID to remove
-   * @throws {ContioAPIError} If the association is not found
-   */
-  async removeNextStepActionButton(nextStepId: string, actionButtonId: string): Promise<void> {
-    return nextSteps.removeNextStepActionButton(this.http, nextStepId, actionButtonId);
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Action Button endpoints
-  // ─────────────────────────────────────────────────────────────────────────────
-
-  /**
-   * Create a new action button.
-   *
-   * Action buttons define delivery mechanisms for next step outputs.
-   *
-   * @param data - Action button creation data
-   * @returns The newly created action button
-   * @throws {ContioAPIError} If validation fails
-   */
-  async createActionButton(data: CreateActionButtonRequest): Promise<ActionButton> {
-    return actionButtons.createActionButton(this.http, data);
-  }
-
-  /**
-   * Get a paginated list of action buttons.
-   *
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of action buttons
-   * @throws {ContioAPIError} If the request fails
-   */
-  async getActionButtons(params?: ActionButtonListParams): Promise<ActionButtonListResponse> {
-    return actionButtons.getActionButtons(this.http, params);
-  }
-
-  /**
-   * Get a specific action button by ID.
-   *
-   * @param actionButtonId - The unique action button ID
-   * @returns The action button with full details
-   * @throws {ContioAPIError} If the action button is not found
-   */
-  async getActionButton(actionButtonId: string): Promise<ActionButton> {
-    return actionButtons.getActionButton(this.http, actionButtonId);
-  }
-
-  /**
-   * Update an action button.
-   *
-   * @param actionButtonId - The unique action button ID to update
-   * @param data - Fields to update
-   * @returns The updated action button
-   * @throws {ContioAPIError} If the action button is not found or validation fails
-   */
-  async updateActionButton(
-    actionButtonId: string,
-    data: UpdateActionButtonRequest,
-  ): Promise<ActionButton> {
-    return actionButtons.updateActionButton(this.http, actionButtonId, data);
-  }
-
-  /**
-   * Delete an action button.
-   *
-   * @param actionButtonId - The unique action button ID to delete
-   * @throws {ContioAPIError} If the action button is not found
-   */
-  async deleteActionButton(actionButtonId: string): Promise<void> {
-    return actionButtons.deleteActionButton(this.http, actionButtonId);
+  async exportToolkit(toolkitId: string): Promise<ExportResponse> {
+    return toolkits.exportToolkit(this.http, toolkitId);
   }
 }

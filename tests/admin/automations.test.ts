@@ -1,16 +1,16 @@
 /**
- * Tests for Workflow endpoints.
+ * Tests for Automation endpoints.
  */
 
 import {
-  Workflow,
-  WorkflowListResponse,
-  CreateWorkflowRequest,
-  UpdateWorkflowRequest,
+  Automation,
+  AutomationListResponse,
+  CreateAutomationRequest,
+  UpdateAutomationRequest,
 } from '../../src/models';
 import { createAdminTestContext, AdminTestContext } from './setup';
 
-describe('PartnerAdminClient › Workflows', () => {
+describe('PartnerAdminClient › Automations', () => {
   let ctx: AdminTestContext;
 
   beforeEach(() => {
@@ -21,8 +21,8 @@ describe('PartnerAdminClient › Workflows', () => {
     ctx.mockAxios.reset();
   });
 
-  describe('createWorkflow', () => {
-    const createRequest: CreateWorkflowRequest = {
+  describe('createAutomation', () => {
+    const createRequest: CreateAutomationRequest = {
       name: 'Create Jira Ticket',
       description: 'Automatically create Jira tickets for action items',
       trigger_type: 'action_item.created',
@@ -37,8 +37,8 @@ describe('PartnerAdminClient › Workflows', () => {
       ],
     };
 
-    const mockCreatedWorkflow: Workflow = {
-      id: 'workflow-123',
+    const mockCreatedAutomation: Automation = {
+      id: 'automation-123',
       partner_app_id: 'app-456',
       name: createRequest.name,
       description: createRequest.description,
@@ -49,34 +49,34 @@ describe('PartnerAdminClient › Workflows', () => {
       updated_at: '2025-01-08T12:00:00Z',
     };
 
-    it('should create a new workflow', async () => {
-      ctx.mockAxios.onPost('/workflows').reply(201, mockCreatedWorkflow);
+    it('should create a new automation', async () => {
+      ctx.mockAxios.onPost('/automations').reply(201, mockCreatedAutomation);
 
-      const workflow = await ctx.adminClient.createWorkflow(createRequest);
+      const automation = await ctx.adminClient.createAutomation(createRequest);
 
-      expect(workflow.id).toBe('workflow-123');
-      expect(workflow.name).toBe('Create Jira Ticket');
-      expect(workflow.status).toBe('active');
+      expect(automation.id).toBe('automation-123');
+      expect(automation.name).toBe('Create Jira Ticket');
+      expect(automation.status).toBe('active');
     });
 
     it('should send correct request body', async () => {
-      ctx.mockAxios.onPost('/workflows').reply((config) => {
+      ctx.mockAxios.onPost('/automations').reply((config) => {
         const body = JSON.parse(config.data);
         expect(body.name).toBe('Create Jira Ticket');
         expect(body.trigger_type).toBe('action_item.created');
         expect(body.actions).toHaveLength(1);
-        return [201, mockCreatedWorkflow];
+        return [201, mockCreatedAutomation];
       });
 
-      await ctx.adminClient.createWorkflow(createRequest);
+      await ctx.adminClient.createAutomation(createRequest);
     });
   });
 
-  describe('getWorkflows', () => {
-    const mockWorkflowsResponse: WorkflowListResponse = {
+  describe('getAutomations', () => {
+    const mockAutomationsResponse: AutomationListResponse = {
       items: [
         {
-          id: 'workflow-1',
+          id: 'automation-1',
           partner_app_id: 'app-456',
           name: 'Create Jira Ticket',
           trigger_type: 'action_item.created',
@@ -86,7 +86,7 @@ describe('PartnerAdminClient › Workflows', () => {
           updated_at: '2025-01-07T10:00:00Z',
         },
         {
-          id: 'workflow-2',
+          id: 'automation-2',
           partner_app_id: 'app-456',
           name: 'Send Slack Notification',
           trigger_type: 'meeting.completed',
@@ -101,10 +101,10 @@ describe('PartnerAdminClient › Workflows', () => {
       offset: 0,
     };
 
-    it('should get list of workflows', async () => {
-      ctx.mockAxios.onGet('/workflows').reply(200, mockWorkflowsResponse);
+    it('should get list of automations', async () => {
+      ctx.mockAxios.onGet('/automations').reply(200, mockAutomationsResponse);
 
-      const response = await ctx.adminClient.getWorkflows();
+      const response = await ctx.adminClient.getAutomations();
 
       expect(response.items).toHaveLength(2);
       expect(response.items[0].name).toBe('Create Jira Ticket');
@@ -112,19 +112,19 @@ describe('PartnerAdminClient › Workflows', () => {
     });
 
     it('should support pagination parameters', async () => {
-      ctx.mockAxios.onGet('/workflows').reply((config) => {
+      ctx.mockAxios.onGet('/automations').reply((config) => {
         expect(config.params.limit).toBe(50);
         expect(config.params.offset).toBe(100);
-        return [200, mockWorkflowsResponse];
+        return [200, mockAutomationsResponse];
       });
 
-      await ctx.adminClient.getWorkflows({ limit: 50, offset: 100 });
+      await ctx.adminClient.getAutomations({ limit: 50, offset: 100 });
     });
   });
 
-  describe('getWorkflow', () => {
-    const mockWorkflow: Workflow = {
-      id: 'workflow-123',
+  describe('getAutomation', () => {
+    const mockAutomation: Automation = {
+      id: 'automation-123',
       partner_app_id: 'app-456',
       name: 'Create Jira Ticket',
       description: 'Automatically create Jira tickets',
@@ -135,29 +135,29 @@ describe('PartnerAdminClient › Workflows', () => {
       updated_at: '2025-01-05T10:00:00Z',
     };
 
-    it('should get a specific workflow by ID', async () => {
-      ctx.mockAxios.onGet('/workflows/workflow-123').reply(200, mockWorkflow);
+    it('should get a specific automation by ID', async () => {
+      ctx.mockAxios.onGet('/automations/automation-123').reply(200, mockAutomation);
 
-      const workflow = await ctx.adminClient.getWorkflow('workflow-123');
+      const automation = await ctx.adminClient.getAutomation('automation-123');
 
-      expect(workflow.id).toBe('workflow-123');
-      expect(workflow.name).toBe('Create Jira Ticket');
-      expect(workflow.actions).toHaveLength(1);
+      expect(automation.id).toBe('automation-123');
+      expect(automation.name).toBe('Create Jira Ticket');
+      expect(automation.actions).toHaveLength(1);
     });
   });
 
 
 
-  describe('updateWorkflow', () => {
-    const updateRequest: UpdateWorkflowRequest = {
-      name: 'Updated Workflow Name',
+  describe('updateAutomation', () => {
+    const updateRequest: UpdateAutomationRequest = {
+      name: 'Updated Automation Name',
       status: 'inactive',
     };
 
-    const mockUpdatedWorkflow: Workflow = {
-      id: 'workflow-123',
+    const mockUpdatedAutomation: Automation = {
+      id: 'automation-123',
       partner_app_id: 'app-456',
-      name: 'Updated Workflow Name',
+      name: 'Updated Automation Name',
       trigger_type: 'action_item.created',
       actions: [{ type: 'jira.create_issue' }],
       status: 'inactive',
@@ -165,35 +165,35 @@ describe('PartnerAdminClient › Workflows', () => {
       updated_at: '2025-01-08T14:00:00Z',
     };
 
-    it('should update an existing workflow', async () => {
-      ctx.mockAxios.onPut('/workflows/workflow-123').reply(200, mockUpdatedWorkflow);
+    it('should update an existing automation', async () => {
+      ctx.mockAxios.onPut('/automations/automation-123').reply(200, mockUpdatedAutomation);
 
-      const workflow = await ctx.adminClient.updateWorkflow('workflow-123', updateRequest);
+      const automation = await ctx.adminClient.updateAutomation('automation-123', updateRequest);
 
-      expect(workflow.name).toBe('Updated Workflow Name');
-      expect(workflow.status).toBe('inactive');
+      expect(automation.name).toBe('Updated Automation Name');
+      expect(automation.status).toBe('inactive');
     });
 
     it('should send correct request body', async () => {
-      ctx.mockAxios.onPut('/workflows/workflow-123').reply((config) => {
+      ctx.mockAxios.onPut('/automations/automation-123').reply((config) => {
         const body = JSON.parse(config.data);
-        expect(body.name).toBe('Updated Workflow Name');
+        expect(body.name).toBe('Updated Automation Name');
         expect(body.status).toBe('inactive');
-        return [200, mockUpdatedWorkflow];
+        return [200, mockUpdatedAutomation];
       });
 
-      await ctx.adminClient.updateWorkflow('workflow-123', updateRequest);
+      await ctx.adminClient.updateAutomation('automation-123', updateRequest);
     });
   });
 
-  describe('deleteWorkflow', () => {
-    it('should delete a workflow', async () => {
-      ctx.mockAxios.onDelete('/workflows/workflow-123').reply(204);
+  describe('deleteAutomation', () => {
+    it('should delete a automation', async () => {
+      ctx.mockAxios.onDelete('/automations/automation-123').reply(204);
 
-      await ctx.adminClient.deleteWorkflow('workflow-123');
+      await ctx.adminClient.deleteAutomation('automation-123');
 
       expect(ctx.mockAxios.history.delete).toHaveLength(1);
-      expect(ctx.mockAxios.history.delete[0].url).toBe('/workflows/workflow-123');
+      expect(ctx.mockAxios.history.delete[0].url).toBe('/automations/automation-123');
     });
   });
 });

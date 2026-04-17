@@ -10,6 +10,8 @@ import {
   ToolkitVersion,
   CreateToolkitVersionRequest,
   UpdateToolkitVersionRequest,
+  ExportEntitiesRequest,
+  ExportResponse,
 } from '../../src/models';
 import { createAdminTestContext, AdminTestContext } from './setup';
 
@@ -294,6 +296,77 @@ describe('PartnerAdminClient › Toolkit Versions', () => {
 
       expect(ctx.mockAxios.history.delete).toHaveLength(1);
       expect(ctx.mockAxios.history.delete[0].url).toBe('/toolkits/toolkit-123/versions/version-456');
+    });
+  });
+});
+
+describe('PartnerAdminClient › Toolkit Export', () => {
+  let ctx: AdminTestContext;
+
+  beforeEach(() => {
+    ctx = createAdminTestContext();
+  });
+
+  afterEach(() => {
+    ctx.mockAxios.reset();
+  });
+
+  const mockExportResponse: ExportResponse = {
+    metadata: {
+      name: 'Exported Bundle',
+      slug: 'exported-bundle',
+      version: '1.0.0',
+    },
+    manifest: {
+      templates: [],
+      next_steps: [],
+      action_buttons: [],
+    },
+    summary: {
+      templates: 1,
+      next_steps: 2,
+      action_buttons: 3,
+      shortcuts: 0,
+    },
+    warnings: [],
+  };
+
+  describe('exportEntities', () => {
+    const exportRequest: ExportEntitiesRequest = {
+      template_ids: ['template-uuid-1'],
+      name: 'My Export',
+    };
+
+    it('should export entities as a portable manifest', async () => {
+      ctx.mockAxios.onPost('/toolkits/export').reply(200, mockExportResponse);
+
+      const response = await ctx.adminClient.exportEntities(exportRequest);
+
+      expect(response.summary.templates).toBe(1);
+      expect(response.summary.next_steps).toBe(2);
+      expect(response.metadata?.name).toBe('Exported Bundle');
+    });
+
+    it('should send correct request body', async () => {
+      ctx.mockAxios.onPost('/toolkits/export').reply((config) => {
+        const body = JSON.parse(config.data);
+        expect(body.template_ids).toEqual(['template-uuid-1']);
+        expect(body.name).toBe('My Export');
+        return [200, mockExportResponse];
+      });
+
+      await ctx.adminClient.exportEntities(exportRequest);
+    });
+  });
+
+  describe('exportToolkit', () => {
+    it('should export a toolkit as a portable manifest', async () => {
+      ctx.mockAxios.onGet('/toolkits/toolkit-123/export').reply(200, mockExportResponse);
+
+      const response = await ctx.adminClient.exportToolkit('toolkit-123');
+
+      expect(response.manifest).toBeDefined();
+      expect(response.summary.action_buttons).toBe(3);
     });
   });
 });

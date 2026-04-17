@@ -173,7 +173,7 @@ describe('PartnerAdminClient › Webhooks', () => {
           {
             id: 'delivery-1',
             partner_app_id: 'app-456',
-            event_type: 'workflow.assignment.created',
+            event_type: 'automation.assignment.created',
             event_id: 'evt_123',
             delivery_status: 'delivered',
             http_status_code: 200,
@@ -243,7 +243,7 @@ describe('PartnerAdminClient › Webhooks', () => {
       const mockDelivery: WebhookDelivery = {
         id: 'delivery-123',
         partner_app_id: 'app-456',
-        event_type: 'workflow.assignment.created',
+        event_type: 'automation.assignment.created',
         event_id: 'evt_789',
         delivery_status: 'delivered',
         http_status_code: 200,

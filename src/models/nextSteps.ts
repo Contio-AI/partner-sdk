@@ -1,103 +1,12 @@
 /**
  * Next Step-related type definitions for the Contio Partner API
  *
- * Next Steps define actions that can be taken after a meeting,
- * with optional AI prompts and associated action buttons.
+ * User-facing types for meeting next steps, action buttons, execution, and results.
+ * Admin CRUD for next steps and action buttons has been removed — these entities
+ * are now managed exclusively through the Toolkit manifest lifecycle.
  */
 
-import { ContentFormat, DeliveryMechanism, NextStepType } from './toolkits';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Core Next Step Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface NextStep {
-  id: string;
-  name: string;
-  description?: string;
-  type?: NextStepType;
-  ai_prompt?: string;
-  color?: string;
-  icon_name?: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface NextStepActionButton {
-  id: string;
-  name: string;
-  description?: string;
-  content_format: ContentFormat;
-  delivery_mechanism: DeliveryMechanism;
-  icon_url?: string;
-  webhook_url?: string;
-  redirect_url_template?: string;
-  email_subject_template?: string;
-  file_format?: string;
-  integration_id?: string;
-  is_default: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Request Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface CreateNextStepRequest {
-  name: string;
-  description?: string;
-  type?: NextStepType;
-  ai_prompt?: string;
-  color?: string;
-  icon_name?: string;
-}
-
-export interface UpdateNextStepRequest {
-  name?: string;
-  description?: string;
-  type?: NextStepType;
-  ai_prompt?: string;
-  color?: string;
-  icon_name?: string;
-}
-
-export interface AddNextStepActionButtonRequest {
-  action_button_id: string;
-  is_default?: boolean;
-}
-
-export interface UpdateNextStepActionButtonRequest {
-  is_default?: boolean;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// List Response Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface NextStepListParams {
-  limit?: number;
-  offset?: number;
-}
-
-export interface NextStepListResponse {
-  items: NextStep[];
-  total: number;
-  limit: number;
-  offset: number;
-}
-
-export interface NextStepActionButtonListParams {
-  limit?: number;
-  offset?: number;
-}
-
-export interface NextStepActionButtonListResponse {
-  items: NextStepActionButton[];
-  total: number;
-  limit: number;
-  offset: number;
-}
+import { NextStepType } from './toolkits';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // User-facing Next Step Types (for meeting context)

@@ -5,7 +5,7 @@
 export * from './auth';
 export * from './meetings';
 export * from './actionItems';
-export * from './workflows';
+export * from './automations';
 export * from './credentials';
 export * from './idp';
 export * from './calendar';
@@ -16,4 +16,3 @@ export * from './chat';
 export * from './toolkits';
 export * from './templates';
 export * from './nextSteps';
-export * from './actionButtons';
