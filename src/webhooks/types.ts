@@ -19,6 +19,7 @@ export type {
   AgendaItemCreatedPayload,
   AgendaItemDeletedPayload,
   AgendaItemUpdatedPayload,
+  AutomationAssignmentCreatedPayload,
   CalendarEventCreatedPayload,
   CalendarEventDeletedPayload,
   CalendarEventUpdatedPayload,
@@ -36,7 +37,6 @@ export type {
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
-  AutomationAssignmentCreatedPayload,
   // Data types (event-specific data)
   ActionButtonTriggeredData,
   ActionItemCompletedData,
@@ -45,6 +45,7 @@ export type {
   AgendaItemCreatedData,
   AgendaItemDeletedData,
   AgendaItemUpdatedData,
+  AutomationAssignmentCreatedData,
   CalendarEventCreatedData,
   CalendarEventDeletedData,
   CalendarEventUpdatedData,
@@ -62,7 +63,6 @@ export type {
   SessionTurnCompletedData,
   SessionTurnFailedData,
   UserConnectionRevokedData,
-  AutomationAssignmentCreatedData,
   // Shared types
   WebhookUserContext,
   ParticipantInfo,
@@ -81,6 +81,7 @@ import type {
   AgendaItemCreatedPayload,
   AgendaItemDeletedPayload,
   AgendaItemUpdatedPayload,
+  AutomationAssignmentCreatedPayload,
   CalendarEventCreatedPayload,
   CalendarEventDeletedPayload,
   CalendarEventUpdatedPayload,
@@ -98,7 +99,6 @@ import type {
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
-  AutomationAssignmentCreatedPayload,
 } from '../generated/webhook-types';
 
 /**
@@ -112,6 +112,7 @@ export type ContioWebhookEvent =
   | AgendaItemCreatedPayload
   | AgendaItemDeletedPayload
   | AgendaItemUpdatedPayload
+  | AutomationAssignmentCreatedPayload
   | CalendarEventCreatedPayload
   | CalendarEventDeletedPayload
   | CalendarEventUpdatedPayload
@@ -128,8 +129,7 @@ export type ContioWebhookEvent =
   | SessionExpiredPayload
   | SessionTurnCompletedPayload
   | SessionTurnFailedPayload
-  | UserConnectionRevokedPayload
-  | AutomationAssignmentCreatedPayload;
+  | UserConnectionRevokedPayload;
 
 /**
  * Webhook event type constants (object form for backward compatibility)
@@ -143,6 +143,7 @@ export const WEBHOOK_EVENTS = {
   AGENDA_ITEM_CREATED: 'agenda_item.created',
   AGENDA_ITEM_DELETED: 'agenda_item.deleted',
   AGENDA_ITEM_UPDATED: 'agenda_item.updated',
+  AUTOMATION_ASSIGNMENT_CREATED: 'automation.assignment.created',
   CALENDAR_EVENT_CREATED: 'calendar_event.created',
   CALENDAR_EVENT_DELETED: 'calendar_event.deleted',
   CALENDAR_EVENT_UPDATED: 'calendar_event.updated',
@@ -160,7 +161,6 @@ export const WEBHOOK_EVENTS = {
   SESSION_TURN_COMPLETED: 'session.turn.completed',
   SESSION_TURN_FAILED: 'session.turn.failed',
   USER_CONNECTION_REVOKED: 'user.connection.revoked',
-  WORKFLOW_ASSIGNMENT_CREATED: 'workflow.assignment.created',
 } as const;
 
 /**
