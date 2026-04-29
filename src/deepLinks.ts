@@ -118,13 +118,13 @@ export function buildSettingsLink(section: SettingsSection, baseURL?: string): s
  * // https://app.contio.ai/open/?chat=new
  *
  * buildChatLink({ message: 'Summarize my meetings this week' });
- * // https://app.contio.ai/open/?chat=new&chatMessage=Summarize+my+meetings+this+week
+ * // https://app.contio.ai/open/?chat=new&prefill=Summarize+my+meetings+this+week
  * ```
  */
 export function buildChatLink(options?: ChatDeepLinkOptions, baseURL?: string): string {
   const queryParams: Record<string, string> = { chat: 'new' };
   if (options?.message) {
-    queryParams.chatMessage = options.message;
+    queryParams.prefill = options.message;
   }
   return buildAppDeepLink({ path: '/', queryParams }, baseURL);
 }

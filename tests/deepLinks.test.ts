@@ -74,11 +74,11 @@ describe('buildAppDeepLink', () => {
     it('should handle multiple query parameters', () => {
       const url = buildAppDeepLink({
         path: '/',
-        queryParams: { chat: 'new', chatMessage: 'Hi there' },
+        queryParams: { chat: 'new', prefill: 'Hi there' },
       });
 
       expect(url).toContain('chat=new');
-      expect(url).toContain('chatMessage=Hi+there');
+      expect(url).toContain('prefill=Hi+there');
     });
   });
 
@@ -205,18 +205,18 @@ describe('buildChatLink', () => {
     expect(url).toBe('https://app.contio.ai/open/?chat=new');
   });
 
-  it('should include chatMessage when message provided', () => {
+  it('should include prefill when message provided', () => {
     const url = buildChatLink({ message: 'Summarize my meetings' });
 
     expect(url).toContain('chat=new');
-    expect(url).toContain('chatMessage=Summarize+my+meetings');
+    expect(url).toContain('prefill=Summarize+my+meetings');
   });
 
   it('should encode special characters in message', () => {
     const url = buildChatLink({ message: 'What happened in Q1 & Q2?' });
 
     expect(url).toContain('chat=new');
-    expect(url).toContain('chatMessage=');
+    expect(url).toContain('prefill=');
     // Should be URL-encoded
     expect(url).not.toContain('&Q2');
   });
@@ -235,7 +235,7 @@ describe('buildChatLink', () => {
 
     expect(url).toContain('https://staging.contio.ai/open/');
     expect(url).toContain('chat=new');
-    expect(url).toContain('chatMessage=Hello');
+    expect(url).toContain('prefill=Hello');
   });
 
   describe('type safety', () => {
@@ -243,7 +243,7 @@ describe('buildChatLink', () => {
       const options: ChatDeepLinkOptions = { message: 'test' };
       const url = buildChatLink(options);
 
-      expect(url).toContain('chatMessage=test');
+      expect(url).toContain('prefill=test');
     });
   });
 });
