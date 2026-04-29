@@ -29,6 +29,9 @@ export * from './webhooks';
 // Export SSO utilities
 export * from './sso';
 
+// Export deep-link utilities
+export * from './deepLinks';
+
 // Main SDK class for convenience
 export class ContioPartnerSDK {
   public readonly oauth: OAuthClient;
