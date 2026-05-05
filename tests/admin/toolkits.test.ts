@@ -163,9 +163,42 @@ describe('PartnerAdminClient › Toolkit Versions', () => {
     version_label: '2.0.0',
     status: 'DRAFT',
     manifest: {
+      schema_version: '1',
+      toolkit_prompt: 'You are a helpful meeting assistant.',
+      usage_guidance: 'Use this toolkit for sales meetings.',
       templates: [],
       next_steps: [],
       action_buttons: [],
+      shortcuts: [
+        {
+          spec: {
+            $id: 'quick-summary',
+            name: 'Quick Summary',
+            prompt: 'Summarize the meeting.',
+            surfaces: [{ surface: 'MEETING_REVIEW', position: 1 }],
+          },
+        },
+      ],
+      workflows: [
+        {
+          spec: {
+            $id: 'follow-up-workflow',
+            name: 'Follow-up Workflow',
+            description: 'Automated follow-up after meeting',
+            spec: { nodes: [], edges: [] },
+          },
+        },
+      ],
+      canvas_templates: [
+        {
+          spec: {
+            $id: 'meeting-notes',
+            name: 'Meeting Notes Canvas',
+            description: 'Template for capturing meeting notes',
+            canvas_type: 'MANUAL',
+          },
+        },
+      ],
     },
     changelog: 'New features added',
     created_at: '2025-02-01T10:00:00Z',
@@ -196,7 +229,16 @@ describe('PartnerAdminClient › Toolkit Versions', () => {
   describe('createToolkitVersion', () => {
     const createRequest: CreateToolkitVersionRequest = {
       version_label: '2.0.0',
-      manifest: { templates: [], next_steps: [], action_buttons: [] },
+      manifest: {
+        schema_version: '1',
+        toolkit_prompt: 'You are a helpful meeting assistant.',
+        templates: [],
+        next_steps: [],
+        action_buttons: [],
+        shortcuts: [],
+        workflows: [],
+        canvas_templates: [],
+      },
       changelog: 'New features added',
     };
 
@@ -215,10 +257,23 @@ describe('PartnerAdminClient › Toolkit Versions', () => {
         const body = JSON.parse(config.data);
         expect(body.version_label).toBe('2.0.0');
         expect(body.changelog).toBe('New features added');
+        expect(body.manifest.schema_version).toBe('1');
         return [201, mockVersion];
       });
 
       await ctx.adminClient.createToolkitVersion('toolkit-123', createRequest);
+    });
+
+    it('should validate manifest contains new entity types', async () => {
+      ctx.mockAxios.onPost('/toolkits/toolkit-123/versions').reply(201, mockVersion);
+
+      const version = await ctx.adminClient.createToolkitVersion('toolkit-123', createRequest);
+
+      expect(version.manifest.shortcuts).toBeDefined();
+      expect(version.manifest.workflows).toBeDefined();
+      expect(version.manifest.canvas_templates).toBeDefined();
+      expect(version.manifest.shortcuts).toHaveLength(1);
+      expect(version.manifest.shortcuts![0].spec?.$id).toBe('quick-summary');
     });
   });
 
@@ -316,17 +371,25 @@ describe('PartnerAdminClient › Toolkit Export', () => {
       name: 'Exported Bundle',
       slug: 'exported-bundle',
       version: '1.0.0',
+      license: 'MIT',
+      license_url: 'https://opensource.org/licenses/MIT',
     },
     manifest: {
+      schema_version: '1',
       templates: [],
       next_steps: [],
       action_buttons: [],
+      shortcuts: [],
+      workflows: [],
+      canvas_templates: [],
     },
     summary: {
       templates: 1,
       next_steps: 2,
       action_buttons: 3,
       shortcuts: 0,
+      workflows: 1,
+      canvas_templates: 2,
     },
     warnings: [],
   };
@@ -334,6 +397,8 @@ describe('PartnerAdminClient › Toolkit Export', () => {
   describe('exportEntities', () => {
     const exportRequest: ExportEntitiesRequest = {
       template_ids: ['template-uuid-1'],
+      workflow_ids: ['workflow-uuid-1'],
+      canvas_template_ids: ['canvas-uuid-1', 'canvas-uuid-2'],
       name: 'My Export',
     };
 
@@ -344,18 +409,31 @@ describe('PartnerAdminClient › Toolkit Export', () => {
 
       expect(response.summary.templates).toBe(1);
       expect(response.summary.next_steps).toBe(2);
+      expect(response.summary.workflows).toBe(1);
+      expect(response.summary.canvas_templates).toBe(2);
       expect(response.metadata?.name).toBe('Exported Bundle');
     });
 
-    it('should send correct request body', async () => {
+    it('should send correct request body with all entity types', async () => {
       ctx.mockAxios.onPost('/toolkits/export').reply((config) => {
         const body = JSON.parse(config.data);
         expect(body.template_ids).toEqual(['template-uuid-1']);
+        expect(body.workflow_ids).toEqual(['workflow-uuid-1']);
+        expect(body.canvas_template_ids).toEqual(['canvas-uuid-1', 'canvas-uuid-2']);
         expect(body.name).toBe('My Export');
         return [200, mockExportResponse];
       });
 
       await ctx.adminClient.exportEntities(exportRequest);
+    });
+
+    it('should include license metadata in export response', async () => {
+      ctx.mockAxios.onPost('/toolkits/export').reply(200, mockExportResponse);
+
+      const response = await ctx.adminClient.exportEntities(exportRequest);
+
+      expect(response.metadata?.license).toBe('MIT');
+      expect(response.metadata?.license_url).toBe('https://opensource.org/licenses/MIT');
     });
   });
 
@@ -367,6 +445,19 @@ describe('PartnerAdminClient › Toolkit Export', () => {
 
       expect(response.manifest).toBeDefined();
       expect(response.summary.action_buttons).toBe(3);
+      expect(response.summary.workflows).toBe(1);
+      expect(response.summary.canvas_templates).toBe(2);
+    });
+
+    it('should include schema_version in exported manifest', async () => {
+      ctx.mockAxios.onGet('/toolkits/toolkit-123/export').reply(200, mockExportResponse);
+
+      const response = await ctx.adminClient.exportToolkit('toolkit-123');
+
+      expect(response.manifest.schema_version).toBe('1');
+      expect(response.manifest.shortcuts).toBeDefined();
+      expect(response.manifest.workflows).toBeDefined();
+      expect(response.manifest.canvas_templates).toBeDefined();
     });
   });
 });
