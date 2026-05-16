@@ -1117,8 +1117,12 @@ export class PartnerUserClient extends BaseClient {
    * console.log(`Installed at ${installation.installed_at}`);
    * ```
    */
-  async installToolkit(toolkitId: string, options?: RequestOptions): Promise<ToolkitInstallation> {
-    return userToolkits.installToolkit(this.http, toolkitId, options);
+  async installToolkit(
+    toolkitId: string,
+    params?: userToolkits.InstallToolkitParams,
+    options?: RequestOptions,
+  ): Promise<ToolkitInstallation> {
+    return userToolkits.installToolkit(this.http, toolkitId, params, options);
   }
 
   /**

@@ -16,6 +16,8 @@ export interface AgendaItem {
   time_allocation_minutes?: number;
   presenters?: string[];
   restricted_to_leads?: boolean;
+  /** Private talking points / notes for this agenda item. */
+  talking_points?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -27,6 +29,8 @@ export interface CreateAgendaItemRequest {
   time_allocation_minutes?: number;
   presenters?: string[];
   restricted_to_leads?: boolean;
+  /** Private talking points / notes for this agenda item. */
+  talking_points?: string;
 }
 
 export interface UpdateAgendaItemRequest {
@@ -37,6 +41,8 @@ export interface UpdateAgendaItemRequest {
   time_allocation_minutes?: number;
   presenters?: string[];
   restricted_to_leads?: boolean;
+  /** Private talking points / notes for this agenda item. */
+  talking_points?: string;
 }
 
 export interface AgendaItemListResponse {

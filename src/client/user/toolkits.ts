@@ -39,18 +39,27 @@ export async function getToolkit(
   return http.get<ToolkitWithInstallation>(`/toolkits/${toolkitId}`, undefined, options);
 }
 
+/** Optional parameters for toolkit installation. */
+export interface InstallToolkitParams {
+  /** If true, validates the installation without creating entities. */
+  dry_run?: boolean;
+}
+
 /**
  * Install a toolkit in the user's workspace.
  *
  * Creates all toolkit entities (templates, next steps, action buttons)
  * in the user's workspace based on the toolkit manifest.
+ *
+ * Pass `{ dry_run: true }` to validate the installation without side effects.
  */
 export async function installToolkit(
   http: HttpTransport,
   toolkitId: string,
+  params?: InstallToolkitParams,
   options?: RequestOptions,
 ): Promise<ToolkitInstallation> {
-  return http.post<ToolkitInstallation>(`/toolkits/${toolkitId}/install`, undefined, options);
+  return http.post<ToolkitInstallation>(`/toolkits/${toolkitId}/install`, params, options);
 }
 
 /**

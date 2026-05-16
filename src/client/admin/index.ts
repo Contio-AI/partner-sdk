@@ -43,10 +43,15 @@ import {
   ToolkitListParams,
   ToolkitListResponse,
   CreateToolkitRequest,
+  CreateToolkitResponse,
   UpdateToolkitRequest,
   ToolkitVersion,
   CreateToolkitVersionRequest,
+  CreateToolkitVersionResponse,
   UpdateToolkitVersionRequest,
+  PublishToolkitVersionRequest,
+  ToolkitInstallationListResponse,
+  PartnerWorkspaceListResponse,
   ExportEntitiesRequest,
   ExportResponse,
   // Template-related imports
@@ -685,7 +690,7 @@ export class PartnerAdminClient extends BaseClient {
    * @returns The newly created toolkit
    * @throws {ContioAPIError} If validation fails
    */
-  async createToolkit(data: CreateToolkitRequest): Promise<Toolkit> {
+  async createToolkit(data: CreateToolkitRequest): Promise<CreateToolkitResponse> {
     return toolkits.createToolkit(this.http, data);
   }
 
@@ -759,7 +764,7 @@ export class PartnerAdminClient extends BaseClient {
    * @returns The newly created draft version
    * @throws {ContioAPIError} 409 if a draft version already exists
    */
-  async createToolkitVersion(toolkitId: string, data: CreateToolkitVersionRequest): Promise<ToolkitVersion> {
+  async createToolkitVersion(toolkitId: string, data: CreateToolkitVersionRequest): Promise<CreateToolkitVersionResponse> {
     return toolkits.createToolkitVersion(this.http, toolkitId, data);
   }
 
@@ -801,8 +806,19 @@ export class PartnerAdminClient extends BaseClient {
    * @param versionId - The unique version ID (must be in DRAFT status)
    * @throws {ContioAPIError} 400 if the version is not in DRAFT status
    */
-  async publishToolkitVersion(toolkitId: string, versionId: string): Promise<void> {
-    return toolkits.publishToolkitVersion(this.http, toolkitId, versionId);
+  /**
+   * Publish a draft toolkit version.
+   *
+   * Transitions the version from DRAFT to PUBLISHED. Any previously published
+   * version is automatically deprecated. Optionally propagate to connected workspaces.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param versionId - The unique version ID (must be in DRAFT status)
+   * @param data - Optional propagation settings
+   * @throws {ContioAPIError} 400 if the version is not in DRAFT status
+   */
+  async publishToolkitVersion(toolkitId: string, versionId: string, data?: PublishToolkitVersionRequest): Promise<void> {
+    return toolkits.publishToolkitVersion(this.http, toolkitId, versionId, data);
   }
 
   /**
@@ -1004,5 +1020,34 @@ export class PartnerAdminClient extends BaseClient {
    */
   async exportToolkit(toolkitId: string): Promise<ExportResponse> {
     return toolkits.exportToolkit(this.http, toolkitId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Toolkit Distribution endpoints (v1.7.0)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List all installations of a toolkit across connected workspaces.
+   *
+   * Returns installation status per workspace along with aggregate counts.
+   *
+   * @param toolkitId - The unique toolkit ID
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of installations with summary counts
+   * @throws {ContioAPIError} If the toolkit is not found
+   */
+  async getToolkitInstallations(toolkitId: string, params?: ToolkitListParams): Promise<ToolkitInstallationListResponse> {
+    return toolkits.getToolkitInstallations(this.http, toolkitId, params);
+  }
+
+  /**
+   * List all workspaces connected to the partner.
+   *
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of connected workspaces
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getWorkspaces(params?: ToolkitListParams): Promise<PartnerWorkspaceListResponse> {
+    return toolkits.getWorkspaces(this.http, params);
   }
 }
