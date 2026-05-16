@@ -6,6 +6,31 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-05-16
+
+### Added
+
+- **Toolkit Distribution** — visibility and propagation controls for toolkit deployments across connected workspaces:
+  - `getToolkitInstallations(toolkitId)` — list all installations of a toolkit with per-workspace status and aggregate counts
+  - `getWorkspaces()` — list all workspaces connected to the partner
+  - `publishToolkitVersion(toolkitId, versionId, { propagation })` — publish with optional propagation mode (`none`, `normal`, `force`)
+- **New model types**: `PropagationMode`, `PublishToolkitVersionRequest`, `ToolkitInstallationStatus`, `ToolkitInstallationItem`, `ToolkitInstallationSummary`, `ToolkitInstallationListResponse`, `PartnerWorkspace`, `PartnerWorkspaceListResponse`
+- **Dry-run support** — validate manifests and installations without side effects:
+  - `createToolkit({ ..., dry_run: true })` returns validation results and conflict analysis
+  - `createToolkitVersion(toolkitId, { ..., dry_run: true })` returns validation results
+  - `installToolkit(toolkitId, { dry_run: true })` validates installation without creating entities
+- **New response types**: `CreateToolkitResponse`, `CreateToolkitVersionResponse`, `ValidationResult`, `ManifestValidationError`, `ConflictInfo`, `ManifestSummary`
+- **Talking points** — private notes for agenda items:
+  - `talking_points` field added to `AgendaItem`, `CreateAgendaItemRequest`, and `UpdateAgendaItemRequest`
+
+### Changed
+
+- `Toolkit` interface now includes `auto_propagate` and `auto_install_on_new_workspaces` fields
+- `UpdateToolkitRequest` now accepts `auto_propagate` and `auto_install_on_new_workspaces`
+- `createToolkit()` return type changed from `Toolkit` to `CreateToolkitResponse` (toolkit is at `.toolkit`)
+- `createToolkitVersion()` return type changed from `ToolkitVersion` to `CreateToolkitVersionResponse` (version is at `.version`)
+- `installToolkit()` now accepts an optional `InstallToolkitParams` parameter for dry-run support
+
 ## [1.6.0] - 2026-04-16
 
 ### Added

@@ -19,6 +19,10 @@ export interface Toolkit {
   ownership_type: string;
   partner_app_id: string;
   manifest: ToolkitManifest;
+  /** Whether new published versions are automatically propagated to connected workspaces. */
+  auto_propagate: boolean;
+  /** Whether the toolkit is automatically installed when a new workspace connects. */
+  auto_install_on_new_workspaces: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -257,12 +261,18 @@ export interface CreateToolkitRequest {
   description?: string;
   version: string;
   manifest: ToolkitManifest;
+  /** If true, validates the manifest without creating the toolkit. */
+  dry_run?: boolean;
 }
 
 export interface UpdateToolkitRequest {
   name?: string;
   description?: string;
   is_active?: boolean;
+  /** Whether new published versions are automatically propagated to connected workspaces. */
+  auto_propagate?: boolean;
+  /** Whether the toolkit is automatically installed when a new workspace connects. */
+  auto_install_on_new_workspaces?: boolean;
   /**
    * @deprecated Use the toolkit versioning API instead.
    * Create a new draft version (POST /v1/partner/admin/toolkits/{id}/versions),
@@ -329,6 +339,8 @@ export interface CreateToolkitVersionRequest {
   manifest: ToolkitManifest;
   /** Optional changelog describing what changed in this version. */
   changelog?: string;
+  /** If true, validates the manifest without creating the version. */
+  dry_run?: boolean;
 }
 
 /** Request body for updating a draft toolkit version. All fields are optional. */
@@ -428,5 +440,119 @@ export interface ExportResponse {
   manifest: ToolkitManifest;
   summary: ExportSummary;
   warnings?: ExportWarning[];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Toolkit Distribution Types (Admin API — v1.7.0)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Propagation mode when publishing a toolkit version. */
+export type PropagationMode = 'none' | 'normal' | 'force';
+
+/** Request body for publishing a toolkit version with optional propagation. */
+export interface PublishToolkitVersionRequest {
+  /** How to propagate this version to connected workspaces.
+   *  - `none` — Skip propagation (default).
+   *  - `normal` — Propagate to active installations, respecting opt-outs.
+   *  - `force` — Propagate to all installations, ignoring opt-outs.
+   */
+  propagation?: PropagationMode;
+}
+
+/** Status of a toolkit installation in a workspace. */
+export type ToolkitInstallationStatus = 'active' | 'opted_out';
+
+/** A single workspace's installation of a toolkit. */
+export interface ToolkitInstallationItem {
+  workspace_id: string;
+  workspace_name: string;
+  status: ToolkitInstallationStatus;
+  version_label?: string;
+  installed_at?: string;
+  uninstalled_at?: string;
+}
+
+/** Aggregate installation counts across all partner workspaces. */
+export interface ToolkitInstallationSummary {
+  active: number;
+  opted_out: number;
+  never_installed: number;
+}
+
+/** Response from GET /toolkits/{id}/installations. */
+export interface ToolkitInstallationListResponse {
+  items: ToolkitInstallationItem[];
+  summary: ToolkitInstallationSummary;
+  total_connected_workspaces: number;
+  limit: number;
+  offset: number;
+}
+
+/** A workspace connected to the partner. */
+export interface PartnerWorkspace {
+  workspace_id: string;
+  workspace_name: string;
+  provisioned_at: string;
+  user_count: number;
+}
+
+/** Response from GET /workspaces. */
+export interface PartnerWorkspaceListResponse {
+  items: PartnerWorkspace[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dry-Run / Validation Response Types (v1.7.0)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** A single validation error or warning from manifest analysis. */
+export interface ManifestValidationError {
+  path: string;
+  code: string;
+  message: string;
+}
+
+/** Result of manifest structural validation and portability analysis. */
+export interface ValidationResult {
+  valid: boolean;
+  errors?: ManifestValidationError[];
+  warnings?: ManifestValidationError[];
+}
+
+/** Describes a name collision between a manifest entity and an existing entity. */
+export interface ConflictInfo {
+  entity_type: string;
+  entity_name: string;
+  conflict_type: string;
+  existing_entity_id: string;
+  resolution: string;
+  message: string;
+}
+
+/** Counts of each entity type in a manifest. */
+export interface ManifestSummary {
+  templates: number;
+  next_steps: number;
+  action_buttons: number;
+  shortcuts: number;
+}
+
+/** Enriched response envelope for toolkit creation (includes dry-run metadata). */
+export interface CreateToolkitResponse {
+  toolkit?: Toolkit;
+  validation?: ValidationResult;
+  conflicts?: ConflictInfo[];
+  summary?: ManifestSummary;
+}
+
+/** Enriched response envelope for version creation (includes dry-run metadata). */
+export interface CreateToolkitVersionResponse {
+  version?: ToolkitVersion;
+  validation?: ValidationResult;
+  conflicts?: ConflictInfo[];
+  summary?: ManifestSummary;
 }
 

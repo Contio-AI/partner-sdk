@@ -11,10 +11,15 @@ import {
   ToolkitListParams,
   ToolkitListResponse,
   CreateToolkitRequest,
+  CreateToolkitResponse,
   UpdateToolkitRequest,
   ToolkitVersion,
   CreateToolkitVersionRequest,
+  CreateToolkitVersionResponse,
   UpdateToolkitVersionRequest,
+  PublishToolkitVersionRequest,
+  ToolkitInstallationListResponse,
+  PartnerWorkspaceListResponse,
   ExportEntitiesRequest,
   ExportResponse,
 } from '../../models';
@@ -22,8 +27,8 @@ import {
 export async function createToolkit(
   http: HttpTransport,
   data: CreateToolkitRequest,
-): Promise<Toolkit> {
-  return http.post<Toolkit>('/toolkits', data);
+): Promise<CreateToolkitResponse> {
+  return http.post<CreateToolkitResponse>('/toolkits', data);
 }
 
 export async function getToolkits(
@@ -68,8 +73,8 @@ export async function createToolkitVersion(
   http: HttpTransport,
   toolkitId: string,
   data: CreateToolkitVersionRequest,
-): Promise<ToolkitVersion> {
-  return http.post<ToolkitVersion>(`/toolkits/${toolkitId}/versions`, data);
+): Promise<CreateToolkitVersionResponse> {
+  return http.post<CreateToolkitVersionResponse>(`/toolkits/${toolkitId}/versions`, data);
 }
 
 export async function getToolkitVersion(
@@ -93,8 +98,26 @@ export async function publishToolkitVersion(
   http: HttpTransport,
   toolkitId: string,
   versionId: string,
+  data?: PublishToolkitVersionRequest,
 ): Promise<void> {
-  await http.post(`/toolkits/${toolkitId}/versions/${versionId}/publish`, {});
+  await http.post(`/toolkits/${toolkitId}/versions/${versionId}/publish`, data ?? {});
+}
+
+// ─── Toolkit Distribution ────────────────────────────────────────────────────
+
+export async function getToolkitInstallations(
+  http: HttpTransport,
+  toolkitId: string,
+  params?: ToolkitListParams,
+): Promise<ToolkitInstallationListResponse> {
+  return http.get<ToolkitInstallationListResponse>(`/toolkits/${toolkitId}/installations`, params);
+}
+
+export async function getWorkspaces(
+  http: HttpTransport,
+  params?: ToolkitListParams,
+): Promise<PartnerWorkspaceListResponse> {
+  return http.get<PartnerWorkspaceListResponse>('/workspaces', params);
 }
 
 export async function republishToolkitVersion(
