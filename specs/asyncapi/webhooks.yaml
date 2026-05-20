@@ -223,6 +223,54 @@ channels:
                 name: user.connection.revoked
                 payload:
                     $ref: '#/components/schemas/UserConnectionRevokedPayload'
+    workflow.run.completed:
+        subscribe:
+            summary: Sent when a workflow run completes successfully
+            operationId: onWorkflowRunCompleted
+            message:
+                name: workflow.run.completed
+                payload:
+                    $ref: '#/components/schemas/WorkflowRunCompletedPayload'
+    workflow.run.failed:
+        subscribe:
+            summary: Sent when a workflow run fails
+            operationId: onWorkflowRunFailed
+            message:
+                name: workflow.run.failed
+                payload:
+                    $ref: '#/components/schemas/WorkflowRunFailedPayload'
+    workflow.run.started:
+        subscribe:
+            summary: Sent when a workflow run starts
+            operationId: onWorkflowRunStarted
+            message:
+                name: workflow.run.started
+                payload:
+                    $ref: '#/components/schemas/WorkflowRunStartedPayload'
+    workflow.step.completed:
+        subscribe:
+            summary: Sent when a workflow step completes
+            operationId: onWorkflowStepCompleted
+            message:
+                name: workflow.step.completed
+                payload:
+                    $ref: '#/components/schemas/WorkflowStepCompletedPayload'
+    workflow.task.created:
+        subscribe:
+            summary: Sent when a workflow task is created
+            operationId: onWorkflowTaskCreated
+            message:
+                name: workflow.task.created
+                payload:
+                    $ref: '#/components/schemas/WorkflowTaskCreatedPayload'
+    workflow.task.resolved:
+        subscribe:
+            summary: Sent when a workflow task is resolved
+            operationId: onWorkflowTaskResolved
+            message:
+                name: workflow.task.resolved
+                payload:
+                    $ref: '#/components/schemas/WorkflowTaskResolvedPayload'
 components:
     schemas:
         ActionButtonTriggeredData:
@@ -240,6 +288,11 @@ components:
                     format: uuid
                 action_button_name:
                     type: string
+                invocation_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
                 meeting_id:
                     type: string
                     format: uuid
@@ -1178,3 +1231,241 @@ components:
                 id:
                     type: string
                     format: uuid
+        WorkflowRunCompletedData:
+            type: object
+            required:
+                - completed_at
+                - duration_ms
+                - final_status
+                - run_id
+                - template_id
+                - total_steps
+                - workspace_id
+            properties:
+                completed_at:
+                    type: string
+                    format: date-time
+                duration_ms:
+                    type: integer
+                final_status:
+                    type: string
+                run_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type: string
+                    format: uuid
+                total_steps:
+                    type: integer
+                workspace_id:
+                    type: string
+                    format: uuid
+        WorkflowRunCompletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/WorkflowRunCompletedData'
+                    event_type:
+                        const: workflow.run.completed
+                  type: object
+        WorkflowRunFailedData:
+            type: object
+            required:
+                - error_message
+                - failed_at
+                - final_status
+                - run_id
+                - template_id
+                - workspace_id
+            properties:
+                error_message:
+                    type: string
+                failed_at:
+                    type: string
+                    format: date-time
+                final_status:
+                    type: string
+                node_id:
+                    type:
+                        - string
+                        - "null"
+                run_id:
+                    type: string
+                    format: uuid
+                step_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                template_id:
+                    type: string
+                    format: uuid
+                workspace_id:
+                    type: string
+                    format: uuid
+        WorkflowRunFailedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/WorkflowRunFailedData'
+                    event_type:
+                        const: workflow.run.failed
+                  type: object
+        WorkflowRunStartedData:
+            type: object
+            required:
+                - originating_id
+                - originating_type
+                - run_id
+                - started_at
+                - template_id
+                - trigger_type
+                - workspace_id
+            properties:
+                originating_id:
+                    type: string
+                    format: uuid
+                originating_type:
+                    type: string
+                run_id:
+                    type: string
+                    format: uuid
+                started_at:
+                    type: string
+                    format: date-time
+                template_id:
+                    type: string
+                    format: uuid
+                trigger_type:
+                    type: string
+                triggered_by:
+                    type:
+                        - string
+                        - "null"
+                workspace_id:
+                    type: string
+                    format: uuid
+        WorkflowRunStartedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/WorkflowRunStartedData'
+                    event_type:
+                        const: workflow.run.started
+                  type: object
+        WorkflowStepCompletedData:
+            type: object
+            required:
+                - completed_at
+                - node_id
+                - node_type
+                - run_id
+                - status
+                - step_id
+            properties:
+                completed_at:
+                    type: string
+                    format: date-time
+                node_id:
+                    type: string
+                node_type:
+                    type: string
+                output_summary: {}
+                run_id:
+                    type: string
+                    format: uuid
+                status:
+                    type: string
+                step_id:
+                    type: string
+                    format: uuid
+        WorkflowStepCompletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/WorkflowStepCompletedData'
+                    event_type:
+                        const: workflow.step.completed
+                  type: object
+        WorkflowTaskCreatedData:
+            type: object
+            required:
+                - assignee_user_id
+                - created_at
+                - run_id
+                - task_id
+                - task_type
+                - title
+                - workspace_id
+            properties:
+                assignee_user_id:
+                    type: string
+                    format: uuid
+                created_at:
+                    type: string
+                    format: date-time
+                run_id:
+                    type: string
+                    format: uuid
+                task_id:
+                    type: string
+                    format: uuid
+                task_type:
+                    type: string
+                title:
+                    type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        WorkflowTaskCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/WorkflowTaskCreatedData'
+                    event_type:
+                        const: workflow.task.created
+                  type: object
+        WorkflowTaskResolvedData:
+            type: object
+            required:
+                - decision
+                - resolved_at
+                - resolved_by
+                - run_id
+                - task_id
+                - workspace_id
+            properties:
+                decision:
+                    type: string
+                reason:
+                    type:
+                        - string
+                        - "null"
+                resolved_at:
+                    type: string
+                    format: date-time
+                resolved_by:
+                    type: string
+                run_id:
+                    type: string
+                    format: uuid
+                task_id:
+                    type: string
+                    format: uuid
+                workspace_id:
+                    type: string
+                    format: uuid
+        WorkflowTaskResolvedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/WorkflowTaskResolvedData'
+                    event_type:
+                        const: workflow.task.resolved
+                  type: object

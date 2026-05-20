@@ -5,7 +5,7 @@
  *
  * Source: specs/asyncapi/webhooks.yaml
  * Spec version: 1.6.0
- * Generated: 2026-04-24T09:39:51.217Z
+ * Generated: 2026-05-20T10:12:16.563Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -23,6 +23,7 @@ export interface ActionButtonTriggeredPayload {
 export interface ActionButtonTriggeredData {
   'action_button_id': string;
   'action_button_name': string;
+  'invocation_id'?: string | null;
   'meeting_id': string;
   'next_step_id'?: string | null;
   'result_id'?: string | null;
@@ -306,20 +307,20 @@ export interface MeetingContextProcessedData {
   'context_id': string;
   'meeting_id': string;
   'processed_at': string;
-  'sanitization_report': AnonymousSchema_117;
+  'sanitization_report': AnonymousSchema_118;
   'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_117 {
+export interface AnonymousSchema_118 {
   'formula_escaped': boolean;
   'pii_detected': boolean;
-  'redactions'?: AnonymousSchema_121[];
+  'redactions'?: AnonymousSchema_122[];
   'secrets_detected': boolean;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_121 {
+export interface AnonymousSchema_122 {
   'count': number;
   'type': string;
   'additionalProperties'?: Record<string, unknown>;
@@ -376,14 +377,14 @@ export interface MeetingTemplateAppliedPayload {
 export interface MeetingTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_144;
+  'applied_items': AnonymousSchema_145;
   'meeting_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_144 {
+export interface AnonymousSchema_145 {
   'agenda_items': number;
   'documents': number;
   'participants': number;
@@ -532,6 +533,134 @@ export interface UserConnectionRevokedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
+export interface WorkflowRunCompletedPayload {
+  'data': WorkflowRunCompletedData;
+  'event_id': string;
+  'event_type': 'workflow.run.completed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowRunCompletedData {
+  'completed_at': string;
+  'duration_ms': number;
+  'final_status': string;
+  'run_id': string;
+  'template_id': string;
+  'total_steps': number;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowRunFailedPayload {
+  'data': WorkflowRunFailedData;
+  'event_id': string;
+  'event_type': 'workflow.run.failed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowRunFailedData {
+  'error_message': string;
+  'failed_at': string;
+  'final_status': string;
+  'node_id'?: string | null;
+  'run_id': string;
+  'step_id'?: string | null;
+  'template_id': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowRunStartedPayload {
+  'data': WorkflowRunStartedData;
+  'event_id': string;
+  'event_type': 'workflow.run.started';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowRunStartedData {
+  'originating_id': string;
+  'originating_type': string;
+  'run_id': string;
+  'started_at': string;
+  'template_id': string;
+  'trigger_type': string;
+  'triggered_by'?: string | null;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowStepCompletedPayload {
+  'data': WorkflowStepCompletedData;
+  'event_id': string;
+  'event_type': 'workflow.step.completed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowStepCompletedData {
+  'completed_at': string;
+  'node_id': string;
+  'node_type': string;
+  'output_summary'?: any;
+  'run_id': string;
+  'status': string;
+  'step_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowTaskCreatedPayload {
+  'data': WorkflowTaskCreatedData;
+  'event_id': string;
+  'event_type': 'workflow.task.created';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowTaskCreatedData {
+  'assignee_user_id': string;
+  'created_at': string;
+  'run_id': string;
+  'task_id': string;
+  'task_type': string;
+  'title': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowTaskResolvedPayload {
+  'data': WorkflowTaskResolvedData;
+  'event_id': string;
+  'event_type': 'workflow.task.resolved';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface WorkflowTaskResolvedData {
+  'decision': string;
+  'reason'?: string | null;
+  'resolved_at': string;
+  'resolved_by': string;
+  'run_id': string;
+  'task_id': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
 /**
  * All webhook event type names
  */
@@ -561,6 +690,12 @@ export const WEBHOOK_EVENT_TYPES = [
   'session.turn.completed',
   'session.turn.failed',
   'user.connection.revoked',
+  'workflow.run.completed',
+  'workflow.run.failed',
+  'workflow.run.started',
+  'workflow.step.completed',
+  'workflow.task.created',
+  'workflow.task.resolved',
 ] as const;
 
 export type WebhookEventType = typeof WEBHOOK_EVENT_TYPES[number];
