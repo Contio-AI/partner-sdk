@@ -37,6 +37,12 @@ export type {
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
+  WorkflowRunCompletedPayload,
+  WorkflowRunFailedPayload,
+  WorkflowRunStartedPayload,
+  WorkflowStepCompletedPayload,
+  WorkflowTaskCreatedPayload,
+  WorkflowTaskResolvedPayload,
   // Data types (event-specific data)
   ActionButtonTriggeredData,
   ActionItemCompletedData,
@@ -63,6 +69,12 @@ export type {
   SessionTurnCompletedData,
   SessionTurnFailedData,
   UserConnectionRevokedData,
+  WorkflowRunCompletedData,
+  WorkflowRunFailedData,
+  WorkflowRunStartedData,
+  WorkflowStepCompletedData,
+  WorkflowTaskCreatedData,
+  WorkflowTaskResolvedData,
   // Shared types
   WebhookUserContext,
   ParticipantInfo,
@@ -99,6 +111,12 @@ import type {
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
   UserConnectionRevokedPayload,
+  WorkflowRunCompletedPayload,
+  WorkflowRunFailedPayload,
+  WorkflowRunStartedPayload,
+  WorkflowStepCompletedPayload,
+  WorkflowTaskCreatedPayload,
+  WorkflowTaskResolvedPayload,
 } from '../generated/webhook-types';
 
 /**
@@ -129,7 +147,13 @@ export type ContioWebhookEvent =
   | SessionExpiredPayload
   | SessionTurnCompletedPayload
   | SessionTurnFailedPayload
-  | UserConnectionRevokedPayload;
+  | UserConnectionRevokedPayload
+  | WorkflowRunCompletedPayload
+  | WorkflowRunFailedPayload
+  | WorkflowRunStartedPayload
+  | WorkflowStepCompletedPayload
+  | WorkflowTaskCreatedPayload
+  | WorkflowTaskResolvedPayload;
 
 /**
  * Webhook event type constants (object form for backward compatibility)
@@ -161,6 +185,12 @@ export const WEBHOOK_EVENTS = {
   SESSION_TURN_COMPLETED: 'session.turn.completed',
   SESSION_TURN_FAILED: 'session.turn.failed',
   USER_CONNECTION_REVOKED: 'user.connection.revoked',
+  WORKFLOW_RUN_COMPLETED: 'workflow.run.completed',
+  WORKFLOW_RUN_FAILED: 'workflow.run.failed',
+  WORKFLOW_RUN_STARTED: 'workflow.run.started',
+  WORKFLOW_STEP_COMPLETED: 'workflow.step.completed',
+  WORKFLOW_TASK_CREATED: 'workflow.task.created',
+  WORKFLOW_TASK_RESOLVED: 'workflow.task.resolved',
 } as const;
 
 /**
