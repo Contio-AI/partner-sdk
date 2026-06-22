@@ -10,7 +10,7 @@ import { ErrorResponse } from '../models/auth';
  * SDK version for User-Agent header.
  * This is updated during the release process.
  */
-export const SDK_VERSION = '1.4.5';
+export const SDK_VERSION = '1.8.0';
 
 export interface ClientConfig {
   baseURL?: string;
@@ -34,12 +34,41 @@ export interface RequestOptions {
    * (e.g., 'America/New_York') or a timezone abbreviation (e.g., 'EST', 'PST').
    */
   timezone?: string;
+  /**
+   * Idempotency key for safe retries on mutation requests (POST, PUT, PATCH, DELETE).
+   * The API deduplicates requests sharing the same key within a 24-hour window —
+   * the first request executes normally and its response is stored; subsequent retries
+   * with the same key replay the stored response without re-executing.
+   *
+   * - Ignored on GET/HEAD requests (they are naturally idempotent).
+   * - Ignored on multipart/file-upload endpoints.
+   * - Must be ≤255 printable ASCII characters.
+   * - A conflict (another request with the same key still in flight) returns a 409
+   *   error whose {@link ContioAPIError.retryAfter} field indicates when to retry.
+   *
+   * Use `crypto.randomUUID()` to generate a unique key per logical operation and
+   * reuse that same key on every retry of that operation.
+   */
+  idempotencyKey?: string;
 }
 
 /**
  * Header name for client timezone
  */
 export const TIMEZONE_HEADER = 'X-Client-Timezone';
+
+/**
+ * Header name for idempotency keys on mutation requests.
+ * @see {@link RequestOptions.idempotencyKey}
+ */
+export const IDEMPOTENCY_KEY_HEADER = 'Idempotency-Key';
+
+/**
+ * Response header set to `"true"` by the API when the response body is a
+ * replay of a previously captured response (i.e. the idempotency key was
+ * already used and the original response is being returned verbatim).
+ */
+export const IDEMPOTENT_REPLAYED_HEADER = 'Idempotent-Replayed';
 
 export class ContioAPIError extends Error {
   public readonly code: string;
@@ -123,7 +152,7 @@ export abstract class BaseClient {
   protected abstract addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>;
 
   /**
-   * Build axios config with optional per-request timezone override
+   * Build axios config with optional per-request overrides (timezone, idempotency key).
    */
   protected buildRequestConfig(options?: RequestOptions, baseConfig?: AxiosRequestConfig): AxiosRequestConfig {
     const config: AxiosRequestConfig = { ...baseConfig };
@@ -132,6 +161,13 @@ export abstract class BaseClient {
       config.headers = {
         ...config.headers,
         [TIMEZONE_HEADER]: options.timezone,
+      };
+    }
+
+    if (options?.idempotencyKey) {
+      config.headers = {
+        ...config.headers,
+        [IDEMPOTENCY_KEY_HEADER]: options.idempotencyKey,
       };
     }
 

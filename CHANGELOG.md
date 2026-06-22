@@ -6,6 +6,17 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-06-22
+
+### Added
+
+- **Idempotency support** — mutation endpoints (POST, PUT, PATCH, DELETE) now accept an `idempotencyKey` via `RequestOptions`. The API deduplicates requests sharing the same key within a 24-hour window; subsequent retries with the same key replay the stored response without re-executing side effects.
+  - `RequestOptions.idempotencyKey?: string` — pass `crypto.randomUUID()` once per logical operation and reuse on every retry of that operation.
+  - `IDEMPOTENCY_KEY_HEADER` constant (`'Idempotency-Key'`) exported from the root package — use when inspecting outgoing request headers.
+  - `IDEMPOTENT_REPLAYED_HEADER` constant (`'Idempotent-Replayed'`) exported from the root package — check this response header to detect replayed responses.
+  - A 409 conflict (same key already in flight) surfaces as a `ContioAPIError` with `statusCode: 409`; the `retryAfter` field indicates when to retry.
+  - Idempotency keys are ignored on GET/HEAD requests (naturally idempotent) and multipart/file-upload endpoints.
+
 ## [1.7.1] - 2026-05-21
 
 ### Changed
@@ -307,6 +318,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.8.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.7.1...v1.8.0
+[1.7.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.7.0...v1.7.1
+[1.7.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.7...v1.5.0
 [1.4.7]: https://github.com/Contio-AI/partner-sdk/compare/v1.4.6...v1.4.7
