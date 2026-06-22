@@ -6,7 +6,7 @@
 import MockAdapter from 'axios-mock-adapter';
 import { PartnerUserClient } from '../src/client/user';
 import { OAuthClient } from '../src/auth/oauth';
-import { ContioAPIError } from '../src/client/base';
+import { ContioAPIError, IDEMPOTENCY_KEY_HEADER, IDEMPOTENT_REPLAYED_HEADER } from '../src/client/base';
 
 describe('BaseClient', () => {
   let oauthClient: OAuthClient;
@@ -411,6 +411,79 @@ describe('BaseClient', () => {
         expect(apiError.retryAfter).toBe('30');
       }
       noRetryMockAxios.reset();
+    });
+  });
+
+  describe('Idempotency', () => {
+    it('should send Idempotency-Key header on POST requests', async () => {
+      mockAxios.onPost('/meetings').reply((config) => {
+        expect(config.headers?.[IDEMPOTENCY_KEY_HEADER]).toBe('test-idem-key');
+        return [201, { id: 'm1', title: 'Test' }];
+      });
+
+      await userClient.createMeeting(
+        { title: 'Test', start_time: '2026-06-22T10:00:00Z', end_time: '2026-06-22T11:00:00Z', workspace_id: 'ws1' },
+        { idempotencyKey: 'test-idem-key' },
+      );
+    });
+
+    it('should send Idempotency-Key header on PATCH requests', async () => {
+      mockAxios.onPatch('/meetings/m1').reply((config) => {
+        expect(config.headers?.[IDEMPOTENCY_KEY_HEADER]).toBe('patch-key');
+        return [200, { id: 'm1', title: 'Updated' }];
+      });
+
+      await userClient.updateMeeting('m1', { title: 'Updated' }, { idempotencyKey: 'patch-key' });
+    });
+
+    it('should send Idempotency-Key header on DELETE requests', async () => {
+      mockAxios.onDelete('/meetings/m1/participants/p1').reply((config) => {
+        expect(config.headers?.[IDEMPOTENCY_KEY_HEADER]).toBe('delete-key');
+        return [204, null];
+      });
+
+      await userClient.removeMeetingParticipant('m1', 'p1', { idempotencyKey: 'delete-key' });
+    });
+
+    it('should not send Idempotency-Key header when idempotencyKey is not set', async () => {
+      mockAxios.onPost('/meetings').reply((config) => {
+        expect(config.headers?.[IDEMPOTENCY_KEY_HEADER]).toBeUndefined();
+        return [201, { id: 'm1', title: 'Test' }];
+      });
+
+      await userClient.createMeeting(
+        { title: 'Test', start_time: '2026-06-22T10:00:00Z', end_time: '2026-06-22T11:00:00Z', workspace_id: 'ws1' },
+      );
+    });
+
+    it('should surface retryAfter on 409 in-flight conflict', async () => {
+      const noRetryClient = new PartnerUserClient(oauthClient, { retries: 0 });
+      const noRetryMock = new MockAdapter((noRetryClient as any).axiosInstance);
+
+      noRetryMock.onPost('/meetings').reply(
+        409,
+        { error: 'idempotency_conflict', code: 'idempotency_conflict', message: 'Request in progress' },
+        { 'retry-after': '5' },
+      );
+
+      try {
+        await noRetryClient.createMeeting(
+          { title: 'Test', start_time: '2026-06-22T10:00:00Z', end_time: '2026-06-22T11:00:00Z', workspace_id: 'ws1' },
+          { idempotencyKey: 'conflict-key' },
+        );
+        fail('Should have thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ContioAPIError);
+        const apiError = error as ContioAPIError;
+        expect(apiError.statusCode).toBe(409);
+        expect(apiError.retryAfter).toBe('5');
+      }
+      noRetryMock.reset();
+    });
+
+    it('should export IDEMPOTENCY_KEY_HEADER and IDEMPOTENT_REPLAYED_HEADER constants', () => {
+      expect(IDEMPOTENCY_KEY_HEADER).toBe('Idempotency-Key');
+      expect(IDEMPOTENT_REPLAYED_HEADER).toBe('Idempotent-Replayed');
     });
   });
 
