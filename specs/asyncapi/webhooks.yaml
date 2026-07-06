@@ -111,6 +111,14 @@ channels:
                 name: calendar_event.updated
                 payload:
                     $ref: '#/components/schemas/CalendarEventUpdatedPayload'
+    canvas_template.applied:
+        subscribe:
+            summary: Sent when a canvas template is applied to a canvas
+            operationId: onCanvasTemplateApplied
+            message:
+                name: canvas_template.applied
+                payload:
+                    $ref: '#/components/schemas/CanvasTemplateAppliedPayload'
     meeting.completed:
         subscribe:
             summary: Sent when a meeting ends and notes/summary are available
@@ -676,6 +684,46 @@ components:
                     event_type:
                         const: calendar_event.updated
                   type: object
+        CanvasTemplateAppliedData:
+            type: object
+            required:
+                - applied_at
+                - applied_by_user_id
+                - applied_items
+                - canvas_id
+                - template_id
+                - template_name
+            properties:
+                applied_at:
+                    type: string
+                    format: date-time
+                applied_by_user_id:
+                    type: string
+                    format: uuid
+                applied_items:
+                    type: object
+                    required:
+                        - collaborators
+                    properties:
+                        collaborators:
+                            type: integer
+                canvas_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type: string
+                    format: uuid
+                template_name:
+                    type: string
+        CanvasTemplateAppliedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasTemplateAppliedData'
+                    event_type:
+                        const: canvas_template.applied
+                  type: object
         MeetingCompletedData:
             type: object
             required:
@@ -933,14 +981,19 @@ components:
         NextStepCompletedData:
             type: object
             required:
+                - context_id
+                - context_type
                 - executed_at
                 - executed_by
                 - execution_mode
-                - meeting_id
                 - next_step_id
                 - next_step_name
-                - result_id
             properties:
+                context_id:
+                    type: string
+                    format: uuid
+                context_type:
+                    type: string
                 executed_at:
                     type: string
                     format: date-time
@@ -950,7 +1003,6 @@ components:
                     type: string
                 meeting_id:
                     type: string
-                    format: uuid
                 next_step_id:
                     type: string
                     format: uuid
@@ -958,7 +1010,6 @@ components:
                     type: string
                 result_id:
                     type: string
-                    format: uuid
         NextStepCompletedPayload:
             allOf:
                 - $ref: '#/components/schemas/WebhookPayloadBase'

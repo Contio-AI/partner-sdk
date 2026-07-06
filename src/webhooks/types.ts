@@ -23,6 +23,7 @@ export type {
   CalendarEventCreatedPayload,
   CalendarEventDeletedPayload,
   CalendarEventUpdatedPayload,
+  CanvasTemplateAppliedPayload,
   MeetingCompletedPayload,
   MeetingContextCreatedPayload,
   MeetingContextDeletedPayload,
@@ -55,6 +56,7 @@ export type {
   CalendarEventCreatedData,
   CalendarEventDeletedData,
   CalendarEventUpdatedData,
+  CanvasTemplateAppliedData,
   MeetingCompletedData,
   MeetingContextCreatedData,
   MeetingContextDeletedData,
@@ -97,6 +99,7 @@ import type {
   CalendarEventCreatedPayload,
   CalendarEventDeletedPayload,
   CalendarEventUpdatedPayload,
+  CanvasTemplateAppliedPayload,
   MeetingCompletedPayload,
   MeetingContextCreatedPayload,
   MeetingContextDeletedPayload,
@@ -134,6 +137,7 @@ export type ContioWebhookEvent =
   | CalendarEventCreatedPayload
   | CalendarEventDeletedPayload
   | CalendarEventUpdatedPayload
+  | CanvasTemplateAppliedPayload
   | MeetingCompletedPayload
   | MeetingContextCreatedPayload
   | MeetingContextDeletedPayload
@@ -171,6 +175,7 @@ export const WEBHOOK_EVENTS = {
   CALENDAR_EVENT_CREATED: 'calendar_event.created',
   CALENDAR_EVENT_DELETED: 'calendar_event.deleted',
   CALENDAR_EVENT_UPDATED: 'calendar_event.updated',
+  CANVAS_TEMPLATE_APPLIED: 'canvas_template.applied',
   MEETING_COMPLETED: 'meeting.completed',
   MEETING_CONTEXT_CREATED: 'meeting.context.created',
   MEETING_CONTEXT_DELETED: 'meeting.context.deleted',
