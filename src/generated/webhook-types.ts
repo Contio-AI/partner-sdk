@@ -5,7 +5,7 @@
  *
  * Source: specs/asyncapi/webhooks.yaml
  * Spec version: 1.8.0
- * Generated: 2026-06-22T11:02:37.855Z
+ * Generated: 2026-07-06T10:38:21.054Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -238,6 +238,31 @@ export interface CalendarEventUpdatedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
+export interface CanvasTemplateAppliedPayload {
+  'data': CanvasTemplateAppliedData;
+  'event_id': string;
+  'event_type': 'canvas_template.applied';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasTemplateAppliedData {
+  'applied_at': string;
+  'applied_by_user_id': string;
+  'applied_items': AnonymousSchema_98;
+  'canvas_id': string;
+  'template_id': string;
+  'template_name': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_98 {
+  'collaborators': number;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
 export interface MeetingCompletedPayload {
   'data': MeetingCompletedData;
   'event_id': string;
@@ -307,20 +332,20 @@ export interface MeetingContextProcessedData {
   'context_id': string;
   'meeting_id': string;
   'processed_at': string;
-  'sanitization_report': AnonymousSchema_118;
+  'sanitization_report': AnonymousSchema_127;
   'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_118 {
+export interface AnonymousSchema_127 {
   'formula_escaped': boolean;
   'pii_detected': boolean;
-  'redactions'?: AnonymousSchema_122[];
+  'redactions'?: AnonymousSchema_131[];
   'secrets_detected': boolean;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_122 {
+export interface AnonymousSchema_131 {
   'count': number;
   'type': string;
   'additionalProperties'?: Record<string, unknown>;
@@ -377,14 +402,14 @@ export interface MeetingTemplateAppliedPayload {
 export interface MeetingTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_145;
+  'applied_items': AnonymousSchema_154;
   'meeting_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_145 {
+export interface AnonymousSchema_154 {
   'agenda_items': number;
   'documents': number;
   'participants': number;
@@ -402,13 +427,15 @@ export interface NextStepCompletedPayload {
 }
 
 export interface NextStepCompletedData {
+  'context_id': string;
+  'context_type': string;
   'executed_at': string;
   'executed_by': string;
   'execution_mode': string;
-  'meeting_id': string;
+  'meeting_id'?: string;
   'next_step_id': string;
   'next_step_name': string;
-  'result_id': string;
+  'result_id'?: string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
@@ -676,6 +703,7 @@ export const WEBHOOK_EVENT_TYPES = [
   'calendar_event.created',
   'calendar_event.deleted',
   'calendar_event.updated',
+  'canvas_template.applied',
   'meeting.completed',
   'meeting.context.created',
   'meeting.context.deleted',
