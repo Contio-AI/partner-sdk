@@ -5,7 +5,7 @@
  *
  * Source: specs/asyncapi/webhooks.yaml
  * Spec version: 1.8.0
- * Generated: 2026-07-06T10:38:21.054Z
+ * Generated: 2026-07-24T09:51:03.880Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -23,8 +23,10 @@ export interface ActionButtonTriggeredPayload {
 export interface ActionButtonTriggeredData {
   'action_button_id': string;
   'action_button_name': string;
+  'context_id'?: string | null;
+  'context_type'?: string | null;
   'invocation_id'?: string | null;
-  'meeting_id': string;
+  'meeting_id'?: string;
   'next_step_id'?: string | null;
   'result_id'?: string | null;
   'trigger_mode': string;
@@ -251,14 +253,14 @@ export interface CanvasTemplateAppliedPayload {
 export interface CanvasTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_98;
+  'applied_items': AnonymousSchema_100;
   'canvas_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_98 {
+export interface AnonymousSchema_100 {
   'collaborators': number;
   'additionalProperties'?: Record<string, unknown>;
 }
@@ -332,20 +334,20 @@ export interface MeetingContextProcessedData {
   'context_id': string;
   'meeting_id': string;
   'processed_at': string;
-  'sanitization_report': AnonymousSchema_127;
+  'sanitization_report': AnonymousSchema_129;
   'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_127 {
+export interface AnonymousSchema_129 {
   'formula_escaped': boolean;
   'pii_detected': boolean;
-  'redactions'?: AnonymousSchema_131[];
+  'redactions'?: AnonymousSchema_133[];
   'secrets_detected': boolean;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_131 {
+export interface AnonymousSchema_133 {
   'count': number;
   'type': string;
   'additionalProperties'?: Record<string, unknown>;
@@ -402,14 +404,14 @@ export interface MeetingTemplateAppliedPayload {
 export interface MeetingTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_154;
+  'applied_items': AnonymousSchema_156;
   'meeting_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_154 {
+export interface AnonymousSchema_156 {
   'agenda_items': number;
   'documents': number;
   'participants': number;
