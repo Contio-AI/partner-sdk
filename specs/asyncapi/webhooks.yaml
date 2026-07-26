@@ -286,7 +286,6 @@ components:
             required:
                 - action_button_id
                 - action_button_name
-                - meeting_id
                 - trigger_mode
                 - triggered_at
                 - triggered_by
@@ -296,6 +295,15 @@ components:
                     format: uuid
                 action_button_name:
                     type: string
+                context_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                context_type:
+                    type:
+                        - string
+                        - "null"
                 invocation_id:
                     type:
                         - string
