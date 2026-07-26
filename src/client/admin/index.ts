@@ -38,6 +38,7 @@ import {
   PartnerIdPConfig,
   CreateIdPConfigRequest,
   UpdateIdPConfigRequest,
+  IdpDomainVerification,
   // Toolkit-related imports
   Toolkit,
   ToolkitListParams,
@@ -54,6 +55,10 @@ import {
   PartnerWorkspaceListResponse,
   ExportEntitiesRequest,
   ExportResponse,
+  // Workflow template-related imports
+  WorkflowTemplate,
+  WorkflowTemplateListParams,
+  WorkflowTemplateListResponse,
   // Template-related imports
   Template,
   TemplateListParams,
@@ -75,6 +80,7 @@ import * as credentials from './credentials';
 import * as idp from './idp';
 import * as toolkits from './toolkits';
 import * as templates from './templates';
+import * as workflowTemplates from './workflows';
 
 /**
  * Partner Admin API client for API key-authenticated admin endpoints.
@@ -676,6 +682,44 @@ export class PartnerAdminClient extends BaseClient {
     return idp.deleteIdPConfig(this.http);
   }
 
+  /**
+   * Get the verification status for a domain without performing a DNS lookup.
+   *
+   * @param domain - Exact domain to check (e.g., 'acme.com')
+   * @returns The current domain verification status
+   * @throws {ContioAPIError} If no verification exists for this domain
+   */
+  async getIdpDomainVerification(domain: string): Promise<IdpDomainVerification> {
+    return idp.getIdpDomainVerification(this.http, domain);
+  }
+
+  /**
+   * Initiate (or rotate) a DNS TXT challenge for domain verification.
+   *
+   * Publish a TXT record named `_contio-challenge.<domain>` with the returned
+   * value, then call {@link checkIdpDomainVerification} to complete verification.
+   *
+   * @param domain - Exact domain to verify (e.g., 'acme.com')
+   * @returns The verification challenge details
+   * @throws {ContioAPIError} If the domain is invalid, reserved, or rate-limited
+   */
+  async initiateIdpDomainVerification(domain: string): Promise<IdpDomainVerification> {
+    return idp.initiateIdpDomainVerification(this.http, domain);
+  }
+
+  /**
+   * Check a pending domain verification by performing a DNS TXT lookup.
+   *
+   * Already-verified domains are returned unchanged.
+   *
+   * @param domain - Exact domain to check (e.g., 'acme.com')
+   * @returns The updated verification status
+   * @throws {ContioAPIError} If the domain is invalid or no verification exists
+   */
+  async checkIdpDomainVerification(domain: string): Promise<IdpDomainVerification> {
+    return idp.checkIdpDomainVerification(this.http, domain);
+  }
+
   // ─────────────────────────────────────────────────────────────────────────────
   // Toolkit endpoints
   // ─────────────────────────────────────────────────────────────────────────────
@@ -1020,6 +1064,32 @@ export class PartnerAdminClient extends BaseClient {
    */
   async exportToolkit(toolkitId: string): Promise<ExportResponse> {
     return toolkits.exportToolkit(this.http, toolkitId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Workflow Template endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List workflow templates owned by the authenticated partner app.
+   *
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of workflow template summaries
+   * @throws {ContioAPIError} If the request fails
+   */
+  async listWorkflowTemplates(params?: WorkflowTemplateListParams): Promise<WorkflowTemplateListResponse> {
+    return workflowTemplates.listWorkflowTemplates(this.http, params);
+  }
+
+  /**
+   * Get a workflow template by ID, including its DAG spec.
+   *
+   * @param workflowTemplateId - The unique workflow template ID
+   * @returns The workflow template with full details
+   * @throws {ContioAPIError} If the workflow template is not found
+   */
+  async getWorkflowTemplate(workflowTemplateId: string): Promise<WorkflowTemplate> {
+    return workflowTemplates.getWorkflowTemplate(this.http, workflowTemplateId);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

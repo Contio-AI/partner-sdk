@@ -147,3 +147,22 @@ export interface SSOEntryUrlOptions {
   /** If true, skip the landing page UI and immediately initiate SSO */
   auto?: boolean;
 }
+
+/** Status of a partner-owned IdP domain verification. */
+export type IdpDomainVerificationStatus = 'pending' | 'verified' | 'expired';
+
+/** Response from the IdP domain ownership verification endpoints. */
+export interface IdpDomainVerification {
+  /** Exact domain being verified. */
+  domain: string;
+  /** DNS TXT record name the partner must create. */
+  dns_record_name?: string;
+  /** DNS TXT record value the partner must publish. */
+  dns_record_value?: string;
+  /** Current verification status. */
+  status: IdpDomainVerificationStatus;
+  /** When the pending challenge token expires. Absent once verified. */
+  expires_at?: string;
+  /** When the domain was verified. Present only when status is verified. */
+  verified_at?: string;
+}

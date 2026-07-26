@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Synchronized SDK types with **Partner API v1.9.1** and **AsyncAPI webhook spec v1.9.1**:
   - Regenerated `src/generated/api-types.ts` from the latest OpenAPI specification.
   - Regenerated `src/generated/webhook-types.ts` and `src/webhooks/types.ts` from the latest AsyncAPI webhook spec.
+- New `PartnerAdminClient` methods for the v1.9.1 endpoints:
+  - `getIdpDomainVerification(domain)`, `initiateIdpDomainVerification(domain)`, and `checkIdpDomainVerification(domain)` for IdP domain ownership verification.
+  - `listWorkflowTemplates(params)` and `getWorkflowTemplate(workflowTemplateId)` for workflow template discovery.
+- New `PartnerUserClient` methods for the v1.9.1 endpoints:
+  - `exportMeetingTranscript(meetingId, params)` to download meeting transcripts as SRT.
+  - `listWorkflowRuns(params)`, `createWorkflowRun(data)`, and `getWorkflowRun(workflowRunId)` for workflow run management.
+- New exported model types in `src/models`:
+  - `IdpDomainVerification`, `IdpDomainVerificationStatus`
+  - `WorkflowTemplate`, `WorkflowTemplateSummary`, `WorkflowTemplateListResponse`, `WorkflowTemplateListParams`
+  - `WorkflowRun`, `WorkflowRunListResponse`, `WorkflowRunListParams`, `CreateWorkflowRunRequest`
+  - `WorkflowRunStatus`, `WorkflowRunOriginatingType`, `WorkflowRunTriggerType`
+  - `ExportMeetingTranscriptParams`
 - New webhook events for the partner IdP domain lifecycle:
   - `partner.idp.domain_revoked`
   - `partner.idp.domain_verification_failed`
@@ -22,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated `SDK_VERSION` in `src/client/base.ts` to `1.9.0`.
 - Bumped `package.json` version to `1.9.0` for the next npm release.
 
 ## [1.8.0] - 2026-06-22
