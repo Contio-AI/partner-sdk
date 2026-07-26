@@ -6,6 +6,24 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2026-07-25
+
+### Added
+
+- Synchronized SDK types with **Partner API v1.9.1** and **AsyncAPI webhook spec v1.9.1**:
+  - Regenerated `src/generated/api-types.ts` from the latest OpenAPI specification.
+  - Regenerated `src/generated/webhook-types.ts` and `src/webhooks/types.ts` from the latest AsyncAPI webhook spec.
+- New webhook events for the partner IdP domain lifecycle:
+  - `partner.idp.domain_revoked`
+  - `partner.idp.domain_verification_failed`
+  - `partner.idp.domain_verified`
+  - New payload types: `PartnerIdpDomainRevokedPayload`, `PartnerIdpDomainVerificationFailedPayload`, `PartnerIdpDomainVerifiedPayload` and corresponding `Data` types.
+- New `WEBHOOK_EVENTS` constants for the three IdP domain events.
+
+### Changed
+
+- Bumped `package.json` version to `1.9.0` for the next npm release.
+
 ## [1.8.0] - 2026-06-22
 
 ### Added
@@ -318,6 +336,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling**: `ContioAPIError` with structured error information
 - **Retry logic**: Automatic retry with exponential backoff for transient failures
 
+[1.9.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.7.1...v1.8.0
 [1.7.1]: https://github.com/Contio-AI/partner-sdk/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/Contio-AI/partner-sdk/compare/v1.6.0...v1.7.0

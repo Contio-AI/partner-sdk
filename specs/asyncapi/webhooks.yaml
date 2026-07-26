@@ -12,7 +12,7 @@
 asyncapi: 2.6.0
 info:
     title: Contio Partner Webhook Events
-    version: 1.8.0
+    version: 1.9.1
     description: AsyncAPI specification for Contio Partner webhook events.
     contact:
         name: Contio Partner Support
@@ -199,6 +199,30 @@ channels:
                 name: participant.removed
                 payload:
                     $ref: '#/components/schemas/ParticipantRemovedPayload'
+    partner.idp.domain_revoked:
+        subscribe:
+            summary: Sent when a previously verified partner SSO domain is revoked
+            operationId: onPartnerIdpDomainRevoked
+            message:
+                name: partner.idp.domain_revoked
+                payload:
+                    $ref: '#/components/schemas/PartnerIdpDomainRevokedPayload'
+    partner.idp.domain_verification_failed:
+        subscribe:
+            summary: Sent when a partner SSO domain's verification fails
+            operationId: onPartnerIdpDomainVerificationFailed
+            message:
+                name: partner.idp.domain_verification_failed
+                payload:
+                    $ref: '#/components/schemas/PartnerIdpDomainVerificationFailedPayload'
+    partner.idp.domain_verified:
+        subscribe:
+            summary: Sent when a partner SSO domain's ownership is verified
+            operationId: onPartnerIdpDomainVerified
+            message:
+                name: partner.idp.domain_verified
+                payload:
+                    $ref: '#/components/schemas/PartnerIdpDomainVerifiedPayload'
     session.expired:
         subscribe:
             summary: Sent when a chat session expires due to inactivity
@@ -1117,6 +1141,78 @@ components:
                     event_type:
                         const: participant.removed
                   type: object
+        PartnerIdpDomainRevokedData:
+            type: object
+            required:
+                - domain
+                - revoked_at
+                - status
+            properties:
+                domain:
+                    type: string
+                revoked_at:
+                    type: string
+                    format: date-time
+                status:
+                    type: string
+        PartnerIdpDomainRevokedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/PartnerIdpDomainRevokedData'
+                    event_type:
+                        const: partner.idp.domain_revoked
+                  type: object
+        PartnerIdpDomainVerificationFailedData:
+            type: object
+            required:
+                - domain
+                - failed_at
+                - reason
+                - status
+            properties:
+                domain:
+                    type: string
+                failed_at:
+                    type: string
+                    format: date-time
+                reason:
+                    type: string
+                status:
+                    type: string
+        PartnerIdpDomainVerificationFailedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/PartnerIdpDomainVerificationFailedData'
+                    event_type:
+                        const: partner.idp.domain_verification_failed
+                  type: object
+        PartnerIdpDomainVerifiedData:
+            type: object
+            required:
+                - domain
+                - status
+                - verified_at
+            properties:
+                domain:
+                    type: string
+                status:
+                    type: string
+                verified_at:
+                    type: string
+                    format: date-time
+        PartnerIdpDomainVerifiedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/PartnerIdpDomainVerifiedData'
+                    event_type:
+                        const: partner.idp.domain_verified
+                  type: object
         PartnerMeetingSummary:
             type: object
             required:
@@ -1262,6 +1358,10 @@ components:
                 - partner_app_id
                 - data
             properties:
+                actor_user_id:
+                    type: string
+                    description: ID of the user who triggered the event. Omitted for headless/system-triggered events.
+                    format: uuid
                 data:
                     type: object
                 event_id:

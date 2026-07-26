@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.6.0"
+    "version": "1.9.1"
   },
   "host": "api.contio.ai",
   "basePath": "/",
@@ -28,6 +28,7 @@
           "OAuth 2.0"
         ],
         "summary": "JSON Web Key Set Endpoint",
+        "operationId": "getOauthJwks",
         "responses": {
           "200": {
             "description": "OK",
@@ -54,6 +55,7 @@
           "OAuth 2.0"
         ],
         "summary": "OpenID Connect Discovery Endpoint",
+        "operationId": "getOpenidConfiguration",
         "responses": {
           "200": {
             "description": "OK",
@@ -83,6 +85,7 @@
           "OAuth 2.0"
         ],
         "summary": "Initiate Partner Passwordless Authentication",
+        "operationId": "initiatePartnerAuth",
         "parameters": [
           {
             "description": "Partner authentication initiation request",
@@ -147,6 +150,7 @@
           "OAuth 2.0"
         ],
         "summary": "Verify Partner Passwordless Authentication",
+        "operationId": "verifyPartnerAuth",
         "parameters": [
           {
             "description": "Partner authentication verification request",
@@ -193,6 +197,7 @@
           "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Authorization Endpoint",
+        "operationId": "authorizeOauth",
         "parameters": [
           {
             "type": "string",
@@ -270,6 +275,7 @@
           "OAuth 2.0"
         ],
         "summary": "Complete OAuth 2.0 Authorization",
+        "operationId": "completeOauthAuthorization",
         "parameters": [
           {
             "description": "OAuth consent request",
@@ -291,8 +297,7 @@
           "400": {
             "description": "Bad request",
             "schema": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
           "500": {
@@ -318,6 +323,7 @@
           "OAuth 2.0"
         ],
         "summary": "Check Existing Consent",
+        "operationId": "checkOauthConsent",
         "parameters": [
           {
             "description": "Consent check request",
@@ -358,6 +364,7 @@
           "OAuth 2.0"
         ],
         "summary": "Health Check for OAuth/Cognito Service",
+        "operationId": "getOauthHealth",
         "responses": {
           "200": {
             "description": "OK",
@@ -387,6 +394,7 @@
           "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Token Introspection Endpoint",
+        "operationId": "introspectOauthToken",
         "parameters": [
           {
             "type": "string",
@@ -428,6 +436,7 @@
           "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Token Revocation Endpoint",
+        "operationId": "revokeOauthToken",
         "parameters": [
           {
             "type": "string",
@@ -472,6 +481,7 @@
           "OAuth 2.0"
         ],
         "summary": "Get Available OAuth Scopes",
+        "operationId": "listOauthScopes",
         "responses": {
           "200": {
             "description": "OK",
@@ -498,6 +508,7 @@
           "OAuth 2.0"
         ],
         "summary": "OAuth 2.0 Token Endpoint",
+        "operationId": "exchangeOauthToken",
         "parameters": [
           {
             "type": "string",
@@ -575,6 +586,7 @@
           "OAuth 2.0"
         ],
         "summary": "Get user information",
+        "operationId": "getOauthUserInfo",
         "parameters": [
           {
             "type": "string",
@@ -616,9 +628,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -630,6 +640,7 @@
           "App Management"
         ],
         "summary": "Get partner app information",
+        "operationId": "getApp",
         "responses": {
           "200": {
             "description": "OK",
@@ -654,9 +665,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -671,7 +680,14 @@
           "App Management"
         ],
         "summary": "Update partner app",
+        "operationId": "replaceApp",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Update app request",
             "name": "request",
@@ -714,9 +730,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -731,7 +745,14 @@
           "App Management"
         ],
         "summary": "Update partner app status",
+        "operationId": "replaceAppStatus",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Status update request",
             "name": "request",
@@ -774,9 +795,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -788,6 +807,7 @@
           "Automation Management"
         ],
         "summary": "Get automations",
+        "operationId": "listAutomations",
         "parameters": [
           {
             "type": "integer",
@@ -834,9 +854,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -851,7 +869,14 @@
           "Automation Management"
         ],
         "summary": "Create a new automation",
+        "operationId": "createAutomation",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Automation data",
             "name": "automation",
@@ -894,9 +919,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -908,6 +931,7 @@
           "Automation Management"
         ],
         "summary": "Get automation by ID",
+        "operationId": "getAutomation",
         "parameters": [
           {
             "type": "string",
@@ -953,9 +977,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -970,7 +992,14 @@
           "Automation Management"
         ],
         "summary": "Update automation",
+        "operationId": "replaceAutomation",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Automation ID",
@@ -1024,9 +1053,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1035,7 +1062,14 @@
           "Automation Management"
         ],
         "summary": "Delete automation",
+        "operationId": "deleteAutomation",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Automation ID",
@@ -1073,9 +1107,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1087,6 +1119,7 @@
           "Connection Management"
         ],
         "summary": "Get user connections",
+        "operationId": "listConnections",
         "parameters": [
           {
             "type": "integer",
@@ -1153,9 +1186,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1167,6 +1198,7 @@
           "Connection Management"
         ],
         "summary": "Get user connection by ID",
+        "operationId": "getConnection",
         "parameters": [
           {
             "type": "string",
@@ -1212,9 +1244,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1223,7 +1253,14 @@
           "Connection Management"
         ],
         "summary": "Revoke user connection",
+        "operationId": "revokeConnection",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Connection ID",
@@ -1267,9 +1304,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1281,6 +1316,7 @@
           "Credential Management"
         ],
         "summary": "Get credential status",
+        "operationId": "getCredentialStatus",
         "responses": {
           "200": {
             "description": "OK",
@@ -1310,9 +1346,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1327,7 +1361,14 @@
           "Credential Management"
         ],
         "summary": "Rollback API key",
+        "operationId": "rollbackApiKey",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Rollback request",
             "name": "request",
@@ -1373,9 +1414,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1390,7 +1429,14 @@
           "Credential Management"
         ],
         "summary": "Rotate API key",
+        "operationId": "rotateApiKey",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Rotation request",
             "name": "request",
@@ -1439,9 +1485,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1456,7 +1500,14 @@
           "Credential Management"
         ],
         "summary": "Rollback Client secret",
+        "operationId": "rollbackClientSecret",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Rollback request",
             "name": "request",
@@ -1502,9 +1553,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1519,7 +1568,14 @@
           "Credential Management"
         ],
         "summary": "Rotate client secret",
+        "operationId": "rotateClientSecret",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Rotation request",
             "name": "request",
@@ -1568,9 +1624,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1579,9 +1633,10 @@
           "application/json"
         ],
         "tags": [
-          "App Management"
+          "Credential Management"
         ],
         "summary": "Get audit history",
+        "operationId": "listCredentialHistory",
         "parameters": [
           {
             "type": "integer",
@@ -1608,8 +1663,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "#/definitions/credential.CredentialHistoryResponse"
             }
           },
           "400": {
@@ -1637,9 +1691,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1654,7 +1706,14 @@
           "Credential Management"
         ],
         "summary": "Rotate webhook secret",
+        "operationId": "rotateWebhookSecret",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Rotation request",
             "name": "request",
@@ -1703,9 +1762,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1717,6 +1774,7 @@
           "IdP Management"
         ],
         "summary": "Get IdP configuration",
+        "operationId": "getIdpConfig",
         "responses": {
           "200": {
             "description": "OK",
@@ -1747,9 +1805,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1764,7 +1820,14 @@
           "IdP Management"
         ],
         "summary": "Update IdP configuration",
+        "operationId": "replaceIdpConfig",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "IdP configuration update data",
             "name": "config",
@@ -1817,9 +1880,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1834,7 +1895,14 @@
           "IdP Management"
         ],
         "summary": "Create IdP configuration",
+        "operationId": "createIdpConfig",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "IdP configuration data",
             "name": "config",
@@ -1881,9 +1949,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1895,6 +1961,15 @@
           "IdP Management"
         ],
         "summary": "Delete IdP configuration",
+        "operationId": "deleteIdpConfig",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -1920,13 +1995,191 @@
         }
       }
     },
+    "/v1/partner/admin/idp/domains/{domain}": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Returns the current verification status for a domain without performing a DNS lookup. Applies lazy expiry to stale pending challenges.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "IdP Management"
+        ],
+        "summary": "Get domain ownership verification status",
+        "operationId": "getIdpDomainVerification",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Exact domain (e.g. acme.com)",
+            "name": "domain",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/idp.DomainVerificationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid domain",
+            "schema": {
+              "$ref": "#/definitions/idp.DomainVerificationError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "No verification exists for this domain",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/idp/domains/{domain}/check": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Performs the DNS TXT lookup for the pending challenge and marks the domain verified if the record matches. Idempotent: already-verified domains are returned unchanged.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "IdP Management"
+        ],
+        "summary": "Check domain ownership verification",
+        "operationId": "checkIdpDomainVerification",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Exact domain (e.g. acme.com)",
+            "name": "domain",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/idp.DomainVerificationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid domain",
+            "schema": {
+              "$ref": "#/definitions/idp.DomainVerificationError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "No verification exists for this domain",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/idp/domains/{domain}/verify": {
+      "post": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Issues (or rotates) a DNS TXT challenge token proving the partner controls the domain. Publish a TXT record named `_contio-challenge.<domain>` with the returned value, then call the check endpoint. Required before a domain can be claimed in a strict-mode IdP configuration.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "IdP Management"
+        ],
+        "summary": "Initiate domain ownership verification",
+        "operationId": "initiateIdpDomainVerification",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Exact domain to verify (e.g. acme.com). Subdomains must be verified independently.",
+            "name": "domain",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/idp.DomainVerificationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid or reserved domain",
+            "schema": {
+              "$ref": "#/definitions/idp.DomainVerificationError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "429": {
+            "description": "Too many pending verifications",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/admin/templates": {
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1935,9 +2188,10 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "List templates",
+        "operationId": "listTemplates",
         "parameters": [
           {
             "type": "integer",
@@ -1984,9 +2238,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -1998,10 +2250,17 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Create a template",
+        "operationId": "createTemplate",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Template creation request",
             "name": "request",
@@ -2050,9 +2309,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2061,9 +2318,10 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Get a template",
+        "operationId": "getTemplate",
         "parameters": [
           {
             "type": "string",
@@ -2109,9 +2367,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2123,10 +2379,17 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Update a template",
+        "operationId": "replaceTemplate",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Template ID",
@@ -2180,9 +2443,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2191,10 +2452,17 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Delete a template",
+        "operationId": "deleteTemplate",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Template ID",
@@ -2238,9 +2506,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2249,9 +2515,10 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Get template next steps",
+        "operationId": "listTemplateNextSteps",
         "parameters": [
           {
             "type": "string",
@@ -2297,9 +2564,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2311,10 +2576,17 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Add next step to template",
+        "operationId": "addTemplateNextStep",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Template ID",
@@ -2367,9 +2639,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2381,10 +2651,17 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Update template next step association",
+        "operationId": "replaceTemplateNextStep",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Template ID",
@@ -2442,9 +2719,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2453,10 +2728,17 @@
           "application/json"
         ],
         "tags": [
-          "Partner Admin - Templates"
+          "Template Management"
         ],
         "summary": "Remove next step from template",
+        "operationId": "removeTemplateNextStep",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Template ID",
@@ -2507,9 +2789,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2521,6 +2801,7 @@
           "Toolkit Management"
         ],
         "summary": "Get toolkits",
+        "operationId": "adminListToolkits",
         "parameters": [
           {
             "type": "integer",
@@ -2561,9 +2842,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2578,7 +2857,14 @@
           "Toolkit Management"
         ],
         "summary": "Create a toolkit",
+        "operationId": "adminCreateToolkit",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Toolkit creation request",
             "name": "request",
@@ -2627,9 +2913,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2644,7 +2928,14 @@
           "Toolkit Management"
         ],
         "summary": "Export entities as a portable manifest",
+        "operationId": "adminExportEntities",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Export request with entity IDs",
             "name": "request",
@@ -2687,9 +2978,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2701,6 +2990,7 @@
           "Toolkit Management"
         ],
         "summary": "Get a toolkit",
+        "operationId": "adminGetToolkit",
         "parameters": [
           {
             "type": "string",
@@ -2743,16 +3033,72 @@
           }
         }
       },
-      "put": {
+      "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Updates an existing toolkit's metadata (name, description, is_active) for the authenticated partner app.\nThe 'manifest' and 'version' fields are deprecated and no longer accepted; use the toolkit versioning API instead.",
+        "description": "Deletes a toolkit for the authenticated partner app",
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "Delete a toolkit",
+        "operationId": "adminDeleteToolkit",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Toolkit deleted"
+          },
+          "400": {
+            "description": "Invalid toolkit ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Toolkit not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Updates an existing toolkit's metadata (name, description, is_active) and propagation\nsettings (auto_propagate, auto_install_on_new_workspaces) for the authenticated partner app.\nAll fields are optional; only fields explicitly supplied in the request body are updated\n(true PATCH semantics). The 'manifest' and 'version' fields are deprecated and no longer\naccepted; use the toolkit versioning API instead.",
         "consumes": [
           "application/json"
         ],
@@ -2763,7 +3109,14 @@
           "Toolkit Management"
         ],
         "summary": "Update a toolkit",
+        "operationId": "adminUpdateToolkit",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Toolkit ID",
@@ -2819,68 +3172,13 @@
             }
           }
         }
-      },
-      "delete": {
-        "security": [
-          {
-            "PartnerAPIKeyAuth": []
-          },
-          {
-            "PartnerClientIdAuth": []
-          }
-        ],
-        "description": "Deletes a toolkit for the authenticated partner app",
-        "tags": [
-          "Toolkit Management"
-        ],
-        "summary": "Delete a toolkit",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Toolkit ID",
-            "name": "toolkitId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Toolkit deleted"
-          },
-          "400": {
-            "description": "Invalid toolkit ID",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "404": {
-            "description": "Toolkit not found",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/errors.PartnerErrorResponse"
-            }
-          }
-        }
       }
     },
     "/v1/partner/admin/toolkits/{toolkitId}/export": {
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2892,6 +3190,7 @@
           "Toolkit Management"
         ],
         "summary": "Export a toolkit as a portable manifest",
+        "operationId": "adminExportToolkit",
         "parameters": [
           {
             "type": "string",
@@ -2930,13 +3229,83 @@
         }
       }
     },
+    "/v1/partner/admin/toolkits/{toolkitId}/installations": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Lists all installations of a toolkit owned by the authenticated partner app, including active and opted-out installations across the partner's connected workspaces. The response includes per-workspace installation details, summary counts (active, opted_out, never_installed), and the partner's total connected workspace count, supporting partner visibility into their toolkit's distribution footprint.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Toolkit Management"
+        ],
+        "summary": "List toolkit installations",
+        "operationId": "adminListToolkitInstallations",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Toolkit ID",
+            "name": "toolkitId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "Maximum number of items to return (default 50, max 100)",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Number of items to skip from the beginning (default 0)",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/toolkit.ListInstallationsResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Toolkit not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/admin/toolkits/{toolkitId}/versions": {
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -2948,6 +3317,7 @@
           "Toolkit Management"
         ],
         "summary": "List toolkit versions",
+        "operationId": "adminListToolkitVersions",
         "parameters": [
           {
             "type": "string",
@@ -2996,9 +3366,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3013,7 +3381,14 @@
           "Toolkit Management"
         ],
         "summary": "Create a toolkit version",
+        "operationId": "adminCreateToolkitVersion",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Toolkit ID",
@@ -3081,9 +3456,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3095,6 +3468,7 @@
           "Toolkit Management"
         ],
         "summary": "Get a toolkit version",
+        "operationId": "adminGetToolkitVersion",
         "parameters": [
           {
             "type": "string",
@@ -3147,9 +3521,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3158,7 +3530,14 @@
           "Toolkit Management"
         ],
         "summary": "Discard a draft toolkit version",
+        "operationId": "adminDiscardToolkitVersion",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Toolkit ID",
@@ -3207,9 +3586,7 @@
       "patch": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3224,7 +3601,14 @@
           "Toolkit Management"
         ],
         "summary": "Update a draft toolkit version",
+        "operationId": "adminUpdateToolkitVersion",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Toolkit ID",
@@ -3287,9 +3671,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3301,7 +3683,14 @@
           "Toolkit Management"
         ],
         "summary": "Publish a toolkit version",
+        "operationId": "adminPublishToolkitVersion",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Toolkit ID",
@@ -3352,9 +3741,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3366,7 +3753,14 @@
           "Toolkit Management"
         ],
         "summary": "Republish a toolkit version",
+        "operationId": "adminRepublishToolkitVersion",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Toolkit ID",
@@ -3417,9 +3811,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3431,6 +3823,7 @@
           "Webhook Management"
         ],
         "summary": "List webhook deliveries",
+        "operationId": "listWebhookDeliveries",
         "parameters": [
           {
             "type": "string",
@@ -3483,9 +3876,7 @@
       "get": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3497,6 +3888,7 @@
           "Webhook Management"
         ],
         "summary": "Get webhook delivery",
+        "operationId": "getWebhookDelivery",
         "parameters": [
           {
             "type": "string",
@@ -3538,9 +3930,7 @@
       "post": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3552,7 +3942,14 @@
           "Webhook Management"
         ],
         "summary": "Retry webhook delivery",
+        "operationId": "retryWebhookDelivery",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Webhook Delivery ID",
@@ -3565,8 +3962,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "#/definitions/webhook.WebhookRetryResponse"
             }
           },
           "401": {
@@ -3594,9 +3990,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3611,7 +4005,14 @@
           "Webhook Management"
         ],
         "summary": "Update partner app webhook filter",
+        "operationId": "replaceWebhookFilter",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Webhook filter update request",
             "name": "request",
@@ -3652,9 +4053,7 @@
       "delete": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3666,6 +4065,15 @@
           "Webhook Management"
         ],
         "summary": "Remove partner app webhook filter",
+        "operationId": "deleteWebhookFilter",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3692,9 +4100,7 @@
       "put": {
         "security": [
           {
-            "PartnerAPIKeyAuth": []
-          },
-          {
+            "PartnerAPIKeyAuth": [],
             "PartnerClientIdAuth": []
           }
         ],
@@ -3709,7 +4115,14 @@
           "Webhook Management"
         ],
         "summary": "Update partner app webhook status",
+        "operationId": "replaceWebhookStatus",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Webhook status update request",
             "name": "request",
@@ -3748,6 +4161,121 @@
         }
       }
     },
+    "/v1/partner/admin/workflow-templates": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Retrieves a paginated list of workflow templates owned by the authenticated partner app across all workspaces.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Workflow Management"
+        ],
+        "summary": "List workflow templates",
+        "operationId": "listWorkflowTemplates",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "description": "Limit",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Offset",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-workflow_PartnerWorkflowTemplateSummary"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/admin/workflow-templates/{id}": {
+      "get": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Retrieves a single workflow template owned by the authenticated partner app, including the inlined DAG spec.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Workflow Management"
+        ],
+        "summary": "Get a workflow template",
+        "operationId": "getWorkflowTemplate",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Workflow Template ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/workflow.PartnerWorkflowTemplateResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid workflow template ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Workflow template not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/info/{client_id}/public": {
       "get": {
         "description": "Returns safe public partner app information for display in OAuth login/consent pages. This endpoint does not require client authentication and only returns safe public information like name and company.",
@@ -3755,6 +4283,7 @@
           "OAuth 2.0"
         ],
         "summary": "Get Public Partner Information by Client ID",
+        "operationId": "getPublicPartnerInfo",
         "parameters": [
           {
             "type": "string",
@@ -3799,6 +4328,7 @@
           "Single Sign-On"
         ],
         "summary": "Handle partner SSO callback",
+        "operationId": "verifySsoCallback",
         "parameters": [
           {
             "type": "string",
@@ -3828,23 +4358,9 @@
         ],
         "responses": {
           "302": {
-            "description": "Redirect to application after successful authentication",
+            "description": "Redirect with error query params on authentication failure",
             "schema": {
               "type": "string"
-            }
-          },
-          "400": {
-            "description": "Invalid request or authentication error",
-            "schema": {
-              "type": "object",
-              "additionalProperties": true
-            }
-          },
-          "401": {
-            "description": "Authentication failed",
-            "schema": {
-              "type": "object",
-              "additionalProperties": true
             }
           },
           "500": {
@@ -3867,6 +4383,7 @@
           "Single Sign-On"
         ],
         "summary": "Get partner SSO information",
+        "operationId": "getSsoInfo",
         "parameters": [
           {
             "type": "string",
@@ -3911,6 +4428,7 @@
           "Single Sign-On"
         ],
         "summary": "Initiate partner SSO flow",
+        "operationId": "initiateSso",
         "parameters": [
           {
             "type": "string",
@@ -3953,8 +4471,7 @@
           "400": {
             "description": "Invalid request parameters",
             "schema": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
           "404": {
@@ -3987,6 +4504,7 @@
           "Single Sign-On"
         ],
         "summary": "Get partner SSO session status",
+        "operationId": "getSsoSession",
         "parameters": [
           {
             "type": "string",
@@ -4006,8 +4524,7 @@
           "400": {
             "description": "Invalid session ID",
             "schema": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
           "404": {
@@ -4037,6 +4554,7 @@
           "Action Items"
         ],
         "summary": "Get action items",
+        "operationId": "listActionItems",
         "parameters": [
           {
             "type": "integer",
@@ -4132,7 +4650,14 @@
           "Action Items"
         ],
         "summary": "Create action item",
+        "operationId": "createActionItem",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Action item data",
             "name": "action_item",
@@ -4188,6 +4713,7 @@
           "Action Items"
         ],
         "summary": "Get action item by ID",
+        "operationId": "getActionItem",
         "parameters": [
           {
             "type": "string",
@@ -4249,7 +4775,14 @@
           "Action Items"
         ],
         "summary": "Update action item",
+        "operationId": "updateActionItem",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Action Item ID",
@@ -4313,7 +4846,14 @@
           "Action Items"
         ],
         "summary": "Delete action item",
+        "operationId": "deleteActionItem",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Action Item ID",
@@ -4373,6 +4913,7 @@
           "Calendar"
         ],
         "summary": "Get calendar events",
+        "operationId": "listCalendarEvents",
         "parameters": [
           {
             "type": "string",
@@ -4469,6 +5010,7 @@
           "Calendar"
         ],
         "summary": "Get calendar event by ID",
+        "operationId": "getCalendarEvent",
         "parameters": [
           {
             "type": "string",
@@ -4539,7 +5081,14 @@
           "Calendar"
         ],
         "summary": "Create meeting from calendar event",
+        "operationId": "createCalendarEventMeeting",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "example": "\"123e4567-e89b-12d3-a456-426614174006\"",
@@ -4606,6 +5155,7 @@
           "Templates"
         ],
         "summary": "List meeting templates",
+        "operationId": "listMeetingTemplates",
         "parameters": [
           {
             "maximum": 100,
@@ -4664,6 +5214,7 @@
           "Templates"
         ],
         "summary": "Get meeting template",
+        "operationId": "getMeetingTemplate",
         "parameters": [
           {
             "type": "string",
@@ -4728,7 +5279,14 @@
           "Templates"
         ],
         "summary": "Apply template to meeting",
+        "operationId": "applyMeetingTemplate",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -4766,6 +5324,12 @@
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
+          "402": {
+            "description": "Plan upgrade required (Pro)",
+            "schema": {
+              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+            }
+          },
           "403": {
             "description": "Access denied",
             "schema": {
@@ -4780,6 +5344,12 @@
           },
           "500": {
             "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "503": {
+            "description": "Template apply backend temporarily unavailable",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -4804,6 +5374,7 @@
           "Templates"
         ],
         "summary": "List template next steps",
+        "operationId": "listMeetingTemplateNextSteps",
         "parameters": [
           {
             "type": "string",
@@ -4859,6 +5430,7 @@
           "Meetings"
         ],
         "summary": "Get meetings",
+        "operationId": "listMeetings",
         "parameters": [
           {
             "type": "integer",
@@ -4924,7 +5496,7 @@
             ]
           }
         ],
-        "description": "Creates a new meeting on behalf of the authenticated partner user",
+        "description": "Creates a new meeting on behalf of the authenticated partner user based on their preferences",
         "consumes": [
           "application/json"
         ],
@@ -4935,7 +5507,14 @@
           "Meetings"
         ],
         "summary": "Create meeting",
+        "operationId": "createMeeting",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "description": "Meeting data",
             "name": "meeting",
@@ -4991,6 +5570,7 @@
           "Meetings"
         ],
         "summary": "Get meeting by ID",
+        "operationId": "getMeeting",
         "parameters": [
           {
             "type": "string",
@@ -5052,7 +5632,14 @@
           "Meetings"
         ],
         "summary": "Update meeting",
+        "operationId": "updateMeeting",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Meeting ID",
@@ -5121,6 +5708,7 @@
           "Meetings"
         ],
         "summary": "Get action buttons for a meeting",
+        "operationId": "listMeetingActionButtons",
         "parameters": [
           {
             "type": "string",
@@ -5185,7 +5773,14 @@
           "Meetings"
         ],
         "summary": "Trigger action button",
+        "operationId": "triggerMeetingActionButton",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "description": "Meeting ID",
@@ -5263,6 +5858,7 @@
           "Agenda Items"
         ],
         "summary": "Get agenda items for a meeting",
+        "operationId": "listMeetingAgendaItems",
         "parameters": [
           {
             "type": "string",
@@ -5307,6 +5903,13 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
         "description": "Creates a new agenda item for a meeting. User must be a participant of the meeting.",
         "consumes": [
           "application/json"
@@ -5318,7 +5921,14 @@
           "Agenda Items"
         ],
         "summary": "Create agenda item",
+        "operationId": "createMeetingAgendaItem",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -5379,6 +5989,13 @@
     },
     "/v1/partner/user/meetings/{id}/agenda-items/{item_id}": {
       "put": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
         "description": "Updates an existing agenda item. User must be a participant of the meeting.",
         "consumes": [
           "application/json"
@@ -5390,7 +6007,14 @@
           "Agenda Items"
         ],
         "summary": "Update agenda item",
+        "operationId": "updateMeetingAgendaItem",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -5457,6 +6081,13 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
         "description": "Deletes an agenda item. User must be a participant of the meeting.",
         "consumes": [
           "application/json"
@@ -5468,7 +6099,14 @@
           "Agenda Items"
         ],
         "summary": "Delete agenda item",
+        "operationId": "deleteMeetingAgendaItem",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -5543,7 +6181,14 @@
           "Calendar"
         ],
         "summary": "Link calendar event to meeting",
+        "operationId": "linkCalendarEvent",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "example": "\"123e4567-e89b-12d3-a456-426614174000\"",
@@ -5577,6 +6222,12 @@
           },
           "401": {
             "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Caller is not the meeting owner or an editor",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -5622,7 +6273,14 @@
           "Calendar"
         ],
         "summary": "Unlink calendar event from meeting",
+        "operationId": "unlinkCalendarEvent",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "example": "\"123e4567-e89b-12d3-a456-426614174000\"",
@@ -5647,6 +6305,12 @@
           },
           "401": {
             "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Caller is not the meeting owner or an editor",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -5686,6 +6350,7 @@
           "Context"
         ],
         "summary": "List meeting contexts",
+        "operationId": "listMeetingContexts",
         "parameters": [
           {
             "type": "string",
@@ -5756,6 +6421,7 @@
           "Context"
         ],
         "summary": "Upload meeting context",
+        "operationId": "uploadMeetingContext",
         "parameters": [
           {
             "type": "string",
@@ -5846,6 +6512,7 @@
           "Context"
         ],
         "summary": "Get meeting context",
+        "operationId": "getMeetingContext",
         "parameters": [
           {
             "type": "string",
@@ -5916,7 +6583,14 @@
           "Context"
         ],
         "summary": "Delete meeting context",
+        "operationId": "deleteMeetingContext",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -5982,6 +6656,7 @@
           "Context"
         ],
         "summary": "Download meeting context content",
+        "operationId": "downloadMeetingContextContent",
         "parameters": [
           {
             "type": "string",
@@ -6051,6 +6726,7 @@
           "Meetings"
         ],
         "summary": "Get next steps for a meeting",
+        "operationId": "listMeetingNextSteps",
         "parameters": [
           {
             "type": "string",
@@ -6115,7 +6791,14 @@
           "Meetings"
         ],
         "summary": "Execute a next step",
+        "operationId": "executeMeetingNextStep",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -6193,6 +6876,7 @@
           "Participants"
         ],
         "summary": "Get meeting participants",
+        "operationId": "listMeetingParticipants",
         "parameters": [
           {
             "type": "string",
@@ -6254,7 +6938,14 @@
           "Participants"
         ],
         "summary": "Add meeting participant",
+        "operationId": "addMeetingParticipant",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -6336,7 +7027,14 @@
           "Participants"
         ],
         "summary": "Remove meeting participant",
+        "operationId": "removeMeetingParticipant",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -6391,6 +7089,89 @@
         }
       }
     },
+    "/v1/partner/user/meetings/{id}/transcript/export": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Download the meeting transcript as an SRT file. Requires the Elite plan.",
+        "produces": [
+          "text/plain"
+        ],
+        "tags": [
+          "Meetings"
+        ],
+        "summary": "Export meeting transcript",
+        "operationId": "exportMeetingTranscript",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "enum": [
+              "srt"
+            ],
+            "type": "string",
+            "description": "Output format (default: srt)",
+            "name": "format",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SRT file content",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Unsupported format",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "402": {
+            "description": "Plan upgrade required (Elite)",
+            "schema": {
+              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden / insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Transcript not found or empty",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/user/next-step-results/{result_id}": {
       "get": {
         "security": [
@@ -6408,6 +7189,7 @@
           "Meetings"
         ],
         "summary": "Get a next step result",
+        "operationId": "getNextStepResult",
         "parameters": [
           {
             "type": "string",
@@ -6463,6 +7245,7 @@
           "User Profile"
         ],
         "summary": "Get user profile",
+        "operationId": "getProfile",
         "responses": {
           "200": {
             "description": "OK",
@@ -6505,6 +7288,7 @@
           "Chat Sessions"
         ],
         "summary": "List chat sessions",
+        "operationId": "listSessions",
         "parameters": [
           {
             "type": "string",
@@ -6575,6 +7359,7 @@
           "Chat Sessions"
         ],
         "summary": "Create a new chat session",
+        "operationId": "createSession",
         "parameters": [
           {
             "type": "string",
@@ -6609,6 +7394,12 @@
             "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "402": {
+            "description": "Plan upgrade required (Pro)",
+            "schema": {
+              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
             }
           },
           "422": {
@@ -6646,6 +7437,7 @@
           "Chat Sessions"
         ],
         "summary": "Get chat session details",
+        "operationId": "getSession",
         "parameters": [
           {
             "type": "string",
@@ -6724,6 +7516,7 @@
           "Chat Sessions"
         ],
         "summary": "Send a message to a session",
+        "operationId": "sendSessionMessage",
         "parameters": [
           {
             "type": "string",
@@ -6765,6 +7558,12 @@
             "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "402": {
+            "description": "Plan upgrade required (Pro)",
+            "schema": {
+              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
             }
           },
           "404": {
@@ -6814,6 +7613,7 @@
           "Chat Sessions"
         ],
         "summary": "Get specific turn",
+        "operationId": "getSessionTurn",
         "parameters": [
           {
             "type": "string",
@@ -6885,6 +7685,7 @@
           "Toolkits"
         ],
         "summary": "List available toolkits",
+        "operationId": "listToolkits",
         "parameters": [
           {
             "maximum": 100,
@@ -6946,7 +7747,14 @@
           "Toolkits"
         ],
         "summary": "Install toolkit",
+        "operationId": "installToolkit",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -6996,6 +7804,229 @@
         }
       }
     },
+    "/v1/partner/user/workflow-runs": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "workflows:read"
+            ]
+          }
+        ],
+        "description": "Returns a paginated list of workflow runs in the caller's workspace. Optional filters may be supplied to narrow the result set.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Workflow Runs"
+        ],
+        "summary": "List workflow runs",
+        "operationId": "listWorkflowRuns",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 25,
+            "description": "Limit",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Offset",
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "pending",
+              "active",
+              "completed",
+              "failed",
+              "cancelled",
+              "frozen"
+            ],
+            "type": "string",
+            "description": "Filter by run status",
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Filter by workflow template ID",
+            "name": "workflow_template_id",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "meeting",
+              "canvas"
+            ],
+            "type": "string",
+            "description": "Filter by originating object type",
+            "name": "originating_type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-workflow_run_PartnerWorkflowRunResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "workflows:write"
+            ]
+          }
+        ],
+        "description": "Creates and enqueues a new manual workflow run. Autopilot-triggered runs are reserved for internal use and cannot be created via this endpoint.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Workflow Runs"
+        ],
+        "summary": "Trigger a workflow run",
+        "operationId": "createWorkflowRun",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "description": "Workflow run creation request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/workflow_run.PartnerCreateWorkflowRunRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/workflow_run.PartnerWorkflowRunResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body, invalid trigger type, or validation error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "402": {
+            "description": "Plan upgrade required (Elite)",
+            "schema": {
+              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+            }
+          },
+          "404": {
+            "description": "Workflow template not found in the caller's workspace",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/workflow-runs/{id}": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "workflows:read"
+            ]
+          }
+        ],
+        "description": "Returns a single workflow run. The run must belong to the authenticated user's current workspace; otherwise a 404 response is returned.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Workflow Runs"
+        ],
+        "summary": "Get a workflow run",
+        "operationId": "getWorkflowRun",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Workflow Run ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/workflow_run.PartnerWorkflowRunResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid workflow run ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Workflow run not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/user/workspaces/{workspace_id}/toolkits": {
       "get": {
         "security": [
@@ -7013,6 +8044,7 @@
           "Toolkits"
         ],
         "summary": "List installed toolkits",
+        "operationId": "listInstalledToolkits",
         "parameters": [
           {
             "type": "string",
@@ -7068,7 +8100,14 @@
           "Toolkits"
         ],
         "summary": "Uninstall toolkit",
+        "operationId": "uninstallToolkit",
         "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
           {
             "type": "string",
             "format": "uuid",
@@ -7781,7 +8820,8 @@
             "invalid_meeting_id",
             "invalid_request_body",
             "calendar_event_already_linked",
-            "meeting_already_linked"
+            "meeting_already_linked",
+            "calendar_workspace_mismatch"
           ],
           "example": "invalid_meeting_id"
         },
@@ -8073,6 +9113,101 @@
         }
       }
     },
+    "credential.CredentialHistoryEvent": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "Action performed (rotated, accessed, rollback, disabled, enabled, viewed, tested)",
+          "type": "string",
+          "example": "rotated"
+        },
+        "created_at": {
+          "description": "When the event occurred",
+          "type": "string",
+          "example": "2024-01-15T10:30:00Z"
+        },
+        "credential_type": {
+          "description": "Type of credential (api_key, webhook_secret, client_secret)",
+          "type": "string",
+          "example": "api_key"
+        },
+        "id": {
+          "description": "Unique identifier for the audit event",
+          "type": "string",
+          "example": "evt_abc123"
+        },
+        "initiated_by": {
+          "description": "Who initiated the action (partner, internal, system)",
+          "type": "string",
+          "example": "partner"
+        },
+        "ip_address": {
+          "description": "IP address of the request that triggered the event",
+          "type": "string",
+          "example": "192.168.1.1"
+        },
+        "metadata": {
+          "description": "Additional metadata about the event",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "partner_app_id": {
+          "description": "Partner app that owns the credential",
+          "type": "string",
+          "example": "01234567-89ab-cdef-0123-456789abcdef"
+        },
+        "reason": {
+          "description": "Reason for the credential action",
+          "type": "string",
+          "example": "Scheduled rotation"
+        },
+        "user_agent": {
+          "description": "User agent of the request that triggered the event",
+          "type": "string",
+          "example": "Mozilla/5.0"
+        }
+      }
+    },
+    "credential.CredentialHistoryPagination": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Number of events returned in this response",
+          "type": "integer",
+          "example": 5
+        },
+        "limit": {
+          "description": "Maximum number of events requested",
+          "type": "integer",
+          "example": 20
+        },
+        "offset": {
+          "description": "Number of events skipped",
+          "type": "integer",
+          "example": 0
+        }
+      }
+    },
+    "credential.CredentialHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "description": "List of credential audit events",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/credential.CredentialHistoryEvent"
+          }
+        },
+        "pagination": {
+          "description": "Pagination metadata",
+          "allOf": [
+            {
+              "$ref": "#/definitions/credential.CredentialHistoryPagination"
+            }
+          ]
+        }
+      }
+    },
     "credential.CredentialRollbackRequest": {
       "type": "object",
       "required": [
@@ -8270,12 +9405,17 @@
             "note_not_found",
             "bad_request",
             "validation_error",
+            "next_step_prompt_rejected",
+            "next_step_no_meeting_content",
             "unauthorized",
             "forbidden",
             "conflict",
             "resource_already_exists",
             "too_many_requests",
-            "internal_server_error"
+            "internal_server_error",
+            "toolkit_slug_collision",
+            "manifest_validation_failed",
+            "toolkit_requires_annual"
           ],
           "example": "not_found"
         },
@@ -8323,7 +9463,7 @@
       }
     },
     "errors.PartnerErrorResponse": {
-      "description": "Standard error response format used across all partner API endpoints. This format is used by both partner admin and partner user APIs for consistency. DEPRECATION NOTICE (v2.0): The 'message' field will be removed in the next major release. Partners should migrate to using the 'error' field instead.",
+      "description": "Standard error response format used across Contio's versioned public API endpoints. This shape is shared by the Partner API and the first-party /v1 User/Workspace API for consistency. DEPRECATION NOTICE (v2.0): The 'message' field will be removed in the next major release. Clients should migrate to using the 'error' field instead.",
       "type": "object",
       "properties": {
         "code": {
@@ -8361,6 +9501,9 @@
             "invalid_idp",
             "domain_is_generic",
             "domain_already_claimed",
+            "domain_reserved",
+            "domain_not_verified",
+            "invalid_domain",
             "strict_mode_requires_domains",
             "discovery_fetch_failed",
             "idp_config_exists"
@@ -8451,6 +9594,67 @@
             "email",
             "profile"
           ]
+        }
+      }
+    },
+    "idp.DomainVerificationError400": {
+      "description": "Bad request error for domain ownership verification",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Unique identifier for the error type",
+          "type": "string",
+          "enum": [
+            "invalid_domain",
+            "domain_reserved",
+            "domain_is_generic"
+          ],
+          "example": "invalid_domain"
+        },
+        "error": {
+          "description": "User-friendly description of what went wrong",
+          "type": "string",
+          "example": "Invalid domain"
+        },
+        "request_id": {
+          "description": "Request identifier to correlate errors with logs",
+          "type": "string",
+          "example": "abc123xyz"
+        }
+      }
+    },
+    "idp.DomainVerificationResponse": {
+      "type": "object",
+      "properties": {
+        "dns_record_name": {
+          "description": "DNS TXT record name the partner must create",
+          "type": "string",
+          "example": "_contio-challenge.acme.com"
+        },
+        "dns_record_value": {
+          "description": "Full DNS TXT record value the partner must publish (contio-domain-verify=<token>)",
+          "type": "string",
+          "example": "contio-domain-verify=abc123"
+        },
+        "domain": {
+          "description": "Normalized (lowercase, punycode) domain being verified",
+          "type": "string",
+          "example": "acme.com"
+        },
+        "expires_at": {
+          "description": "When the pending challenge token expires (RFC3339). Absent once verified.",
+          "type": "string",
+          "example": "2026-01-08T00:00:00Z"
+        },
+        "status": {
+          "description": "Verification status: pending, verified, or expired",
+          "type": "string",
+          "example": "pending"
+        },
+        "verified_at": {
+          "description": "When the domain was verified (RFC3339). Present only when status is verified.",
+          "type": "string",
+          "example": "2026-01-02T00:00:00Z"
         }
       }
     },
@@ -8578,6 +9782,9 @@
             "invalid_idp",
             "domain_is_generic",
             "domain_already_claimed",
+            "domain_reserved",
+            "domain_not_verified",
+            "invalid_domain",
             "strict_mode_requires_domains",
             "discovery_fetch_failed"
           ],
@@ -8722,6 +9929,11 @@
           "type": "boolean",
           "example": false
         },
+        "talking_points": {
+          "type": "string",
+          "maxLength": 10000,
+          "example": "My private notes for this item"
+        },
         "time_allocation_minutes": {
           "type": "number",
           "maximum": 1440,
@@ -8841,6 +10053,11 @@
           "description": "Current status (pending, in_progress, completed)",
           "type": "string",
           "example": "pending"
+        },
+        "talking_points": {
+          "description": "Private talking points for the authenticated user on this agenda item. Only returned if the user has talking points.",
+          "type": "string",
+          "example": "Key points to discuss: budget allocation, timeline"
         },
         "time_allocation_minutes": {
           "description": "Allocated time for this agenda item in minutes",
@@ -9020,6 +10237,11 @@
           ],
           "example": "in_progress"
         },
+        "talking_points": {
+          "type": "string",
+          "maxLength": 10000,
+          "example": "Updated private notes"
+        },
         "time_allocation_minutes": {
           "type": "number",
           "maximum": 1440,
@@ -9162,13 +10384,14 @@
           "example": "Weekly Team Sync Template"
         },
         "ownership_type": {
-          "description": "Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER)",
+          "description": "Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER, PARTNER)",
           "type": "string",
           "enum": [
             "SYSTEM",
             "VERTICAL",
             "WORKSPACE",
-            "USER"
+            "USER",
+            "PARTNER"
           ],
           "example": "WORKSPACE"
         },
@@ -9213,13 +10436,14 @@
           "example": "Weekly Team Sync Template"
         },
         "ownership_type": {
-          "description": "Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER)",
+          "description": "Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER, PARTNER)",
           "type": "string",
           "enum": [
             "SYSTEM",
             "VERTICAL",
             "WORKSPACE",
-            "USER"
+            "USER",
+            "PARTNER"
           ],
           "example": "WORKSPACE"
         },
@@ -9267,6 +10491,26 @@
           "description": "Sort order of the next step",
           "type": "integer",
           "example": 1
+        }
+      }
+    },
+    "middleware.FeatureNotAvailableResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "current_plan": {
+          "type": "string"
+        },
+        "feature": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "required_plan": {
+          "type": "string"
         }
       }
     },
@@ -9649,6 +10893,11 @@
           "type": "string",
           "example": "123e4567-e89b-12d3-a456-426614174003"
         },
+        "plan_type": {
+          "description": "Workspace billing plan (FREE, PRO, ELITE, ENT)",
+          "type": "string",
+          "example": "FREE"
+        },
         "workspace_id": {
           "description": "ID of the workspace the user belongs to",
           "type": "string",
@@ -9774,9 +11023,44 @@
         }
       }
     },
+    "rome_api_controllers_external_partner_admin_shared.ListResponse-workflow_PartnerWorkflowTemplateSummary": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/workflow.PartnerWorkflowTemplateSummary"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
     "rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse": {
       "type": "object",
       "properties": {
+        "auto_install_on_new_workspaces": {
+          "type": "boolean",
+          "example": true
+        },
+        "auto_propagate": {
+          "type": "boolean",
+          "example": true
+        },
         "created_at": {
           "type": "string",
           "example": "2023-01-01T00:00:00Z"
@@ -10426,6 +11710,33 @@
         }
       }
     },
+    "rome_api_controllers_external_partner_user_shared.ListResponse-workflow_run_PartnerWorkflowRunResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/workflow_run.PartnerWorkflowRunResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
     "rome_api_controllers_external_partner_user_toolkit.ToolkitResponse": {
       "type": "object",
       "properties": {
@@ -10883,10 +12194,10 @@
     "shared.ActionButtonResponse": {
       "type": "object",
       "properties": {
-        "icon_url": {
-          "description": "Icon URL for the action button",
+        "icon_name": {
+          "description": "Icon name from the vocabulary",
           "type": "string",
-          "example": "https://example.com/icon.png"
+          "example": "share"
         },
         "id": {
           "description": "Unique identifier for the action button",
@@ -11155,6 +12466,23 @@
     "shared.TriggerActionButtonRequest": {
       "type": "object",
       "properties": {
+        "addressing_values": {
+          "description": "AddressingValues are submitted form values for integration-mechanism action buttons\n(e.g. {\"object_type\":\"Account\",\"record_id\":\"0014X...\"} for Salesforce). Persisted\nverbatim on the action_button_invocation row.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "content": {
+          "description": "Content is the (possibly user-edited) draft body submitted at trigger time.\nWhen provided alongside ResultID and the body differs from the stored result,\na new next_step_execution_log + next_step_result pair is persisted with\nexecution_mode=MANUAL_EDIT before delivery.",
+          "type": "string",
+          "example": "Updated meeting summary..."
+        },
+        "content_format": {
+          "description": "ContentFormat is the format of Content (e.g. \"markdown\"). Defaults to markdown\nwhen omitted. Ignored when Content is nil.",
+          "type": "string",
+          "example": "markdown"
+        },
         "next_step_id": {
           "description": "Next step ID if triggered in the context of a next step",
           "type": "string",
@@ -11170,6 +12498,11 @@
     "shared.TriggerActionButtonResponse": {
       "type": "object",
       "properties": {
+        "invocation_id": {
+          "description": "InvocationID is the persisted action_button_invocation row ID created at trigger time.",
+          "type": "string",
+          "example": "019ddf5f-2e7c-7e0e-8f9e-12d3a4567ab0"
+        },
         "message": {
           "description": "Success message",
           "type": "string",
@@ -11732,6 +13065,41 @@
         }
       }
     },
+    "toolkit.ListInstallationsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Installations on the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ToolkitInstallationItemResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "summary": {
+          "description": "Aggregate counts across all partner workspaces (active, opted_out, never_installed)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ToolkitInstallationSummaryResponse"
+            }
+          ]
+        },
+        "total_connected_workspaces": {
+          "description": "Total number of workspaces connected to the partner app",
+          "type": "integer",
+          "example": 162
+        }
+      }
+    },
     "toolkit.ManifestActionButton": {
       "type": "object",
       "properties": {
@@ -11795,11 +13163,11 @@
           "maxLength": 50,
           "example": "pdf"
         },
-        "icon_url": {
-          "description": "Icon URL for display",
+        "icon_name": {
+          "description": "Icon name from the vocabulary",
           "type": "string",
-          "maxLength": 2000,
-          "example": "https://cdn.example.com/icon.png"
+          "maxLength": 100,
+          "example": "share"
         },
         "integration_type": {
           "description": "Integration type",
@@ -12076,11 +13444,11 @@
           "maxLength": 1000,
           "example": "Generates a concise meeting summary"
         },
-        "icon": {
-          "description": "Icon name for display",
+        "icon_name": {
+          "description": "IconName specifies which FontAwesome icon to display (e.g., \"faLightbulb\", \"faBolt\")",
           "type": "string",
           "maxLength": 100,
-          "example": "sparkles"
+          "example": "faLightbulb"
         },
         "name": {
           "description": "Name of the shortcut",
@@ -12303,6 +13671,80 @@
         }
       }
     },
+    "toolkit.ToolkitInstallationItemResponse": {
+      "type": "object",
+      "properties": {
+        "installed_at": {
+          "description": "Timestamp when the installation was created (active installations only)",
+          "type": "string",
+          "example": "2026-04-15T10:30:00Z"
+        },
+        "status": {
+          "description": "Installation status: \"active\" or \"opted_out\"",
+          "enum": [
+            "active",
+            "opted_out"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ToolkitInstallationStatus"
+            }
+          ],
+          "example": "active"
+        },
+        "uninstalled_at": {
+          "description": "Timestamp when the workspace opted out (opted_out installations only)",
+          "type": "string",
+          "example": "2026-05-01T14:00:00Z"
+        },
+        "version_label": {
+          "description": "Human-readable version label of the installed toolkit version (active installations only)",
+          "type": "string",
+          "example": "1.2.0"
+        },
+        "workspace_id": {
+          "description": "ID of the workspace where the toolkit is (or was) installed",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "workspace_name": {
+          "description": "Display name of the workspace",
+          "type": "string",
+          "example": "Acme Corp"
+        }
+      }
+    },
+    "toolkit.ToolkitInstallationStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "opted_out"
+      ],
+      "x-enum-varnames": [
+        "ToolkitInstallationStatusActive",
+        "ToolkitInstallationStatusOptedOut"
+      ]
+    },
+    "toolkit.ToolkitInstallationSummaryResponse": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "description": "Number of workspaces with the toolkit currently installed",
+          "type": "integer",
+          "example": 142
+        },
+        "never_installed": {
+          "description": "Number of partner workspaces that have never installed the toolkit",
+          "type": "integer",
+          "example": 12
+        },
+        "opted_out": {
+          "description": "Number of workspaces that have opted out of the toolkit",
+          "type": "integer",
+          "example": 8
+        }
+      }
+    },
     "toolkit.ToolkitManifestRequest": {
       "type": "object",
       "properties": {
@@ -12364,6 +13806,16 @@
     "toolkit.UpdateToolkitRequest": {
       "type": "object",
       "properties": {
+        "auto_install_on_new_workspaces": {
+          "description": "AutoInstallOnNewWorkspaces, when set, controls whether the toolkit is automatically\ninstalled on newly provisioned partner workspaces. Pointer semantics preserve\ntrue PATCH behavior — only provided fields are updated.",
+          "type": "boolean",
+          "example": true
+        },
+        "auto_propagate": {
+          "description": "AutoPropagate, when set, controls whether newly published toolkit versions are\nautomatically propagated to existing installations. Pointer semantics preserve\ntrue PATCH behavior — only provided fields are updated.",
+          "type": "boolean",
+          "example": true
+        },
         "description": {
           "type": "string",
           "maxLength": 1000,
@@ -12577,6 +14029,254 @@
           "example": 0
         }
       }
+    },
+    "webhook.WebhookRetryResponse": {
+      "type": "object",
+      "properties": {
+        "delivery_id": {
+          "description": "ID of the webhook delivery that was retried",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174005"
+        },
+        "message": {
+          "description": "Human-readable status message",
+          "type": "string",
+          "example": "Webhook delivery retry scheduled successfully"
+        },
+        "next_retry_at": {
+          "description": "When the next retry attempt will be made (null when not scheduled)",
+          "type": "string",
+          "example": "2024-01-15T10:30:00Z"
+        },
+        "retry_count": {
+          "description": "Number of retry attempts made so far",
+          "type": "integer",
+          "example": 1
+        },
+        "retry_scheduled": {
+          "description": "Whether a retry has been scheduled",
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "workflow.PartnerWorkflowTemplateResponse": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "CreatedAt is the timestamp at which the template was created.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "description": {
+          "description": "Description is an optional human-readable description.",
+          "type": "string",
+          "example": "Runs after the meeting ends"
+        },
+        "id": {
+          "description": "ID is the workflow template's unique identifier.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "is_active": {
+          "description": "IsActive indicates whether the template is active and eligible to be run.",
+          "type": "boolean",
+          "example": true
+        },
+        "name": {
+          "description": "Name is the human-readable template name.",
+          "type": "string",
+          "example": "Post-meeting Follow-up"
+        },
+        "spec": {
+          "description": "Spec is the workflow DAG specification as a JSON object.",
+          "type": "object"
+        },
+        "updated_at": {
+          "description": "UpdatedAt is the timestamp at which the template was last updated.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "workspace_id": {
+          "description": "WorkspaceID is the workspace that owns the template row.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        }
+      }
+    },
+    "workflow.PartnerWorkflowTemplateSummary": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "CreatedAt is the timestamp at which the template was created.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "description": {
+          "description": "Description is an optional human-readable description.",
+          "type": "string",
+          "example": "Runs after the meeting ends"
+        },
+        "id": {
+          "description": "ID is the workflow template's unique identifier.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "is_active": {
+          "description": "IsActive indicates whether the template is active and eligible to be run.",
+          "type": "boolean",
+          "example": true
+        },
+        "name": {
+          "description": "Name is the human-readable template name.",
+          "type": "string",
+          "example": "Post-meeting Follow-up"
+        },
+        "updated_at": {
+          "description": "UpdatedAt is the timestamp at which the template was last updated.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "workspace_id": {
+          "description": "WorkspaceID is the workspace that owns the template row.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        }
+      }
+    },
+    "workflow_run.PartnerCreateWorkflowRunRequest": {
+      "type": "object",
+      "required": [
+        "originating_id",
+        "originating_type",
+        "workflow_template_id"
+      ],
+      "properties": {
+        "originating_id": {
+          "description": "OriginatingID is the ID of the originating object (required).",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174002"
+        },
+        "originating_type": {
+          "description": "OriginatingType is the kind of object that triggered the run. Accepted values: \"meeting\", \"canvas\".",
+          "type": "string",
+          "enum": [
+            "meeting",
+            "canvas"
+          ],
+          "example": "meeting"
+        },
+        "workflow_template_id": {
+          "description": "WorkflowTemplateID is the ID of the workflow template to run (required).",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        }
+      }
+    },
+    "workflow_run.PartnerWorkflowRunResponse": {
+      "type": "object",
+      "properties": {
+        "completed_at": {
+          "description": "CompletedAt is the timestamp at which the run finished.",
+          "type": "string",
+          "example": "2024-01-01T00:05:00Z"
+        },
+        "context_json": {
+          "description": "ContextJSON is the assembled context snapshot for the run as a JSON object.",
+          "type": "object"
+        },
+        "created_at": {
+          "description": "CreatedAt is the timestamp at which the run was created.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "current_step_ids": {
+          "description": "CurrentStepIDs is the list of step IDs currently eligible to run.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "step-1"
+          ]
+        },
+        "id": {
+          "description": "ID is the workflow run's unique identifier.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "name": {
+          "description": "Name is the optional display name of the run.",
+          "type": "string",
+          "example": "Post-meeting follow-up"
+        },
+        "originating_id": {
+          "description": "OriginatingID is the ID of the originating object.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174003"
+        },
+        "originating_type": {
+          "description": "OriginatingType is the kind of object that triggered the run.",
+          "type": "string",
+          "enum": [
+            "meeting",
+            "canvas"
+          ],
+          "example": "meeting"
+        },
+        "owner_user_id": {
+          "description": "OwnerUserID is the user whose context owns the run.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174005"
+        },
+        "started_at": {
+          "description": "StartedAt is the timestamp at which run execution began.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "status": {
+          "description": "Status is the current run status.",
+          "type": "string",
+          "enum": [
+            "pending",
+            "active",
+            "completed",
+            "failed",
+            "cancelled",
+            "frozen"
+          ],
+          "example": "pending"
+        },
+        "trigger_type": {
+          "description": "TriggerType indicates how the run was triggered.",
+          "type": "string",
+          "enum": [
+            "manual",
+            "autopilot"
+          ],
+          "example": "manual"
+        },
+        "triggered_by": {
+          "description": "TriggeredBy is the ID of the user who triggered a manual run, if applicable.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174004"
+        },
+        "updated_at": {
+          "description": "UpdatedAt is the timestamp at which the run was last updated.",
+          "type": "string",
+          "example": "2024-01-01T00:00:00Z"
+        },
+        "workflow_template_id": {
+          "description": "WorkflowTemplateID is the template that produced this run.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        "workspace_id": {
+          "description": "WorkspaceID is the workspace that owns the run.",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174002"
+        }
+      }
     }
   },
   "securityDefinitions": {
@@ -12624,7 +14324,8 @@
         "IdP Management",
         "Template Management",
         "Toolkit Management",
-        "Webhook Management"
+        "Webhook Management",
+        "Workflow Management"
       ]
     },
     {
@@ -12639,7 +14340,8 @@
         "Participants",
         "Templates",
         "Toolkits",
-        "User Profile"
+        "User Profile",
+        "Workflow Runs"
       ]
     }
   ],
@@ -12685,6 +14387,10 @@
       "description": "Configure the webhook endpoint that Contio uses to deliver real-time event notifications. You can also filter which event types are delivered and inspect recent delivery attempts.\n\nSee the [Webhook Events reference](/partner-api/api-reference/webhooks/) for the full list of supported event types and payload schemas."
     },
     {
+      "name": "Workflow Management",
+      "description": "Retrieve and inspect the workflow templates owned by your partner application across all connected workspaces. Workflow templates define the automated logic that user-triggered workflow runs execute.\n\n**Required scope:** Admin API key (`X-API-Key` header)."
+    },
+    {
       "name": "Action Items",
       "description": "Retrieve, create, and update action items that have been extracted from meetings. Action items include the task description, owner, due date, and current status."
     },
@@ -12723,6 +14429,10 @@
     {
       "name": "Toolkits",
       "description": "Browse and install toolkits in user workspaces. Toolkits provide pre-configured feature sets that partners have published for their users. Installing a toolkit creates all associated entities (templates, action buttons, next steps) in the target workspace.\n\n**Required scopes:** `toolkits:read` (GET) · `toolkits:write` (POST / DELETE)."
+    },
+    {
+      "name": "Workflow Runs",
+      "description": "Trigger workflow runs on behalf of your users and track their execution status. A workflow run applies a workflow template to a meeting and reports its progress, results, and any errors.\n\n**Required scopes:** `workflows:read` (GET) · `workflows:write` (POST)."
     }
   ]
 }

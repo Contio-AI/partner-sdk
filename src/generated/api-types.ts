@@ -194,6 +194,182 @@ export interface ActionItemUpdateActionItemRequest {
   title?: string;
 }
 
+export type AddMeetingParticipantData =
+  MeetingPartnerMeetingParticipantResponse;
+
+export type AddMeetingParticipantError = ErrorsPartnerErrorResponse;
+
+export interface AddMeetingParticipantParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type AddTemplateNextStepData = any;
+
+export type AddTemplateNextStepError = ErrorsPartnerErrorResponse;
+
+export interface AddTemplateNextStepParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type AdminCreateToolkitData = ToolkitCreateToolkitResponse;
+
+export type AdminCreateToolkitError = ErrorsPartnerErrorResponse;
+
+export type AdminCreateToolkitVersionData = ToolkitCreateVersionResponse;
+
+export type AdminCreateToolkitVersionError = ErrorsPartnerErrorResponse;
+
+export interface AdminCreateToolkitVersionParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type AdminDeleteToolkitData = any;
+
+export type AdminDeleteToolkitError = ErrorsPartnerErrorResponse;
+
+export interface AdminDeleteToolkitParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type AdminDiscardToolkitVersionData = any;
+
+export type AdminDiscardToolkitVersionError = ErrorsPartnerErrorResponse;
+
+export interface AdminDiscardToolkitVersionParams {
+  /** Toolkit ID */
+  toolkitId: string;
+  /** Version ID */
+  versionId: string;
+}
+
+export type AdminExportEntitiesData = ToolkitExportResponse;
+
+export type AdminExportEntitiesError = ErrorsPartnerErrorResponse;
+
+export type AdminExportToolkitData = ToolkitExportResponse;
+
+export type AdminExportToolkitError = ErrorsPartnerErrorResponse;
+
+export interface AdminExportToolkitParams {
+  /**
+   * Toolkit ID
+   * @format uuid
+   */
+  toolkitId: string;
+}
+
+export type AdminGetToolkitData =
+  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type AdminGetToolkitError = ErrorsPartnerErrorResponse;
+
+export interface AdminGetToolkitParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type AdminGetToolkitVersionData = ToolkitVersionResponse;
+
+export type AdminGetToolkitVersionError = ErrorsPartnerErrorResponse;
+
+export interface AdminGetToolkitVersionParams {
+  /** Toolkit ID */
+  toolkitId: string;
+  /** Version ID */
+  versionId: string;
+}
+
+export type AdminListToolkitInstallationsData =
+  ToolkitListInstallationsResponse;
+
+export type AdminListToolkitInstallationsError = ErrorsPartnerErrorResponse;
+
+export interface AdminListToolkitInstallationsParams {
+  /** Maximum number of items to return (default 50, max 100) */
+  limit?: number;
+  /** Number of items to skip from the beginning (default 0) */
+  offset?: number;
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type AdminListToolkitVersionsData = ToolkitVersionResponse[];
+
+export type AdminListToolkitVersionsError = ErrorsPartnerErrorResponse;
+
+export interface AdminListToolkitVersionsParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type AdminListToolkitsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type AdminListToolkitsError = ErrorsPartnerErrorResponse;
+
+export interface AdminListToolkitsParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type AdminPublishToolkitVersionData = any;
+
+export type AdminPublishToolkitVersionError = ErrorsPartnerErrorResponse;
+
+export interface AdminPublishToolkitVersionParams {
+  /** Toolkit ID */
+  toolkitId: string;
+  /** Version ID */
+  versionId: string;
+}
+
+export type AdminRepublishToolkitVersionData = any;
+
+export type AdminRepublishToolkitVersionError = ErrorsPartnerErrorResponse;
+
+export interface AdminRepublishToolkitVersionParams {
+  /** Toolkit ID */
+  toolkitId: string;
+  /** Version ID */
+  versionId: string;
+}
+
+export type AdminUpdateToolkitData =
+  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+
+export type AdminUpdateToolkitError = ErrorsPartnerErrorResponse;
+
+export interface AdminUpdateToolkitParams {
+  /** Toolkit ID */
+  toolkitId: string;
+}
+
+export type AdminUpdateToolkitVersionData = ToolkitVersionResponse;
+
+export type AdminUpdateToolkitVersionError = ErrorsPartnerErrorResponse;
+
+export interface AdminUpdateToolkitVersionParams {
+  /** Toolkit ID */
+  toolkitId: string;
+  /** Version ID */
+  versionId: string;
+}
+
 export interface AppManagementSetWebhookFilterRequest {
   /** @minItems 1 */
   events: string[];
@@ -302,13 +478,23 @@ export interface AppManagementUpdateWebhookStatusRequest {
   pending_disposition?: "deliver" | "abandon";
 }
 
-export type AuthorizeCreateData = OauthOAuthConsentResponse;
+export type ApplyMeetingTemplateData = MeetingTemplateApplyTemplateResponse;
 
-export type AuthorizeCreateError = Record<string, unknown>;
+export type ApplyMeetingTemplateError =
+  | ErrorsPartnerErrorResponse
+  | MiddlewareFeatureNotAvailableResponse;
 
-export type AuthorizeListError = ErrorsErrorResponse;
+export interface ApplyMeetingTemplateParams {
+  /**
+   * Template ID to apply
+   * @format uuid
+   */
+  id: string;
+}
 
-export interface AuthorizeListParams {
+export type AuthorizeOauthError = ErrorsErrorResponse;
+
+export interface AuthorizeOauthParams {
   /** OAuth client ID */
   client_id: string;
   /** PKCE code challenge */
@@ -508,7 +694,8 @@ export interface CalendarLinkCalendarEventError400 {
     | "invalid_meeting_id"
     | "invalid_request_body"
     | "calendar_event_already_linked"
-    | "meeting_already_linked";
+    | "meeting_already_linked"
+    | "calendar_workspace_mismatch";
   /**
    * User-friendly description of what went wrong
    * @example "Invalid meeting ID format"
@@ -627,9 +814,26 @@ export interface CalendarPartnerLinkCalendarEventRequest {
   calendar_event_id: string;
 }
 
-export type CheckConsentCreateData = OauthOAuthConsentCheckResponse;
+export type CheckIdpDomainVerificationData = IdpDomainVerificationResponse;
 
-export type CheckConsentCreateError = ErrorsErrorResponse;
+export type CheckIdpDomainVerificationError =
+  | IdpDomainVerificationError400
+  | ErrorsPartnerErrorResponse;
+
+export interface CheckIdpDomainVerificationParams {
+  /** Exact domain (e.g. acme.com) */
+  domain: string;
+}
+
+export type CheckOauthConsentData = OauthOAuthConsentCheckResponse;
+
+export type CheckOauthConsentError = ErrorsErrorResponse;
+
+export type CompleteOauthAuthorizationData = OauthOAuthConsentResponse;
+
+export type CompleteOauthAuthorizationError =
+  | ErrorsPartnerErrorResponse
+  | Record<string, unknown>;
 
 export interface ConnectionUserConnectionResponse {
   /**
@@ -711,6 +915,148 @@ export interface ContextMeetingContextResponse {
   title?: string;
   updated_at?: string;
   workspace_id?: string;
+}
+
+export type CreateActionItemData = ActionItemPartnerActionItemResponse;
+
+export type CreateActionItemError =
+  | ActionItemCreateActionItemError400
+  | ErrorsPartnerErrorResponse;
+
+export type CreateAutomationData = AutomationAutomationResponse;
+
+export type CreateAutomationError =
+  | AutomationCreateAutomationError400
+  | ErrorsPartnerErrorResponse;
+
+export type CreateCalendarEventMeetingData =
+  CalendarPartnerCreateMeetingFromCalendarEventResponse;
+
+export type CreateCalendarEventMeetingError =
+  | CalendarCreateMeetingFromCalendarEventError400
+  | ErrorsPartnerErrorResponse;
+
+export interface CreateCalendarEventMeetingParams {
+  /**
+   * Calendar Event ID
+   * @example ""123e4567-e89b-12d3-a456-426614174006""
+   */
+  calendarEventId: string;
+}
+
+export type CreateIdpConfigData = IdpIdPConfigResponse;
+
+export type CreateIdpConfigError =
+  | IdpCreateIdPConfigError400
+  | ErrorsPartnerErrorResponse;
+
+export type CreateMeetingAgendaItemData = MeetingPartnerAgendaItemResponse;
+
+export type CreateMeetingAgendaItemError = ErrorsPartnerErrorResponse;
+
+export interface CreateMeetingAgendaItemParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type CreateMeetingData = SharedPartnerMeetingResponse;
+
+export type CreateMeetingError =
+  | MeetingCreateMeetingError400
+  | ErrorsPartnerErrorResponse;
+
+export type CreateSessionData = SessionCreateSessionResponse;
+
+export type CreateSessionError =
+  | ErrorsPartnerErrorResponse
+  | MiddlewareFeatureNotAvailableResponse;
+
+export type CreateTemplateData = TemplateTemplateResponse;
+
+export type CreateTemplateError = ErrorsPartnerErrorResponse;
+
+export type CreateWorkflowRunData = WorkflowRunPartnerWorkflowRunResponse;
+
+export type CreateWorkflowRunError =
+  | ErrorsPartnerErrorResponse
+  | MiddlewareFeatureNotAvailableResponse;
+
+export interface CredentialCredentialHistoryEvent {
+  /**
+   * Action performed (rotated, accessed, rollback, disabled, enabled, viewed, tested)
+   * @example "rotated"
+   */
+  action?: string;
+  /**
+   * When the event occurred
+   * @example "2024-01-15T10:30:00Z"
+   */
+  created_at?: string;
+  /**
+   * Type of credential (api_key, webhook_secret, client_secret)
+   * @example "api_key"
+   */
+  credential_type?: string;
+  /**
+   * Unique identifier for the audit event
+   * @example "evt_abc123"
+   */
+  id?: string;
+  /**
+   * Who initiated the action (partner, internal, system)
+   * @example "partner"
+   */
+  initiated_by?: string;
+  /**
+   * IP address of the request that triggered the event
+   * @example "192.168.1.1"
+   */
+  ip_address?: string;
+  /** Additional metadata about the event */
+  metadata?: Record<string, unknown>;
+  /**
+   * Partner app that owns the credential
+   * @example "01234567-89ab-cdef-0123-456789abcdef"
+   */
+  partner_app_id?: string;
+  /**
+   * Reason for the credential action
+   * @example "Scheduled rotation"
+   */
+  reason?: string;
+  /**
+   * User agent of the request that triggered the event
+   * @example "Mozilla/5.0"
+   */
+  user_agent?: string;
+}
+
+export interface CredentialCredentialHistoryPagination {
+  /**
+   * Number of events returned in this response
+   * @example 5
+   */
+  count?: number;
+  /**
+   * Maximum number of events requested
+   * @example 20
+   */
+  limit?: number;
+  /**
+   * Number of events skipped
+   * @example 0
+   */
+  offset?: number;
+}
+
+export interface CredentialCredentialHistoryResponse {
+  /** List of credential audit events */
+  events?: CredentialCredentialHistoryEvent[];
+  /** Pagination metadata */
+  pagination?: CredentialCredentialHistoryPagination;
 }
 
 export interface CredentialCredentialRollbackRequest {
@@ -857,6 +1203,93 @@ export interface CredentialRotateWebhookSecretError400 {
   request_id?: string;
 }
 
+export type DeleteActionItemData = any;
+
+export type DeleteActionItemError = ErrorsPartnerErrorResponse;
+
+export interface DeleteActionItemParams {
+  /** Action Item ID */
+  id: string;
+}
+
+export type DeleteAutomationData = any;
+
+export type DeleteAutomationError = ErrorsPartnerErrorResponse;
+
+export interface DeleteAutomationParams {
+  /** Automation ID */
+  automationId: string;
+}
+
+export type DeleteIdpConfigData = any;
+
+export type DeleteIdpConfigError = ErrorsPartnerErrorResponse;
+
+export type DeleteMeetingAgendaItemData = any;
+
+export type DeleteMeetingAgendaItemError = ErrorsPartnerErrorResponse;
+
+export interface DeleteMeetingAgendaItemParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Agenda Item ID
+   * @format uuid
+   */
+  itemId: string;
+}
+
+export type DeleteMeetingContextData = any;
+
+export type DeleteMeetingContextError = ErrorsPartnerErrorResponse;
+
+export interface DeleteMeetingContextParams {
+  /**
+   * Context ID
+   * @format uuid
+   */
+  contextId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type DeleteTemplateData = any;
+
+export type DeleteTemplateError = ErrorsPartnerErrorResponse;
+
+export interface DeleteTemplateParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type DeleteWebhookFilterData = SharedPartnerAppResponse;
+
+export type DeleteWebhookFilterError = ErrorsPartnerErrorResponse;
+
+/** @format binary */
+export type DownloadMeetingContextContentData = File;
+
+export type DownloadMeetingContextContentError = ErrorsPartnerErrorResponse;
+
+export interface DownloadMeetingContextContentParams {
+  /**
+   * Context ID
+   * @format uuid
+   */
+  contextId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
 /** Standard error response format used across all API endpoints. All error responses follow this consistent structure for predictable error handling. */
 export interface ErrorsErrorResponse {
   /**
@@ -868,12 +1301,17 @@ export interface ErrorsErrorResponse {
     | "note_not_found"
     | "bad_request"
     | "validation_error"
+    | "next_step_prompt_rejected"
+    | "next_step_no_meeting_content"
     | "unauthorized"
     | "forbidden"
     | "conflict"
     | "resource_already_exists"
     | "too_many_requests"
-    | "internal_server_error";
+    | "internal_server_error"
+    | "toolkit_slug_collision"
+    | "manifest_validation_failed"
+    | "toolkit_requires_annual";
   /**
    * User-friendly description of what went wrong
    * @example "The requested resource could not be found"
@@ -915,7 +1353,7 @@ export interface ErrorsPartnerConflictErrorResponse {
   workspace_id?: string;
 }
 
-/** Standard error response format used across all partner API endpoints. This format is used by both partner admin and partner user APIs for consistency. DEPRECATION NOTICE (v2.0): The 'message' field will be removed in the next major release. Partners should migrate to using the 'error' field instead. */
+/** Standard error response format used across Contio's versioned public API endpoints. This shape is shared by the Partner API and the first-party /v1 User/Workspace API for consistency. DEPRECATION NOTICE (v2.0): The 'message' field will be removed in the next major release. Clients should migrate to using the 'error' field instead. */
 export interface ErrorsPartnerErrorResponse {
   /**
    * Unique identifier for the error type, useful for programmatic error handling
@@ -939,9 +1377,305 @@ export interface ErrorsPartnerErrorResponse {
   request_id?: string;
 }
 
-export type HealthListData = OauthHealthResponse;
+export type ExchangeOauthTokenData =
+  RomeApiControllersExternalPartnerOauthTokenResponse;
 
-export type HealthListError = ErrorsErrorResponse;
+export type ExchangeOauthTokenError = ErrorsErrorResponse;
+
+export interface ExchangeOauthTokenPayload {
+  /** OAuth client ID */
+  client_id: string;
+  /** OAuth client secret */
+  client_secret?: string;
+  /** Authorization code */
+  code: string;
+  /** PKCE code verifier */
+  code_verifier?: string;
+  /** OAuth grant type (authorization_code) */
+  grant_type: string;
+  /** OAuth redirect URI */
+  redirect_uri: string;
+}
+
+export type ExecuteMeetingNextStepData = SharedExecuteNextStepResponse;
+
+export type ExecuteMeetingNextStepError = ErrorsPartnerErrorResponse;
+
+export interface ExecuteMeetingNextStepParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Next Step ID
+   * @format uuid
+   */
+  nextStepId: string;
+}
+
+export type ExportMeetingTranscriptData = string;
+
+export type ExportMeetingTranscriptError =
+  | ErrorsPartnerErrorResponse
+  | MiddlewareFeatureNotAvailableResponse;
+
+export interface ExportMeetingTranscriptParams {
+  /** Output format (default: srt) */
+  format?: "srt";
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type GetActionItemData = ActionItemPartnerActionItemResponse;
+
+export type GetActionItemError = ErrorsPartnerErrorResponse;
+
+export interface GetActionItemParams {
+  /** Action Item ID */
+  id: string;
+}
+
+export type GetAppData = SharedPartnerAppResponse;
+
+export type GetAppError = ErrorsPartnerErrorResponse;
+
+export type GetAutomationData = AutomationAutomationResponse;
+
+export type GetAutomationError = ErrorsPartnerErrorResponse;
+
+export interface GetAutomationParams {
+  /** Automation ID */
+  automationId: string;
+}
+
+export type GetCalendarEventData = CalendarPartnerCalendarEventResponse;
+
+export type GetCalendarEventError = ErrorsPartnerErrorResponse;
+
+export interface GetCalendarEventParams {
+  /**
+   * Calendar Event ID
+   * @example ""123e4567-e89b-12d3-a456-426614174006""
+   */
+  calendarEventId: string;
+}
+
+export type GetConnectionData = ConnectionUserConnectionResponse;
+
+export type GetConnectionError = ErrorsPartnerErrorResponse;
+
+export interface GetConnectionParams {
+  /** Connection ID */
+  connectionId: string;
+}
+
+export type GetCredentialStatusData = Record<
+  string,
+  CredentialCredentialStatusResponse
+>;
+
+export type GetCredentialStatusError = ErrorsPartnerErrorResponse;
+
+export type GetIdpConfigData = IdpIdPConfigResponse;
+
+export type GetIdpConfigError = ErrorsPartnerErrorResponse;
+
+export type GetIdpDomainVerificationData = IdpDomainVerificationResponse;
+
+export type GetIdpDomainVerificationError =
+  | IdpDomainVerificationError400
+  | ErrorsPartnerErrorResponse;
+
+export interface GetIdpDomainVerificationParams {
+  /** Exact domain (e.g. acme.com) */
+  domain: string;
+}
+
+export type GetMeetingContextData = ContextMeetingContextResponse;
+
+export type GetMeetingContextError = ErrorsPartnerErrorResponse;
+
+export interface GetMeetingContextParams {
+  /**
+   * Context ID
+   * @format uuid
+   */
+  contextId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type GetMeetingData = SharedPartnerMeetingResponse;
+
+export type GetMeetingError = ErrorsPartnerErrorResponse;
+
+export interface GetMeetingParams {
+  /** Meeting ID */
+  id: string;
+}
+
+export type GetMeetingTemplateData =
+  MeetingTemplatePartnerMeetingTemplateDetailResponse;
+
+export type GetMeetingTemplateError = ErrorsPartnerErrorResponse;
+
+export interface GetMeetingTemplateParams {
+  /**
+   * Meeting template ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type GetNextStepResultData = NextStepResultNextStepResultResponse;
+
+export type GetNextStepResultError = ErrorsPartnerErrorResponse;
+
+export interface GetNextStepResultParams {
+  /**
+   * Result ID
+   * @format uuid
+   */
+  resultId: string;
+}
+
+export type GetOauthHealthData = OauthHealthResponse;
+
+export type GetOauthHealthError = ErrorsErrorResponse;
+
+export type GetOauthJwksData =
+  RomeApiControllersExternalPartnerOauthJWKSResponse;
+
+export type GetOauthJwksError = ErrorsErrorResponse;
+
+export type GetOauthUserInfoData =
+  RomeApiControllersExternalPartnerOauthUserInfo;
+
+export type GetOauthUserInfoError = ErrorsErrorResponse;
+
+export type GetOpenidConfigurationData =
+  RomeApiControllersExternalPartnerOauthDiscoveryDocument;
+
+export type GetOpenidConfigurationError = ErrorsErrorResponse;
+
+export type GetProfileData = ProfileUserProfileResponse;
+
+export type GetProfileError = ErrorsPartnerErrorResponse;
+
+export type GetPublicPartnerInfoData = OauthPartnerInfoResponse;
+
+export type GetPublicPartnerInfoError = ErrorsErrorResponse;
+
+export interface GetPublicPartnerInfoParams {
+  /** Partner Client ID */
+  clientId: string;
+}
+
+export type GetSessionData = SessionGetSessionResponse;
+
+export type GetSessionError = ErrorsPartnerErrorResponse;
+
+export interface GetSessionParams {
+  /**
+   * Session ID
+   * @format uuid
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  id: string;
+  /**
+   * Maximum turns to return (1-200, default: 50)
+   * @min 1
+   * @max 200
+   */
+  turn_limit?: number;
+  /**
+   * Pagination offset for turns
+   * @min 0
+   */
+  turn_offset?: number;
+}
+
+export type GetSessionTurnData = SessionGetTurnResponse;
+
+export type GetSessionTurnError = ErrorsPartnerErrorResponse;
+
+export interface GetSessionTurnParams {
+  /**
+   * Session ID
+   * @format uuid
+   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
+   */
+  id: string;
+  /**
+   * Turn ID
+   * @format uuid
+   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+   */
+  turnId: string;
+}
+
+export type GetSsoInfoData = SsoPartnerSSOInfoResponse;
+
+export type GetSsoInfoError = SsoErrorResponse;
+
+export interface GetSsoInfoParams {
+  /** Partner slug */
+  slug: string;
+}
+
+export type GetSsoSessionData = SsoSessionStatusResponse;
+
+export type GetSsoSessionError =
+  | ErrorsPartnerErrorResponse
+  | Record<string, unknown>;
+
+export interface GetSsoSessionParams {
+  /** Session ID */
+  sessionId: string;
+}
+
+export type GetTemplateData = TemplateTemplateResponse;
+
+export type GetTemplateError = ErrorsPartnerErrorResponse;
+
+export interface GetTemplateParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type GetWebhookDeliveryData = WebhookWebhookDeliveryResponse;
+
+export type GetWebhookDeliveryError = ErrorsPartnerErrorResponse;
+
+export interface GetWebhookDeliveryParams {
+  /** Webhook Delivery ID */
+  deliveryId: string;
+}
+
+export type GetWorkflowRunData = WorkflowRunPartnerWorkflowRunResponse;
+
+export type GetWorkflowRunError = ErrorsPartnerErrorResponse;
+
+export interface GetWorkflowRunParams {
+  /** Workflow Run ID */
+  id: string;
+}
+
+export type GetWorkflowTemplateData = WorkflowPartnerWorkflowTemplateResponse;
+
+export type GetWorkflowTemplateError = ErrorsPartnerErrorResponse;
+
+export interface GetWorkflowTemplateParams {
+  /** Workflow Template ID */
+  id: string;
+}
 
 /** Bad request error for creating IdP configuration */
 export interface IdpCreateIdPConfigError400 {
@@ -955,6 +1689,9 @@ export interface IdpCreateIdPConfigError400 {
     | "invalid_idp"
     | "domain_is_generic"
     | "domain_already_claimed"
+    | "domain_reserved"
+    | "domain_not_verified"
+    | "invalid_domain"
     | "strict_mode_requires_domains"
     | "discovery_fetch_failed"
     | "idp_config_exists";
@@ -1012,6 +1749,58 @@ export interface IdpCreateIdPConfigRequest {
    * @example ["openid","email","profile"]
    */
   scopes?: string[];
+}
+
+/** Bad request error for domain ownership verification */
+export interface IdpDomainVerificationError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_domain"
+   */
+  code?: "invalid_domain" | "domain_reserved" | "domain_is_generic";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid domain"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
+export interface IdpDomainVerificationResponse {
+  /**
+   * DNS TXT record name the partner must create
+   * @example "_contio-challenge.acme.com"
+   */
+  dns_record_name?: string;
+  /**
+   * Full DNS TXT record value the partner must publish (contio-domain-verify=<token>)
+   * @example "contio-domain-verify=abc123"
+   */
+  dns_record_value?: string;
+  /**
+   * Normalized (lowercase, punycode) domain being verified
+   * @example "acme.com"
+   */
+  domain?: string;
+  /**
+   * When the pending challenge token expires (RFC3339). Absent once verified.
+   * @example "2026-01-08T00:00:00Z"
+   */
+  expires_at?: string;
+  /**
+   * Verification status: pending, verified, or expired
+   * @example "pending"
+   */
+  status?: string;
+  /**
+   * When the domain was verified (RFC3339). Present only when status is verified.
+   * @example "2026-01-02T00:00:00Z"
+   */
+  verified_at?: string;
 }
 
 export interface IdpIdPConfigResponse {
@@ -1109,6 +1898,9 @@ export interface IdpUpdateIdPConfigError400 {
     | "invalid_idp"
     | "domain_is_generic"
     | "domain_already_claimed"
+    | "domain_reserved"
+    | "domain_not_verified"
+    | "invalid_domain"
     | "strict_mode_requires_domains"
     | "discovery_fetch_failed";
   /**
@@ -1166,27 +1958,500 @@ export interface IdpUpdateIdPConfigRequest {
   scopes?: string[];
 }
 
-export type InitiateCreateData = OauthPartnerAuthInitiateResponse;
+export type InitiateIdpDomainVerificationData = IdpDomainVerificationResponse;
 
-export type InitiateCreateError =
+export type InitiateIdpDomainVerificationError =
+  | IdpDomainVerificationError400
+  | ErrorsPartnerErrorResponse;
+
+export interface InitiateIdpDomainVerificationParams {
+  /** Exact domain to verify (e.g. acme.com). Subdomains must be verified independently. */
+  domain: string;
+}
+
+export type InitiatePartnerAuthData = OauthPartnerAuthInitiateResponse;
+
+export type InitiatePartnerAuthError =
   | ErrorsErrorResponse
   | ErrorsPartnerErrorResponse
   | ErrorsPartnerConflictErrorResponse;
 
-export type IntrospectCreateData =
+export type InitiateSsoData = SsoInitiateResponse;
+
+export type InitiateSsoError =
+  | string
+  | ErrorsPartnerErrorResponse
+  | Record<string, unknown>;
+
+export interface InitiateSsoParams {
+  /** Auto-redirect to authorization URL */
+  auto?: boolean;
+  /** Partner app slug */
+  slug: string;
+  /** Target platform: web (default), desktop, backlog, or meeting:{id} */
+  target?: "web" | "desktop" | "backlog";
+}
+
+export type InstallToolkitData = ToolkitInstallationResponse;
+
+export type InstallToolkitError = ErrorsPartnerErrorResponse;
+
+export interface InstallToolkitParams {
+  /**
+   * Toolkit ID
+   * @format uuid
+   */
+  toolkitId: string;
+}
+
+export type IntrospectOauthTokenData =
   RomeApiControllersExternalPartnerOauthTokenIntrospection;
 
-export type IntrospectCreateError = ErrorsErrorResponse;
+export type IntrospectOauthTokenError = ErrorsErrorResponse;
 
-export interface IntrospectCreatePayload {
+export interface IntrospectOauthTokenPayload {
   /** Access token to introspect */
   token: string;
 }
 
-export type JwksJsonListData =
-  RomeApiControllersExternalPartnerOauthJWKSResponse;
+export type LinkCalendarEventData = CalendarLinkCalendarEventResponse;
 
-export type JwksJsonListError = ErrorsErrorResponse;
+export type LinkCalendarEventError =
+  | CalendarLinkCalendarEventError400
+  | ErrorsPartnerErrorResponse;
+
+export interface LinkCalendarEventParams {
+  /**
+   * Meeting ID
+   * @example ""123e4567-e89b-12d3-a456-426614174000""
+   */
+  id: string;
+}
+
+export type ListActionItemsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
+
+export type ListActionItemsError =
+  | ActionItemGetActionItemsError400
+  | ErrorsPartnerErrorResponse;
+
+export interface ListActionItemsParams {
+  /**
+   * Filter by end date (ISO 8601)
+   * @example ""2023-12-31T23:59:59Z""
+   */
+  end_date?: string;
+  /** Filter by partner assignment */
+  has_partner_assignment?: boolean;
+  /** Filter by completion status */
+  is_completed?: boolean;
+  /**
+   * Limit
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Filter by meeting ID
+   * @example ""123e4567-e89b-12d3-a456-426614174000""
+   */
+  meeting_id?: string;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+  /**
+   * Filter by start date (ISO 8601)
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start_date?: string;
+}
+
+export type ListAutomationsData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse;
+
+export type ListAutomationsError = ErrorsPartnerErrorResponse;
+
+export interface ListAutomationsParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type ListCalendarEventsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse;
+
+export type ListCalendarEventsError =
+  | CalendarGetCalendarEventsError400
+  | ErrorsPartnerErrorResponse;
+
+export interface ListCalendarEventsParams {
+  /** Sort direction: asc or desc (default: asc) */
+  direction?: string;
+  /**
+   * Deprecated: Use end_date instead
+   * @example ""2023-01-31T23:59:59Z""
+   */
+  end?: string;
+  /**
+   * End time in RFC3339 format (preferred)
+   * @example ""2023-01-31T23:59:59Z""
+   */
+  end_date?: string;
+  /** Number of results per page (default 25, max 100) */
+  limit?: number;
+  /** Pagination offset (default 0) */
+  offset?: number;
+  /**
+   * Deprecated: Use start_date instead
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start?: string;
+  /**
+   * Start time in RFC3339 format (preferred)
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start_date?: string;
+}
+
+export type ListConnectionsData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse;
+
+export type ListConnectionsError = ErrorsPartnerErrorResponse;
+
+export interface ListConnectionsParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+  /** Filter by connection status */
+  status?: "active" | "revoked" | "expired";
+  /**
+   * Filter by user ID
+   * @example ""123e4567-e89b-12d3-a456-426614174000""
+   */
+  user_id?: string;
+}
+
+export type ListCredentialHistoryData = CredentialCredentialHistoryResponse;
+
+export type ListCredentialHistoryError = ErrorsPartnerErrorResponse;
+
+export interface ListCredentialHistoryParams {
+  /** Filter by credential type */
+  credential_type?: string;
+  /**
+   * Number of events to return
+   * @default 20
+   */
+  limit?: number;
+  /**
+   * Number of events to skip
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type ListInstalledToolkitsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse;
+
+export type ListInstalledToolkitsError = ErrorsPartnerErrorResponse;
+
+export interface ListInstalledToolkitsParams {
+  /**
+   * Workspace ID
+   * @format uuid
+   */
+  workspaceId: string;
+}
+
+export type ListMeetingActionButtonsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse;
+
+export type ListMeetingActionButtonsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingActionButtonsParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type ListMeetingAgendaItemsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse;
+
+export type ListMeetingAgendaItemsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingAgendaItemsParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type ListMeetingContextsData = ContextMeetingContextListResponse;
+
+export type ListMeetingContextsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingContextsParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Limit
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type ListMeetingNextStepsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse;
+
+export type ListMeetingNextStepsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingNextStepsParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type ListMeetingParticipantsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse;
+
+export type ListMeetingParticipantsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingParticipantsParams {
+  /** Meeting ID */
+  id: string;
+}
+
+export type ListMeetingTemplateNextStepsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse;
+
+export type ListMeetingTemplateNextStepsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingTemplateNextStepsParams {
+  /**
+   * Meeting template ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type ListMeetingTemplatesData =
+  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse;
+
+export type ListMeetingTemplatesError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingTemplatesParams {
+  /**
+   * Maximum number of items per page
+   * @min 1
+   * @max 100
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @min 0
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type ListMeetingsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
+
+export type ListMeetingsError =
+  | MeetingGetMeetingsError400
+  | ErrorsPartnerErrorResponse;
+
+export interface ListMeetingsParams {
+  /**
+   * End date filter (ISO 8601)
+   * @example ""2023-12-31T23:59:59Z""
+   */
+  end_date?: string;
+  /**
+   * Limit
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+  /**
+   * Start date filter (ISO 8601)
+   * @example ""2023-01-01T00:00:00Z""
+   */
+  start_date?: string;
+}
+
+export type ListOauthScopesData = OauthScopesResponse;
+
+export type ListOauthScopesError = ErrorsErrorResponse;
+
+export type ListSessionsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse;
+
+export type ListSessionsError = ErrorsPartnerErrorResponse;
+
+export interface ListSessionsParams {
+  /**
+   * Maximum sessions to return (1-100, default: 25)
+   * @min 1
+   * @max 100
+   */
+  limit?: number;
+  /**
+   * Filter by meeting ID
+   * @format uuid
+   */
+  meeting_id?: string;
+  /**
+   * Number of sessions to skip (0-based, default: 0)
+   * @min 0
+   */
+  offset?: number;
+}
+
+export type ListTemplateNextStepsData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse;
+
+export type ListTemplateNextStepsError = ErrorsPartnerErrorResponse;
+
+export interface ListTemplateNextStepsParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type ListTemplatesData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse;
+
+export type ListTemplatesError = ErrorsPartnerErrorResponse;
+
+export interface ListTemplatesParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type ListToolkitsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse;
+
+export type ListToolkitsError = ErrorsPartnerErrorResponse;
+
+export interface ListToolkitsParams {
+  /**
+   * Maximum number of items per page
+   * @min 1
+   * @max 100
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @min 0
+   * @default 0
+   */
+  offset?: number;
+}
+
+export type ListWebhookDeliveriesData = WebhookWebhookDeliveriesResponse;
+
+export type ListWebhookDeliveriesError = ErrorsPartnerErrorResponse;
+
+export interface ListWebhookDeliveriesParams {
+  /** Filter by event type (e.g., meeting.created, automation.assignment.created) */
+  event_type?: string;
+  /** Maximum number of results to return (default 50, max 100) */
+  limit?: number;
+  /** Number of results to skip (default 0) */
+  offset?: number;
+  /** Filter by delivery status (pending, delivered, failed, abandoned) */
+  status?: string;
+}
+
+export type ListWorkflowRunsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseWorkflowRunPartnerWorkflowRunResponse;
+
+export type ListWorkflowRunsError = ErrorsPartnerErrorResponse;
+
+export interface ListWorkflowRunsParams {
+  /**
+   * Limit
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+  /** Filter by originating object type */
+  originating_type?: "meeting" | "canvas";
+  /** Filter by run status */
+  status?:
+    | "pending"
+    | "active"
+    | "completed"
+    | "failed"
+    | "cancelled"
+    | "frozen";
+  /** Filter by workflow template ID */
+  workflow_template_id?: string;
+}
+
+export type ListWorkflowTemplatesData =
+  RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowPartnerWorkflowTemplateSummary;
+
+export type ListWorkflowTemplatesError = ErrorsPartnerErrorResponse;
+
+export interface ListWorkflowTemplatesParams {
+  /**
+   * Limit
+   * @default 50
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
+}
 
 export interface MeetingAddParticipantRequest {
   /** @example "john.doe@example.com" */
@@ -1213,6 +2478,11 @@ export interface MeetingCreateAgendaItemRequest {
   presenters?: string[];
   /** @example false */
   restricted_to_leads?: boolean;
+  /**
+   * @maxLength 10000
+   * @example "My private notes for this item"
+   */
+  talking_points?: string;
   /**
    * @min 0
    * @max 1440
@@ -1316,6 +2586,11 @@ export interface MeetingPartnerAgendaItemResponse {
    * @example "pending"
    */
   status?: string;
+  /**
+   * Private talking points for the authenticated user on this agenda item. Only returned if the user has talking points.
+   * @example "Key points to discuss: budget allocation, timeline"
+   */
+  talking_points?: string;
   /**
    * Allocated time for this agenda item in minutes
    * @example 15
@@ -1500,10 +2775,10 @@ export interface MeetingTemplatePartnerMeetingTemplateDetailResponse {
    */
   name?: string;
   /**
-   * Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER)
+   * Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER, PARTNER)
    * @example "WORKSPACE"
    */
-  ownership_type?: "SYSTEM" | "VERTICAL" | "WORKSPACE" | "USER";
+  ownership_type?: "SYSTEM" | "VERTICAL" | "WORKSPACE" | "USER" | "PARTNER";
   /**
    * Number of participants in the template
    * @example 3
@@ -1543,10 +2818,10 @@ export interface MeetingTemplatePartnerMeetingTemplateResponse {
    */
   name?: string;
   /**
-   * Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER)
+   * Ownership level of the template (SYSTEM, VERTICAL, WORKSPACE, USER, PARTNER)
    * @example "WORKSPACE"
    */
-  ownership_type?: "SYSTEM" | "VERTICAL" | "WORKSPACE" | "USER";
+  ownership_type?: "SYSTEM" | "VERTICAL" | "WORKSPACE" | "USER" | "PARTNER";
   /**
    * Timestamp when the template was last updated
    * @example "2023-01-01T00:00:00Z"
@@ -1607,6 +2882,11 @@ export interface MeetingUpdateAgendaItemRequest {
   /** @example "in_progress" */
   status?: "pending" | "in_progress" | "completed";
   /**
+   * @maxLength 10000
+   * @example "Updated private notes"
+   */
+  talking_points?: string;
+  /**
    * @min 0
    * @max 1440
    * @example 20
@@ -1642,6 +2922,14 @@ export interface MeetingUpdateMeetingError400 {
    * @example "abc123xyz"
    */
   request_id?: string;
+}
+
+export interface MiddlewareFeatureNotAvailableResponse {
+  code?: string;
+  current_plan?: string;
+  feature?: string;
+  message?: string;
+  required_plan?: string;
 }
 
 export interface NextStepResultNextStepResultResponse {
@@ -1818,1270 +3106,11 @@ export interface OauthScopesResponse {
   scopes?: string[];
 }
 
-export type OpenidConfigurationListData =
-  RomeApiControllersExternalPartnerOauthDiscoveryDocument;
-
-export type OpenidConfigurationListError = ErrorsErrorResponse;
-
-export type PartnerAdminAppListData = SharedPartnerAppResponse;
-
-export type PartnerAdminAppListError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAppStatusUpdateData = SharedPartnerAppResponse;
-
-export type PartnerAdminAppStatusUpdateError =
-  | AppManagementUpdateAppStatusError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAppUpdateData = SharedPartnerAppResponse;
-
-export type PartnerAdminAppUpdateError =
-  | AppManagementUpdateAppError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAutomationCreateData = AutomationAutomationResponse;
-
-export type PartnerAdminAutomationCreateError =
-  | AutomationCreateAutomationError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminAutomationDeleteData = any;
-
-export type PartnerAdminAutomationDeleteError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminAutomationDeleteParams {
-  /** Automation ID */
-  automationId: string;
-}
-
-export type PartnerAdminAutomationDetailData = AutomationAutomationResponse;
-
-export type PartnerAdminAutomationDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminAutomationDetailParams {
-  /** Automation ID */
-  automationId: string;
-}
-
-export type PartnerAdminAutomationListData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse;
-
-export type PartnerAdminAutomationListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminAutomationListParams {
-  /**
-   * Limit
-   * @default 50
-   */
-  limit?: number;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerAdminAutomationUpdateData = AutomationAutomationResponse;
-
-export type PartnerAdminAutomationUpdateError =
-  | AutomationUpdateAutomationError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminAutomationUpdateParams {
-  /** Automation ID */
-  automationId: string;
-}
-
-export type PartnerAdminConnectionsDeleteData = any;
-
-export type PartnerAdminConnectionsDeleteError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminConnectionsDeleteParams {
-  /** Connection ID */
-  connectionId: string;
-}
-
-export type PartnerAdminConnectionsDetailData =
-  ConnectionUserConnectionResponse;
-
-export type PartnerAdminConnectionsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminConnectionsDetailParams {
-  /** Connection ID */
-  connectionId: string;
-}
-
-export type PartnerAdminConnectionsListData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse;
-
-export type PartnerAdminConnectionsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminConnectionsListParams {
-  /**
-   * Limit
-   * @default 50
-   */
-  limit?: number;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-  /** Filter by connection status */
-  status?: "active" | "revoked" | "expired";
-  /**
-   * Filter by user ID
-   * @example ""123e4567-e89b-12d3-a456-426614174000""
-   */
-  user_id?: string;
-}
-
-export type PartnerAdminCredentialsApiKeyRollbackCreateData = any;
-
-export type PartnerAdminCredentialsApiKeyRollbackCreateError =
-  ErrorsPartnerErrorResponse;
-
-export type PartnerAdminCredentialsApiKeyRotateCreateData =
-  CredentialCredentialRotationResponse;
-
-export type PartnerAdminCredentialsApiKeyRotateCreateError =
-  | CredentialRotateAPIKeyError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminCredentialsClientSecretRollbackCreateData = any;
-
-export type PartnerAdminCredentialsClientSecretRollbackCreateError =
-  ErrorsPartnerErrorResponse;
-
-export type PartnerAdminCredentialsClientSecretRotateCreateData =
-  CredentialCredentialRotationResponse;
-
-export type PartnerAdminCredentialsClientSecretRotateCreateError =
-  | CredentialRotateClientSecretError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminCredentialsHistoryListData = Record<string, unknown>;
-
-export type PartnerAdminCredentialsHistoryListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminCredentialsHistoryListParams {
-  /** Filter by credential type */
-  credential_type?: string;
-  /**
-   * Number of events to return
-   * @default 20
-   */
-  limit?: number;
-  /**
-   * Number of events to skip
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerAdminCredentialsListData = Record<
-  string,
-  CredentialCredentialStatusResponse
->;
-
-export type PartnerAdminCredentialsListError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminCredentialsWebhookSecretRotateCreateData =
-  CredentialCredentialRotationResponse;
-
-export type PartnerAdminCredentialsWebhookSecretRotateCreateError =
-  | CredentialRotateWebhookSecretError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminIdpCreateData = IdpIdPConfigResponse;
-
-export type PartnerAdminIdpCreateError =
-  | IdpCreateIdPConfigError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminIdpDeleteData = any;
-
-export type PartnerAdminIdpDeleteError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminIdpListData = IdpIdPConfigResponse;
-
-export type PartnerAdminIdpListError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminIdpUpdateData = IdpIdPConfigResponse;
-
-export type PartnerAdminIdpUpdateError =
-  | IdpUpdateIdPConfigError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminTemplatesCreateData = TemplateTemplateResponse;
-
-export type PartnerAdminTemplatesCreateError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminTemplatesDeleteData = any;
-
-export type PartnerAdminTemplatesDeleteError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesDeleteParams {
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminTemplatesDetailData = TemplateTemplateResponse;
-
-export type PartnerAdminTemplatesDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesDetailParams {
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminTemplatesListData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse;
-
-export type PartnerAdminTemplatesListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesListParams {
-  /**
-   * Limit
-   * @default 50
-   */
-  limit?: number;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerAdminTemplatesNextStepsCreateData = any;
-
-export type PartnerAdminTemplatesNextStepsCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesNextStepsCreateParams {
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminTemplatesNextStepsDeleteData = any;
-
-export type PartnerAdminTemplatesNextStepsDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesNextStepsDeleteParams {
-  /** Next Step ID */
-  nextStepId: string;
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminTemplatesNextStepsListData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse;
-
-export type PartnerAdminTemplatesNextStepsListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesNextStepsListParams {
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminTemplatesNextStepsUpdateData = any;
-
-export type PartnerAdminTemplatesNextStepsUpdateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesNextStepsUpdateParams {
-  /** Next Step ID */
-  nextStepId: string;
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminTemplatesUpdateData = TemplateTemplateResponse;
-
-export type PartnerAdminTemplatesUpdateError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminTemplatesUpdateParams {
-  /** Template ID */
-  templateId: string;
-}
-
-export type PartnerAdminToolkitsCreateData = ToolkitCreateToolkitResponse;
-
-export type PartnerAdminToolkitsCreateError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminToolkitsDeleteData = any;
-
-export type PartnerAdminToolkitsDeleteError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsDeleteParams {
-  /** Toolkit ID */
-  toolkitId: string;
-}
-
-export type PartnerAdminToolkitsDetailData =
-  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
-
-export type PartnerAdminToolkitsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsDetailParams {
-  /** Toolkit ID */
-  toolkitId: string;
-}
-
-export type PartnerAdminToolkitsExportCreateData = ToolkitExportResponse;
-
-export type PartnerAdminToolkitsExportCreateError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminToolkitsExportListData = ToolkitExportResponse;
-
-export type PartnerAdminToolkitsExportListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsExportListParams {
-  /**
-   * Toolkit ID
-   * @format uuid
-   */
-  toolkitId: string;
-}
-
-export type PartnerAdminToolkitsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
-
-export type PartnerAdminToolkitsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsListParams {
-  /**
-   * Limit
-   * @default 50
-   */
-  limit?: number;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerAdminToolkitsUpdateData =
-  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
-
-export type PartnerAdminToolkitsUpdateError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsUpdateParams {
-  /** Toolkit ID */
-  toolkitId: string;
-}
-
-export type PartnerAdminToolkitsVersionsCreateData =
-  ToolkitCreateVersionResponse;
-
-export type PartnerAdminToolkitsVersionsCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsCreateParams {
-  /** Toolkit ID */
-  toolkitId: string;
-}
-
-export type PartnerAdminToolkitsVersionsDeleteData = any;
-
-export type PartnerAdminToolkitsVersionsDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsDeleteParams {
-  /** Toolkit ID */
-  toolkitId: string;
-  /** Version ID */
-  versionId: string;
-}
-
-export type PartnerAdminToolkitsVersionsDetailData = ToolkitVersionResponse;
-
-export type PartnerAdminToolkitsVersionsDetailError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsDetailParams {
-  /** Toolkit ID */
-  toolkitId: string;
-  /** Version ID */
-  versionId: string;
-}
-
-export type PartnerAdminToolkitsVersionsListData = ToolkitVersionResponse[];
-
-export type PartnerAdminToolkitsVersionsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsListParams {
-  /** Toolkit ID */
-  toolkitId: string;
-}
-
-export type PartnerAdminToolkitsVersionsPartialUpdateData =
-  ToolkitVersionResponse;
-
-export type PartnerAdminToolkitsVersionsPartialUpdateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsPartialUpdateParams {
-  /** Toolkit ID */
-  toolkitId: string;
-  /** Version ID */
-  versionId: string;
-}
-
-export type PartnerAdminToolkitsVersionsPublishCreateData = any;
-
-export type PartnerAdminToolkitsVersionsPublishCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsPublishCreateParams {
-  /** Toolkit ID */
-  toolkitId: string;
-  /** Version ID */
-  versionId: string;
-}
-
-export type PartnerAdminToolkitsVersionsRepublishCreateData = any;
-
-export type PartnerAdminToolkitsVersionsRepublishCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminToolkitsVersionsRepublishCreateParams {
-  /** Toolkit ID */
-  toolkitId: string;
-  /** Version ID */
-  versionId: string;
-}
-
-export type PartnerAdminWebhookDeliveriesDetailData =
-  WebhookWebhookDeliveryResponse;
-
-export type PartnerAdminWebhookDeliveriesDetailError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminWebhookDeliveriesDetailParams {
-  /** Webhook Delivery ID */
-  deliveryId: string;
-}
-
-export type PartnerAdminWebhookDeliveriesListData =
-  WebhookWebhookDeliveriesResponse;
-
-export type PartnerAdminWebhookDeliveriesListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminWebhookDeliveriesListParams {
-  /** Filter by event type (e.g., meeting.created, automation.assignment.created) */
-  event_type?: string;
-  /** Maximum number of results to return (default 50, max 100) */
-  limit?: number;
-  /** Number of results to skip (default 0) */
-  offset?: number;
-  /** Filter by delivery status (pending, delivered, failed, abandoned) */
-  status?: string;
-}
-
-export type PartnerAdminWebhookDeliveriesRetryCreateData = Record<string, unknown>;
-
-export type PartnerAdminWebhookDeliveriesRetryCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerAdminWebhookDeliveriesRetryCreateParams {
-  /** Webhook Delivery ID */
-  deliveryId: string;
-}
-
-export type PartnerAdminWebhookFilterDeleteData = SharedPartnerAppResponse;
-
-export type PartnerAdminWebhookFilterDeleteError = ErrorsPartnerErrorResponse;
-
-export type PartnerAdminWebhookFilterUpdateData = SharedPartnerAppResponse;
-
-export type PartnerAdminWebhookFilterUpdateError =
-  | AppManagementUpdateWebhookFilterError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerAdminWebhookStatusUpdateData = SharedPartnerAppResponse;
-
-export type PartnerAdminWebhookStatusUpdateError = ErrorsPartnerErrorResponse;
-
 export interface PartnerAutomationAction {
   /** @example {"url":"https://api.example.com/webhook"} */
   config?: Record<string, string>;
   /** @example "webhook" */
   type: string;
-}
-
-export type PartnerInfoPublicListData = OauthPartnerInfoResponse;
-
-export type PartnerInfoPublicListError = ErrorsErrorResponse;
-
-export interface PartnerInfoPublicListParams {
-  /** Partner Client ID */
-  clientId: string;
-}
-
-export type PartnerSsoCallbackListError = string | Record<string, unknown>;
-
-export interface PartnerSsoCallbackListParams {
-  /** Authorization code from IdP */
-  code?: string;
-  /** Error code if authentication failed */
-  error?: string;
-  /** Error description if authentication failed */
-  error_description?: string;
-  /** State parameter for session validation */
-  state: string;
-}
-
-export type PartnerSsoInfoDetailData = SsoPartnerSSOInfoResponse;
-
-export type PartnerSsoInfoDetailError = SsoErrorResponse;
-
-export interface PartnerSsoInfoDetailParams {
-  /** Partner slug */
-  slug: string;
-}
-
-export type PartnerSsoInitiateListData = SsoInitiateResponse;
-
-export type PartnerSsoInitiateListError = string | Record<string, unknown>;
-
-export interface PartnerSsoInitiateListParams {
-  /** Auto-redirect to authorization URL */
-  auto?: boolean;
-  /** Partner app slug */
-  slug: string;
-  /** Target platform: web (default), desktop, backlog, or meeting:{id} */
-  target?: "web" | "desktop" | "backlog";
-}
-
-export type PartnerSsoSessionDetailData = SsoSessionStatusResponse;
-
-export type PartnerSsoSessionDetailError = Record<string, unknown>;
-
-export interface PartnerSsoSessionDetailParams {
-  /** Session ID */
-  sessionId: string;
-}
-
-export type PartnerUserActionItemsCreateData =
-  ActionItemPartnerActionItemResponse;
-
-export type PartnerUserActionItemsCreateError =
-  | ActionItemCreateActionItemError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerUserActionItemsDeleteData = any;
-
-export type PartnerUserActionItemsDeleteError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserActionItemsDeleteParams {
-  /** Action Item ID */
-  id: string;
-}
-
-export type PartnerUserActionItemsDetailData =
-  ActionItemPartnerActionItemResponse;
-
-export type PartnerUserActionItemsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserActionItemsDetailParams {
-  /** Action Item ID */
-  id: string;
-}
-
-export type PartnerUserActionItemsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
-
-export type PartnerUserActionItemsListError =
-  | ActionItemGetActionItemsError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserActionItemsListParams {
-  /**
-   * Filter by end date (ISO 8601)
-   * @example ""2023-12-31T23:59:59Z""
-   */
-  end_date?: string;
-  /** Filter by partner assignment */
-  has_partner_assignment?: boolean;
-  /** Filter by completion status */
-  is_completed?: boolean;
-  /**
-   * Limit
-   * @default 25
-   */
-  limit?: number;
-  /**
-   * Filter by meeting ID
-   * @example ""123e4567-e89b-12d3-a456-426614174000""
-   */
-  meeting_id?: string;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-  /**
-   * Filter by start date (ISO 8601)
-   * @example ""2023-01-01T00:00:00Z""
-   */
-  start_date?: string;
-}
-
-export type PartnerUserActionItemsUpdateData =
-  ActionItemPartnerActionItemResponse;
-
-export type PartnerUserActionItemsUpdateError =
-  | ActionItemUpdateActionItemError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserActionItemsUpdateParams {
-  /** Action Item ID */
-  id: string;
-}
-
-export type PartnerUserCalendarEventsDetailData =
-  CalendarPartnerCalendarEventResponse;
-
-export type PartnerUserCalendarEventsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserCalendarEventsDetailParams {
-  /**
-   * Calendar Event ID
-   * @example ""123e4567-e89b-12d3-a456-426614174006""
-   */
-  calendarEventId: string;
-}
-
-export type PartnerUserCalendarEventsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse;
-
-export type PartnerUserCalendarEventsListError =
-  | CalendarGetCalendarEventsError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserCalendarEventsListParams {
-  /** Sort direction: asc or desc (default: asc) */
-  direction?: string;
-  /**
-   * Deprecated: Use end_date instead
-   * @example ""2023-01-31T23:59:59Z""
-   */
-  end?: string;
-  /**
-   * End time in RFC3339 format (preferred)
-   * @example ""2023-01-31T23:59:59Z""
-   */
-  end_date?: string;
-  /** Number of results per page (default 25, max 100) */
-  limit?: number;
-  /** Pagination offset (default 0) */
-  offset?: number;
-  /**
-   * Deprecated: Use start_date instead
-   * @example ""2023-01-01T00:00:00Z""
-   */
-  start?: string;
-  /**
-   * Start time in RFC3339 format (preferred)
-   * @example ""2023-01-01T00:00:00Z""
-   */
-  start_date?: string;
-}
-
-export type PartnerUserCalendarEventsMeetingCreateData =
-  CalendarPartnerCreateMeetingFromCalendarEventResponse;
-
-export type PartnerUserCalendarEventsMeetingCreateError =
-  | CalendarCreateMeetingFromCalendarEventError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserCalendarEventsMeetingCreateParams {
-  /**
-   * Calendar Event ID
-   * @example ""123e4567-e89b-12d3-a456-426614174006""
-   */
-  calendarEventId: string;
-}
-
-export type PartnerUserMeetingTemplatesApplyCreateData =
-  MeetingTemplateApplyTemplateResponse;
-
-export type PartnerUserMeetingTemplatesApplyCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingTemplatesApplyCreateParams {
-  /**
-   * Template ID to apply
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingTemplatesDetailData =
-  MeetingTemplatePartnerMeetingTemplateDetailResponse;
-
-export type PartnerUserMeetingTemplatesDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingTemplatesDetailParams {
-  /**
-   * Meeting template ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingTemplatesListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse;
-
-export type PartnerUserMeetingTemplatesListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingTemplatesListParams {
-  /**
-   * Maximum number of items per page
-   * @min 1
-   * @max 100
-   * @default 25
-   */
-  limit?: number;
-  /**
-   * Number of items to skip
-   * @min 0
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerUserMeetingTemplatesNextStepsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse;
-
-export type PartnerUserMeetingTemplatesNextStepsListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingTemplatesNextStepsListParams {
-  /**
-   * Meeting template ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsActionButtonsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse;
-
-export type PartnerUserMeetingsActionButtonsListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsActionButtonsListParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsActionButtonsTriggerCreateData =
-  SharedTriggerActionButtonResponse;
-
-export type PartnerUserMeetingsActionButtonsTriggerCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsActionButtonsTriggerCreateParams {
-  /** Action Button ID */
-  buttonId: string;
-  /** Meeting ID */
-  id: string;
-}
-
-export type PartnerUserMeetingsAgendaItemsCreateData =
-  MeetingPartnerAgendaItemResponse;
-
-export type PartnerUserMeetingsAgendaItemsCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsAgendaItemsCreateParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsAgendaItemsDeleteData = any;
-
-export type PartnerUserMeetingsAgendaItemsDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsAgendaItemsDeleteParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-  /**
-   * Agenda Item ID
-   * @format uuid
-   */
-  itemId: string;
-}
-
-export type PartnerUserMeetingsAgendaItemsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse;
-
-export type PartnerUserMeetingsAgendaItemsListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsAgendaItemsListParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsAgendaItemsUpdateData =
-  MeetingPartnerAgendaItemResponse;
-
-export type PartnerUserMeetingsAgendaItemsUpdateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsAgendaItemsUpdateParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-  /**
-   * Agenda Item ID
-   * @format uuid
-   */
-  itemId: string;
-}
-
-export type PartnerUserMeetingsCalendarLinkCreateData =
-  CalendarLinkCalendarEventResponse;
-
-export type PartnerUserMeetingsCalendarLinkCreateError =
-  | CalendarLinkCalendarEventError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsCalendarLinkCreateParams {
-  /**
-   * Meeting ID
-   * @example ""123e4567-e89b-12d3-a456-426614174000""
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsCalendarUnlinkDeleteData =
-  CalendarLinkCalendarEventResponse;
-
-export type PartnerUserMeetingsCalendarUnlinkDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsCalendarUnlinkDeleteParams {
-  /**
-   * Meeting ID
-   * @example ""123e4567-e89b-12d3-a456-426614174000""
-   */
-  id: string;
-}
-
-/** @format binary */
-export type PartnerUserMeetingsContextContentListData = File;
-
-export type PartnerUserMeetingsContextContentListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsContextContentListParams {
-  /**
-   * Context ID
-   * @format uuid
-   */
-  contextId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsContextCreateData =
-  ContextMeetingContextResponse;
-
-export type PartnerUserMeetingsContextCreateError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsContextCreateParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export interface PartnerUserMeetingsContextCreatePayload {
-  /** Logical context type */
-  context_type?: string;
-  /** Context file */
-  file: File;
-  /** Source format (json,csv,tsv,xml,html,yaml,md,txt) */
-  source_format: string;
-  /** Context title */
-  title?: string;
-}
-
-export type PartnerUserMeetingsContextDeleteData = any;
-
-export type PartnerUserMeetingsContextDeleteError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsContextDeleteParams {
-  /**
-   * Context ID
-   * @format uuid
-   */
-  contextId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsContextDetailData =
-  ContextMeetingContextResponse;
-
-export type PartnerUserMeetingsContextDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsContextDetailParams {
-  /**
-   * Context ID
-   * @format uuid
-   */
-  contextId: string;
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsContextListData =
-  ContextMeetingContextListResponse;
-
-export type PartnerUserMeetingsContextListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsContextListParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-  /**
-   * Limit
-   * @default 25
-   */
-  limit?: number;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerUserMeetingsCreateData = SharedPartnerMeetingResponse;
-
-export type PartnerUserMeetingsCreateError =
-  | MeetingCreateMeetingError400
-  | ErrorsPartnerErrorResponse;
-
-export type PartnerUserMeetingsDetailData = SharedPartnerMeetingResponse;
-
-export type PartnerUserMeetingsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsDetailParams {
-  /** Meeting ID */
-  id: string;
-}
-
-export type PartnerUserMeetingsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
-
-export type PartnerUserMeetingsListError =
-  | MeetingGetMeetingsError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsListParams {
-  /**
-   * End date filter (ISO 8601)
-   * @example ""2023-12-31T23:59:59Z""
-   */
-  end_date?: string;
-  /**
-   * Limit
-   * @default 25
-   */
-  limit?: number;
-  /**
-   * Offset
-   * @default 0
-   */
-  offset?: number;
-  /**
-   * Start date filter (ISO 8601)
-   * @example ""2023-01-01T00:00:00Z""
-   */
-  start_date?: string;
-}
-
-export type PartnerUserMeetingsNextStepsExecuteCreateData =
-  SharedExecuteNextStepResponse;
-
-export type PartnerUserMeetingsNextStepsExecuteCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsNextStepsExecuteCreateParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-  /**
-   * Next Step ID
-   * @format uuid
-   */
-  nextStepId: string;
-}
-
-export type PartnerUserMeetingsNextStepsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse;
-
-export type PartnerUserMeetingsNextStepsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsNextStepsListParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsPartialUpdateData = SharedPartnerMeetingResponse;
-
-export type PartnerUserMeetingsPartialUpdateError =
-  | MeetingUpdateMeetingError400
-  | ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsPartialUpdateParams {
-  /** Meeting ID */
-  id: string;
-}
-
-export type PartnerUserMeetingsParticipantsCreateData =
-  MeetingPartnerMeetingParticipantResponse;
-
-export type PartnerUserMeetingsParticipantsCreateError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsParticipantsCreateParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-}
-
-export type PartnerUserMeetingsParticipantsDeleteData = any;
-
-export type PartnerUserMeetingsParticipantsDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsParticipantsDeleteParams {
-  /**
-   * Meeting ID
-   * @format uuid
-   */
-  id: string;
-  /**
-   * Participant ID
-   * @format uuid
-   */
-  participantId: string;
-}
-
-export type PartnerUserMeetingsParticipantsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse;
-
-export type PartnerUserMeetingsParticipantsListError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserMeetingsParticipantsListParams {
-  /** Meeting ID */
-  id: string;
-}
-
-export type PartnerUserNextStepResultsDetailData =
-  NextStepResultNextStepResultResponse;
-
-export type PartnerUserNextStepResultsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserNextStepResultsDetailParams {
-  /**
-   * Result ID
-   * @format uuid
-   */
-  resultId: string;
-}
-
-export type PartnerUserProfileListData = ProfileUserProfileResponse;
-
-export type PartnerUserProfileListError = ErrorsPartnerErrorResponse;
-
-export type PartnerUserSessionsCreateData = SessionCreateSessionResponse;
-
-export type PartnerUserSessionsCreateError = ErrorsPartnerErrorResponse;
-
-export type PartnerUserSessionsDetailData = SessionGetSessionResponse;
-
-export type PartnerUserSessionsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserSessionsDetailParams {
-  /**
-   * Session ID
-   * @format uuid
-   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
-   */
-  id: string;
-  /**
-   * Maximum turns to return (1-200, default: 50)
-   * @min 1
-   * @max 200
-   */
-  turn_limit?: number;
-  /**
-   * Pagination offset for turns
-   * @min 0
-   */
-  turn_offset?: number;
-}
-
-export type PartnerUserSessionsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse;
-
-export type PartnerUserSessionsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserSessionsListParams {
-  /**
-   * Maximum sessions to return (1-100, default: 25)
-   * @min 1
-   * @max 100
-   */
-  limit?: number;
-  /**
-   * Filter by meeting ID
-   * @format uuid
-   */
-  meeting_id?: string;
-  /**
-   * Number of sessions to skip (0-based, default: 0)
-   * @min 0
-   */
-  offset?: number;
-}
-
-export type PartnerUserSessionsTurnsDetailData = SessionGetTurnResponse;
-
-export type PartnerUserSessionsTurnsDetailError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserSessionsTurnsDetailParams {
-  /**
-   * Session ID
-   * @format uuid
-   * @example "f7e6d5c4-b3a2-1098-7654-321fedcba098"
-   */
-  id: string;
-  /**
-   * Turn ID
-   * @format uuid
-   * @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-   */
-  turnId: string;
-}
-
-export type PartnerUserSessionsUpdateData = SessionSendMessageResponse;
-
-export type PartnerUserSessionsUpdateError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserSessionsUpdateParams {
-  /** Session ID */
-  id: string;
-}
-
-export type PartnerUserToolkitsInstallCreateData = ToolkitInstallationResponse;
-
-export type PartnerUserToolkitsInstallCreateError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserToolkitsInstallCreateParams {
-  /**
-   * Toolkit ID
-   * @format uuid
-   */
-  toolkitId: string;
-}
-
-export type PartnerUserToolkitsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse;
-
-export type PartnerUserToolkitsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserToolkitsListParams {
-  /**
-   * Maximum number of items per page
-   * @min 1
-   * @max 100
-   * @default 25
-   */
-  limit?: number;
-  /**
-   * Number of items to skip
-   * @min 0
-   * @default 0
-   */
-  offset?: number;
-}
-
-export type PartnerUserWorkspacesToolkitsDeleteData = any;
-
-export type PartnerUserWorkspacesToolkitsDeleteError =
-  ErrorsPartnerErrorResponse;
-
-export interface PartnerUserWorkspacesToolkitsDeleteParams {
-  /**
-   * Toolkit ID
-   * @format uuid
-   */
-  toolkitId: string;
-  /**
-   * Workspace ID
-   * @format uuid
-   */
-  workspaceId: string;
-}
-
-export type PartnerUserWorkspacesToolkitsListData =
-  RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse;
-
-export type PartnerUserWorkspacesToolkitsListError = ErrorsPartnerErrorResponse;
-
-export interface PartnerUserWorkspacesToolkitsListParams {
-  /**
-   * Workspace ID
-   * @format uuid
-   */
-  workspaceId: string;
 }
 
 export interface ProfileUserProfileResponse {
@@ -3106,6 +3135,11 @@ export interface ProfileUserProfileResponse {
    */
   id?: string;
   /**
+   * Workspace billing plan (FREE, PRO, ELITE, ENT)
+   * @example "FREE"
+   */
+  plan_type?: string;
+  /**
    * ID of the workspace the user belongs to
    * @example "123e4567-e89b-12d3-a456-426614174002"
    */
@@ -3122,16 +3156,129 @@ export interface ProfileUserProfileResponse {
   workspace_role?: string;
 }
 
-export type RevokeCreateData = any;
+export type RemoveMeetingParticipantData = any;
 
-export type RevokeCreateError = ErrorsErrorResponse;
+export type RemoveMeetingParticipantError = ErrorsPartnerErrorResponse;
 
-export interface RevokeCreatePayload {
+export interface RemoveMeetingParticipantParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Participant ID
+   * @format uuid
+   */
+  participantId: string;
+}
+
+export type RemoveTemplateNextStepData = any;
+
+export type RemoveTemplateNextStepError = ErrorsPartnerErrorResponse;
+
+export interface RemoveTemplateNextStepParams {
+  /** Next Step ID */
+  nextStepId: string;
+  /** Template ID */
+  templateId: string;
+}
+
+export type ReplaceAppData = SharedPartnerAppResponse;
+
+export type ReplaceAppError =
+  | AppManagementUpdateAppError400
+  | ErrorsPartnerErrorResponse;
+
+export type ReplaceAppStatusData = SharedPartnerAppResponse;
+
+export type ReplaceAppStatusError =
+  | AppManagementUpdateAppStatusError400
+  | ErrorsPartnerErrorResponse;
+
+export type ReplaceAutomationData = AutomationAutomationResponse;
+
+export type ReplaceAutomationError =
+  | AutomationUpdateAutomationError400
+  | ErrorsPartnerErrorResponse;
+
+export interface ReplaceAutomationParams {
+  /** Automation ID */
+  automationId: string;
+}
+
+export type ReplaceIdpConfigData = IdpIdPConfigResponse;
+
+export type ReplaceIdpConfigError =
+  | IdpUpdateIdPConfigError400
+  | ErrorsPartnerErrorResponse;
+
+export type ReplaceTemplateData = TemplateTemplateResponse;
+
+export type ReplaceTemplateError = ErrorsPartnerErrorResponse;
+
+export type ReplaceTemplateNextStepData = any;
+
+export type ReplaceTemplateNextStepError = ErrorsPartnerErrorResponse;
+
+export interface ReplaceTemplateNextStepParams {
+  /** Next Step ID */
+  nextStepId: string;
+  /** Template ID */
+  templateId: string;
+}
+
+export interface ReplaceTemplateParams {
+  /** Template ID */
+  templateId: string;
+}
+
+export type ReplaceWebhookFilterData = SharedPartnerAppResponse;
+
+export type ReplaceWebhookFilterError =
+  | AppManagementUpdateWebhookFilterError400
+  | ErrorsPartnerErrorResponse;
+
+export type ReplaceWebhookStatusData = SharedPartnerAppResponse;
+
+export type ReplaceWebhookStatusError = ErrorsPartnerErrorResponse;
+
+export type RetryWebhookDeliveryData = WebhookWebhookRetryResponse;
+
+export type RetryWebhookDeliveryError = ErrorsPartnerErrorResponse;
+
+export interface RetryWebhookDeliveryParams {
+  /** Webhook Delivery ID */
+  deliveryId: string;
+}
+
+export type RevokeConnectionData = any;
+
+export type RevokeConnectionError = ErrorsPartnerErrorResponse;
+
+export interface RevokeConnectionParams {
+  /** Connection ID */
+  connectionId: string;
+}
+
+export type RevokeOauthTokenData = any;
+
+export type RevokeOauthTokenError = ErrorsErrorResponse;
+
+export interface RevokeOauthTokenPayload {
   /** Token to revoke */
   token: string;
   /** Hint about token type (access_token or refresh_token) */
   token_type_hint?: string;
 }
+
+export type RollbackApiKeyData = any;
+
+export type RollbackApiKeyError = ErrorsPartnerErrorResponse;
+
+export type RollbackClientSecretData = any;
+
+export type RollbackClientSecretError = ErrorsPartnerErrorResponse;
 
 export interface RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse {
   /** Array of items for the current page */
@@ -3213,7 +3360,31 @@ export interface RomeApiControllersExternalPartnerAdminSharedListResponseTemplat
   total?: number;
 }
 
+export interface RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowPartnerWorkflowTemplateSummary {
+  /** Array of items for the current page */
+  items?: WorkflowPartnerWorkflowTemplateSummary[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
 export interface RomeApiControllersExternalPartnerAdminToolkitToolkitResponse {
+  /** @example true */
+  auto_install_on_new_workspaces?: boolean;
+  /** @example true */
+  auto_propagate?: boolean;
   /** @example "2023-01-01T00:00:00Z" */
   created_at?: string;
   /** @example "Complete sales workflow toolkit" */
@@ -3611,6 +3782,26 @@ export interface RomeApiControllersExternalPartnerUserSharedListResponseToolkitT
   total?: number;
 }
 
+export interface RomeApiControllersExternalPartnerUserSharedListResponseWorkflowRunPartnerWorkflowRunResponse {
+  /** Array of items for the current page */
+  items?: WorkflowRunPartnerWorkflowRunResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
 export interface RomeApiControllersExternalPartnerUserToolkitToolkitResponse {
   /**
    * Number of action buttons in the toolkit
@@ -3674,9 +3865,34 @@ export interface RomeApiControllersExternalPartnerUserToolkitToolkitResponse {
   version?: string;
 }
 
-export type ScopesListData = OauthScopesResponse;
+export type RotateApiKeyData = CredentialCredentialRotationResponse;
 
-export type ScopesListError = ErrorsErrorResponse;
+export type RotateApiKeyError =
+  | CredentialRotateAPIKeyError400
+  | ErrorsPartnerErrorResponse;
+
+export type RotateClientSecretData = CredentialCredentialRotationResponse;
+
+export type RotateClientSecretError =
+  | CredentialRotateClientSecretError400
+  | ErrorsPartnerErrorResponse;
+
+export type RotateWebhookSecretData = CredentialCredentialRotationResponse;
+
+export type RotateWebhookSecretError =
+  | CredentialRotateWebhookSecretError400
+  | ErrorsPartnerErrorResponse;
+
+export type SendSessionMessageData = SessionSendMessageResponse;
+
+export type SendSessionMessageError =
+  | ErrorsPartnerErrorResponse
+  | MiddlewareFeatureNotAvailableResponse;
+
+export interface SendSessionMessageParams {
+  /** Session ID */
+  id: string;
+}
 
 export interface SessionCreateSessionRequest {
   /**
@@ -3926,10 +4142,10 @@ export interface SessionTurnPaginationResponse {
 
 export interface SharedActionButtonResponse {
   /**
-   * Icon URL for the action button
-   * @example "https://example.com/icon.png"
+   * Icon name from the vocabulary
+   * @example "share"
    */
-  icon_url?: string;
+  icon_name?: string;
   /**
    * Unique identifier for the action button
    * @example "123e4567-e89b-12d3-a456-426614174000"
@@ -4170,6 +4386,26 @@ export interface SharedPartnerMeetingResponse {
 
 export interface SharedTriggerActionButtonRequest {
   /**
+   * AddressingValues are submitted form values for integration-mechanism action buttons
+   * (e.g. {"object_type":"Account","record_id":"0014X..."} for Salesforce). Persisted
+   * verbatim on the action_button_invocation row.
+   */
+  addressing_values?: Record<string, string>;
+  /**
+   * Content is the (possibly user-edited) draft body submitted at trigger time.
+   * When provided alongside ResultID and the body differs from the stored result,
+   * a new next_step_execution_log + next_step_result pair is persisted with
+   * execution_mode=MANUAL_EDIT before delivery.
+   * @example "Updated meeting summary..."
+   */
+  content?: string;
+  /**
+   * ContentFormat is the format of Content (e.g. "markdown"). Defaults to markdown
+   * when omitted. Ignored when Content is nil.
+   * @example "markdown"
+   */
+  content_format?: string;
+  /**
    * Next step ID if triggered in the context of a next step
    * @example "123e4567-e89b-12d3-a456-426614174000"
    */
@@ -4182,6 +4418,11 @@ export interface SharedTriggerActionButtonRequest {
 }
 
 export interface SharedTriggerActionButtonResponse {
+  /**
+   * InvocationID is the persisted action_button_invocation row ID created at trigger time.
+   * @example "019ddf5f-2e7c-7e0e-8f9e-12d3a4567ab0"
+   */
+  invocation_id?: string;
   /**
    * Success message
    * @example "Action button triggered successfully"
@@ -4340,26 +4581,6 @@ export interface TemplateUpdateTemplateRequest {
    * @example "Updated Invoice Template"
    */
   name?: string;
-}
-
-export type TokenCreateData =
-  RomeApiControllersExternalPartnerOauthTokenResponse;
-
-export type TokenCreateError = ErrorsErrorResponse;
-
-export interface TokenCreatePayload {
-  /** OAuth client ID */
-  client_id: string;
-  /** OAuth client secret */
-  client_secret?: string;
-  /** Authorization code */
-  code: string;
-  /** PKCE code verifier */
-  code_verifier?: string;
-  /** OAuth grant type (authorization_code) */
-  grant_type: string;
-  /** OAuth redirect URI */
-  redirect_uri: string;
 }
 
 export interface ToolkitConflictInfoResponse {
@@ -4529,6 +4750,28 @@ export interface ToolkitInstallationResponse {
   workspace_id?: string;
 }
 
+export interface ToolkitListInstallationsResponse {
+  /** Installations on the current page */
+  items?: ToolkitToolkitInstallationItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /** Aggregate counts across all partner workspaces (active, opted_out, never_installed) */
+  summary?: ToolkitToolkitInstallationSummaryResponse;
+  /**
+   * Total number of workspaces connected to the partner app
+   * @example 162
+   */
+  total_connected_workspaces?: number;
+}
+
 export interface ToolkitManifestActionButton {
   /**
    * ID references an existing action button (mutually exclusive with Spec)
@@ -4570,11 +4813,11 @@ export interface ToolkitManifestActionButtonSpec {
    */
   file_format?: string;
   /**
-   * Icon URL for display
-   * @maxLength 2000
-   * @example "https://cdn.example.com/icon.png"
+   * Icon name from the vocabulary
+   * @maxLength 100
+   * @example "share"
    */
-  icon_url?: string;
+  icon_name?: string;
   /**
    * Integration type
    * @maxLength 100
@@ -4787,11 +5030,11 @@ export interface ToolkitManifestShortcutSpec {
    */
   description?: string;
   /**
-   * Icon name for display
+   * IconName specifies which FontAwesome icon to display (e.g., "faLightbulb", "faBolt")
    * @maxLength 100
-   * @example "sparkles"
+   * @example "faLightbulb"
    */
-  icon?: string;
+  icon_name?: string;
   /**
    * Name of the shortcut
    * @minLength 1
@@ -4933,6 +5176,59 @@ export interface ToolkitTemplateNextStepRelation {
   sort_order?: number;
 }
 
+export interface ToolkitToolkitInstallationItemResponse {
+  /**
+   * Timestamp when the installation was created (active installations only)
+   * @example "2026-04-15T10:30:00Z"
+   */
+  installed_at?: string;
+  /**
+   * Installation status: "active" or "opted_out"
+   * @example "active"
+   */
+  status?: "active" | "opted_out";
+  /**
+   * Timestamp when the workspace opted out (opted_out installations only)
+   * @example "2026-05-01T14:00:00Z"
+   */
+  uninstalled_at?: string;
+  /**
+   * Human-readable version label of the installed toolkit version (active installations only)
+   * @example "1.2.0"
+   */
+  version_label?: string;
+  /**
+   * ID of the workspace where the toolkit is (or was) installed
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  workspace_id?: string;
+  /**
+   * Display name of the workspace
+   * @example "Acme Corp"
+   */
+  workspace_name?: string;
+}
+
+export type ToolkitToolkitInstallationStatus = "active" | "opted_out";
+
+export interface ToolkitToolkitInstallationSummaryResponse {
+  /**
+   * Number of workspaces with the toolkit currently installed
+   * @example 142
+   */
+  active?: number;
+  /**
+   * Number of partner workspaces that have never installed the toolkit
+   * @example 12
+   */
+  never_installed?: number;
+  /**
+   * Number of workspaces that have opted out of the toolkit
+   * @example 8
+   */
+  opted_out?: number;
+}
+
 export interface ToolkitToolkitManifestRequest {
   /**
    * Action buttons included in the toolkit
@@ -4966,6 +5262,20 @@ export interface ToolkitToolkitWithInstallationResponse {
 }
 
 export interface ToolkitUpdateToolkitRequest {
+  /**
+   * AutoInstallOnNewWorkspaces, when set, controls whether the toolkit is automatically
+   * installed on newly provisioned partner workspaces. Pointer semantics preserve
+   * true PATCH behavior — only provided fields are updated.
+   * @example true
+   */
+  auto_install_on_new_workspaces?: boolean;
+  /**
+   * AutoPropagate, when set, controls whether newly published toolkit versions are
+   * automatically propagated to existing installations. Pointer semantics preserve
+   * true PATCH behavior — only provided fields are updated.
+   * @example true
+   */
+  auto_propagate?: boolean;
   /**
    * @maxLength 1000
    * @example "Updated description"
@@ -5045,13 +5355,124 @@ export interface ToolkitVersionResponse {
   version_number?: number;
 }
 
-export type UserInfoListData = RomeApiControllersExternalPartnerOauthUserInfo;
+export type TriggerMeetingActionButtonData = SharedTriggerActionButtonResponse;
 
-export type UserInfoListError = ErrorsErrorResponse;
+export type TriggerMeetingActionButtonError = ErrorsPartnerErrorResponse;
 
-export type VerifyCreateData = OauthPartnerAuthResponse;
+export interface TriggerMeetingActionButtonParams {
+  /** Action Button ID */
+  buttonId: string;
+  /** Meeting ID */
+  id: string;
+}
 
-export type VerifyCreateError = ErrorsErrorResponse;
+export type UninstallToolkitData = any;
+
+export type UninstallToolkitError = ErrorsPartnerErrorResponse;
+
+export interface UninstallToolkitParams {
+  /**
+   * Toolkit ID
+   * @format uuid
+   */
+  toolkitId: string;
+  /**
+   * Workspace ID
+   * @format uuid
+   */
+  workspaceId: string;
+}
+
+export type UnlinkCalendarEventData = CalendarLinkCalendarEventResponse;
+
+export type UnlinkCalendarEventError = ErrorsPartnerErrorResponse;
+
+export interface UnlinkCalendarEventParams {
+  /**
+   * Meeting ID
+   * @example ""123e4567-e89b-12d3-a456-426614174000""
+   */
+  id: string;
+}
+
+export type UpdateActionItemData = ActionItemPartnerActionItemResponse;
+
+export type UpdateActionItemError =
+  | ActionItemUpdateActionItemError400
+  | ErrorsPartnerErrorResponse;
+
+export interface UpdateActionItemParams {
+  /** Action Item ID */
+  id: string;
+}
+
+export type UpdateMeetingAgendaItemData = MeetingPartnerAgendaItemResponse;
+
+export type UpdateMeetingAgendaItemError = ErrorsPartnerErrorResponse;
+
+export interface UpdateMeetingAgendaItemParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Agenda Item ID
+   * @format uuid
+   */
+  itemId: string;
+}
+
+export type UpdateMeetingData = SharedPartnerMeetingResponse;
+
+export type UpdateMeetingError =
+  | MeetingUpdateMeetingError400
+  | ErrorsPartnerErrorResponse;
+
+export interface UpdateMeetingParams {
+  /** Meeting ID */
+  id: string;
+}
+
+export type UploadMeetingContextData = ContextMeetingContextResponse;
+
+export type UploadMeetingContextError = ErrorsPartnerErrorResponse;
+
+export interface UploadMeetingContextParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export interface UploadMeetingContextPayload {
+  /** Logical context type */
+  context_type?: string;
+  /** Context file */
+  file: File;
+  /** Source format (json,csv,tsv,xml,html,yaml,md,txt) */
+  source_format: string;
+  /** Context title */
+  title?: string;
+}
+
+export type VerifyPartnerAuthData = OauthPartnerAuthResponse;
+
+export type VerifyPartnerAuthError = ErrorsErrorResponse;
+
+export type VerifySsoCallbackError = string | Record<string, unknown>;
+
+export interface VerifySsoCallbackParams {
+  /** Authorization code from IdP */
+  code?: string;
+  /** Error code if authentication failed */
+  error?: string;
+  /** Error description if authentication failed */
+  error_description?: string;
+  /** State parameter for session validation */
+  state: string;
+}
 
 export interface WebhookWebhookDeliveriesResponse {
   /** Array of webhook delivery records */
@@ -5129,4 +5550,214 @@ export interface WebhookWebhookDeliveryResponse {
    * @example 0
    */
   retry_count?: number;
+}
+
+export interface WebhookWebhookRetryResponse {
+  /**
+   * ID of the webhook delivery that was retried
+   * @example "123e4567-e89b-12d3-a456-426614174005"
+   */
+  delivery_id?: string;
+  /**
+   * Human-readable status message
+   * @example "Webhook delivery retry scheduled successfully"
+   */
+  message?: string;
+  /**
+   * When the next retry attempt will be made (null when not scheduled)
+   * @example "2024-01-15T10:30:00Z"
+   */
+  next_retry_at?: string;
+  /**
+   * Number of retry attempts made so far
+   * @example 1
+   */
+  retry_count?: number;
+  /**
+   * Whether a retry has been scheduled
+   * @example true
+   */
+  retry_scheduled?: boolean;
+}
+
+export interface WorkflowPartnerWorkflowTemplateResponse {
+  /**
+   * CreatedAt is the timestamp at which the template was created.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description is an optional human-readable description.
+   * @example "Runs after the meeting ends"
+   */
+  description?: string;
+  /**
+   * ID is the workflow template's unique identifier.
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * IsActive indicates whether the template is active and eligible to be run.
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name is the human-readable template name.
+   * @example "Post-meeting Follow-up"
+   */
+  name?: string;
+  /** Spec is the workflow DAG specification as a JSON object. */
+  spec?: object;
+  /**
+   * UpdatedAt is the timestamp at which the template was last updated.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * WorkspaceID is the workspace that owns the template row.
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  workspace_id?: string;
+}
+
+export interface WorkflowPartnerWorkflowTemplateSummary {
+  /**
+   * CreatedAt is the timestamp at which the template was created.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description is an optional human-readable description.
+   * @example "Runs after the meeting ends"
+   */
+  description?: string;
+  /**
+   * ID is the workflow template's unique identifier.
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * IsActive indicates whether the template is active and eligible to be run.
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name is the human-readable template name.
+   * @example "Post-meeting Follow-up"
+   */
+  name?: string;
+  /**
+   * UpdatedAt is the timestamp at which the template was last updated.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * WorkspaceID is the workspace that owns the template row.
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  workspace_id?: string;
+}
+
+export interface WorkflowRunPartnerCreateWorkflowRunRequest {
+  /**
+   * OriginatingID is the ID of the originating object (required).
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  originating_id: string;
+  /**
+   * OriginatingType is the kind of object that triggered the run. Accepted values: "meeting", "canvas".
+   * @example "meeting"
+   */
+  originating_type: "meeting" | "canvas";
+  /**
+   * WorkflowTemplateID is the ID of the workflow template to run (required).
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  workflow_template_id: string;
+}
+
+export interface WorkflowRunPartnerWorkflowRunResponse {
+  /**
+   * CompletedAt is the timestamp at which the run finished.
+   * @example "2024-01-01T00:05:00Z"
+   */
+  completed_at?: string;
+  /** ContextJSON is the assembled context snapshot for the run as a JSON object. */
+  context_json?: object;
+  /**
+   * CreatedAt is the timestamp at which the run was created.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * CurrentStepIDs is the list of step IDs currently eligible to run.
+   * @example ["step-1"]
+   */
+  current_step_ids?: string[];
+  /**
+   * ID is the workflow run's unique identifier.
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Name is the optional display name of the run.
+   * @example "Post-meeting follow-up"
+   */
+  name?: string;
+  /**
+   * OriginatingID is the ID of the originating object.
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  originating_id?: string;
+  /**
+   * OriginatingType is the kind of object that triggered the run.
+   * @example "meeting"
+   */
+  originating_type?: "meeting" | "canvas";
+  /**
+   * OwnerUserID is the user whose context owns the run.
+   * @example "123e4567-e89b-12d3-a456-426614174005"
+   */
+  owner_user_id?: string;
+  /**
+   * StartedAt is the timestamp at which run execution began.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  started_at?: string;
+  /**
+   * Status is the current run status.
+   * @example "pending"
+   */
+  status?:
+    | "pending"
+    | "active"
+    | "completed"
+    | "failed"
+    | "cancelled"
+    | "frozen";
+  /**
+   * TriggerType indicates how the run was triggered.
+   * @example "manual"
+   */
+  trigger_type?: "manual" | "autopilot";
+  /**
+   * TriggeredBy is the ID of the user who triggered a manual run, if applicable.
+   * @example "123e4567-e89b-12d3-a456-426614174004"
+   */
+  triggered_by?: string;
+  /**
+   * UpdatedAt is the timestamp at which the run was last updated.
+   * @example "2024-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * WorkflowTemplateID is the template that produced this run.
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  workflow_template_id?: string;
+  /**
+   * WorkspaceID is the workspace that owns the run.
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  workspace_id?: string;
 }
