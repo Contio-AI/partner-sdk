@@ -16,3 +16,4 @@ export * from './chat';
 export * from './toolkits';
 export * from './templates';
 export * from './nextSteps';
+export * from './workflows';

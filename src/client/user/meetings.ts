@@ -34,6 +34,7 @@ import {
   TriggerActionButtonRequest,
   TriggerActionButtonResponse,
   NextStepResult,
+  ExportMeetingTranscriptParams,
 } from '../../models';
 
 // ── Meetings ────────────────────────────────────────────────────────────
@@ -220,4 +221,20 @@ export async function triggerActionButton(
     data,
     options,
   );
+}
+
+// ── Meeting Transcript ───────────────────────────────────────────────────
+
+export async function exportMeetingTranscript(
+  http: HttpTransport,
+  meetingId: string,
+  params?: ExportMeetingTranscriptParams,
+  options?: RequestOptions,
+): Promise<string> {
+  const response = await http.getRaw(
+    `/meetings/${meetingId}/transcript/export`,
+    params,
+    options,
+  );
+  return response.data as string;
 }

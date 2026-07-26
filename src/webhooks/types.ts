@@ -34,6 +34,9 @@ export type {
   NextStepCompletedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
+  PartnerIdpDomainRevokedPayload,
+  PartnerIdpDomainVerificationFailedPayload,
+  PartnerIdpDomainVerifiedPayload,
   SessionExpiredPayload,
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
@@ -67,6 +70,9 @@ export type {
   NextStepCompletedData,
   ParticipantAddedData,
   ParticipantRemovedData,
+  PartnerIdpDomainRevokedData,
+  PartnerIdpDomainVerificationFailedData,
+  PartnerIdpDomainVerifiedData,
   SessionExpiredData,
   SessionTurnCompletedData,
   SessionTurnFailedData,
@@ -110,6 +116,9 @@ import type {
   NextStepCompletedPayload,
   ParticipantAddedPayload,
   ParticipantRemovedPayload,
+  PartnerIdpDomainRevokedPayload,
+  PartnerIdpDomainVerificationFailedPayload,
+  PartnerIdpDomainVerifiedPayload,
   SessionExpiredPayload,
   SessionTurnCompletedPayload,
   SessionTurnFailedPayload,
@@ -148,6 +157,9 @@ export type ContioWebhookEvent =
   | NextStepCompletedPayload
   | ParticipantAddedPayload
   | ParticipantRemovedPayload
+  | PartnerIdpDomainRevokedPayload
+  | PartnerIdpDomainVerificationFailedPayload
+  | PartnerIdpDomainVerifiedPayload
   | SessionExpiredPayload
   | SessionTurnCompletedPayload
   | SessionTurnFailedPayload
@@ -186,6 +198,9 @@ export const WEBHOOK_EVENTS = {
   NEXT_STEP_COMPLETED: 'next_step.completed',
   PARTICIPANT_ADDED: 'participant.added',
   PARTICIPANT_REMOVED: 'participant.removed',
+  PARTNER_IDP_DOMAIN_REVOKED: 'partner.idp.domain_revoked',
+  PARTNER_IDP_DOMAIN_VERIFICATION_FAILED: 'partner.idp.domain_verification_failed',
+  PARTNER_IDP_DOMAIN_VERIFIED: 'partner.idp.domain_verified',
   SESSION_EXPIRED: 'session.expired',
   SESSION_TURN_COMPLETED: 'session.turn.completed',
   SESSION_TURN_FAILED: 'session.turn.failed',

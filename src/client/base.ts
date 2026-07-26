@@ -10,7 +10,7 @@ import { ErrorResponse } from '../models/auth';
  * SDK version for User-Agent header.
  * This is updated during the release process.
  */
-export const SDK_VERSION = '1.8.0';
+export const SDK_VERSION = '1.9.0';
 
 export interface ClientConfig {
   baseURL?: string;

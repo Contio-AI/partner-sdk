@@ -10,6 +10,7 @@ import {
   PartnerIdPConfig,
   CreateIdPConfigRequest,
   UpdateIdPConfigRequest,
+  IdpDomainVerification,
 } from '../../models';
 
 export async function createIdPConfig(
@@ -36,5 +37,28 @@ export async function deleteIdPConfig(
   http: HttpTransport,
 ): Promise<void> {
   await http.delete('/idp');
+}
+
+// ─── IdP Domain Verification ───────────────────────────────────────────────
+
+export async function getIdpDomainVerification(
+  http: HttpTransport,
+  domain: string,
+): Promise<IdpDomainVerification> {
+  return http.get<IdpDomainVerification>(`/idp/domains/${domain}`);
+}
+
+export async function initiateIdpDomainVerification(
+  http: HttpTransport,
+  domain: string,
+): Promise<IdpDomainVerification> {
+  return http.post<IdpDomainVerification>(`/idp/domains/${domain}/verify`);
+}
+
+export async function checkIdpDomainVerification(
+  http: HttpTransport,
+  domain: string,
+): Promise<IdpDomainVerification> {
+  return http.post<IdpDomainVerification>(`/idp/domains/${domain}/check`);
 }
 

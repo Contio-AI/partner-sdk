@@ -64,6 +64,12 @@ import {
   TriggerActionButtonRequest,
   TriggerActionButtonResponse,
   NextStepResult,
+  ExportMeetingTranscriptParams,
+  // Workflow run-related imports
+  WorkflowRun,
+  WorkflowRunListParams,
+  WorkflowRunListResponse,
+  CreateWorkflowRunRequest,
 } from '../../models';
 
 import * as meetings from './meetings';
@@ -74,6 +80,7 @@ import * as profile from './profile';
 import * as chat from './chat';
 import * as userToolkits from './toolkits';
 import * as userTemplates from './templates';
+import * as workflowRuns from './workflowRuns';
 
 /**
  * Partner User API client for OAuth-authenticated user endpoints.
@@ -479,6 +486,25 @@ export class PartnerUserClient extends BaseClient {
     options?: RequestOptions,
   ): Promise<TriggerActionButtonResponse> {
     return meetings.triggerActionButton(this.http, meetingId, buttonId, data, options);
+  }
+
+  /**
+   * Export a meeting transcript as an SRT file.
+   *
+   * Requires the Elite plan and a `meetings:read` OAuth scope.
+   *
+   * @param meetingId - The meeting ID
+   * @param params - Optional export parameters
+   * @param options - Request options
+   * @returns The transcript content as a plain-text SRT string
+   * @throws {ContioAPIError} If the transcript is unavailable or the plan does not support exports
+   */
+  async exportMeetingTranscript(
+    meetingId: string,
+    params?: ExportMeetingTranscriptParams,
+    options?: RequestOptions,
+  ): Promise<string> {
+    return meetings.exportMeetingTranscript(this.http, meetingId, params, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -1187,6 +1213,55 @@ export class PartnerUserClient extends BaseClient {
     options?: RequestOptions,
   ): Promise<userTemplates.UserMeetingTemplate> {
     return userTemplates.getMeetingTemplate(this.http, templateId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Workflow Run endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List workflow runs in the authenticated user's workspace.
+   *
+   * @param params - Optional filter and pagination parameters
+   * @param options - Request options
+   * @returns Paginated list of workflow runs
+   * @throws {ContioAPIError} If the request fails
+   */
+  async listWorkflowRuns(
+    params?: WorkflowRunListParams,
+    options?: RequestOptions,
+  ): Promise<WorkflowRunListResponse> {
+    return workflowRuns.listWorkflowRuns(this.http, params, options);
+  }
+
+  /**
+   * Trigger a new manual workflow run.
+   *
+   * @param data - The workflow run creation request
+   * @param options - Request options
+   * @returns The created workflow run
+   * @throws {ContioAPIError} If validation fails or the template is not found
+   */
+  async createWorkflowRun(
+    data: CreateWorkflowRunRequest,
+    options?: RequestOptions,
+  ): Promise<WorkflowRun> {
+    return workflowRuns.createWorkflowRun(this.http, data, options);
+  }
+
+  /**
+   * Get a workflow run by ID.
+   *
+   * @param workflowRunId - The unique workflow run ID
+   * @param options - Request options
+   * @returns The workflow run with full details
+   * @throws {ContioAPIError} If the workflow run is not found
+   */
+  async getWorkflowRun(
+    workflowRunId: string,
+    options?: RequestOptions,
+  ): Promise<WorkflowRun> {
+    return workflowRuns.getWorkflowRun(this.http, workflowRunId, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
