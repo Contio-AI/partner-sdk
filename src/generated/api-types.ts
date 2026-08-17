@@ -492,6 +492,101 @@ export interface ApplyMeetingTemplateParams {
   id: string;
 }
 
+export type AssignBacklogItemData = BacklogItemAssignBacklogItemResponse;
+
+export type AssignBacklogItemError = ErrorsPartnerErrorResponse;
+
+export interface AssignBacklogItemParams {
+  /**
+   * Backlog item ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export interface AttachmentsAttachmentListResponse {
+  /** Attachments for the current page, newest first */
+  items?: AttachmentsAttachmentResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 25
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of attachments visible to the caller
+   * @example 3
+   */
+  total?: number;
+}
+
+export interface AttachmentsAttachmentResponse {
+  /**
+   * Visibility: just_me (creator only), meeting (meeting participants), workspace (whole workspace)
+   * @example "meeting"
+   */
+  access_level?: "just_me" | "meeting" | "workspace";
+  /**
+   * Timestamp when the attachment was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * ID of the user who created the attachment
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  created_by_user_id?: string;
+  /**
+   * URL of the linked resource; present only for link attachments
+   * @example "https://drive.google.com/file/d/abc"
+   */
+  external_content_url?: string;
+  /**
+   * Original file name of the upload
+   * @example "budget-q3.xlsx"
+   */
+  file_name?: string;
+  /**
+   * Unique identifier for the attachment
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Attachment kind: file (binary upload) or link (external URL)
+   * @example "file"
+   */
+  kind?: "file" | "link";
+  /**
+   * ID of the meeting the attachment belongs to
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  meeting_id?: string;
+  /**
+   * MIME type as supplied by the uploading client; arbitrary types are accepted
+   * @example "application/vnd.ms-excel"
+   */
+  mime_type?: string;
+  /**
+   * Size of the stored file in bytes; zero for link attachments
+   * @example 20481
+   */
+  size_bytes?: number;
+  /**
+   * Timestamp when the attachment was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * ID of the workspace that owns the attachment
+   * @example "123e4567-e89b-12d3-a456-426614174002"
+   */
+  workspace_id?: string;
+}
+
 export type AuthorizeOauthError = ErrorsErrorResponse;
 
 export interface AuthorizeOauthParams {
@@ -639,6 +734,172 @@ export interface AutomationUpdateAutomationRequest {
     | "action_item_completed"
     | "meeting_ended"
     | "meeting_summary_ready";
+}
+
+export interface BacklogItemAssignBacklogItemRequest {
+  /**
+   * Meeting to move the backlog item onto
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id: string;
+}
+
+export interface BacklogItemAssignBacklogItemResponse {
+  /**
+   * ID of the agenda item created on the destination meeting
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
+  agenda_item_id?: string;
+  /**
+   * ID of the backlog item that was assigned, now closed
+   * @example "123e4567-e89b-12d3-a456-426614174010"
+   */
+  backlog_item_id?: string;
+  /**
+   * ID of the destination meeting
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  meeting_id?: string;
+}
+
+export interface BacklogItemCreateBacklogItemRequest {
+  /**
+   * @maxLength 5000
+   * @example "Review the Q3 roadmap"
+   */
+  description?: string;
+  /** @example "DISCUSSION" */
+  item_type: "DISCUSSION" | "QUESTIONS_TO_ANSWER" | "BREAK" | "ADJOURN";
+  /**
+   * @maxItems 50
+   * @example ["123e4567-e89b-12d3-a456-426614174003"]
+   */
+  presenters?: string[];
+  /**
+   * @maxLength 10000
+   * @example "Key points: budget, timeline"
+   */
+  talking_points?: string;
+  /**
+   * @min 0
+   * @max 1440
+   * @example 15
+   */
+  time_allocation_minutes?: number;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Q3 roadmap review"
+   */
+  title: string;
+}
+
+export interface BacklogItemPartnerBacklogItemResponse {
+  /**
+   * ID of the agenda item holding this backlog item's content
+   * @example "123e4567-e89b-12d3-a456-426614174005"
+   */
+  agenda_item_id?: string;
+  /**
+   * Time the item was assigned to a meeting, present only on history entries
+   * @example "2023-01-02T00:00:00Z"
+   */
+  assigned_at?: string;
+  /** @example "2023-01-01T00:00:00Z" */
+  deferred_at?: string;
+  /**
+   * ID of the user who placed the item on the backlog
+   * @example "123e4567-e89b-12d3-a456-426614174003"
+   */
+  deferrer_user_id?: string;
+  /**
+   * Time the item was removed from the backlog, present only on history entries
+   * @example "2023-01-03T00:00:00Z"
+   */
+  deleted_at?: string;
+  /**
+   * Detailed description of the backlog item. Empty when the item has no description.
+   * @example "Review the Q3 roadmap"
+   */
+  description?: string;
+  /**
+   * Agenda item created by the assignment, present only on history entries
+   * @example "123e4567-e89b-12d3-a456-426614174006"
+   */
+  destination_agenda_item_id?: string;
+  /**
+   * Meeting the item was assigned to, present only on history entries
+   * @example "123e4567-e89b-12d3-a456-426614174001"
+   */
+  destination_meeting_id?: string;
+  /**
+   * Unique identifier of the backlog item (the deferral ID)
+   * @example "123e4567-e89b-12d3-a456-426614174010"
+   */
+  id?: string;
+  /** @example "DISCUSSION" */
+  item_type?: "DISCUSSION" | "QUESTIONS_TO_ANSWER" | "BREAK" | "ADJOURN";
+  /**
+   * ID of the meeting the item was deferred from, absent for items created directly on the backlog
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  origin_meeting_id?: string;
+  /**
+   * Title of the meeting the item was deferred from, when still available
+   * @example "Weekly Team Sync"
+   */
+  origin_meeting_title?: string;
+  /**
+   * How the item reached the backlog: MANUAL for items created directly on the backlog, MEETING or SMS for deferred items
+   * @example "MANUAL"
+   */
+  origin_type?: "MANUAL" | "MEETING" | "SMS";
+  /**
+   * IDs of the users presenting this backlog item
+   * @example ["123e4567-e89b-12d3-a456-426614174003"]
+   */
+  presenters?: string[];
+  /**
+   * Private talking points of the authenticated user on this backlog item. Only returned when the user has talking points.
+   * @example "Key points: budget, timeline"
+   */
+  talking_points?: string;
+  /** @example 15 */
+  time_allocation_minutes?: number;
+  /** @example "Q3 roadmap review" */
+  title?: string;
+}
+
+export interface BacklogItemUpdateBacklogItemRequest {
+  /**
+   * @maxLength 5000
+   * @example "Review the roadmap"
+   */
+  description?: string;
+  /** @example "DISCUSSION" */
+  item_type?: "DISCUSSION" | "QUESTIONS_TO_ANSWER" | "BREAK" | "ADJOURN";
+  /**
+   * @maxItems 50
+   * @example ["123e4567-e89b-12d3-a456-426614174003"]
+   */
+  presenters?: string[];
+  /**
+   * @maxLength 10000
+   * @example "Key points: budget, timeline"
+   */
+  talking_points?: string;
+  /**
+   * @min 0
+   * @max 1440
+   * @example 20
+   */
+  time_allocation_minutes?: number;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   * @example "Q3 roadmap review"
+   */
+  title?: string;
 }
 
 /** Bad request error for creating a meeting from a calendar event */
@@ -909,9 +1170,14 @@ export interface ContextMeetingContextResponse {
   id?: string;
   meeting_id?: string;
   model_id?: string;
+  /** PartnerAppID is a deprecated alias of SourceID retained for backward compatibility. */
   partner_app_id?: string;
   platform_name?: string;
   source_format?: string;
+  /** SourceID identifies the uploading source; omitted for first-party user uploads. */
+  source_id?: string;
+  /** SourceName is the display name of the uploading source, when resolvable. */
+  source_name?: string;
   title?: string;
   updated_at?: string;
   workspace_id?: string;
@@ -928,6 +1194,10 @@ export type CreateAutomationData = AutomationAutomationResponse;
 export type CreateAutomationError =
   | AutomationCreateAutomationError400
   | ErrorsPartnerErrorResponse;
+
+export type CreateBacklogItemData = BacklogItemPartnerBacklogItemResponse;
+
+export type CreateBacklogItemError = ErrorsPartnerErrorResponse;
 
 export type CreateCalendarEventMeetingData =
   CalendarPartnerCreateMeetingFromCalendarEventResponse;
@@ -960,6 +1230,33 @@ export interface CreateMeetingAgendaItemParams {
    * @format uuid
    */
   id: string;
+}
+
+export type CreateMeetingAttachmentData = AttachmentsAttachmentResponse;
+
+export type CreateMeetingAttachmentError = ErrorsPartnerErrorResponse;
+
+export interface CreateMeetingAttachmentParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export interface CreateMeetingAttachmentPayload {
+  /**
+   * Who may see the attachment
+   * @default "just_me"
+   */
+  access_level?: "just_me" | "meeting" | "workspace";
+  /** File to attach (any MIME type, up to 50MB) */
+  file: File;
+  /**
+   * Attachment kind. Only file is currently creatable
+   * @default "file"
+   */
+  kind?: "file";
 }
 
 export type CreateMeetingData = SharedPartnerMeetingResponse;
@@ -1221,6 +1518,18 @@ export interface DeleteAutomationParams {
   automationId: string;
 }
 
+export type DeleteBacklogItemData = any;
+
+export type DeleteBacklogItemError = ErrorsPartnerErrorResponse;
+
+export interface DeleteBacklogItemParams {
+  /**
+   * Backlog item ID
+   * @format uuid
+   */
+  id: string;
+}
+
 export type DeleteIdpConfigData = any;
 
 export type DeleteIdpConfigError = ErrorsPartnerErrorResponse;
@@ -1240,6 +1549,23 @@ export interface DeleteMeetingAgendaItemParams {
    * @format uuid
    */
   itemId: string;
+}
+
+export type DeleteMeetingAttachmentData = any;
+
+export type DeleteMeetingAttachmentError = ErrorsPartnerErrorResponse;
+
+export interface DeleteMeetingAttachmentParams {
+  /**
+   * Attachment ID
+   * @format uuid
+   */
+  attachmentId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
 }
 
 export type DeleteMeetingContextData = any;
@@ -1271,6 +1597,24 @@ export interface DeleteTemplateParams {
 export type DeleteWebhookFilterData = SharedPartnerAppResponse;
 
 export type DeleteWebhookFilterError = ErrorsPartnerErrorResponse;
+
+/** @format binary */
+export type DownloadMeetingAttachmentData = File;
+
+export type DownloadMeetingAttachmentError = ErrorsPartnerErrorResponse;
+
+export interface DownloadMeetingAttachmentParams {
+  /**
+   * Attachment ID
+   * @format uuid
+   */
+  attachmentId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
 
 /** @format binary */
 export type DownloadMeetingContextContentData = File;
@@ -1311,7 +1655,8 @@ export interface ErrorsErrorResponse {
     | "internal_server_error"
     | "toolkit_slug_collision"
     | "manifest_validation_failed"
-    | "toolkit_requires_annual";
+    | "toolkit_requires_annual"
+    | "product_has_no_purchasable_plans";
   /**
    * User-friendly description of what went wrong
    * @example "The requested resource could not be found"
@@ -1452,6 +1797,18 @@ export interface GetAutomationParams {
   automationId: string;
 }
 
+export type GetBacklogItemData = BacklogItemPartnerBacklogItemResponse;
+
+export type GetBacklogItemError = ErrorsPartnerErrorResponse;
+
+export interface GetBacklogItemParams {
+  /**
+   * Backlog item ID
+   * @format uuid
+   */
+  id: string;
+}
+
 export type GetCalendarEventData = CalendarPartnerCalendarEventResponse;
 
 export type GetCalendarEventError = ErrorsPartnerErrorResponse;
@@ -1493,6 +1850,23 @@ export type GetIdpDomainVerificationError =
 export interface GetIdpDomainVerificationParams {
   /** Exact domain (e.g. acme.com) */
   domain: string;
+}
+
+export type GetMeetingAttachmentData = AttachmentsAttachmentResponse;
+
+export type GetMeetingAttachmentError = ErrorsPartnerErrorResponse;
+
+export interface GetMeetingAttachmentParams {
+  /**
+   * Attachment ID
+   * @format uuid
+   */
+  attachmentId: string;
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
 }
 
 export type GetMeetingContextData = ContextMeetingContextResponse;
@@ -2085,6 +2459,52 @@ export interface ListAutomationsParams {
   offset?: number;
 }
 
+export type ListBacklogItemHistoryData =
+  RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse;
+
+export type ListBacklogItemHistoryError = ErrorsPartnerErrorResponse;
+
+export interface ListBacklogItemHistoryParams {
+  /**
+   * Maximum items per page (1-100)
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @default 0
+   */
+  offset?: number;
+  /**
+   * Sort direction on the time the item left the backlog
+   * @default "desc"
+   */
+  sort_order?: "asc" | "desc";
+}
+
+export type ListBacklogItemsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse;
+
+export type ListBacklogItemsError = ErrorsPartnerErrorResponse;
+
+export interface ListBacklogItemsParams {
+  /**
+   * Maximum items per page (1-100)
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @default 0
+   */
+  offset?: number;
+  /**
+   * Sort direction on the time the item reached the backlog
+   * @default "desc"
+   */
+  sort_order?: "asc" | "desc";
+}
+
 export type ListCalendarEventsData =
   RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse;
 
@@ -2202,6 +2622,28 @@ export interface ListMeetingAgendaItemsParams {
    * @format uuid
    */
   id: string;
+}
+
+export type ListMeetingAttachmentsData = AttachmentsAttachmentListResponse;
+
+export type ListMeetingAttachmentsError = ErrorsPartnerErrorResponse;
+
+export interface ListMeetingAttachmentsParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Limit
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Offset
+   * @default 0
+   */
+  offset?: number;
 }
 
 export type ListMeetingContextsData = ContextMeetingContextListResponse;
@@ -2473,11 +2915,14 @@ export interface MeetingCreateAgendaItemRequest {
    */
   description?: string;
   /** @example "DISCUSSION" */
-  item_type: "DISCUSSION" | "DECISION" | "ACTION_ITEM" | "INFORMATION";
+  item_type: "DISCUSSION" | "QUESTIONS_TO_ANSWER" | "BREAK" | "ADJOURN";
   /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
   presenters?: string[];
-  /** @example false */
-  restricted_to_leads?: boolean;
+  /**
+   * @maxLength 255
+   * @example "300"
+   */
+  sequence?: string;
   /**
    * @maxLength 10000
    * @example "My private notes for this item"
@@ -2557,7 +3002,7 @@ export interface MeetingPartnerAgendaItemResponse {
    */
   id?: string;
   /**
-   * Type of agenda item (DISCUSSION, DECISION, ACTION_ITEM, INFORMATION)
+   * Type of agenda item (DISCUSSION, QUESTIONS_TO_ANSWER, BREAK, ADJOURN)
    * @example "DISCUSSION"
    */
   item_type?: string;
@@ -2567,15 +3012,20 @@ export interface MeetingPartnerAgendaItemResponse {
    */
   meeting_id?: string;
   /**
-   * User IDs of the presenters for this agenda item
+   * Presenters for this agenda item, enriched with name and email when the user
+   * record is available and belongs to the authenticated user's workspace.
+   * Entries that cannot be resolved, or that name a user outside that
+   * workspace, carry only user_id.
+   */
+  presenter_details?: SharedV1UserRef[];
+  /**
+   * User IDs of the presenters for this agenda item.
+   *
+   * Deprecated: use presenter_details, which carries the same IDs alongside the
+   * presenter's name and email.
    * @example ["123e4567-e89b-12d3-a456-426614174003"]
    */
   presenters?: string[];
-  /**
-   * Whether this item is restricted to meeting leads only
-   * @example false
-   */
-  restricted_to_leads?: boolean;
   /**
    * Order sequence of the agenda item
    * @example "1"
@@ -2874,11 +3324,14 @@ export interface MeetingUpdateAgendaItemRequest {
    */
   description?: string;
   /** @example "DISCUSSION" */
-  item_type?: "DISCUSSION" | "DECISION" | "ACTION_ITEM" | "INFORMATION";
+  item_type?: "DISCUSSION" | "QUESTIONS_TO_ANSWER" | "BREAK" | "ADJOURN";
   /** @example ["123e4567-e89b-12d3-a456-426614174003"] */
   presenters?: string[];
-  /** @example true */
-  restricted_to_leads?: boolean;
+  /**
+   * @maxLength 255
+   * @example "150"
+   */
+  sequence?: string;
   /** @example "in_progress" */
   status?: "pending" | "in_progress" | "completed";
   /**
@@ -3113,6 +3566,34 @@ export interface PartnerAutomationAction {
   type: string;
 }
 
+export type PatchActionItemData = ActionItemPartnerActionItemResponse;
+
+export type PatchActionItemError =
+  | ActionItemUpdateActionItemError400
+  | ErrorsPartnerErrorResponse;
+
+export interface PatchActionItemParams {
+  /** Action Item ID */
+  id: string;
+}
+
+export type PatchMeetingAgendaItemData = MeetingPartnerAgendaItemResponse;
+
+export type PatchMeetingAgendaItemError = ErrorsPartnerErrorResponse;
+
+export interface PatchMeetingAgendaItemParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Agenda Item ID
+   * @format uuid
+   */
+  itemId: string;
+}
+
 export interface ProfileUserProfileResponse {
   /**
    * Timestamp when the user account was created
@@ -3139,6 +3620,11 @@ export interface ProfileUserProfileResponse {
    * @example "FREE"
    */
   plan_type?: string;
+  /**
+   * IANA timezone identifier for the user, if known
+   * @example "America/Los_Angeles"
+   */
+  timezone?: string;
   /**
    * ID of the workspace the user belongs to
    * @example "123e4567-e89b-12d3-a456-426614174002"
@@ -3525,6 +4011,26 @@ export interface RomeApiControllersExternalPartnerOauthUserInfo {
 export interface RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse {
   /** Array of items for the current page */
   items?: ActionItemPartnerActionItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse {
+  /** Array of items for the current page */
+  items?: BacklogItemPartnerBacklogItemResponse[];
   /**
    * Maximum number of items per page
    * @example 50
@@ -4430,6 +4936,15 @@ export interface SharedTriggerActionButtonResponse {
   message?: string;
 }
 
+export interface SharedV1UserRef {
+  /** @example "john.doe@example.com" */
+  email?: string;
+  /** @example "John Doe" */
+  name?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174003" */
+  user_id?: string;
+}
+
 export interface SharedWebhookFilterResponse {
   /**
    * Event types included in the filter configuration
@@ -4875,13 +5390,9 @@ export interface ToolkitManifestAgendaItemSpec {
    */
   item_type: string;
   /**
-   * RestrictedToLeads indicates whether only meeting leads can see this item
-   * @example false
-   */
-  restricted_to_leads?: boolean;
-  /**
-   * Sequence controls the display order
-   * @example "1"
+   * Sequence controls the display order. Decimal fractional index.
+   * @maxLength 255
+   * @example "100"
    */
   sequence?: string;
   /**
@@ -5406,6 +5917,41 @@ export interface UpdateActionItemParams {
   id: string;
 }
 
+export type UpdateAppData = SharedPartnerAppResponse;
+
+export type UpdateAppError =
+  | AppManagementUpdateAppError400
+  | ErrorsPartnerErrorResponse;
+
+export type UpdateAutomationData = AutomationAutomationResponse;
+
+export type UpdateAutomationError =
+  | AutomationUpdateAutomationError400
+  | ErrorsPartnerErrorResponse;
+
+export interface UpdateAutomationParams {
+  /** Automation ID */
+  automationId: string;
+}
+
+export type UpdateBacklogItemData = BacklogItemPartnerBacklogItemResponse;
+
+export type UpdateBacklogItemError = ErrorsPartnerErrorResponse;
+
+export interface UpdateBacklogItemParams {
+  /**
+   * Backlog item ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export type UpdateIdpConfigData = IdpIdPConfigResponse;
+
+export type UpdateIdpConfigError =
+  | IdpUpdateIdPConfigError400
+  | ErrorsPartnerErrorResponse;
+
 export type UpdateMeetingAgendaItemData = MeetingPartnerAgendaItemResponse;
 
 export type UpdateMeetingAgendaItemError = ErrorsPartnerErrorResponse;
@@ -5432,6 +5978,15 @@ export type UpdateMeetingError =
 export interface UpdateMeetingParams {
   /** Meeting ID */
   id: string;
+}
+
+export type UpdateTemplateData = TemplateTemplateResponse;
+
+export type UpdateTemplateError = ErrorsPartnerErrorResponse;
+
+export interface UpdateTemplateParams {
+  /** Template ID */
+  templateId: string;
 }
 
 export type UploadMeetingContextData = ContextMeetingContextResponse;

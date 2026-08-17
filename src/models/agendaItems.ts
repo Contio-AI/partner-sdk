@@ -2,8 +2,19 @@
  * Agenda item-related type definitions for the Contio Partner API
  */
 
-export type AgendaItemType = 'DISCUSSION' | 'DECISION' | 'ACTION_ITEM' | 'INFORMATION';
+export type AgendaItemType =
+  | 'DISCUSSION'
+  | 'QUESTIONS_TO_ANSWER'
+  | 'BREAK'
+  | 'ADJOURN';
+
 export type AgendaItemStatus = 'pending' | 'in_progress' | 'completed';
+
+export interface PresenterDetails {
+  user_id: string;
+  name?: string;
+  email?: string;
+}
 
 export interface AgendaItem {
   id?: string;
@@ -14,8 +25,9 @@ export interface AgendaItem {
   status?: AgendaItemStatus;
   sequence?: string;
   time_allocation_minutes?: number;
+  /** @deprecated Use {@link presenter_details} instead. */
   presenters?: string[];
-  restricted_to_leads?: boolean;
+  presenter_details?: PresenterDetails[];
   /** Private talking points / notes for this agenda item. */
   talking_points?: string;
   created_at?: string;
@@ -26,9 +38,9 @@ export interface CreateAgendaItemRequest {
   item_type: AgendaItemType;
   title: string;
   description?: string;
+  sequence?: string;
   time_allocation_minutes?: number;
   presenters?: string[];
-  restricted_to_leads?: boolean;
   /** Private talking points / notes for this agenda item. */
   talking_points?: string;
 }
@@ -38,9 +50,9 @@ export interface UpdateAgendaItemRequest {
   title?: string;
   description?: string;
   status?: AgendaItemStatus;
+  sequence?: string;
   time_allocation_minutes?: number;
   presenters?: string[];
-  restricted_to_leads?: boolean;
   /** Private talking points / notes for this agenda item. */
   talking_points?: string;
 }

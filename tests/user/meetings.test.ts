@@ -315,7 +315,6 @@ describe('PartnerUserClient › Meetings', () => {
             sequence: '1',
             time_allocation_minutes: 15,
             presenters: ['user-456'],
-            restricted_to_leads: false,
             created_at: '2025-01-01T00:00:00Z',
             updated_at: '2025-01-01T00:00:00Z',
           },
@@ -323,11 +322,10 @@ describe('PartnerUserClient › Meetings', () => {
             id: 'agenda-2',
             meeting_id: 'meeting-123',
             title: 'Budget Approval',
-            item_type: 'DECISION',
+            item_type: 'QUESTIONS_TO_ANSWER',
             status: 'in_progress',
             sequence: '2',
             time_allocation_minutes: 10,
-            restricted_to_leads: true,
             created_at: '2025-01-01T00:00:00Z',
             updated_at: '2025-01-01T00:00:00Z',
           },
@@ -346,7 +344,7 @@ describe('PartnerUserClient › Meetings', () => {
         expect(response.items![0].title).toBe('Q1 Planning Discussion');
         expect(response.items![0].item_type).toBe('DISCUSSION');
         expect(response.items![1].title).toBe('Budget Approval');
-        expect(response.items![1].item_type).toBe('DECISION');
+        expect(response.items![1].item_type).toBe('QUESTIONS_TO_ANSWER');
         expect(response.total).toBe(2);
       });
     });
@@ -358,7 +356,6 @@ describe('PartnerUserClient › Meetings', () => {
         description: 'Discuss new feature requirements',
         time_allocation_minutes: 20,
         presenters: ['user-123'],
-        restricted_to_leads: false,
       };
 
       const mockCreatedAgendaItem: AgendaItem = {
@@ -371,7 +368,6 @@ describe('PartnerUserClient › Meetings', () => {
         sequence: '3',
         time_allocation_minutes: createRequest.time_allocation_minutes,
         presenters: createRequest.presenters,
-        restricted_to_leads: createRequest.restricted_to_leads,
         created_at: '2025-01-08T12:00:00Z',
         updated_at: '2025-01-08T12:00:00Z',
       };

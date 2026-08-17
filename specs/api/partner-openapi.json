@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.9.1"
+    "version": "1.10.0"
   },
   "host": "api.contio.ai",
   "basePath": "/",
@@ -669,7 +669,7 @@
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Updates partner app details like name, description, and webhook URL",
+        "description": "Deprecated: use PATCH /v1/partner/admin/app instead. Updates partner app details like name, description, and webhook URL",
         "consumes": [
           "application/json"
         ],
@@ -681,6 +681,70 @@
         ],
         "summary": "Update partner app",
         "operationId": "replaceApp",
+        "deprecated": true,
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "description": "Update app request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app_management.UpdateAppRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/shared.PartnerAppResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/app_management.UpdateAppError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Partially updates partner app details like name, description, and webhook URL. Only provided fields are changed.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "App Management"
+        ],
+        "summary": "Patch partner app",
+        "operationId": "updateApp",
         "parameters": [
           {
             "type": "string",
@@ -981,7 +1045,7 @@
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Updates a specific automation for the authenticated partner app",
+        "description": "Deprecated: use PATCH /v1/partner/admin/automation/{automationId} instead. Updates a specific automation for the authenticated partner app",
         "consumes": [
           "application/json"
         ],
@@ -993,6 +1057,7 @@
         ],
         "summary": "Update automation",
         "operationId": "replaceAutomation",
+        "deprecated": true,
         "parameters": [
           {
             "type": "string",
@@ -1081,6 +1146,82 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Automation not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Partially updates a specific automation for the authenticated partner app. Only provided fields are changed.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Automation Management"
+        ],
+        "summary": "Patch automation",
+        "operationId": "updateAutomation",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Automation ID",
+            "name": "automationId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Automation update data",
+            "name": "automation",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/automation.UpdateAutomationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/automation.AutomationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "schema": {
+              "$ref": "#/definitions/automation.UpdateAutomationError400"
+            }
           },
           "401": {
             "description": "Authentication required",
@@ -1809,7 +1950,7 @@
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Updates the OIDC IdP configuration for the authenticated partner app. Note: idp_client_id and idp_client_secret are the OIDC credentials from your Identity Provider (e.g., Okta, Azure AD), NOT your Contio Partner OAuth credentials.",
+        "description": "Deprecated: use PATCH /v1/partner/admin/idp instead. Updates the OIDC IdP configuration for the authenticated partner app. Note: idp_client_id and idp_client_secret are the OIDC credentials from your Identity Provider (e.g., Okta, Azure AD), NOT your Contio Partner OAuth credentials.",
         "consumes": [
           "application/json"
         ],
@@ -1821,6 +1962,7 @@
         ],
         "summary": "Update IdP configuration",
         "operationId": "replaceIdpConfig",
+        "deprecated": true,
         "parameters": [
           {
             "type": "string",
@@ -1988,6 +2130,81 @@
           },
           "500": {
             "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Partially updates the OIDC IdP configuration for the authenticated partner app. Only provided fields are changed. Note: idp_client_id and idp_client_secret are the OIDC credentials from your Identity Provider (e.g., Okta, Azure AD), NOT your Contio Partner OAuth credentials.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "IdP Management"
+        ],
+        "summary": "Patch IdP configuration",
+        "operationId": "updateIdpConfig",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "description": "IdP configuration update data",
+            "name": "config",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/idp.UpdateIdPConfigRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/idp.IdPConfigResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "schema": {
+              "$ref": "#/definitions/idp.UpdateIdPConfigError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "IdP config not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Domain already claimed",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -2371,7 +2588,7 @@
             "PartnerClientIdAuth": []
           }
         ],
-        "description": "Updates a template for the authenticated partner app",
+        "description": "Deprecated: use PATCH /v1/partner/admin/templates/{templateId} instead. Updates a template for the authenticated partner app",
         "consumes": [
           "application/json"
         ],
@@ -2383,6 +2600,7 @@
         ],
         "summary": "Update a template",
         "operationId": "replaceTemplate",
+        "deprecated": true,
         "parameters": [
           {
             "type": "string",
@@ -2474,6 +2692,82 @@
         "responses": {
           "204": {
             "description": "Template deleted"
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Template not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "PartnerAPIKeyAuth": [],
+            "PartnerClientIdAuth": []
+          }
+        ],
+        "description": "Partially updates a template for the authenticated partner app. Only provided fields are changed.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Template Management"
+        ],
+        "summary": "Patch a template",
+        "operationId": "updateTemplate",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Template ID",
+            "name": "templateId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Template update request",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/template.UpdateTemplateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/template.TemplateResponse"
+            }
           },
           "400": {
             "description": "Invalid request parameters",
@@ -4764,7 +5058,7 @@
             ]
           }
         ],
-        "description": "Updates an existing action item if accessible to the authenticated user",
+        "description": "Deprecated: use PATCH /v1/partner/user/action-items/{id} instead. Updates an existing action item if accessible to the authenticated user",
         "consumes": [
           "application/json"
         ],
@@ -4776,6 +5070,7 @@
         ],
         "summary": "Update action item",
         "operationId": "updateActionItem",
+        "deprecated": true,
         "parameters": [
           {
             "type": "string",
@@ -4880,6 +5175,618 @@
           },
           "404": {
             "description": "Action item not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "action-items:write"
+            ]
+          }
+        ],
+        "description": "Partially updates an existing action item if accessible to the authenticated user. Only provided fields are changed.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Action Items"
+        ],
+        "summary": "Patch action item",
+        "operationId": "patchActionItem",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Action Item ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Action item update data",
+            "name": "action_item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/action_item.UpdateActionItemRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/action_item.PartnerActionItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/action_item.UpdateActionItemError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Action item not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/backlog-items": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Retrieves the authenticated user's backlog items — agenda items that are not on a meeting agenda, whether created directly on the backlog or deferred out of a meeting. Items that have been assigned to a meeting or removed are excluded; see the history endpoint for those.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "List backlog items",
+        "operationId": "listBacklogItems",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 25,
+            "description": "Maximum items per page (1-100)",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Number of items to skip",
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "type": "string",
+            "default": "desc",
+            "description": "Sort direction on the time the item reached the backlog",
+            "name": "sort_order",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-backlog_item_PartnerBacklogItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Creates an agenda item on the authenticated user's backlog, without attaching it to a meeting.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "Create a backlog item",
+        "operationId": "createBacklogItem",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "description": "Backlog item creation parameters",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/backlog_item.CreateBacklogItemRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/backlog_item.PartnerBacklogItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/backlog-items/history": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Retrieves the authenticated user's backlog items that have left the backlog, either assigned to a meeting or removed. Entries carry assigned_at and destination_meeting_id, or deleted_at, accordingly.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "List backlog item history",
+        "operationId": "listBacklogItemHistory",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 25,
+            "description": "Maximum items per page (1-100)",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Number of items to skip",
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "type": "string",
+            "default": "desc",
+            "description": "Sort direction on the time the item left the backlog",
+            "name": "sort_order",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-backlog_item_PartnerBacklogItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/backlog-items/{id}": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Retrieves a single backlog item by ID. Items belonging to another user or workspace are reported as not found.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "Get a backlog item",
+        "operationId": "getBacklogItem",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Backlog item ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/backlog_item.PartnerBacklogItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid backlog item ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Backlog item not found or not accessible",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Updates fields on a backlog item owned by the authenticated user. Only provided fields are changed.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "Update a backlog item",
+        "operationId": "updateBacklogItem",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Backlog item ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Backlog item update parameters",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/backlog_item.UpdateBacklogItemRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/backlog_item.PartnerBacklogItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Backlog item not found or not accessible",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Removes a backlog item from the authenticated user's backlog. The item remains visible in backlog history.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "Delete a backlog item",
+        "operationId": "deleteBacklogItem",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Backlog item ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Backlog item deleted"
+          },
+          "400": {
+            "description": "Invalid backlog item ID",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Backlog item not found or not accessible",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/backlog-items/{id}/assign": {
+      "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Moves a backlog item onto a meeting agenda. A new agenda item is created on the destination meeting and the backlog item is closed, so subsequent reads of it return 404 and it appears in backlog history.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Backlog Items"
+        ],
+        "summary": "Assign a backlog item to a meeting",
+        "operationId": "assignBacklogItem",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Backlog item ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Assignment parameters",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/backlog_item.AssignBacklogItemRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/backlog_item.AssignBacklogItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Backlog item or meeting not found or not accessible",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Backlog item already assigned",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -5847,7 +6754,7 @@
             ]
           }
         ],
-        "description": "Retrieves all agenda items for a specific meeting. Filters out items restricted to leads if the user is not an editor.",
+        "description": "Retrieves all agenda items for a specific meeting.",
         "consumes": [
           "application/json"
         ],
@@ -5910,7 +6817,7 @@
             ]
           }
         ],
-        "description": "Creates a new agenda item for a meeting. User must be a participant of the meeting.",
+        "description": "Creates a new agenda item for a meeting. User must be a participant of the meeting. Supplying sequence positions the item: it is a decimal fractional index the agenda is ordered by. When it is omitted the item is appended after the meeting's last item.",
         "consumes": [
           "application/json"
         ],
@@ -5996,7 +6903,7 @@
             ]
           }
         ],
-        "description": "Updates an existing agenda item. User must be a participant of the meeting.",
+        "description": "Deprecated: use PATCH /v1/partner/user/meetings/{id}/agenda-items/{item_id} instead. Updates an existing agenda item. Only provided fields are changed. User must be a participant of the meeting. Supplying sequence repositions the item: it is a decimal fractional index applied to both the stored item and the collaborative document.",
         "consumes": [
           "application/json"
         ],
@@ -6008,6 +6915,7 @@
         ],
         "summary": "Update agenda item",
         "operationId": "updateMeetingAgendaItem",
+        "deprecated": true,
         "parameters": [
           {
             "type": "string",
@@ -6148,6 +7056,501 @@
           },
           "404": {
             "description": "Agenda item not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Partially updates an existing agenda item. Only provided fields are changed. User must be a participant of the meeting. Supplying sequence repositions the item: it is a decimal fractional index applied to both the stored item and the collaborative document.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Agenda Items"
+        ],
+        "summary": "Patch agenda item",
+        "operationId": "patchMeetingAgendaItem",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Agenda Item ID",
+            "name": "item_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Updated agenda item details",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/meeting.UpdateAgendaItemRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agenda item updated successfully",
+            "schema": {
+              "$ref": "#/definitions/meeting.PartnerAgendaItemResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "User is not a participant of the meeting",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Agenda item not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/meetings/{id}/attachments": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Lists the raw attachments on a meeting, newest first, restricted to the ones the authenticated user may see (their own private uploads plus attachments shared with the meeting or workspace). Attachments are stored exactly as uploaded — they are not normalized, not PII-scrubbed and never injected into AI prompts. Use the meeting context endpoints for AI-visible material.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "List meeting attachments",
+        "operationId": "listMeetingAttachments",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "default": 25,
+            "description": "Limit",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Offset",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/attachments.AttachmentListResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Meeting not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Uploads a raw file as a meeting attachment using multipart/form-data. Any MIME type is accepted and the bytes are stored verbatim — attachments are never normalized, PII-scrubbed or injected into AI prompts. Upload AI-visible material through the meeting context endpoints instead.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "Create meeting attachment",
+        "operationId": "createMeetingAttachment",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "file",
+            "description": "File to attach (any MIME type, up to 50MB)",
+            "name": "file",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "enum": [
+              "file"
+            ],
+            "type": "string",
+            "default": "file",
+            "description": "Attachment kind. Only file is currently creatable",
+            "name": "kind",
+            "in": "formData"
+          },
+          {
+            "enum": [
+              "just_me",
+              "meeting",
+              "workspace"
+            ],
+            "type": "string",
+            "default": "just_me",
+            "description": "Who may see the attachment",
+            "name": "access_level",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/attachments.AttachmentResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient meeting permissions",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Meeting not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "413": {
+            "description": "Request entity too large",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/meetings/{id}/attachments/{attachment_id}": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Retrieves metadata for a single raw meeting attachment. Content is fetched from the download endpoint; storage locations are never exposed.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "Get meeting attachment",
+        "operationId": "getMeetingAttachment",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Attachment ID",
+            "name": "attachment_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/attachments.AttachmentResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Attachment not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Deletes a raw meeting attachment. The creator, meeting editors and workspace owners may delete; other callers receive 403.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "Delete meeting attachment",
+        "operationId": "deleteMeetingAttachment",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Attachment ID",
+            "name": "attachment_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient attachment permissions",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Attachment not found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/meetings/{id}/attachments/{attachment_id}/download": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Streams the raw bytes of a file attachment. The response carries Content-Disposition with the original file name; the underlying storage location is never exposed. Link attachments have no bytes to stream — read external_content_url from the metadata endpoint instead.",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "Download meeting attachment",
+        "operationId": "downloadMeetingAttachment",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Attachment ID",
+            "name": "attachment_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachment byte stream; Content-Disposition includes the file name",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "400": {
+            "description": "Invalid request, or attachment is a link",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Attachment not found",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -6339,7 +7742,7 @@
             ]
           }
         ],
-        "description": "Lists partner-scoped meeting contexts for a meeting with pagination.",
+        "description": "Lists partner-scoped meeting context documents for a meeting with pagination. Context documents are text-biased, sanitized and injected into the AI agent's prompt — unlike attachments, which are raw files stored as-is and never read by the agent. Use the meeting attachments endpoints for raw files.",
         "consumes": [
           "application/json"
         ],
@@ -6410,7 +7813,7 @@
             ]
           }
         ],
-        "description": "Uploads a partner-scoped meeting context for a meeting using multipart/form-data.",
+        "description": "Uploads a partner-scoped meeting context document for a meeting using multipart/form-data. Context is text-biased material (CRM records, spreadsheets, text exports) that is converted to clean Markdown, PII-scrubbed and injected into the AI agent's prompt. To attach a raw file of any MIME type (PDF, image, recording) that is stored as-is and never read by the agent, use the meeting attachments endpoints instead.",
         "consumes": [
           "multipart/form-data"
         ],
@@ -6501,7 +7904,7 @@
             ]
           }
         ],
-        "description": "Retrieves a specific partner-scoped meeting context by context ID.",
+        "description": "Retrieves metadata for a specific partner-scoped meeting context document by context ID. Context documents are AI-injected, sanitized text; use the meeting attachments endpoints for raw files that are stored as-is and never read by the agent.",
         "consumes": [
           "application/json"
         ],
@@ -6572,7 +7975,7 @@
             ]
           }
         ],
-        "description": "Deletes a specific partner-scoped meeting context by context ID.",
+        "description": "Deletes a specific partner-scoped meeting context document by context ID, removing it from future AI processing for the meeting. This affects only AI context; raw files are managed through the meeting attachments endpoints.",
         "consumes": [
           "application/json"
         ],
@@ -6648,7 +8051,7 @@
             ]
           }
         ],
-        "description": "Streams the file bytes for a specific partner-scoped meeting context.",
+        "description": "Streams the stored file bytes for a specific partner-scoped meeting context document. Returns the converted and sanitized copy when preprocessing has produced one; otherwise returns the original uploaded bytes. Context is AI-injected text material; for raw files stored as-is use the meeting attachments endpoints.",
         "produces": [
           "application/octet-stream"
         ],
@@ -8571,6 +9974,107 @@
         }
       }
     },
+    "attachments.AttachmentListResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Attachments for the current page, newest first",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/attachments.AttachmentResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 25
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of attachments visible to the caller",
+          "type": "integer",
+          "example": 3
+        }
+      }
+    },
+    "attachments.AttachmentResponse": {
+      "type": "object",
+      "properties": {
+        "access_level": {
+          "description": "Visibility: just_me (creator only), meeting (meeting participants), workspace (whole workspace)",
+          "type": "string",
+          "enum": [
+            "just_me",
+            "meeting",
+            "workspace"
+          ],
+          "example": "meeting"
+        },
+        "created_at": {
+          "description": "Timestamp when the attachment was created",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "created_by_user_id": {
+          "description": "ID of the user who created the attachment",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174003"
+        },
+        "external_content_url": {
+          "description": "URL of the linked resource; present only for link attachments",
+          "type": "string",
+          "example": "https://drive.google.com/file/d/abc"
+        },
+        "file_name": {
+          "description": "Original file name of the upload",
+          "type": "string",
+          "example": "budget-q3.xlsx"
+        },
+        "id": {
+          "description": "Unique identifier for the attachment",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "kind": {
+          "description": "Attachment kind: file (binary upload) or link (external URL)",
+          "type": "string",
+          "enum": [
+            "file",
+            "link"
+          ],
+          "example": "file"
+        },
+        "meeting_id": {
+          "description": "ID of the meeting the attachment belongs to",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        "mime_type": {
+          "description": "MIME type as supplied by the uploading client; arbitrary types are accepted",
+          "type": "string",
+          "example": "application/vnd.ms-excel"
+        },
+        "size_bytes": {
+          "description": "Size of the stored file in bytes; zero for link attachments",
+          "type": "integer",
+          "example": 20481
+        },
+        "updated_at": {
+          "description": "Timestamp when the attachment was last updated",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "workspace_id": {
+          "description": "ID of the workspace that owns the attachment",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174002"
+        }
+      }
+    },
     "automation.AutomationResponse": {
       "type": "object",
       "properties": {
@@ -8753,6 +10257,239 @@
             "meeting_ended",
             "meeting_summary_ready"
           ]
+        }
+      }
+    },
+    "backlog_item.AssignBacklogItemRequest": {
+      "type": "object",
+      "required": [
+        "meeting_id"
+      ],
+      "properties": {
+        "meeting_id": {
+          "description": "Meeting to move the backlog item onto",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      }
+    },
+    "backlog_item.AssignBacklogItemResponse": {
+      "type": "object",
+      "properties": {
+        "agenda_item_id": {
+          "description": "ID of the agenda item created on the destination meeting",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174006"
+        },
+        "backlog_item_id": {
+          "description": "ID of the backlog item that was assigned, now closed",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174010"
+        },
+        "meeting_id": {
+          "description": "ID of the destination meeting",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      }
+    },
+    "backlog_item.CreateBacklogItemRequest": {
+      "type": "object",
+      "required": [
+        "item_type",
+        "title"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "maxLength": 5000,
+          "example": "Review the Q3 roadmap"
+        },
+        "item_type": {
+          "type": "string",
+          "enum": [
+            "DISCUSSION",
+            "QUESTIONS_TO_ANSWER",
+            "BREAK",
+            "ADJOURN"
+          ],
+          "example": "DISCUSSION"
+        },
+        "presenters": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "123e4567-e89b-12d3-a456-426614174003"
+          ]
+        },
+        "talking_points": {
+          "type": "string",
+          "maxLength": 10000,
+          "example": "Key points: budget, timeline"
+        },
+        "time_allocation_minutes": {
+          "type": "number",
+          "maximum": 1440,
+          "minimum": 0,
+          "example": 15
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "Q3 roadmap review"
+        }
+      }
+    },
+    "backlog_item.PartnerBacklogItemResponse": {
+      "type": "object",
+      "properties": {
+        "agenda_item_id": {
+          "description": "ID of the agenda item holding this backlog item's content",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174005"
+        },
+        "assigned_at": {
+          "description": "Time the item was assigned to a meeting, present only on history entries",
+          "type": "string",
+          "example": "2023-01-02T00:00:00Z"
+        },
+        "deferred_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "deferrer_user_id": {
+          "description": "ID of the user who placed the item on the backlog",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174003"
+        },
+        "deleted_at": {
+          "description": "Time the item was removed from the backlog, present only on history entries",
+          "type": "string",
+          "example": "2023-01-03T00:00:00Z"
+        },
+        "description": {
+          "description": "Detailed description of the backlog item. Empty when the item has no description.",
+          "type": "string",
+          "example": "Review the Q3 roadmap"
+        },
+        "destination_agenda_item_id": {
+          "description": "Agenda item created by the assignment, present only on history entries",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174006"
+        },
+        "destination_meeting_id": {
+          "description": "Meeting the item was assigned to, present only on history entries",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        "id": {
+          "description": "Unique identifier of the backlog item (the deferral ID)",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174010"
+        },
+        "item_type": {
+          "type": "string",
+          "enum": [
+            "DISCUSSION",
+            "QUESTIONS_TO_ANSWER",
+            "BREAK",
+            "ADJOURN"
+          ],
+          "example": "DISCUSSION"
+        },
+        "origin_meeting_id": {
+          "description": "ID of the meeting the item was deferred from, absent for items created directly on the backlog",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "origin_meeting_title": {
+          "description": "Title of the meeting the item was deferred from, when still available",
+          "type": "string",
+          "example": "Weekly Team Sync"
+        },
+        "origin_type": {
+          "description": "How the item reached the backlog: MANUAL for items created directly on the backlog, MEETING or SMS for deferred items",
+          "type": "string",
+          "enum": [
+            "MANUAL",
+            "MEETING",
+            "SMS"
+          ],
+          "example": "MANUAL"
+        },
+        "presenters": {
+          "description": "IDs of the users presenting this backlog item",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "123e4567-e89b-12d3-a456-426614174003"
+          ]
+        },
+        "talking_points": {
+          "description": "Private talking points of the authenticated user on this backlog item. Only returned when the user has talking points.",
+          "type": "string",
+          "example": "Key points: budget, timeline"
+        },
+        "time_allocation_minutes": {
+          "type": "number",
+          "example": 15
+        },
+        "title": {
+          "type": "string",
+          "example": "Q3 roadmap review"
+        }
+      }
+    },
+    "backlog_item.UpdateBacklogItemRequest": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "maxLength": 5000,
+          "example": "Review the roadmap"
+        },
+        "item_type": {
+          "type": "string",
+          "enum": [
+            "DISCUSSION",
+            "QUESTIONS_TO_ANSWER",
+            "BREAK",
+            "ADJOURN"
+          ],
+          "example": "DISCUSSION"
+        },
+        "presenters": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "123e4567-e89b-12d3-a456-426614174003"
+          ]
+        },
+        "talking_points": {
+          "type": "string",
+          "maxLength": 10000,
+          "example": "Key points: budget, timeline"
+        },
+        "time_allocation_minutes": {
+          "type": "number",
+          "maximum": 1440,
+          "minimum": 0,
+          "example": 20
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "example": "Q3 roadmap review"
         }
       }
     },
@@ -9094,12 +10831,21 @@
           "type": "string"
         },
         "partner_app_id": {
+          "description": "PartnerAppID is a deprecated alias of SourceID retained for backward compatibility.",
           "type": "string"
         },
         "platform_name": {
           "type": "string"
         },
         "source_format": {
+          "type": "string"
+        },
+        "source_id": {
+          "description": "SourceID identifies the uploading source; omitted for first-party user uploads.",
+          "type": "string"
+        },
+        "source_name": {
+          "description": "SourceName is the display name of the uploading source, when resolvable.",
           "type": "string"
         },
         "title": {
@@ -9415,7 +11161,8 @@
             "internal_server_error",
             "toolkit_slug_collision",
             "manifest_validation_failed",
-            "toolkit_requires_annual"
+            "toolkit_requires_annual",
+            "product_has_no_purchasable_plans"
           ],
           "example": "not_found"
         },
@@ -9910,9 +11657,9 @@
           "type": "string",
           "enum": [
             "DISCUSSION",
-            "DECISION",
-            "ACTION_ITEM",
-            "INFORMATION"
+            "QUESTIONS_TO_ANSWER",
+            "BREAK",
+            "ADJOURN"
           ],
           "example": "DISCUSSION"
         },
@@ -9925,9 +11672,10 @@
             "123e4567-e89b-12d3-a456-426614174003"
           ]
         },
-        "restricted_to_leads": {
-          "type": "boolean",
-          "example": false
+        "sequence": {
+          "type": "string",
+          "maxLength": 255,
+          "example": "300"
         },
         "talking_points": {
           "type": "string",
@@ -10020,7 +11768,7 @@
           "example": "123e4567-e89b-12d3-a456-426614174005"
         },
         "item_type": {
-          "description": "Type of agenda item (DISCUSSION, DECISION, ACTION_ITEM, INFORMATION)",
+          "description": "Type of agenda item (DISCUSSION, QUESTIONS_TO_ANSWER, BREAK, ADJOURN)",
           "type": "string",
           "example": "DISCUSSION"
         },
@@ -10029,8 +11777,15 @@
           "type": "string",
           "example": "123e4567-e89b-12d3-a456-426614174000"
         },
+        "presenter_details": {
+          "description": "Presenters for this agenda item, enriched with name and email when the user\nrecord is available and belongs to the authenticated user's workspace.\nEntries that cannot be resolved, or that name a user outside that\nworkspace, carry only user_id.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/shared.V1UserRef"
+          }
+        },
         "presenters": {
-          "description": "User IDs of the presenters for this agenda item",
+          "description": "User IDs of the presenters for this agenda item.\n\nDeprecated: use presenter_details, which carries the same IDs alongside the\npresenter's name and email.",
           "type": "array",
           "items": {
             "type": "string"
@@ -10038,11 +11793,6 @@
           "example": [
             "123e4567-e89b-12d3-a456-426614174003"
           ]
-        },
-        "restricted_to_leads": {
-          "description": "Whether this item is restricted to meeting leads only",
-          "type": "boolean",
-          "example": false
         },
         "sequence": {
           "description": "Order sequence of the agenda item",
@@ -10209,9 +11959,9 @@
           "type": "string",
           "enum": [
             "DISCUSSION",
-            "DECISION",
-            "ACTION_ITEM",
-            "INFORMATION"
+            "QUESTIONS_TO_ANSWER",
+            "BREAK",
+            "ADJOURN"
           ],
           "example": "DISCUSSION"
         },
@@ -10224,9 +11974,10 @@
             "123e4567-e89b-12d3-a456-426614174003"
           ]
         },
-        "restricted_to_leads": {
-          "type": "boolean",
-          "example": true
+        "sequence": {
+          "type": "string",
+          "maxLength": 255,
+          "example": "150"
         },
         "status": {
           "type": "string",
@@ -10898,6 +12649,11 @@
           "type": "string",
           "example": "FREE"
         },
+        "timezone": {
+          "description": "IANA timezone identifier for the user, if known",
+          "type": "string",
+          "example": "America/Los_Angeles"
+        },
         "workspace_id": {
           "description": "ID of the workspace the user belongs to",
           "type": "string",
@@ -11367,6 +13123,33 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/action_item.PartnerActionItemResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "rome_api_controllers_external_partner_user_shared.ListResponse-backlog_item_PartnerBacklogItemResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/backlog_item.PartnerBacklogItemResponse"
           }
         },
         "limit": {
@@ -12510,6 +14293,23 @@
         }
       }
     },
+    "shared.V1UserRef": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "John Doe"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174003"
+        }
+      }
+    },
     "shared.WebhookFilterResponse": {
       "type": "object",
       "properties": {
@@ -13233,15 +15033,11 @@
           "type": "string",
           "example": "DISCUSSION"
         },
-        "restricted_to_leads": {
-          "description": "RestrictedToLeads indicates whether only meeting leads can see this item",
-          "type": "boolean",
-          "example": false
-        },
         "sequence": {
-          "description": "Sequence controls the display order",
+          "description": "Sequence controls the display order. Decimal fractional index.",
           "type": "string",
-          "example": "1"
+          "maxLength": 255,
+          "example": "100"
         },
         "time_allocation_minutes": {
           "description": "TimeAllocationMinutes is the suggested time allocation in minutes",
@@ -14333,6 +16129,8 @@
       "tags": [
         "Action Items",
         "Agenda Items",
+        "Backlog Items",
+        "Attachments",
         "Calendar",
         "Chat Sessions",
         "Context",
@@ -14399,6 +16197,10 @@
       "description": "Read and write agenda items associated with a meeting. Agenda items can be set before a meeting starts and are available to all participants."
     },
     {
+      "name": "Backlog Items",
+      "description": "Read, create, update, delete, and assign backlog items on behalf of a connected user. Backlog items are agenda items that are not currently on a meeting agenda, whether created directly or deferred out of a meeting.\n\n**Required scopes:** `meetings:read` (GET) · `meetings:write` (POST / PUT / DELETE / assign)."
+    },
+    {
       "name": "Calendar",
       "description": "Access calendar events linked to Contio meetings. These endpoints let you list upcoming events, retrieve event details, and associate calendar events with Contio meeting records."
     },
@@ -14407,8 +16209,12 @@
       "description": "Create and manage asynchronous, turn-based chat sessions with the Contio AI agent on behalf of your users. Sessions are scoped to a specific meeting; the agent uses the meeting transcript and any supplied context documents to answer queries.\n\n**Required scopes:** `chat:read` (GET) · `chat:write` (POST / PUT)."
     },
     {
+      "name": "Attachments",
+      "description": "Upload, list, download, and delete raw file attachments on a meeting. Attachments are stored exactly as uploaded: they are **not** normalized, **not** PII-scrubbed, and are **never** injected into AI prompts. Use the Context endpoints for material the Contio AI agent should read.\n\n**Required scopes:** `meetings:read` (GET) · `meetings:write` (POST / DELETE)."
+    },
+    {
       "name": "Context",
-      "description": "Upload and manage context documents that are made available to the Contio AI agent during chat sessions. Documents can be plain text, markdown, or structured data and are scoped to a specific meeting."
+      "description": "Upload and manage context documents that are made available to the Contio AI agent during chat sessions. Documents can be plain text, markdown, or structured data and are scoped to a specific meeting. Context is normalized and PII-scrubbed before it reaches a prompt — upload raw files that should stay out of AI prompts through the Attachments endpoints instead."
     },
     {
       "name": "Meetings",

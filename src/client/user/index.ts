@@ -70,6 +70,21 @@ import {
   WorkflowRunListParams,
   WorkflowRunListResponse,
   CreateWorkflowRunRequest,
+  // Backlog item-related imports
+  BacklogItem,
+  BacklogItemListParams,
+  BacklogItemListResponse,
+  BacklogItemHistoryListParams,
+  CreateBacklogItemRequest,
+  UpdateBacklogItemRequest,
+  AssignBacklogItemRequest,
+  AssignBacklogItemResponse,
+  // Attachment-related imports
+  MeetingAttachment,
+  MeetingAttachmentListParams,
+  MeetingAttachmentListResponse,
+  CreateMeetingAttachmentRequest,
+  DownloadMeetingAttachmentResponse,
 } from '../../models';
 
 import * as meetings from './meetings';
@@ -81,6 +96,8 @@ import * as chat from './chat';
 import * as userToolkits from './toolkits';
 import * as userTemplates from './templates';
 import * as workflowRuns from './workflowRuns';
+import * as backlogItems from './backlogItems';
+import * as attachments from './attachments';
 
 /**
  * Partner User API client for OAuth-authenticated user endpoints.
@@ -505,6 +522,112 @@ export class PartnerUserClient extends BaseClient {
     options?: RequestOptions,
   ): Promise<string> {
     return meetings.exportMeetingTranscript(this.http, meetingId, params, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Meeting Attachment endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List attachments for a meeting.
+   *
+   * @param meetingId - The meeting ID
+   * @param params - Optional pagination parameters
+   * @param options - Request options
+   * @returns Paginated list of meeting attachments
+   * @throws {ContioAPIError} If the meeting is not found
+   */
+  async getMeetingAttachments(
+    meetingId: string,
+    params?: MeetingAttachmentListParams,
+    options?: RequestOptions,
+  ): Promise<MeetingAttachmentListResponse> {
+    return attachments.getMeetingAttachments(this.http, meetingId, params, options);
+  }
+
+  /**
+   * Get all attachments for a meeting by automatically paginating through all pages.
+   *
+   * @param meetingId - The meeting ID
+   * @param options - Request options
+   * @returns Array of all meeting attachments
+   * @throws {ContioAPIError} If any request fails
+   */
+  async getAllMeetingAttachments(
+    meetingId: string,
+    options?: RequestOptions,
+  ): Promise<MeetingAttachment[]> {
+    return attachments.getAllMeetingAttachments(this.http, meetingId, options);
+  }
+
+  /**
+   * Upload a file attachment to a meeting.
+   *
+   * Attachments are stored as-is and are not normalized or PII-scrubbed;
+   * use the Context endpoints for material the Contio AI agent should read.
+   *
+   * @param meetingId - The meeting ID
+   * @param data - Attachment upload data
+   * @param options - Request options
+   * @returns The created attachment metadata
+   * @throws {ContioAPIError} If validation fails
+   */
+  async uploadMeetingAttachment(
+    meetingId: string,
+    data: CreateMeetingAttachmentRequest,
+    options?: RequestOptions,
+  ): Promise<MeetingAttachment> {
+    return attachments.uploadMeetingAttachment(this.http, meetingId, data, options);
+  }
+
+  /**
+   * Get a specific meeting attachment.
+   *
+   * @param meetingId - The meeting ID
+   * @param attachmentId - The attachment ID
+   * @param options - Request options
+   * @returns The attachment metadata
+   * @throws {ContioAPIError} If the attachment is not found
+   */
+  async getMeetingAttachment(
+    meetingId: string,
+    attachmentId: string,
+    options?: RequestOptions,
+  ): Promise<MeetingAttachment> {
+    return attachments.getMeetingAttachment(this.http, meetingId, attachmentId, options);
+  }
+
+  /**
+   * Delete a meeting attachment.
+   *
+   * @param meetingId - The meeting ID
+   * @param attachmentId - The attachment ID
+   * @param options - Request options
+   * @throws {ContioAPIError} If the attachment is not found
+   */
+  async deleteMeetingAttachment(
+    meetingId: string,
+    attachmentId: string,
+    options?: RequestOptions,
+  ): Promise<void> {
+    return attachments.deleteMeetingAttachment(this.http, meetingId, attachmentId, options);
+  }
+
+  /**
+   * Download a meeting attachment.
+   *
+   * @param meetingId - The meeting ID
+   * @param attachmentId - The attachment ID
+   * @param options - Request options
+   * @returns The attachment file bytes and metadata
+   * @throws {ContioAPIError} If the attachment is not found
+   */
+  async downloadMeetingAttachment(
+    meetingId: string,
+    attachmentId: string,
+    options?: RequestOptions,
+  ): Promise<DownloadMeetingAttachmentResponse> {
+    return attachments.downloadMeetingAttachment(this.http, meetingId, attachmentId, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -1262,6 +1385,153 @@ export class PartnerUserClient extends BaseClient {
     options?: RequestOptions,
   ): Promise<WorkflowRun> {
     return workflowRuns.getWorkflowRun(this.http, workflowRunId, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Backlog Item endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List the authenticated user's active backlog items.
+   *
+   * @param params - Optional pagination and sort parameters
+   * @param options - Request options
+   * @returns Paginated list of backlog items
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getBacklogItems(
+    params?: BacklogItemListParams,
+    options?: RequestOptions,
+  ): Promise<BacklogItemListResponse> {
+    return backlogItems.getBacklogItems(this.http, params, options);
+  }
+
+  /**
+   * Get all active backlog items by automatically paginating through all pages.
+   *
+   * @param params - Optional filter and sort parameters (limit/offset are managed automatically)
+   * @param options - Request options
+   * @returns Array of all active backlog items
+   * @throws {ContioAPIError} If any request fails
+   */
+  async getAllBacklogItems(
+    params?: Omit<BacklogItemListParams, 'limit' | 'offset'>,
+    options?: RequestOptions,
+  ): Promise<BacklogItem[]> {
+    return backlogItems.getAllBacklogItems(this.http, params, options);
+  }
+
+  /**
+   * Create a new backlog item.
+   *
+   * @param data - Backlog item creation data
+   * @param options - Request options
+   * @returns The newly created backlog item
+   * @throws {ContioAPIError} If validation fails
+   */
+  async createBacklogItem(
+    data: CreateBacklogItemRequest,
+    options?: RequestOptions,
+  ): Promise<BacklogItem> {
+    return backlogItems.createBacklogItem(this.http, data, options);
+  }
+
+  /**
+   * Get a specific backlog item by ID.
+   *
+   * @param backlogItemId - The unique backlog item ID
+   * @param options - Request options
+   * @returns The backlog item
+   * @throws {ContioAPIError} If the backlog item is not found
+   */
+  async getBacklogItem(
+    backlogItemId: string,
+    options?: RequestOptions,
+  ): Promise<BacklogItem> {
+    return backlogItems.getBacklogItem(this.http, backlogItemId, options);
+  }
+
+  /**
+   * Update an existing backlog item.
+   *
+   * @param backlogItemId - The backlog item ID to update
+   * @param data - Fields to update
+   * @param options - Request options
+   * @returns The updated backlog item
+   * @throws {ContioAPIError} If the backlog item is not found
+   */
+  async updateBacklogItem(
+    backlogItemId: string,
+    data: UpdateBacklogItemRequest,
+    options?: RequestOptions,
+  ): Promise<BacklogItem> {
+    return backlogItems.updateBacklogItem(this.http, backlogItemId, data, options);
+  }
+
+  /**
+   * Remove a backlog item.
+   *
+   * The item remains in backlog history.
+   *
+   * @param backlogItemId - The backlog item ID to delete
+   * @param options - Request options
+   * @throws {ContioAPIError} If the backlog item is not found
+   */
+  async deleteBacklogItem(
+    backlogItemId: string,
+    options?: RequestOptions,
+  ): Promise<void> {
+    return backlogItems.deleteBacklogItem(this.http, backlogItemId, options);
+  }
+
+  /**
+   * Assign a backlog item onto a meeting agenda.
+   *
+   * Creates a new agenda item on the destination meeting and closes the
+   * backlog item, so it subsequently reads as 404 and appears in backlog history.
+   *
+   * @param backlogItemId - The backlog item ID to assign
+   * @param data - Assignment request with destination meeting ID
+   * @param options - Request options
+   * @returns IDs of the created agenda item and the closed backlog item
+   * @throws {ContioAPIError} If the backlog item or meeting is not found
+   */
+  async assignBacklogItem(
+    backlogItemId: string,
+    data: AssignBacklogItemRequest,
+    options?: RequestOptions,
+  ): Promise<AssignBacklogItemResponse> {
+    return backlogItems.assignBacklogItem(this.http, backlogItemId, data, options);
+  }
+
+  /**
+   * List backlog items that have left the backlog (assigned or removed).
+   *
+   * @param params - Optional pagination and sort parameters
+   * @param options - Request options
+   * @returns Paginated list of backlog history entries
+   * @throws {ContioAPIError} If the request fails
+   */
+  async getBacklogItemHistory(
+    params?: BacklogItemHistoryListParams,
+    options?: RequestOptions,
+  ): Promise<BacklogItemListResponse> {
+    return backlogItems.getBacklogItemHistory(this.http, params, options);
+  }
+
+  /**
+   * Get all backlog history items by automatically paginating through all pages.
+   *
+   * @param params - Optional sort parameters (limit/offset are managed automatically)
+   * @param options - Request options
+   * @returns Array of all backlog history items
+   * @throws {ContioAPIError} If any request fails
+   */
+  async getAllBacklogItemHistory(
+    params?: Omit<BacklogItemHistoryListParams, 'limit' | 'offset'>,
+    options?: RequestOptions,
+  ): Promise<BacklogItem[]> {
+    return backlogItems.getAllBacklogItemHistory(this.http, params, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
