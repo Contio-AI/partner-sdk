@@ -17,3 +17,5 @@ export * from './toolkits';
 export * from './templates';
 export * from './nextSteps';
 export * from './workflows';
+export * from './backlogItems';
+export * from './attachments';

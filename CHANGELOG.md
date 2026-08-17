@@ -6,6 +6,35 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2026-08-17
+
+### Added
+
+- Synchronized SDK types with **Partner API v1.10.0**:
+  - Regenerated `src/generated/api-types.ts` from the v1.10.0 OpenAPI specification.
+  - Added new `BacklogItem` API support in `PartnerUserClient`:
+    - `getBacklogItems(params)`, `getAllBacklogItems(params)`
+    - `createBacklogItem(data)`, `getBacklogItem(id)`, `updateBacklogItem(id, data)`, `deleteBacklogItem(id)`
+    - `assignBacklogItem(id, data)`
+    - `getBacklogItemHistory(params)`, `getAllBacklogItemHistory(params)`
+  - Added new meeting attachment API support in `PartnerUserClient`:
+    - `getMeetingAttachments(meetingId, params)`, `getAllMeetingAttachments(meetingId)`
+    - `uploadMeetingAttachment(meetingId, data)`, `getMeetingAttachment(meetingId, id)`, `deleteMeetingAttachment(meetingId, id)`
+    - `downloadMeetingAttachment(meetingId, id)`
+  - New model types in `src/models`:
+    - `BacklogItem`, `CreateBacklogItemRequest`, `UpdateBacklogItemRequest`, `AssignBacklogItemRequest`, `AssignBacklogItemResponse`, `BacklogItemListParams`, `BacklogItemHistoryListParams`
+    - `MeetingAttachment`, `CreateMeetingAttachmentRequest`, `MeetingAttachmentListParams`, `DownloadMeetingAttachmentResponse`
+    - `PresenterDetails`
+
+### Changed
+
+- `AgendaItemType` now reflects the accepted Partner API values: `DISCUSSION`, `QUESTIONS_TO_ANSWER`, `BREAK`, `ADJOURN`.
+- `AgendaItem` now includes `presenter_details` and `presenters` is deprecated.
+- `CreateAgendaItemRequest` and `UpdateAgendaItemRequest` now support the optional `sequence` field.
+- Removed the `restricted_to_leads` field from agenda item request/response types.
+- Updated `SDK_VERSION` in `src/client/base.ts` to `1.10.0`.
+- Bumped `package.json` version to `1.10.0`.
+
 ## [1.9.0] - 2026-07-25
 
 ### Added
