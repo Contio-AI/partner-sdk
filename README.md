@@ -124,7 +124,35 @@ console.log(`Organizer: ${event.organizer?.email}`);
 // Create a meeting from a calendar event
 const result = await user.createMeetingFromCalendarEvent('cal-event-123');
 console.log(`Created: ${result.created}, Meeting ID: ${result.meeting?.id}`);
+console.log(`Applied templates: ${result.meeting?.applied_template_ids?.join(', ') ?? 'none'}`);
 ```
+
+### Meeting Search
+
+Search the authenticated user's meetings with the same full-text index used in the Contio app. Queries match meeting titles and the summary and notes content, so a query like `draft email` or `external send` surfaces meetings where those terms were only discussed in the notes.
+
+```typescript
+const results = await user.searchMeetings({
+  q: 'draft email',
+  start_time_from: '2026-01-01T00:00:00Z',
+  start_time_to: '2026-01-31T23:59:59Z',
+  status: 'completed',
+  limit: 25,
+});
+
+console.log(`Found ${results.total} meetings`);
+for (const meeting of results.items) {
+  console.log(`${meeting.title} — ${meeting.start_time}`);
+  console.log(`Applied templates: ${meeting.applied_template_ids?.join(', ') ?? 'none'}`);
+}
+```
+
+```typescript
+// Automatically paginate through all search results
+const allMeetings = await user.searchAllMeetings({ q: 'external send' });
+```
+
+Search supports quoted phrases, `-term` exclusions, and filters for start time, status, title substrings, participant emails, and whether meetings have action items.
 
 ### Webhook Events
 

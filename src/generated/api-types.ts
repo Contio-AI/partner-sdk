@@ -3142,6 +3142,25 @@ export interface MeetingPartnerUpdateMeetingRequest {
   title?: string;
 }
 
+/** Bad request error for searching meetings */
+export interface MeetingSearchMeetingsError400 {
+  /**
+   * Unique identifier for the error type
+   * @example "invalid_query_parameters"
+   */
+  code?: "invalid_query_parameters" | "invalid_start_date" | "invalid_end_date";
+  /**
+   * User-friendly description of what went wrong
+   * @example "Invalid search parameters"
+   */
+  error?: string;
+  /**
+   * Request identifier to correlate errors with logs
+   * @example "abc123xyz"
+   */
+  request_id?: string;
+}
+
 export interface MeetingTemplateAppliedItemsCountsResponse {
   /**
    * Number of agenda items applied
@@ -3616,7 +3635,7 @@ export interface ProfileUserProfileResponse {
    */
   id?: string;
   /**
-   * Workspace billing plan (FREE, PRO, ELITE, ENT)
+   * Workspace billing plan (FREE, PRO, ELITE, ENT, UNLIMITED)
    * @example "FREE"
    */
   plan_type?: string;
@@ -4389,6 +4408,55 @@ export type RotateWebhookSecretError =
   | CredentialRotateWebhookSecretError400
   | ErrorsPartnerErrorResponse;
 
+export type SearchMeetingsData =
+  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
+
+export type SearchMeetingsError =
+  | MeetingSearchMeetingsError400
+  | ErrorsPartnerErrorResponse;
+
+export interface SearchMeetingsParams {
+  /** Restrict to meetings that do (true) or do not (false) have action items */
+  has_action_items?: boolean;
+  /**
+   * Maximum items per page (1-100)
+   * @default 25
+   */
+  limit?: number;
+  /**
+   * Number of items to skip
+   * @default 0
+   */
+  offset?: number;
+  /**
+   * Comma-separated participant email addresses to filter by
+   * @maxLength 500
+   */
+  participant_emails?: string;
+  /**
+   * Free-text query matched against the meeting title and email alias (case-insensitive substring) and full-text against the meeting title, summary, and notes. Supports quoted phrases and -exclusions.
+   * @maxLength 255
+   */
+  q?: string;
+  /**
+   * Inclusive lower bound on start time (ISO 8601 with timezone)
+   * @format date-time
+   */
+  start_time_from?: string;
+  /**
+   * Inclusive upper bound on start time (ISO 8601 with timezone)
+   * @format date-time
+   */
+  start_time_to?: string;
+  /** Filter by meeting status */
+  status?: "scheduled" | "completed";
+  /**
+   * Case-insensitive substring match against the meeting title
+   * @maxLength 255
+   */
+  title_contains?: string;
+}
+
 export type SendSessionMessageData = SessionSendMessageResponse;
 
 export type SendSessionMessageError =
@@ -4828,6 +4896,11 @@ export interface SharedPartnerAppResponse {
 }
 
 export interface SharedPartnerMeetingResponse {
+  /**
+   * AppliedTemplateIDs is the list of template IDs that have been applied to this meeting
+   * @example ["123e4567-e89b-12d3-a456-426614174004"]
+   */
+  applied_template_ids?: string[];
   /**
    * ID of the linked calendar event, if any
    * @example "123e4567-e89b-12d3-a456-426614174006"
@@ -5310,7 +5383,7 @@ export interface ToolkitManifestActionButtonSpec {
    */
   content_format: "rich_text" | "markdown" | "plain_text" | "html";
   /**
-   * Delivery mechanism: clipboard, email, os_email_client, file_download, integration, webhook, redirect
+   * Delivery mechanism: clipboard, email, os_email_client, file_download, integration, webhook, redirect, canvas
    * @example "webhook"
    */
   delivery_mechanism:
@@ -5320,7 +5393,8 @@ export interface ToolkitManifestActionButtonSpec {
     | "file_download"
     | "integration"
     | "webhook"
-    | "redirect";
+    | "redirect"
+    | "canvas";
   /**
    * File format for file delivery
    * @maxLength 50
@@ -5362,6 +5436,14 @@ export interface ToolkitManifestActionButtonSpec {
    * @example false
    */
   requires_connected_integration?: boolean;
+  /**
+   * Slug is a human-readable URL-safe identifier. Declaring a slug that matches an
+   * active SYSTEM action button binds to that button by reference instead of creating
+   * a workspace-owned copy (CON-6666).
+   * @maxLength 63
+   * @example "save-as-canvas"
+   */
+  slug?: string;
   /**
    * Sort order for display
    * @example 1
@@ -5606,6 +5688,11 @@ export interface ToolkitManifestTemplateSpec {
    * @example "my-template"
    */
   $id?: string;
+  /**
+   * ActionItemsPrompt is a custom AI recap prompt used when generating action items
+   * @example "Include an owner for each item"
+   */
+  action_items_prompt?: string;
   /** AgendaItems defines the template's agenda items */
   agenda_items?: ToolkitManifestAgendaItemSpec[];
   /**
@@ -5637,6 +5724,11 @@ export interface ToolkitManifestTemplateSpec {
    * @example "Sales Meeting Template"
    */
   name: string;
+  /**
+   * NotesPrompt is a custom AI recap prompt used when generating notes
+   * @example "Summarize decisions only"
+   */
+  notes_prompt?: string;
   /** Participants defines the template's default participants */
   participants?: ToolkitManifestParticipantSpec[];
   /**

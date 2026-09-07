@@ -6,6 +6,22 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-09-07
+
+### Added
+
+- Synchronized SDK types with **Partner API v1.11.0**:
+  - Regenerated `src/generated/api-types.ts` from the v1.11.0 OpenAPI specification.
+  - Added meeting search support in `PartnerUserClient`:
+    - `searchMeetings(params)` and `searchAllMeetings(params)` for full-text search across meeting titles, summaries, and notes.
+  - Meeting responses now include `applied_template_ids`, the IDs of templates applied to the meeting.
+
+### Changed
+
+- `Meeting` model now includes optional `applied_template_ids`.
+- Bumped `SDK_VERSION` in `src/client/base.ts` to `1.11.0`.
+- Bumped `package.json` version to `1.11.0`.
+
 ## [1.10.0] - 2026-08-17
 
 ### Added
