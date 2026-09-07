@@ -14,6 +14,7 @@ import {
   Meeting,
   MeetingListParams,
   MeetingListResponse,
+  MeetingSearchParams,
   CreateMeetingRequest,
   UpdateMeetingRequest,
   ActionItem,
@@ -214,6 +215,43 @@ export class PartnerUserClient extends BaseClient {
    */
   async getAllMeetings(params?: Omit<MeetingListParams, 'limit' | 'offset'>, options?: RequestOptions): Promise<Meeting[]> {
     return meetings.getAllMeetings(this.http, params, options);
+  }
+
+  /**
+   * Search the authenticated user's meetings with full-text search.
+   *
+   * Queries match meeting titles, summaries, and notes. Use the same search
+   * parameters as `GET /v1/partner/user/meetings/search`.
+   *
+   * @param params - Search query and optional filters
+   * @param options - Optional request options
+   * @returns Paginated meeting list matching the search criteria
+   * @throws {ContioAPIError} If the request fails
+   *
+   * @example
+   * ```typescript
+   * const results = await user.searchMeetings({
+   *   q: 'draft email',
+   *   start_time_from: '2026-01-01T00:00:00Z',
+   *   status: 'completed',
+   *   limit: 25,
+   * });
+   * ```
+   */
+  async searchMeetings(params: MeetingSearchParams, options?: RequestOptions): Promise<MeetingListResponse> {
+    return meetings.searchMeetings(this.http, params, options);
+  }
+
+  /**
+   * Search all meetings by automatically paginating through all pages.
+   *
+   * @param params - Search query and filters (limit/offset are managed automatically)
+   * @param options - Optional request options
+   * @returns Array of all meetings matching the search criteria
+   * @throws {ContioAPIError} If any request fails
+   */
+  async searchAllMeetings(params: Omit<MeetingSearchParams, 'limit' | 'offset'>, options?: RequestOptions): Promise<Meeting[]> {
+    return meetings.searchAllMeetings(this.http, params, options);
   }
 
   /**

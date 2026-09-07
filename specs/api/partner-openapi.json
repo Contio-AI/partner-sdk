@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.10.0"
+    "version": "1.11.0"
   },
   "host": "api.contio.ai",
   "basePath": "/",
@@ -5423,7 +5423,7 @@
             ]
           }
         ],
-        "description": "Retrieves the authenticated user's backlog items that have left the backlog, either assigned to a meeting or removed. Entries carry assigned_at and destination_meeting_id, or deleted_at, accordingly.",
+        "description": "Retrieves the authenticated user's backlog items that have left the backlog, either assigned to a meeting or removed. Entries carry assigned_at and destination_meeting_id, or deleted_at, accordingly. History reaches back indefinitely.",
         "produces": [
           "application/json"
         ],
@@ -6460,6 +6460,125 @@
         }
       }
     },
+    "/v1/partner/user/meetings/search": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          }
+        ],
+        "description": "Searches meetings accessible to the authenticated partner user using the same full-text behavior as the in-product search: the free-text query matches the meeting title and email alias (case-insensitive substring) and full-text matches the meeting title, summary, and notes, so terms that appear only in a meeting's summary_notes match. Supports quoted phrases and -exclusions. Results are scoped to the user's workspace and de-duplicated: meetings sharing the same calendar_event_id and start time are collapsed into one row. Returns paginated results.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Meetings"
+        ],
+        "summary": "Search meetings",
+        "operationId": "searchMeetings",
+        "parameters": [
+          {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Free-text query matched against the meeting title and email alias (case-insensitive substring) and full-text against the meeting title, summary, and notes. Supports quoted phrases and -exclusions.",
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "Inclusive lower bound on start time (ISO 8601 with timezone)",
+            "name": "start_time_from",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "Inclusive upper bound on start time (ISO 8601 with timezone)",
+            "name": "start_time_to",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "scheduled",
+              "completed"
+            ],
+            "type": "string",
+            "description": "Filter by meeting status",
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Case-insensitive substring match against the meeting title",
+            "name": "title_contains",
+            "in": "query"
+          },
+          {
+            "maxLength": 500,
+            "type": "string",
+            "description": "Comma-separated participant email addresses to filter by",
+            "name": "participant_emails",
+            "in": "query"
+          },
+          {
+            "type": "boolean",
+            "description": "Restrict to meetings that do (true) or do not (false) have action items",
+            "name": "has_action_items",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 25,
+            "description": "Maximum items per page (1-100)",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "Number of items to skip",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-shared_PartnerMeetingResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid search parameters",
+            "schema": {
+              "$ref": "#/definitions/meeting.SearchMeetingsError400"
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Insufficient scope",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/user/meetings/{id}": {
       "get": {
         "security": [
@@ -6645,6 +6764,12 @@
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
+          "403": {
+            "description": "User is not a participant of the meeting",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
           "404": {
             "description": "Meeting not found",
             "schema": {
@@ -6730,6 +6855,12 @@
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
+          "403": {
+            "description": "User is not a participant of the meeting",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
           "404": {
             "description": "Meeting or action button not found",
             "schema": {
@@ -6791,6 +6922,12 @@
           },
           "401": {
             "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "User is not a participant of the meeting",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -7652,6 +7789,12 @@
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
+          },
+          "503": {
+            "description": "Calendar link temporarily unavailable; nothing was committed, retry",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
           }
         }
       }
@@ -8159,6 +8302,12 @@
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
+          "403": {
+            "description": "User is not a participant of the meeting",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
           "404": {
             "description": "Meeting not found",
             "schema": {
@@ -8243,6 +8392,12 @@
           },
           "401": {
             "description": "Authentication required",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "403": {
+            "description": "User is not a participant of the meeting",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -11947,6 +12102,32 @@
         }
       }
     },
+    "meeting.SearchMeetingsError400": {
+      "description": "Bad request error for searching meetings",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Unique identifier for the error type",
+          "type": "string",
+          "enum": [
+            "invalid_query_parameters",
+            "invalid_start_date",
+            "invalid_end_date"
+          ],
+          "example": "invalid_query_parameters"
+        },
+        "error": {
+          "description": "User-friendly description of what went wrong",
+          "type": "string",
+          "example": "Invalid search parameters"
+        },
+        "request_id": {
+          "description": "Request identifier to correlate errors with logs",
+          "type": "string",
+          "example": "abc123xyz"
+        }
+      }
+    },
     "meeting.UpdateAgendaItemRequest": {
       "type": "object",
       "properties": {
@@ -12645,7 +12826,7 @@
           "example": "123e4567-e89b-12d3-a456-426614174003"
         },
         "plan_type": {
-          "description": "Workspace billing plan (FREE, PRO, ELITE, ENT)",
+          "description": "Workspace billing plan (FREE, PRO, ELITE, ENT, UNLIMITED)",
           "type": "string",
           "example": "FREE"
         },
@@ -14177,6 +14358,16 @@
     "shared.PartnerMeetingResponse": {
       "type": "object",
       "properties": {
+        "applied_template_ids": {
+          "description": "AppliedTemplateIDs is the list of template IDs that have been applied to this meeting",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "123e4567-e89b-12d3-a456-426614174004"
+          ]
+        },
         "calendar_event_id": {
           "description": "ID of the linked calendar event, if any",
           "type": "string",
@@ -14944,7 +15135,7 @@
           "example": "plain_text"
         },
         "delivery_mechanism": {
-          "description": "Delivery mechanism: clipboard, email, os_email_client, file_download, integration, webhook, redirect",
+          "description": "Delivery mechanism: clipboard, email, os_email_client, file_download, integration, webhook, redirect, canvas",
           "type": "string",
           "enum": [
             "clipboard",
@@ -14953,7 +15144,8 @@
             "file_download",
             "integration",
             "webhook",
-            "redirect"
+            "redirect",
+            "canvas"
           ],
           "example": "webhook"
         },
@@ -14997,6 +15189,12 @@
           "description": "Whether this action requires a connected integration",
           "type": "boolean",
           "example": false
+        },
+        "slug": {
+          "description": "Slug is a human-readable URL-safe identifier. Declaring a slug that matches an\nactive SYSTEM action button binds to that button by reference instead of creating\na workspace-owned copy (CON-6666).",
+          "type": "string",
+          "maxLength": 63,
+          "example": "save-as-canvas"
         },
         "sort_order": {
           "description": "Sort order for display",
@@ -15343,6 +15541,11 @@
           "maxLength": 100,
           "example": "my-template"
         },
+        "action_items_prompt": {
+          "description": "ActionItemsPrompt is a custom AI recap prompt used when generating action items",
+          "type": "string",
+          "example": "Include an owner for each item"
+        },
         "agenda_items": {
           "description": "AgendaItems defines the template's agenda items",
           "type": "array",
@@ -15382,6 +15585,11 @@
           "maxLength": 255,
           "minLength": 1,
           "example": "Sales Meeting Template"
+        },
+        "notes_prompt": {
+          "description": "NotesPrompt is a custom AI recap prompt used when generating notes",
+          "type": "string",
+          "example": "Summarize decisions only"
         },
         "participants": {
           "description": "Participants defines the template's default participants",

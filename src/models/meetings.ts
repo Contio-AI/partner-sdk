@@ -14,6 +14,7 @@ export interface Meeting {
   created_at: string;
   updated_at: string;
   redirect_to_meeting_id?: string; // Smart redirect hint (CON-1640)
+  applied_template_ids?: string[]; // IDs of templates applied to the meeting
 }
 
 export type MeetingStatus =
@@ -50,6 +51,18 @@ export interface MeetingListParams {
   offset?: number;
   start_date?: string;
   end_date?: string;
+}
+
+export interface MeetingSearchParams {
+  q?: string;
+  limit?: number;
+  offset?: number;
+  start_time_from?: string;
+  start_time_to?: string;
+  status?: 'scheduled' | 'completed';
+  title_contains?: string;
+  participant_emails?: string;
+  has_action_items?: boolean;
 }
 
 export interface MeetingListResponse {

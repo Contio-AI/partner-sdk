@@ -15,6 +15,7 @@ import {
   Meeting,
   MeetingListParams,
   MeetingListResponse,
+  MeetingSearchParams,
   CreateMeetingRequest,
   UpdateMeetingRequest,
   MeetingParticipant,
@@ -59,6 +60,34 @@ export async function getAllMeetings(
 
   do {
     const response = await getMeetings(http, { ...params, limit: pageSize, offset }, options);
+    allItems.push(...response.items);
+    total = response.total;
+    offset += pageSize;
+  } while (offset < total);
+
+  return allItems;
+}
+
+export async function searchMeetings(
+  http: HttpTransport,
+  params: MeetingSearchParams,
+  options?: RequestOptions,
+): Promise<MeetingListResponse> {
+  return http.get<MeetingListResponse>('/meetings/search', params, options);
+}
+
+export async function searchAllMeetings(
+  http: HttpTransport,
+  params: Omit<MeetingSearchParams, 'limit' | 'offset'>,
+  options?: RequestOptions,
+): Promise<Meeting[]> {
+  const allItems: Meeting[] = [];
+  const pageSize = 100;
+  let offset = 0;
+  let total = 0;
+
+  do {
+    const response = await searchMeetings(http, { ...params, limit: pageSize, offset }, options);
     allItems.push(...response.items);
     total = response.total;
     offset += pageSize;

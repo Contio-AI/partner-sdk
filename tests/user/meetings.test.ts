@@ -5,6 +5,7 @@
 import {
   Meeting,
   MeetingListResponse,
+  MeetingSearchParams,
   CreateMeetingRequest,
   UpdateMeetingRequest,
   MeetingParticipantListResponse,
@@ -483,6 +484,114 @@ describe('PartnerUserClient › Meetings', () => {
       await ctx.userClient.getAllMeetings({ start_date: '2026-01-01' });
 
       expect(ctx.mockAxios.history.get[0].params.start_date).toBe('2026-01-01');
+    });
+  });
+
+  describe('searchMeetings', () => {
+    const mockSearchResponse: MeetingListResponse = {
+      items: [
+        {
+          id: 'meeting-1',
+          title: 'Email Draft Review',
+          start_time: '2026-01-15T10:00:00Z',
+          end_time: '2026-01-15T11:00:00Z',
+          status: 'completed',
+          workspace_id: 'workspace-1',
+          created_by_user_id: 'user-1',
+          created_at: '2026-01-15T09:00:00Z',
+          updated_at: '2026-01-15T11:00:00Z',
+          applied_template_ids: ['template-1'],
+        },
+      ],
+      total: 1,
+      limit: 25,
+      offset: 0,
+    };
+
+    it('should search meetings with a query and filters', async () => {
+      ctx.mockAxios.onGet('/meetings/search').reply((config) => {
+        expect(config.params.q).toBe('draft email');
+        expect(config.params.status).toBe('completed');
+        expect(config.params.limit).toBe(25);
+        return [200, mockSearchResponse];
+      });
+
+      const params: MeetingSearchParams = {
+        q: 'draft email',
+        status: 'completed',
+        limit: 25,
+      };
+      const response = await ctx.userClient.searchMeetings(params);
+
+      expect(response.items).toHaveLength(1);
+      expect(response.items[0].title).toBe('Email Draft Review');
+      expect(response.items[0].applied_template_ids).toEqual(['template-1']);
+    });
+
+    it('should support all search filters', async () => {
+      ctx.mockAxios.onGet('/meetings/search').reply((config) => {
+        expect(config.params.q).toBe('external send');
+        expect(config.params.start_time_from).toBe('2026-01-01T00:00:00Z');
+        expect(config.params.start_time_to).toBe('2026-01-31T23:59:59Z');
+        expect(config.params.title_contains).toBe('send');
+        expect(config.params.participant_emails).toBe('alice@example.com');
+        expect(config.params.has_action_items).toBe(true);
+        return [200, mockSearchResponse];
+      });
+
+      await ctx.userClient.searchMeetings({
+        q: 'external send',
+        start_time_from: '2026-01-01T00:00:00Z',
+        start_time_to: '2026-01-31T23:59:59Z',
+        title_contains: 'send',
+        participant_emails: 'alice@example.com',
+        has_action_items: true,
+      });
+    });
+  });
+
+  describe('searchAllMeetings', () => {
+    it('should fetch all pages of search results', async () => {
+      ctx.mockAxios.onGet('/meetings/search').replyOnce(200, {
+        items: [{ id: 'mtg-1', title: 'Meeting 1', status: 'completed', workspace_id: 'w-1', created_by_user_id: 'u-1', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' }],
+        total: 150,
+        limit: 100,
+        offset: 0,
+      });
+
+      ctx.mockAxios.onGet('/meetings/search').replyOnce(200, {
+        items: [{ id: 'mtg-2', title: 'Meeting 2', status: 'completed', workspace_id: 'w-1', created_by_user_id: 'u-1', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' }],
+        total: 150,
+        limit: 100,
+        offset: 100,
+      });
+
+      const meetings = await ctx.userClient.searchAllMeetings({ q: 'notes' });
+
+      expect(meetings).toHaveLength(2);
+      expect(meetings[0].id).toBe('mtg-1');
+      expect(meetings[1].id).toBe('mtg-2');
+      expect(ctx.mockAxios.history.get).toHaveLength(2);
+    });
+
+    it('should pass search filters without limit/offset', async () => {
+      ctx.mockAxios.onGet('/meetings/search').reply((config) => {
+        expect(config.params.q).toBe('action items');
+        expect(config.params.status).toBe('scheduled');
+        expect(config.params.limit).toBe(100);
+        expect(config.params.offset).toBe(0);
+        return [200, {
+          items: [],
+          total: 0,
+          limit: 100,
+          offset: 0,
+        }];
+      });
+
+      await ctx.userClient.searchAllMeetings({ q: 'action items', status: 'scheduled' });
+
+      expect(ctx.mockAxios.history.get[0].params.q).toBe('action items');
+      expect(ctx.mockAxios.history.get[0].params.status).toBe('scheduled');
     });
   });
 });
