@@ -4,8 +4,8 @@
  * THIS FILE IS AUTO-GENERATED - DO NOT EDIT
  *
  * Source: specs/asyncapi/webhooks.yaml
- * Spec version: 1.11.0
- * Generated: 2026-09-17T09:17:15.849Z
+ * Spec version: 1.12.0
+ * Generated: 2026-09-18T09:15:47.313Z
  *
  * Regenerate: npm run gen-webhook-types
  */
