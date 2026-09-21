@@ -154,6 +154,45 @@ const allMeetings = await user.searchAllMeetings({ q: 'external send' });
 
 Search supports quoted phrases, `-term` exclusions, and filters for start time, status, title substrings, participant emails, and whether meetings have action items.
 
+### Transcript Import
+
+Import call recordings and transcripts through a single multipart upload. The API selects the pipeline from the filename extension: text files (`.txt`, `.md`, `.srt`, `.vtt`, `.pdf`) are parsed synchronously (`kind: 'text'`), while audio files are transcribed asynchronously (`kind: 'audio'`) and return a job to poll.
+
+```typescript
+import { readFile } from 'node:fs/promises';
+
+// Text: synchronous import into an existing meeting
+const text = await user.importMeetingTranscript('meeting-uuid', {
+  file: new Blob([await readFile('call.vtt')], { type: 'text/vtt' }),
+  filename: 'call.vtt',
+});
+if (text.kind === 'text') {
+  console.log(`Imported ${text.segments_count} segments into ${text.meeting_id}`);
+}
+
+// Audio: asynchronous import, creating a meeting from metadata
+const accepted = await user.importTranscript({
+  file: new Blob([await readFile('call.m4a')], { type: 'audio/mp4' }),
+  filename: 'call.m4a',
+  title: 'Q3 pipeline review',
+  starts_at: '2026-09-16T14:00:00Z',
+  participants: ['alice@example.com', 'bob@example.com'],
+});
+if (accepted.kind === 'audio') {
+  const job = await user.waitForAudioTranscriptImport(accepted.job_id, {
+    intervalMs: 10_000,
+    timeoutMs: 20 * 60_000,
+  });
+  if (job.state === 'completed') {
+    console.log(`Transcript ${job.transcript_id} attached to ${job.meeting_id}`);
+  } else {
+    console.error(`Import failed: ${job.failure_code}`);
+  }
+}
+```
+
+`importTranscript` also accepts an optional `meeting_id` to bind to an existing meeting (equivalent to `importMeetingTranscript`) and `calendar_event_id` to bind an audio import to a calendar event. Audio imports require the Elite plan and consume workspace credits. Poll job status manually with `getAudioTranscriptImport(jobId)`.
+
 ### Webhook Events
 
 The SDK supports all Partner API webhook events with full TypeScript typing:

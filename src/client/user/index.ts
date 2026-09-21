@@ -86,6 +86,12 @@ import {
   MeetingAttachmentListResponse,
   CreateMeetingAttachmentRequest,
   DownloadMeetingAttachmentResponse,
+  // Transcript import-related imports
+  ImportTranscriptRequest,
+  ImportMeetingTranscriptRequest,
+  TranscriptImportResult,
+  AudioTranscriptImportStatus,
+  WaitForAudioTranscriptImportOptions,
 } from '../../models';
 
 import * as meetings from './meetings';
@@ -99,6 +105,7 @@ import * as userTemplates from './templates';
 import * as workflowRuns from './workflowRuns';
 import * as backlogItems from './backlogItems';
 import * as attachments from './attachments';
+import * as transcriptImports from './transcriptImports';
 
 /**
  * Partner User API client for OAuth-authenticated user endpoints.
@@ -560,6 +567,144 @@ export class PartnerUserClient extends BaseClient {
     options?: RequestOptions,
   ): Promise<string> {
     return meetings.exportMeetingTranscript(this.http, meetingId, params, options);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Transcript Import endpoints
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Import a text or audio transcript into an existing meeting.
+   *
+   * Sends a single `multipart/form-data` upload. The API selects the
+   * pipeline from the `filename` extension: text files (`.txt`, `.md`,
+   * `.srt`, `.vtt`, `.pdf`) are parsed synchronously and resolve to a
+   * `kind: 'text'` result; audio files are transcribed asynchronously and
+   * resolve to a `kind: 'audio'` job you poll with
+   * {@link getAudioTranscriptImport} or {@link waitForAudioTranscriptImport}.
+   *
+   * Audio imports require the Elite plan and consume workspace credits.
+   *
+   * @param meetingId - The meeting ID to import into (UUID format)
+   * @param data - Upload data: `file` contents and `filename` with extension
+   * @param options - Request options
+   * @returns `TranscriptImportResult` — branch on `kind`
+   * @throws {ContioAPIError} If the file format is unsupported, the meeting is
+   *   ineligible (`409`), or the plan/credit gate rejects audio (`402`)
+   *
+   * @example
+   * ```typescript
+   * import { readFile } from 'node:fs/promises';
+   *
+   * const result = await user.importMeetingTranscript('meeting-uuid', {
+   *   file: new Blob([await readFile('call.vtt')], { type: 'text/vtt' }),
+   *   filename: 'call.vtt',
+   * });
+   * if (result.kind === 'text') {
+   *   console.log(`Imported ${result.segments_count} segments`);
+   * }
+   * ```
+   */
+  async importMeetingTranscript(
+    meetingId: string,
+    data: ImportMeetingTranscriptRequest,
+    options?: RequestOptions,
+  ): Promise<TranscriptImportResult> {
+    return transcriptImports.importMeetingTranscript(this.http, meetingId, data, options);
+  }
+
+  /**
+   * Import a text or audio transcript, optionally binding it to a meeting.
+   *
+   * Sends a single `multipart/form-data` upload. When `meeting_id` is
+   * present the import is bound to that existing meeting (equivalent to
+   * {@link importMeetingTranscript}); when absent a meeting is created from
+   * the optional metadata (`title`, `starts_at`, `duration_seconds`,
+   * `participants`, or `calendar_event_id` for audio).
+   *
+   * The `filename` extension selects the pipeline: text files resolve to a
+   * `kind: 'text'` result; audio files resolve to a `kind: 'audio'` job you
+   * poll with {@link getAudioTranscriptImport} or
+   * {@link waitForAudioTranscriptImport}.
+   *
+   * @param data - Upload data and optional meeting metadata
+   * @param options - Request options
+   * @returns `TranscriptImportResult` — branch on `kind`
+   * @throws {ContioAPIError} If the file format is unsupported, the meeting is
+   *   ineligible (`409`), or the plan/credit gate rejects audio (`402`)
+   *
+   * @example
+   * ```typescript
+   * import { readFile } from 'node:fs/promises';
+   *
+   * const accepted = await user.importTranscript({
+   *   file: new Blob([await readFile('call.m4a')], { type: 'audio/mp4' }),
+   *   filename: 'call.m4a',
+   *   title: 'Q3 pipeline review',
+   *   starts_at: '2026-09-16T14:00:00Z',
+   *   participants: ['alice@example.com', 'bob@example.com'],
+   * });
+   * if (accepted.kind === 'audio') {
+   *   const job = await user.waitForAudioTranscriptImport(accepted.job_id);
+   *   console.log(job.state, job.meeting_id, job.transcript_id);
+   * }
+   * ```
+   */
+  async importTranscript(data: ImportTranscriptRequest, options?: RequestOptions): Promise<TranscriptImportResult> {
+    return transcriptImports.importTranscript(this.http, data, options);
+  }
+
+  /**
+   * Get the status of an audio transcript import job.
+   *
+   * Returns the job owned by the authenticated partner application. When
+   * `state` is `completed`, `meeting_id` and `transcript_id` are populated;
+   * when `failed`, `failure_code` explains why.
+   *
+   * @param jobId - The audio import job ID from an import response
+   * @param options - Request options
+   * @returns The audio import job status
+   * @throws {ContioAPIError} If the job is not found
+   */
+  async getAudioTranscriptImport(jobId: string, options?: RequestOptions): Promise<AudioTranscriptImportStatus> {
+    return transcriptImports.getAudioTranscriptImport(this.http, jobId, options);
+  }
+
+  /**
+   * Poll an audio transcript import job until it reaches a terminal state.
+   *
+   * Resolves when the job is `completed` or `failed`. Rejects with a plain
+   * `Error` (not `ContioAPIError`) when `timeoutMs` elapses first — a
+   * timeout does not cancel the job, so store the `job_id` and check it
+   * again later.
+   *
+   * @param jobId - The audio import job ID from an import response
+   * @param waitOptions - Polling cadence (`intervalMs`, default 10s) and
+   *   overall budget (`timeoutMs`, default 20min)
+   * @param options - Request options applied to each poll
+   * @returns The terminal audio import job status
+   * @throws {ContioAPIError} If a status request fails
+   * @throws {Error} If the timeout elapses before a terminal state
+   *
+   * @example
+   * ```typescript
+   * const job = await user.waitForAudioTranscriptImport('job-uuid', {
+   *   intervalMs: 10_000,
+   *   timeoutMs: 20 * 60_000,
+   * });
+   * if (job.state === 'completed') {
+   *   console.log(`Transcript ${job.transcript_id} attached to ${job.meeting_id}`);
+   * } else {
+   *   console.error(`Import failed: ${job.failure_code}`);
+   * }
+   * ```
+   */
+  async waitForAudioTranscriptImport(
+    jobId: string,
+    waitOptions?: WaitForAudioTranscriptImportOptions,
+    options?: RequestOptions,
+  ): Promise<AudioTranscriptImportStatus> {
+    return transcriptImports.waitForAudioTranscriptImport(this.http, jobId, waitOptions, options);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

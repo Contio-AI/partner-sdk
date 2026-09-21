@@ -482,7 +482,7 @@ export type ApplyMeetingTemplateData = MeetingTemplateApplyTemplateResponse;
 
 export type ApplyMeetingTemplateError =
   | ErrorsPartnerErrorResponse
-  | MiddlewareFeatureNotAvailableResponse;
+  | GatingFeatureNotAvailableResponse;
 
 export interface ApplyMeetingTemplateParams {
   /**
@@ -776,8 +776,10 @@ export interface BacklogItemCreateBacklogItemRequest {
    */
   presenters?: string[];
   /**
+   * TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.
    * @maxLength 10000
-   * @example "Key points: budget, timeline"
+   * @example "- Budget
+   * - Timeline"
    */
   talking_points?: string;
   /**
@@ -860,8 +862,9 @@ export interface BacklogItemPartnerBacklogItemResponse {
    */
   presenters?: string[];
   /**
-   * Private talking points of the authenticated user on this backlog item. Only returned when the user has talking points.
-   * @example "Key points: budget, timeline"
+   * Private talking points of the authenticated user on this backlog item, as markdown. Only returned when the user has talking points. Notes last saved before the markdown migration may still be returned as HTML until they are re-saved.
+   * @example "- Budget
+   * - Timeline"
    */
   talking_points?: string;
   /** @example 15 */
@@ -884,8 +887,10 @@ export interface BacklogItemUpdateBacklogItemRequest {
    */
   presenters?: string[];
   /**
+   * TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.
    * @maxLength 10000
-   * @example "Key points: budget, timeline"
+   * @example "- Budget
+   * - Timeline"
    */
   talking_points?: string;
   /**
@@ -1269,7 +1274,7 @@ export type CreateSessionData = SessionCreateSessionResponse;
 
 export type CreateSessionError =
   | ErrorsPartnerErrorResponse
-  | MiddlewareFeatureNotAvailableResponse;
+  | GatingFeatureNotAvailableResponse;
 
 export type CreateTemplateData = TemplateTemplateResponse;
 
@@ -1279,7 +1284,7 @@ export type CreateWorkflowRunData = WorkflowRunPartnerWorkflowRunResponse;
 
 export type CreateWorkflowRunError =
   | ErrorsPartnerErrorResponse
-  | MiddlewareFeatureNotAvailableResponse;
+  | GatingFeatureNotAvailableResponse;
 
 export interface CredentialCredentialHistoryEvent {
   /**
@@ -1763,7 +1768,7 @@ export type ExportMeetingTranscriptData = string;
 
 export type ExportMeetingTranscriptError =
   | ErrorsPartnerErrorResponse
-  | MiddlewareFeatureNotAvailableResponse;
+  | GatingFeatureNotAvailableResponse;
 
 export interface ExportMeetingTranscriptParams {
   /** Output format (default: srt) */
@@ -1773,6 +1778,14 @@ export interface ExportMeetingTranscriptParams {
    * @format uuid
    */
   id: string;
+}
+
+export interface GatingFeatureNotAvailableResponse {
+  code?: string;
+  current_plan?: string;
+  feature?: string;
+  message?: string;
+  required_plan?: string;
 }
 
 export type GetActionItemData = ActionItemPartnerActionItemResponse;
@@ -1787,6 +1800,19 @@ export interface GetActionItemParams {
 export type GetAppData = SharedPartnerAppResponse;
 
 export type GetAppError = ErrorsPartnerErrorResponse;
+
+export type GetAudioTranscriptImportData =
+  AudioTranscriptImportStatusResponse;
+
+export type GetAudioTranscriptImportError = ErrorsPartnerErrorResponse;
+
+export interface GetAudioTranscriptImportParams {
+  /**
+   * Audio import job ID
+   * @format uuid
+   */
+  jobId: string;
+}
 
 export type GetAutomationData = AutomationAutomationResponse;
 
@@ -2330,6 +2356,53 @@ export interface IdpUpdateIdPConfigRequest {
   name?: string;
   /** OIDC scopes to request during authentication */
   scopes?: string[];
+}
+
+export type ImportMeetingTranscriptData =
+  TranscriptImportResponse;
+
+export type ImportMeetingTranscriptError =
+  | ErrorsPartnerErrorResponse
+  | GatingFeatureNotAvailableResponse;
+
+export interface ImportMeetingTranscriptParams {
+  /**
+   * Meeting ID
+   * @format uuid
+   */
+  id: string;
+}
+
+export interface ImportMeetingTranscriptPayload {
+  /** Transcript or audio file */
+  file: File;
+}
+
+export type ImportTranscriptData =
+  TranscriptImportResponse;
+
+export type ImportTranscriptError =
+  | ErrorsPartnerErrorResponse
+  | GatingFeatureNotAvailableResponse;
+
+export interface ImportTranscriptPayload {
+  /** Calendar event ID for audio binding */
+  calendar_event_id?: string;
+  /** Meeting duration in seconds */
+  duration_seconds?: number;
+  /** Transcript or audio file */
+  file: File;
+  /**
+   * Existing meeting ID
+   * @format uuid
+   */
+  meeting_id?: string;
+  /** Meeting participants */
+  participants?: string[];
+  /** Meeting start time in RFC3339 */
+  starts_at?: string;
+  /** Meeting title for unbound imports */
+  title?: string;
 }
 
 export type InitiateIdpDomainVerificationData = IdpDomainVerificationResponse;
@@ -2924,8 +2997,9 @@ export interface MeetingCreateAgendaItemRequest {
    */
   sequence?: string;
   /**
+   * TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.
    * @maxLength 10000
-   * @example "My private notes for this item"
+   * @example "- My private notes for this item"
    */
   talking_points?: string;
   /**
@@ -3037,8 +3111,9 @@ export interface MeetingPartnerAgendaItemResponse {
    */
   status?: string;
   /**
-   * Private talking points for the authenticated user on this agenda item. Only returned if the user has talking points.
-   * @example "Key points to discuss: budget allocation, timeline"
+   * Private talking points for the authenticated user on this agenda item, as markdown. Only returned if the user has talking points. Notes last saved before the markdown migration may still be returned as HTML until they are re-saved.
+   * @example "- Budget allocation
+   * - Timeline"
    */
   talking_points?: string;
   /**
@@ -3354,8 +3429,9 @@ export interface MeetingUpdateAgendaItemRequest {
   /** @example "in_progress" */
   status?: "pending" | "in_progress" | "completed";
   /**
+   * TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.
    * @maxLength 10000
-   * @example "Updated private notes"
+   * @example "- Updated private notes"
    */
   talking_points?: string;
   /**
@@ -3394,14 +3470,6 @@ export interface MeetingUpdateMeetingError400 {
    * @example "abc123xyz"
    */
   request_id?: string;
-}
-
-export interface MiddlewareFeatureNotAvailableResponse {
-  code?: string;
-  current_plan?: string;
-  feature?: string;
-  message?: string;
-  required_plan?: string;
 }
 
 export interface NextStepResultNextStepResultResponse {
@@ -3576,13 +3644,6 @@ export interface OauthPartnerInfoResponse {
 
 export interface OauthScopesResponse {
   scopes?: string[];
-}
-
-export interface PartnerAutomationAction {
-  /** @example {"url":"https://api.example.com/webhook"} */
-  config?: Record<string, string>;
-  /** @example "webhook" */
-  type: string;
 }
 
 export type PatchActionItemData = ActionItemPartnerActionItemResponse;
@@ -3883,6 +3944,44 @@ export interface RomeApiControllersExternalPartnerAdminSharedListResponseWorkflo
    * @example 100
    */
   total?: number;
+}
+
+export interface ToolkitManifestRef {
+  /**
+   * ID references an existing entity by its database ID
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  $id?: string;
+  /**
+   * Ref references an entity defined in the same manifest via its $id value
+   * @example "my-next-step"
+   */
+  $ref?: string;
+}
+
+export interface ToolkitNextStepActionButtonRelation {
+  /** ActionButton is the reference to the action button entity ($ref or $id) */
+  action_button: ToolkitManifestRef;
+  /**
+   * SortOrder is the display order of the action button within the next step
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface ToolkitTemplateNextStepRelation {
+  /**
+   * Autopilot indicates if the next step should auto-execute when the meeting is finalized
+   * @example false
+   */
+  autopilot?: boolean;
+  /** NextStep is the reference to the next step entity ($ref or $id) */
+  next_step: ToolkitManifestRef;
+  /**
+   * SortOrder is the display order of the next step within the template
+   * @example 1
+   */
+  sort_order?: number;
 }
 
 export interface RomeApiControllersExternalPartnerAdminToolkitToolkitResponse {
@@ -4390,6 +4489,23 @@ export interface RomeApiControllersExternalPartnerUserToolkitToolkitResponse {
   version?: string;
 }
 
+export interface TranscriptImportResponse {
+  duration_seconds?: number;
+  ended_at?: string;
+  kind?: string;
+  meeting_id?: string;
+  segments_count?: number;
+  started_at?: string;
+  transcript_id?: string;
+}
+
+export interface PartnerAutomationAction {
+  /** @example {"url":"https://api.example.com/webhook"} */
+  config?: Record<string, string>;
+  /** @example "webhook" */
+  type: string;
+}
+
 export type RotateApiKeyData = CredentialCredentialRotationResponse;
 
 export type RotateApiKeyError =
@@ -4461,7 +4577,7 @@ export type SendSessionMessageData = SessionSendMessageResponse;
 
 export type SendSessionMessageError =
   | ErrorsPartnerErrorResponse
-  | MiddlewareFeatureNotAvailableResponse;
+  | GatingFeatureNotAvailableResponse;
 
 export interface SendSessionMessageParams {
   /** Session ID */
@@ -4897,7 +5013,7 @@ export interface SharedPartnerAppResponse {
 
 export interface SharedPartnerMeetingResponse {
   /**
-   * AppliedTemplateIDs is the list of template IDs that have been applied to this meeting
+   * IDs of the meeting templates applied to this meeting
    * @example ["123e4567-e89b-12d3-a456-426614174004"]
    */
   applied_template_ids?: string[];
@@ -4926,6 +5042,11 @@ export interface SharedPartnerMeetingResponse {
    * @example "123e4567-e89b-12d3-a456-426614174000"
    */
   id?: string;
+  /**
+   * A highlighted snippet from the meeting's notes explaining why a `q` search matched. Only populated by search endpoints when a query is provided and the match came from notes content; omitted otherwise (e.g. title-only matches).
+   * @example "…ship the **xerographic** sidebar redesign…"
+   */
+  match_context?: string;
   /**
    * ID of the meeting to redirect to if this meeting was merged
    * @example "123e4567-e89b-12d3-a456-426614174007"
@@ -5580,19 +5701,6 @@ export interface ToolkitManifestParticipantSpec {
   role: "EDITOR" | "VIEWER";
 }
 
-export interface ToolkitManifestRef {
-  /**
-   * ID references an existing entity by its database ID
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  $id?: string;
-  /**
-   * Ref references an entity defined in the same manifest via its $id value
-   * @example "my-next-step"
-   */
-  $ref?: string;
-}
-
 export interface ToolkitManifestShortcut {
   /**
    * ID references an existing shortcut (mutually exclusive with Spec)
@@ -5752,31 +5860,6 @@ export interface ToolkitManifestValidationErrorResponse {
   message?: string;
   /** @example "next_steps[0]" */
   path?: string;
-}
-
-export interface ToolkitNextStepActionButtonRelation {
-  /** ActionButton is the reference to the action button entity ($ref or $id) */
-  action_button: ToolkitManifestRef;
-  /**
-   * SortOrder is the display order of the action button within the next step
-   * @example 1
-   */
-  sort_order?: number;
-}
-
-export interface ToolkitTemplateNextStepRelation {
-  /**
-   * Autopilot indicates if the next step should auto-execute when the meeting is finalized
-   * @example false
-   */
-  autopilot?: boolean;
-  /** NextStep is the reference to the next step entity ($ref or $id) */
-  next_step: ToolkitManifestRef;
-  /**
-   * SortOrder is the display order of the next step within the template
-   * @example 1
-   */
-  sort_order?: number;
 }
 
 export interface ToolkitToolkitInstallationItemResponse {
@@ -5956,6 +6039,18 @@ export interface ToolkitVersionResponse {
   version_label?: string;
   /** @example 2 */
   version_number?: number;
+}
+
+export interface AudioTranscriptImportStatusResponse {
+  completed_at?: string;
+  created_at?: string;
+  failure_code?: string;
+  job_id?: string;
+  kind?: string;
+  meeting_id?: string;
+  state?: string;
+  transcript_id?: string;
+  updated_at?: string;
 }
 
 export type TriggerMeetingActionButtonData = SharedTriggerActionButtonResponse;

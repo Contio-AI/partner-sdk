@@ -6,6 +6,40 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2026-09-21
+
+### Added
+
+- Synchronized SDK types with **Partner API v1.12.0**:
+  - Regenerated `src/generated/api-types.ts` from the v1.12.0 OpenAPI specification.
+  - Added consolidated transcript import support (text + audio) in `PartnerUserClient`:
+    - `importMeetingTranscript(meetingId, data)` — bound import into an existing meeting.
+    - `importTranscript(data)` — bound or unbound import; creates a meeting from `title`, `starts_at`, `duration_seconds`, `participants`, or `calendar_event_id` when `meeting_id` is omitted.
+    - `getAudioTranscriptImport(jobId)` — fetch an audio import job's status.
+    - `waitForAudioTranscriptImport(jobId, waitOptions)` — poll until `completed`/`failed`, rejecting on `timeoutMs`.
+  - New model types in `src/models/transcriptImports.ts`:
+    `TranscriptImportResult` (discriminated union on `kind`),
+    `TextTranscriptImportResponse`, `AudioTranscriptImportStatus`,
+    `AudioTranscriptImportState`, `ImportTranscriptRequest`,
+    `ImportMeetingTranscriptRequest`, `WaitForAudioTranscriptImportOptions`.
+  - `Meeting` model now includes optional `match_context`, the highlighted
+    notes snippet returned by search endpoints when a `q` query matches
+    notes content.
+
+### Changed
+
+- `talking_points` on agenda items and backlog items is documented as
+  markdown (HTML writes are still accepted and normalized server-side —
+  non-breaking).
+- `scripts/post-process-api-types.js` now renames generated types whose
+  upstream OpenAPI definition keys leak Go package paths (e.g.
+  `RomeApiServicesPartnerAutomationAction`) back to their clean canonical
+  names (`PartnerAutomationAction`, `ToolkitManifestRef`, …), so no
+  internal module structure leaks into the public type surface. Interim
+  SDK-side fix pending spec-side normalization in CON-7378.
+- Bumped `SDK_VERSION` in `src/client/base.ts` to `1.12.0`.
+- Bumped `package.json` version to `1.12.0`.
+
 ## [1.11.0] - 2026-09-07
 
 ### Added
