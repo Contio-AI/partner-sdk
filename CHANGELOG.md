@@ -6,6 +6,35 @@ Versions prior to v1.3.0 were maintained in a private repository (history unavil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2026-09-21
+
+### Changed
+
+- Synchronized `src/generated/api-types.ts` with the Partner API v1.12.0
+  spec after rome CON-7378 fixed Go package-path leaks in the OpenAPI
+  definition keys. 28 generated type names lose their
+  `RomeApiControllersExternalPartner…` prefix (wire schema unchanged):
+  - `RomeApiControllersExternalPartnerOauth*` → `Oauth*`
+    (`OauthTokenResponse`, `OauthJWK`, `OauthDiscoveryDocument`, …)
+  - `RomeApiControllersExternalPartner{Admin,User}SharedListResponse<T>` → `SharedListResponse<T>`
+  - `RomeApiControllersExternalPartnerAdminToolkitToolkitResponse` → `ToolkitToolkitResponse`
+  - `RomeApiControllersExternalPartnerUserToolkitToolkitResponse` → `ToolkitPartnerToolkitResponse`
+- `PartnerAutomationAction`, `ToolkitManifestRef`,
+  `ToolkitNextStepActionButtonRelation` and `ToolkitTemplateNextStepRelation`
+  are now emitted natively by codegen, so their interim `TYPE_RENAMES`
+  entries were removed (`TranscriptImportResponse` is still produced by the
+  map, from the new `TranscriptImportTranscriptImportResponse` codegen name).
+  `scripts/post-process-api-types.js` now fails generation if any `RomeApi*`
+  name reappears.
+- Bumped `SDK_VERSION` in `src/client/base.ts` to `1.13.0`.
+- Bumped `package.json` version to `1.13.0`.
+
+### Deprecated
+
+- All 28 previous `RomeApiControllersExternalPartner…` generated type names
+  are kept as `@deprecated` aliases in `src/generated/index.ts` and will be
+  removed in the next major release.
+
 ## [1.12.0] - 2026-09-21
 
 ### Added

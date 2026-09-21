@@ -265,8 +265,7 @@ export interface AdminExportToolkitParams {
   toolkitId: string;
 }
 
-export type AdminGetToolkitData =
-  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+export type AdminGetToolkitData = ToolkitToolkitResponse;
 
 export type AdminGetToolkitError = ErrorsPartnerErrorResponse;
 
@@ -309,8 +308,7 @@ export interface AdminListToolkitVersionsParams {
   toolkitId: string;
 }
 
-export type AdminListToolkitsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+export type AdminListToolkitsData = SharedListResponseToolkitToolkitResponse;
 
 export type AdminListToolkitsError = ErrorsPartnerErrorResponse;
 
@@ -349,8 +347,7 @@ export interface AdminRepublishToolkitVersionParams {
   versionId: string;
 }
 
-export type AdminUpdateToolkitData =
-  RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+export type AdminUpdateToolkitData = ToolkitToolkitResponse;
 
 export type AdminUpdateToolkitError = ErrorsPartnerErrorResponse;
 
@@ -1727,8 +1724,7 @@ export interface ErrorsPartnerErrorResponse {
   request_id?: string;
 }
 
-export type ExchangeOauthTokenData =
-  RomeApiControllersExternalPartnerOauthTokenResponse;
+export type ExchangeOauthTokenData = OauthTokenResponse;
 
 export type ExchangeOauthTokenError = ErrorsErrorResponse;
 
@@ -1950,18 +1946,15 @@ export type GetOauthHealthData = OauthHealthResponse;
 
 export type GetOauthHealthError = ErrorsErrorResponse;
 
-export type GetOauthJwksData =
-  RomeApiControllersExternalPartnerOauthJWKSResponse;
+export type GetOauthJwksData = OauthJWKSResponse;
 
 export type GetOauthJwksError = ErrorsErrorResponse;
 
-export type GetOauthUserInfoData =
-  RomeApiControllersExternalPartnerOauthUserInfo;
+export type GetOauthUserInfoData = OauthUserInfo;
 
 export type GetOauthUserInfoError = ErrorsErrorResponse;
 
-export type GetOpenidConfigurationData =
-  RomeApiControllersExternalPartnerOauthDiscoveryDocument;
+export type GetOpenidConfigurationData = OauthDiscoveryDocument;
 
 export type GetOpenidConfigurationError = ErrorsErrorResponse;
 
@@ -2378,8 +2371,7 @@ export interface ImportMeetingTranscriptPayload {
   file: File;
 }
 
-export type ImportTranscriptData =
-  TranscriptImportResponse;
+export type ImportTranscriptData = TranscriptImportResponse;
 
 export type ImportTranscriptError =
   | ErrorsPartnerErrorResponse
@@ -2451,8 +2443,7 @@ export interface InstallToolkitParams {
   toolkitId: string;
 }
 
-export type IntrospectOauthTokenData =
-  RomeApiControllersExternalPartnerOauthTokenIntrospection;
+export type IntrospectOauthTokenData = OauthTokenIntrospection;
 
 export type IntrospectOauthTokenError = ErrorsErrorResponse;
 
@@ -2476,7 +2467,7 @@ export interface LinkCalendarEventParams {
 }
 
 export type ListActionItemsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
+  SharedListResponseActionItemPartnerActionItemResponse;
 
 export type ListActionItemsError =
   | ActionItemGetActionItemsError400
@@ -2515,7 +2506,7 @@ export interface ListActionItemsParams {
 }
 
 export type ListAutomationsData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse;
+  SharedListResponseAutomationAutomationResponse;
 
 export type ListAutomationsError = ErrorsPartnerErrorResponse;
 
@@ -2533,7 +2524,7 @@ export interface ListAutomationsParams {
 }
 
 export type ListBacklogItemHistoryData =
-  RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse;
+  SharedListResponseBacklogItemPartnerBacklogItemResponse;
 
 export type ListBacklogItemHistoryError = ErrorsPartnerErrorResponse;
 
@@ -2556,7 +2547,7 @@ export interface ListBacklogItemHistoryParams {
 }
 
 export type ListBacklogItemsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse;
+  SharedListResponseBacklogItemPartnerBacklogItemResponse;
 
 export type ListBacklogItemsError = ErrorsPartnerErrorResponse;
 
@@ -2579,7 +2570,7 @@ export interface ListBacklogItemsParams {
 }
 
 export type ListCalendarEventsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse;
+  SharedListResponseCalendarPartnerCalendarEventResponse;
 
 export type ListCalendarEventsError =
   | CalendarGetCalendarEventsError400
@@ -2615,7 +2606,7 @@ export interface ListCalendarEventsParams {
 }
 
 export type ListConnectionsData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse;
+  SharedListResponseConnectionUserConnectionResponse;
 
 export type ListConnectionsError = ErrorsPartnerErrorResponse;
 
@@ -2659,7 +2650,7 @@ export interface ListCredentialHistoryParams {
 }
 
 export type ListInstalledToolkitsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse;
+  SharedListResponseToolkitToolkitWithInstallationResponse;
 
 export type ListInstalledToolkitsError = ErrorsPartnerErrorResponse;
 
@@ -2672,7 +2663,7 @@ export interface ListInstalledToolkitsParams {
 }
 
 export type ListMeetingActionButtonsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse;
+  SharedListResponseSharedActionButtonResponse;
 
 export type ListMeetingActionButtonsError = ErrorsPartnerErrorResponse;
 
@@ -2685,7 +2676,7 @@ export interface ListMeetingActionButtonsParams {
 }
 
 export type ListMeetingAgendaItemsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse;
+  SharedListResponseMeetingPartnerAgendaItemResponse;
 
 export type ListMeetingAgendaItemsError = ErrorsPartnerErrorResponse;
 
@@ -2741,8 +2732,7 @@ export interface ListMeetingContextsParams {
   offset?: number;
 }
 
-export type ListMeetingNextStepsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse;
+export type ListMeetingNextStepsData = SharedListResponseSharedNextStepResponse;
 
 export type ListMeetingNextStepsError = ErrorsPartnerErrorResponse;
 
@@ -2755,7 +2745,7 @@ export interface ListMeetingNextStepsParams {
 }
 
 export type ListMeetingParticipantsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse;
+  SharedListResponseMeetingPartnerMeetingParticipantResponse;
 
 export type ListMeetingParticipantsError = ErrorsPartnerErrorResponse;
 
@@ -2765,7 +2755,7 @@ export interface ListMeetingParticipantsParams {
 }
 
 export type ListMeetingTemplateNextStepsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse;
+  SharedListResponseMeetingTemplateTemplateNextStepResponse;
 
 export type ListMeetingTemplateNextStepsError = ErrorsPartnerErrorResponse;
 
@@ -2778,7 +2768,7 @@ export interface ListMeetingTemplateNextStepsParams {
 }
 
 export type ListMeetingTemplatesData =
-  RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse;
+  SharedListResponseMeetingTemplatePartnerMeetingTemplateResponse;
 
 export type ListMeetingTemplatesError = ErrorsPartnerErrorResponse;
 
@@ -2798,8 +2788,7 @@ export interface ListMeetingTemplatesParams {
   offset?: number;
 }
 
-export type ListMeetingsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
+export type ListMeetingsData = SharedListResponseSharedPartnerMeetingResponse;
 
 export type ListMeetingsError =
   | MeetingGetMeetingsError400
@@ -2833,7 +2822,7 @@ export type ListOauthScopesData = OauthScopesResponse;
 export type ListOauthScopesError = ErrorsErrorResponse;
 
 export type ListSessionsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse;
+  SharedListResponseSessionPartnerChatSessionResponse;
 
 export type ListSessionsError = ErrorsPartnerErrorResponse;
 
@@ -2857,7 +2846,7 @@ export interface ListSessionsParams {
 }
 
 export type ListTemplateNextStepsData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse;
+  SharedListResponseTemplateTemplateNextStepResponse;
 
 export type ListTemplateNextStepsError = ErrorsPartnerErrorResponse;
 
@@ -2866,8 +2855,7 @@ export interface ListTemplateNextStepsParams {
   templateId: string;
 }
 
-export type ListTemplatesData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse;
+export type ListTemplatesData = SharedListResponseTemplateTemplateResponse;
 
 export type ListTemplatesError = ErrorsPartnerErrorResponse;
 
@@ -2884,8 +2872,7 @@ export interface ListTemplatesParams {
   offset?: number;
 }
 
-export type ListToolkitsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse;
+export type ListToolkitsData = SharedListResponseToolkitPartnerToolkitResponse;
 
 export type ListToolkitsError = ErrorsPartnerErrorResponse;
 
@@ -2921,7 +2908,7 @@ export interface ListWebhookDeliveriesParams {
 }
 
 export type ListWorkflowRunsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseWorkflowRunPartnerWorkflowRunResponse;
+  SharedListResponseWorkflowRunPartnerWorkflowRunResponse;
 
 export type ListWorkflowRunsError = ErrorsPartnerErrorResponse;
 
@@ -2951,7 +2938,7 @@ export interface ListWorkflowRunsParams {
 }
 
 export type ListWorkflowTemplatesData =
-  RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowPartnerWorkflowTemplateSummary;
+  SharedListResponseWorkflowPartnerWorkflowTemplateSummary;
 
 export type ListWorkflowTemplatesError = ErrorsPartnerErrorResponse;
 
@@ -3507,6 +3494,29 @@ export interface NextStepResultNextStepResultResponse {
   id?: string;
 }
 
+export interface OauthDiscoveryDocument {
+  /** @example "https://auth.contio.io/oauth2/authorize" */
+  authorization_endpoint?: string;
+  claims_supported?: string[];
+  id_token_signing_alg_values_supported?: string[];
+  /** @example "https://auth.contio.io/oauth2/introspect" */
+  introspection_endpoint?: string;
+  /** @example "https://auth.contio.io" */
+  issuer?: string;
+  /** @example "https://auth.contio.io/.well-known/jwks.json" */
+  jwks_uri?: string;
+  response_types_supported?: string[];
+  /** @example "https://auth.contio.io/oauth2/revoke" */
+  revocation_endpoint?: string;
+  scopes_supported?: string[];
+  subject_types_supported?: string[];
+  /** @example "https://auth.contio.io/oauth2/token" */
+  token_endpoint?: string;
+  token_endpoint_auth_methods_supported?: string[];
+  /** @example "https://auth.contio.io/oauth2/userInfo" */
+  userinfo_endpoint?: string;
+}
+
 export interface OauthHealthResponse {
   checks?: Record<string, unknown>;
   /** @example "partner-oauth" */
@@ -3515,6 +3525,34 @@ export interface OauthHealthResponse {
   status?: string;
   /** @example "2024-01-14T10:00:00Z" */
   timestamp?: string;
+}
+
+export interface OauthJWK {
+  /** @example "RS256" */
+  alg?: string;
+  /**
+   * For ECDSA keys
+   * @example "P-256"
+   */
+  crv?: string;
+  /** For RSA and ECDSA private keys (optional) */
+  d?: string;
+  /** @example "AQAB" */
+  e?: string;
+  /** @example "key-id-1" */
+  kid?: string;
+  /** @example "RSA" */
+  kty?: string;
+  /** @example "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbISD08qNLyrdkt-bFTWhAI4vMQFh6WeZu0fM4lFd2NcRwr3XPksINHaQ-G_xBniIqbw0Ls1jF44-csFCur-kEgU8awapJzKnqDKgw" */
+  n?: string;
+  /** @example "sig" */
+  use?: string;
+  x?: string;
+  y?: string;
+}
+
+export interface OauthJWKSResponse {
+  keys?: OauthJWK[];
 }
 
 export interface OauthOAuthConsentCheckRequest {
@@ -3644,6 +3682,76 @@ export interface OauthPartnerInfoResponse {
 
 export interface OauthScopesResponse {
   scopes?: string[];
+}
+
+export interface OauthTokenIntrospection {
+  /** @example true */
+  active?: boolean;
+  aud?: string[];
+  /** @example "partner_abc123" */
+  client_id?: string;
+  /** @example 1704110400 */
+  exp?: number;
+  ext?: Record<string, unknown>;
+  /** @example 1704106800 */
+  iat?: number;
+  /** @example "https://auth.contio.io" */
+  iss?: string;
+  /** @example 1704106800 */
+  nbf?: number;
+  /** @example "openid profile email" */
+  scope?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  sub?: string;
+  /** @example "Bearer" */
+  token_type?: string;
+  /** @example "user@example.com" */
+  username?: string;
+}
+
+export interface OauthTokenResponse {
+  /** @example "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..." */
+  access_token?: string;
+  /** @example 3600 */
+  expires_in?: number;
+  /** @example "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..." */
+  id_token?: string;
+  /** @example "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIn0..." */
+  refresh_token?: string;
+  /** @example "openid profile email" */
+  scope?: string;
+  /** @example "Bearer" */
+  token_type?: string;
+}
+
+export interface OauthUserInfo {
+  /** @example "user@example.com" */
+  email?: string;
+  /** @example true */
+  email_verified?: boolean;
+  /** @example "Doe" */
+  family_name?: string;
+  /** @example "John" */
+  given_name?: string;
+  /** @example "en-US" */
+  locale?: string;
+  /** @example "John Doe" */
+  name?: string;
+  /** @example "+1234567890" */
+  phone_number?: string;
+  /** @example false */
+  phone_number_verified?: boolean;
+  /** @example "https://example.com/avatar.jpg" */
+  picture?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  sub?: string;
+}
+
+export interface PartnerAutomationAction {
+  /** @example {"url":"https://api.example.com/webhook"} */
+  config?: Record<string, string>;
+  /** @example "webhook" */
+  type: string;
 }
 
 export type PatchActionItemData = ActionItemPartnerActionItemResponse;
@@ -3846,666 +3954,6 @@ export type RollbackClientSecretData = any;
 
 export type RollbackClientSecretError = ErrorsPartnerErrorResponse;
 
-export interface RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse {
-  /** Array of items for the current page */
-  items?: AutomationAutomationResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse {
-  /** Array of items for the current page */
-  items?: ConnectionUserConnectionResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse {
-  /** Array of items for the current page */
-  items?: TemplateTemplateNextStepResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse {
-  /** Array of items for the current page */
-  items?: TemplateTemplateResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowPartnerWorkflowTemplateSummary {
-  /** Array of items for the current page */
-  items?: WorkflowPartnerWorkflowTemplateSummary[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface ToolkitManifestRef {
-  /**
-   * ID references an existing entity by its database ID
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  $id?: string;
-  /**
-   * Ref references an entity defined in the same manifest via its $id value
-   * @example "my-next-step"
-   */
-  $ref?: string;
-}
-
-export interface ToolkitNextStepActionButtonRelation {
-  /** ActionButton is the reference to the action button entity ($ref or $id) */
-  action_button: ToolkitManifestRef;
-  /**
-   * SortOrder is the display order of the action button within the next step
-   * @example 1
-   */
-  sort_order?: number;
-}
-
-export interface ToolkitTemplateNextStepRelation {
-  /**
-   * Autopilot indicates if the next step should auto-execute when the meeting is finalized
-   * @example false
-   */
-  autopilot?: boolean;
-  /** NextStep is the reference to the next step entity ($ref or $id) */
-  next_step: ToolkitManifestRef;
-  /**
-   * SortOrder is the display order of the next step within the template
-   * @example 1
-   */
-  sort_order?: number;
-}
-
-export interface RomeApiControllersExternalPartnerAdminToolkitToolkitResponse {
-  /** @example true */
-  auto_install_on_new_workspaces?: boolean;
-  /** @example true */
-  auto_propagate?: boolean;
-  /** @example "2023-01-01T00:00:00Z" */
-  created_at?: string;
-  /** @example "Complete sales workflow toolkit" */
-  description?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  id?: string;
-  /** @example true */
-  is_active?: boolean;
-  manifest?: ToolkitToolkitManifestRequest;
-  /** @example "Sales Pipeline Toolkit" */
-  name?: string;
-  /** @example "PARTNER" */
-  ownership_type?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174001" */
-  partner_app_id?: string;
-  /** @example "sales-pipeline" */
-  slug?: string;
-  /** @example "2023-01-01T00:00:00Z" */
-  updated_at?: string;
-  /** @example "1.0.0" */
-  version?: string;
-}
-
-export interface RomeApiControllersExternalPartnerOauthDiscoveryDocument {
-  /** @example "https://auth.contio.io/oauth2/authorize" */
-  authorization_endpoint?: string;
-  claims_supported?: string[];
-  id_token_signing_alg_values_supported?: string[];
-  /** @example "https://auth.contio.io/oauth2/introspect" */
-  introspection_endpoint?: string;
-  /** @example "https://auth.contio.io" */
-  issuer?: string;
-  /** @example "https://auth.contio.io/.well-known/jwks.json" */
-  jwks_uri?: string;
-  response_types_supported?: string[];
-  /** @example "https://auth.contio.io/oauth2/revoke" */
-  revocation_endpoint?: string;
-  scopes_supported?: string[];
-  subject_types_supported?: string[];
-  /** @example "https://auth.contio.io/oauth2/token" */
-  token_endpoint?: string;
-  token_endpoint_auth_methods_supported?: string[];
-  /** @example "https://auth.contio.io/oauth2/userInfo" */
-  userinfo_endpoint?: string;
-}
-
-export interface RomeApiControllersExternalPartnerOauthJWK {
-  /** @example "RS256" */
-  alg?: string;
-  /**
-   * For ECDSA keys
-   * @example "P-256"
-   */
-  crv?: string;
-  /** For RSA and ECDSA private keys (optional) */
-  d?: string;
-  /** @example "AQAB" */
-  e?: string;
-  /** @example "key-id-1" */
-  kid?: string;
-  /** @example "RSA" */
-  kty?: string;
-  /** @example "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbISD08qNLyrdkt-bFTWhAI4vMQFh6WeZu0fM4lFd2NcRwr3XPksINHaQ-G_xBniIqbw0Ls1jF44-csFCur-kEgU8awapJzKnqDKgw" */
-  n?: string;
-  /** @example "sig" */
-  use?: string;
-  x?: string;
-  y?: string;
-}
-
-export interface RomeApiControllersExternalPartnerOauthJWKSResponse {
-  keys?: RomeApiControllersExternalPartnerOauthJWK[];
-}
-
-export interface RomeApiControllersExternalPartnerOauthTokenIntrospection {
-  /** @example true */
-  active?: boolean;
-  aud?: string[];
-  /** @example "partner_abc123" */
-  client_id?: string;
-  /** @example 1704110400 */
-  exp?: number;
-  ext?: Record<string, unknown>;
-  /** @example 1704106800 */
-  iat?: number;
-  /** @example "https://auth.contio.io" */
-  iss?: string;
-  /** @example 1704106800 */
-  nbf?: number;
-  /** @example "openid profile email" */
-  scope?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  sub?: string;
-  /** @example "Bearer" */
-  token_type?: string;
-  /** @example "user@example.com" */
-  username?: string;
-}
-
-export interface RomeApiControllersExternalPartnerOauthTokenResponse {
-  /** @example "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..." */
-  access_token?: string;
-  /** @example 3600 */
-  expires_in?: number;
-  /** @example "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..." */
-  id_token?: string;
-  /** @example "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIn0..." */
-  refresh_token?: string;
-  /** @example "openid profile email" */
-  scope?: string;
-  /** @example "Bearer" */
-  token_type?: string;
-}
-
-export interface RomeApiControllersExternalPartnerOauthUserInfo {
-  /** @example "user@example.com" */
-  email?: string;
-  /** @example true */
-  email_verified?: boolean;
-  /** @example "Doe" */
-  family_name?: string;
-  /** @example "John" */
-  given_name?: string;
-  /** @example "en-US" */
-  locale?: string;
-  /** @example "John Doe" */
-  name?: string;
-  /** @example "+1234567890" */
-  phone_number?: string;
-  /** @example false */
-  phone_number_verified?: boolean;
-  /** @example "https://example.com/avatar.jpg" */
-  picture?: string;
-  /** @example "123e4567-e89b-12d3-a456-426614174000" */
-  sub?: string;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse {
-  /** Array of items for the current page */
-  items?: ActionItemPartnerActionItemResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse {
-  /** Array of items for the current page */
-  items?: BacklogItemPartnerBacklogItemResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse {
-  /** Array of items for the current page */
-  items?: CalendarPartnerCalendarEventResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse {
-  /** Array of items for the current page */
-  items?: MeetingPartnerAgendaItemResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse {
-  /** Array of items for the current page */
-  items?: MeetingPartnerMeetingParticipantResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse {
-  /** Array of items for the current page */
-  items?: MeetingTemplatePartnerMeetingTemplateResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse {
-  /** Array of items for the current page */
-  items?: MeetingTemplateTemplateNextStepResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse {
-  /** Array of items for the current page */
-  items?: RomeApiControllersExternalPartnerAdminToolkitToolkitResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse {
-  /** Array of items for the current page */
-  items?: RomeApiControllersExternalPartnerUserToolkitToolkitResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse {
-  /** Array of items for the current page */
-  items?: SessionPartnerChatSessionResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse {
-  /** Array of items for the current page */
-  items?: SharedActionButtonResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse {
-  /** Array of items for the current page */
-  items?: SharedNextStepResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse {
-  /** Array of items for the current page */
-  items?: SharedPartnerMeetingResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse {
-  /** Array of items for the current page */
-  items?: ToolkitToolkitWithInstallationResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserSharedListResponseWorkflowRunPartnerWorkflowRunResponse {
-  /** Array of items for the current page */
-  items?: WorkflowRunPartnerWorkflowRunResponse[];
-  /**
-   * Maximum number of items per page
-   * @example 50
-   */
-  limit?: number;
-  /**
-   * Number of items skipped from the beginning
-   * @example 0
-   */
-  offset?: number;
-  /**
-   * Total number of items across all pages
-   * @example 100
-   */
-  total?: number;
-}
-
-export interface RomeApiControllersExternalPartnerUserToolkitToolkitResponse {
-  /**
-   * Number of action buttons in the toolkit
-   * @example 2
-   */
-  action_buttons_count?: number;
-  /**
-   * Timestamp when the toolkit was created
-   * @example "2023-01-01T00:00:00Z"
-   */
-  created_at?: string;
-  /**
-   * Description of the toolkit
-   * @example "A comprehensive toolkit for sales meetings"
-   */
-  description?: string;
-  /**
-   * Unique identifier for the toolkit
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  id?: string;
-  /**
-   * Whether the toolkit is active
-   * @example true
-   */
-  is_active?: boolean;
-  /**
-   * Name of the toolkit
-   * @example "Sales Meeting Toolkit"
-   */
-  name?: string;
-  /**
-   * Number of next steps in the toolkit
-   * @example 5
-   */
-  next_steps_count?: number;
-  /**
-   * Ownership type of the toolkit
-   * @example "PARTNER"
-   */
-  ownership_type?: "SYSTEM" | "PARTNER";
-  /**
-   * URL-friendly slug for the toolkit
-   * @example "sales-meeting-toolkit"
-   */
-  slug?: string;
-  /**
-   * Number of templates in the toolkit
-   * @example 3
-   */
-  templates_count?: number;
-  /**
-   * Timestamp when the toolkit was last updated
-   * @example "2023-01-01T00:00:00Z"
-   */
-  updated_at?: string;
-  /**
-   * Version of the toolkit
-   * @example "1.0.0"
-   */
-  version?: string;
-}
-
-export interface TranscriptImportResponse {
-  duration_seconds?: number;
-  ended_at?: string;
-  kind?: string;
-  meeting_id?: string;
-  segments_count?: number;
-  started_at?: string;
-  transcript_id?: string;
-}
-
-export interface PartnerAutomationAction {
-  /** @example {"url":"https://api.example.com/webhook"} */
-  config?: Record<string, string>;
-  /** @example "webhook" */
-  type: string;
-}
-
 export type RotateApiKeyData = CredentialCredentialRotationResponse;
 
 export type RotateApiKeyError =
@@ -4524,8 +3972,7 @@ export type RotateWebhookSecretError =
   | CredentialRotateWebhookSecretError400
   | ErrorsPartnerErrorResponse;
 
-export type SearchMeetingsData =
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
+export type SearchMeetingsData = SharedListResponseSharedPartnerMeetingResponse;
 
 export type SearchMeetingsError =
   | MeetingSearchMeetingsError400
@@ -4894,6 +4341,406 @@ export interface SharedExecuteNextStepResponse {
    * @example "completed"
    */
   status?: string;
+}
+
+export interface SharedListResponseActionItemPartnerActionItemResponse {
+  /** Array of items for the current page */
+  items?: ActionItemPartnerActionItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseAutomationAutomationResponse {
+  /** Array of items for the current page */
+  items?: AutomationAutomationResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseBacklogItemPartnerBacklogItemResponse {
+  /** Array of items for the current page */
+  items?: BacklogItemPartnerBacklogItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseCalendarPartnerCalendarEventResponse {
+  /** Array of items for the current page */
+  items?: CalendarPartnerCalendarEventResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseConnectionUserConnectionResponse {
+  /** Array of items for the current page */
+  items?: ConnectionUserConnectionResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseMeetingPartnerAgendaItemResponse {
+  /** Array of items for the current page */
+  items?: MeetingPartnerAgendaItemResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseMeetingPartnerMeetingParticipantResponse {
+  /** Array of items for the current page */
+  items?: MeetingPartnerMeetingParticipantResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseMeetingTemplatePartnerMeetingTemplateResponse {
+  /** Array of items for the current page */
+  items?: MeetingTemplatePartnerMeetingTemplateResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseMeetingTemplateTemplateNextStepResponse {
+  /** Array of items for the current page */
+  items?: MeetingTemplateTemplateNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseSessionPartnerChatSessionResponse {
+  /** Array of items for the current page */
+  items?: SessionPartnerChatSessionResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseSharedActionButtonResponse {
+  /** Array of items for the current page */
+  items?: SharedActionButtonResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseSharedNextStepResponse {
+  /** Array of items for the current page */
+  items?: SharedNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseSharedPartnerMeetingResponse {
+  /** Array of items for the current page */
+  items?: SharedPartnerMeetingResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseTemplateTemplateNextStepResponse {
+  /** Array of items for the current page */
+  items?: TemplateTemplateNextStepResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseTemplateTemplateResponse {
+  /** Array of items for the current page */
+  items?: TemplateTemplateResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseToolkitPartnerToolkitResponse {
+  /** Array of items for the current page */
+  items?: ToolkitPartnerToolkitResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseToolkitToolkitResponse {
+  /** Array of items for the current page */
+  items?: ToolkitToolkitResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseToolkitToolkitWithInstallationResponse {
+  /** Array of items for the current page */
+  items?: ToolkitToolkitWithInstallationResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseWorkflowPartnerWorkflowTemplateSummary {
+  /** Array of items for the current page */
+  items?: WorkflowPartnerWorkflowTemplateSummary[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
+}
+
+export interface SharedListResponseWorkflowRunPartnerWorkflowRunResponse {
+  /** Array of items for the current page */
+  items?: WorkflowRunPartnerWorkflowRunResponse[];
+  /**
+   * Maximum number of items per page
+   * @example 50
+   */
+  limit?: number;
+  /**
+   * Number of items skipped from the beginning
+   * @example 0
+   */
+  offset?: number;
+  /**
+   * Total number of items across all pages
+   * @example 100
+   */
+  total?: number;
 }
 
 export interface SharedNextStepResponse {
@@ -5338,7 +5185,7 @@ export interface ToolkitCreateToolkitRequest {
 export interface ToolkitCreateToolkitResponse {
   conflicts?: ToolkitConflictInfoResponse[];
   summary?: ToolkitManifestSummaryResponse;
-  toolkit?: RomeApiControllersExternalPartnerAdminToolkitToolkitResponse;
+  toolkit?: ToolkitToolkitResponse;
   validation?: ToolkitValidationResultResponse;
 }
 
@@ -5701,6 +5548,19 @@ export interface ToolkitManifestParticipantSpec {
   role: "EDITOR" | "VIEWER";
 }
 
+export interface ToolkitManifestRef {
+  /**
+   * ID references an existing entity by its database ID
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  $id?: string;
+  /**
+   * Ref references an entity defined in the same manifest via its $id value
+   * @example "my-next-step"
+   */
+  $ref?: string;
+}
+
 export interface ToolkitManifestShortcut {
   /**
    * ID references an existing shortcut (mutually exclusive with Spec)
@@ -5862,6 +5722,94 @@ export interface ToolkitManifestValidationErrorResponse {
   path?: string;
 }
 
+export interface ToolkitNextStepActionButtonRelation {
+  /** ActionButton is the reference to the action button entity ($ref or $id) */
+  action_button: ToolkitManifestRef;
+  /**
+   * SortOrder is the display order of the action button within the next step
+   * @example 1
+   */
+  sort_order?: number;
+}
+
+export interface ToolkitPartnerToolkitResponse {
+  /**
+   * Number of action buttons in the toolkit
+   * @example 2
+   */
+  action_buttons_count?: number;
+  /**
+   * Timestamp when the toolkit was created
+   * @example "2023-01-01T00:00:00Z"
+   */
+  created_at?: string;
+  /**
+   * Description of the toolkit
+   * @example "A comprehensive toolkit for sales meetings"
+   */
+  description?: string;
+  /**
+   * Unique identifier for the toolkit
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id?: string;
+  /**
+   * Whether the toolkit is active
+   * @example true
+   */
+  is_active?: boolean;
+  /**
+   * Name of the toolkit
+   * @example "Sales Meeting Toolkit"
+   */
+  name?: string;
+  /**
+   * Number of next steps in the toolkit
+   * @example 5
+   */
+  next_steps_count?: number;
+  /**
+   * Ownership type of the toolkit
+   * @example "PARTNER"
+   */
+  ownership_type?: "SYSTEM" | "PARTNER";
+  /**
+   * URL-friendly slug for the toolkit
+   * @example "sales-meeting-toolkit"
+   */
+  slug?: string;
+  /**
+   * Number of templates in the toolkit
+   * @example 3
+   */
+  templates_count?: number;
+  /**
+   * Timestamp when the toolkit was last updated
+   * @example "2023-01-01T00:00:00Z"
+   */
+  updated_at?: string;
+  /**
+   * Version of the toolkit
+   * @example "1.0.0"
+   */
+  version?: string;
+}
+
+export interface ToolkitTemplateNextStepRelation {
+  /**
+   * Autopilot indicates if the next step should auto-execute when the meeting is finalized
+   * @example false
+   */
+  autopilot?: boolean;
+  /** NextStep is the reference to the next step entity ($ref or $id) */
+  next_step: ToolkitManifestRef;
+  /**
+   * SortOrder is the display order of the next step within the template
+   * @example 1
+   */
+  sort_order?: number;
+}
+
 export interface ToolkitToolkitInstallationItemResponse {
   /**
    * Timestamp when the installation was created (active installations only)
@@ -5940,11 +5888,39 @@ export interface ToolkitToolkitManifestRequest {
   toolkit_prompt?: string;
 }
 
+export interface ToolkitToolkitResponse {
+  /** @example true */
+  auto_install_on_new_workspaces?: boolean;
+  /** @example true */
+  auto_propagate?: boolean;
+  /** @example "2023-01-01T00:00:00Z" */
+  created_at?: string;
+  /** @example "Complete sales workflow toolkit" */
+  description?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174000" */
+  id?: string;
+  /** @example true */
+  is_active?: boolean;
+  manifest?: ToolkitToolkitManifestRequest;
+  /** @example "Sales Pipeline Toolkit" */
+  name?: string;
+  /** @example "PARTNER" */
+  ownership_type?: string;
+  /** @example "123e4567-e89b-12d3-a456-426614174001" */
+  partner_app_id?: string;
+  /** @example "sales-pipeline" */
+  slug?: string;
+  /** @example "2023-01-01T00:00:00Z" */
+  updated_at?: string;
+  /** @example "1.0.0" */
+  version?: string;
+}
+
 export interface ToolkitToolkitWithInstallationResponse {
   /** Installation details (nil if not installed) */
   installation?: ToolkitInstallationResponse;
   /** Toolkit details */
-  toolkit?: RomeApiControllersExternalPartnerUserToolkitToolkitResponse;
+  toolkit?: ToolkitPartnerToolkitResponse;
 }
 
 export interface ToolkitUpdateToolkitRequest {
@@ -6051,6 +6027,16 @@ export interface AudioTranscriptImportStatusResponse {
   state?: string;
   transcript_id?: string;
   updated_at?: string;
+}
+
+export interface TranscriptImportResponse {
+  duration_seconds?: number;
+  ended_at?: string;
+  kind?: string;
+  meeting_id?: string;
+  segments_count?: number;
+  started_at?: string;
+  transcript_id?: string;
 }
 
 export type TriggerMeetingActionButtonData = SharedTriggerActionButtonResponse;
