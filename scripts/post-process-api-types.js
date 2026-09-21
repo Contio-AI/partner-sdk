@@ -15,31 +15,24 @@ const path = require('path');
 const API_TYPES_PATH = path.join(__dirname, '..', 'src', 'generated', 'api-types.ts');
 
 /**
- * Rename map for generated type names that leak Go package internals.
+ * Rename map for generated type names whose swagger-typescript-api output
+ * differs from the SDK's canonical public name.
  *
- * The backend's OpenAPI generator (swag) emits definition keys derived from
- * Go package names, and falls back to the full underscored import path when
- * package names collide — e.g. `rome_api_services_partner.AutomationAction`.
- * swagger-typescript-api pascal-cases those keys into type names like
- * `RomeApiServicesPartnerAutomationAction`.
- *
- * Until the spec normalizes its definition keys upstream (CON-7378), we map
- * the leaked generated names back to their clean canonical names here. When
- * the spec is fixed, the generated names become clean on their own and the
- * corresponding entries simply stop matching — the map is safe to leave in
- * place (and serves as the reference list for the spec-side rename).
+ * The spec's definition keys are `<pkg>.<Type>` (Go package-path leaks were
+ * fixed at the source in CON-7378), so this map only smooths over cases where
+ * the pascal-cased `<Pkg><Type>` form is awkwardly redundant.
  */
 const TYPE_RENAMES = {
-  // services/partner.AutomationAction (regressed from partner.AutomationAction)
-  RomeApiServicesPartnerAutomationAction: 'PartnerAutomationAction',
-  // controllers/external/partner/admin/toolkit.* (regressed from toolkit.*)
-  RomeApiControllersExternalPartnerAdminToolkitManifestRef: 'ToolkitManifestRef',
-  RomeApiControllersExternalPartnerAdminToolkitNextStepActionButtonRelation: 'ToolkitNextStepActionButtonRelation',
-  RomeApiControllersExternalPartnerAdminToolkitTemplateNextStepRelation: 'ToolkitTemplateNextStepRelation',
-  // controllers/external/partner/user/transcript_import.* (new in v1.12)
-  RomeApiControllersExternalPartnerUserTranscriptImportTranscriptImportResponse: 'TranscriptImportResponse',
+  // transcript_import.TranscriptImportResponse / transcript_import.AudioTranscriptImportStatusResponse
+  TranscriptImportTranscriptImportResponse: 'TranscriptImportResponse',
   TranscriptImportAudioTranscriptImportStatusResponse: 'AudioTranscriptImportStatusResponse',
 };
+
+/**
+ * Generated type names that must never appear in the public type surface.
+ * A match means the upstream spec regressed to leaking Go import paths.
+ */
+const FORBIDDEN_NAME_PATTERN = /\bRomeApi\w+/g;
 
 function postProcess() {
   console.log('Post-processing API types:', API_TYPES_PATH);
@@ -59,7 +52,7 @@ function postProcess() {
   content = content.replace(/Record<string, any>/g, 'Record<string, unknown>');
   console.log(`Replaced ${count} occurrences of 'Record<string, any>' with 'Record<string, unknown>'`);
 
-  // Rename types that leak Go package internals to their clean names
+  // Rename generated types to their canonical SDK names
   for (const [from, to] of Object.entries(TYPE_RENAMES)) {
     const re = new RegExp(`\\b${from}\\b`, 'g');
     const hits = (content.match(re) || []).length;
@@ -67,6 +60,13 @@ function postProcess() {
       content = content.replace(re, to);
       console.log(`Renamed ${hits} occurrence(s) of '${from}' -> '${to}'`);
     }
+  }
+
+  const leaked = [...new Set(content.match(FORBIDDEN_NAME_PATTERN) || [])];
+  if (leaked.length > 0) {
+    console.error('Error: generated types leak Go package paths (fix the spec upstream, see CON-7378):');
+    for (const name of leaked) console.error(`  - ${name}`);
+    process.exit(1);
   }
 
   fs.writeFileSync(API_TYPES_PATH, content);

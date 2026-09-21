@@ -21,7 +21,7 @@ import type {
   SharedPartnerMeetingResponse,
   MeetingPartnerCreateMeetingRequest,
   MeetingPartnerUpdateMeetingRequest,
-  RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse,
+  SharedListResponseSharedPartnerMeetingResponse,
 } from './api-types';
 
 /** @deprecated Use SharedPartnerMeetingResponse - kept for backwards compatibility */
@@ -30,15 +30,15 @@ export type Meeting = SharedPartnerMeetingResponse;
 export type CreateMeetingRequest = MeetingPartnerCreateMeetingRequest;
 /** @deprecated Use MeetingPartnerUpdateMeetingRequest - kept for backwards compatibility */
 export type UpdateMeetingRequest = MeetingPartnerUpdateMeetingRequest;
-/** @deprecated Use RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse - kept for backwards compatibility */
-export type MeetingListResponse = RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse;
+/** @deprecated Use SharedListResponseSharedPartnerMeetingResponse - kept for backwards compatibility */
+export type MeetingListResponse = SharedListResponseSharedPartnerMeetingResponse;
 
 // --- Action Items ---
 import type {
   ActionItemPartnerActionItemResponse,
   ActionItemCreateActionItemRequest,
   ActionItemUpdateActionItemRequest,
-  RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse,
+  SharedListResponseActionItemPartnerActionItemResponse,
 } from './api-types';
 
 /** @deprecated Use ActionItemPartnerActionItemResponse - kept for backwards compatibility */
@@ -47,15 +47,15 @@ export type ActionItem = ActionItemPartnerActionItemResponse;
 export type CreateActionItemRequest = ActionItemCreateActionItemRequest;
 /** @deprecated Use ActionItemUpdateActionItemRequest - kept for backwards compatibility */
 export type UpdateActionItemRequest = ActionItemUpdateActionItemRequest;
-/** @deprecated Use RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
-export type ActionItemListResponse = RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse;
+/** @deprecated Use SharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
+export type ActionItemListResponse = SharedListResponseActionItemPartnerActionItemResponse;
 
 // --- Automations ---
 import type {
   AutomationAutomationResponse,
   AutomationCreateAutomationRequest,
   AutomationUpdateAutomationRequest,
-  RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse,
+  SharedListResponseAutomationAutomationResponse,
   PartnerAutomationAction,
 } from './api-types';
 
@@ -65,8 +65,8 @@ export type Automation = AutomationAutomationResponse;
 export type CreateAutomationRequest = AutomationCreateAutomationRequest;
 /** @deprecated Use AutomationUpdateAutomationRequest - kept for backwards compatibility */
 export type UpdateAutomationRequest = AutomationUpdateAutomationRequest;
-/** @deprecated Use RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse - kept for backwards compatibility */
-export type AutomationListResponse = RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse;
+/** @deprecated Use SharedListResponseAutomationAutomationResponse - kept for backwards compatibility */
+export type AutomationListResponse = SharedListResponseAutomationAutomationResponse;
 /** @deprecated Use PartnerAutomationAction - kept for backwards compatibility */
 export type AutomationAction = PartnerAutomationAction;
 
@@ -87,13 +87,13 @@ export type UpdatePartnerAppStatusRequest = AppManagementUpdateAppStatusRequest;
 // --- User Connections ---
 import type {
   ConnectionUserConnectionResponse,
-  RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse,
+  SharedListResponseConnectionUserConnectionResponse,
 } from './api-types';
 
 /** @deprecated Use ConnectionUserConnectionResponse - kept for backwards compatibility */
 export type UserConnection = ConnectionUserConnectionResponse;
-/** @deprecated Use RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse - kept for backwards compatibility */
-export type UserConnectionListResponse = RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse;
+/** @deprecated Use SharedListResponseConnectionUserConnectionResponse - kept for backwards compatibility */
+export type UserConnectionListResponse = SharedListResponseConnectionUserConnectionResponse;
 
 // --- Credentials ---
 import type {
@@ -131,3 +131,95 @@ import type { ErrorsPartnerErrorResponse } from './api-types';
 
 /** @deprecated Use ErrorsPartnerErrorResponse - kept for backwards compatibility */
 export type ErrorResponse = ErrorsPartnerErrorResponse;
+
+// ============================================================================
+// DEPRECATED GENERATED-NAME ALIASES (CON-7379)
+// Partner API v1.12.0 (rome CON-7378) fixed Go package-path leaks in the
+// OpenAPI definition keys, so the generated names below lost their
+// `RomeApiControllersExternalPartner…` prefix. Aliases keep existing
+// consumers compiling; they will be removed in the next major release.
+// ============================================================================
+
+import type {
+  OauthDiscoveryDocument,
+  OauthJWK,
+  OauthJWKSResponse,
+  OauthTokenIntrospection,
+  OauthTokenResponse,
+  OauthUserInfo,
+  SharedListResponseBacklogItemPartnerBacklogItemResponse,
+  SharedListResponseCalendarPartnerCalendarEventResponse,
+  SharedListResponseMeetingPartnerAgendaItemResponse,
+  SharedListResponseMeetingPartnerMeetingParticipantResponse,
+  SharedListResponseMeetingTemplatePartnerMeetingTemplateResponse,
+  SharedListResponseMeetingTemplateTemplateNextStepResponse,
+  SharedListResponseSessionPartnerChatSessionResponse,
+  SharedListResponseSharedActionButtonResponse,
+  SharedListResponseSharedNextStepResponse,
+  SharedListResponseTemplateTemplateNextStepResponse,
+  SharedListResponseTemplateTemplateResponse,
+  SharedListResponseToolkitPartnerToolkitResponse,
+  SharedListResponseToolkitToolkitResponse,
+  SharedListResponseToolkitToolkitWithInstallationResponse,
+  SharedListResponseWorkflowPartnerWorkflowTemplateSummary,
+  SharedListResponseWorkflowRunPartnerWorkflowRunResponse,
+  ToolkitPartnerToolkitResponse,
+  ToolkitToolkitResponse,
+} from './api-types';
+
+/** @deprecated Use OauthTokenResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerOauthTokenResponse = OauthTokenResponse;
+/** @deprecated Use OauthTokenIntrospection - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerOauthTokenIntrospection = OauthTokenIntrospection;
+/** @deprecated Use OauthJWK - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerOauthJWK = OauthJWK;
+/** @deprecated Use OauthJWKSResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerOauthJWKSResponse = OauthJWKSResponse;
+/** @deprecated Use OauthDiscoveryDocument - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerOauthDiscoveryDocument = OauthDiscoveryDocument;
+/** @deprecated Use OauthUserInfo - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerOauthUserInfo = OauthUserInfo;
+/** @deprecated Use ToolkitToolkitResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerAdminToolkitToolkitResponse = ToolkitToolkitResponse;
+/** @deprecated Use ToolkitPartnerToolkitResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserToolkitToolkitResponse = ToolkitPartnerToolkitResponse;
+/** @deprecated Use SharedListResponseAutomationAutomationResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerAdminSharedListResponseAutomationAutomationResponse = SharedListResponseAutomationAutomationResponse;
+/** @deprecated Use SharedListResponseConnectionUserConnectionResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerAdminSharedListResponseConnectionUserConnectionResponse = SharedListResponseConnectionUserConnectionResponse;
+/** @deprecated Use SharedListResponseTemplateTemplateNextStepResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateNextStepResponse = SharedListResponseTemplateTemplateNextStepResponse;
+/** @deprecated Use SharedListResponseTemplateTemplateResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerAdminSharedListResponseTemplateTemplateResponse = SharedListResponseTemplateTemplateResponse;
+/** @deprecated Use SharedListResponseWorkflowPartnerWorkflowTemplateSummary - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerAdminSharedListResponseWorkflowPartnerWorkflowTemplateSummary = SharedListResponseWorkflowPartnerWorkflowTemplateSummary;
+/** @deprecated Use SharedListResponseActionItemPartnerActionItemResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseActionItemPartnerActionItemResponse = SharedListResponseActionItemPartnerActionItemResponse;
+/** @deprecated Use SharedListResponseBacklogItemPartnerBacklogItemResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseBacklogItemPartnerBacklogItemResponse = SharedListResponseBacklogItemPartnerBacklogItemResponse;
+/** @deprecated Use SharedListResponseCalendarPartnerCalendarEventResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseCalendarPartnerCalendarEventResponse = SharedListResponseCalendarPartnerCalendarEventResponse;
+/** @deprecated Use SharedListResponseMeetingPartnerAgendaItemResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerAgendaItemResponse = SharedListResponseMeetingPartnerAgendaItemResponse;
+/** @deprecated Use SharedListResponseMeetingPartnerMeetingParticipantResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseMeetingPartnerMeetingParticipantResponse = SharedListResponseMeetingPartnerMeetingParticipantResponse;
+/** @deprecated Use SharedListResponseMeetingTemplatePartnerMeetingTemplateResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplatePartnerMeetingTemplateResponse = SharedListResponseMeetingTemplatePartnerMeetingTemplateResponse;
+/** @deprecated Use SharedListResponseMeetingTemplateTemplateNextStepResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseMeetingTemplateTemplateNextStepResponse = SharedListResponseMeetingTemplateTemplateNextStepResponse;
+/** @deprecated Use SharedListResponseSessionPartnerChatSessionResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseSessionPartnerChatSessionResponse = SharedListResponseSessionPartnerChatSessionResponse;
+/** @deprecated Use SharedListResponseSharedActionButtonResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseSharedActionButtonResponse = SharedListResponseSharedActionButtonResponse;
+/** @deprecated Use SharedListResponseSharedNextStepResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseSharedNextStepResponse = SharedListResponseSharedNextStepResponse;
+/** @deprecated Use SharedListResponseSharedPartnerMeetingResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseSharedPartnerMeetingResponse = SharedListResponseSharedPartnerMeetingResponse;
+/** @deprecated Use SharedListResponseToolkitToolkitWithInstallationResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseToolkitToolkitWithInstallationResponse = SharedListResponseToolkitToolkitWithInstallationResponse;
+/** @deprecated Use SharedListResponseWorkflowRunPartnerWorkflowRunResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseWorkflowRunPartnerWorkflowRunResponse = SharedListResponseWorkflowRunPartnerWorkflowRunResponse;
+/** @deprecated Use SharedListResponseToolkitToolkitResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerAdminToolkitToolkitResponse = SharedListResponseToolkitToolkitResponse;
+/** @deprecated Use SharedListResponseToolkitPartnerToolkitResponse - kept for backwards compatibility */
+export type RomeApiControllersExternalPartnerUserSharedListResponseRomeApiControllersExternalPartnerUserToolkitToolkitResponse = SharedListResponseToolkitPartnerToolkitResponse;

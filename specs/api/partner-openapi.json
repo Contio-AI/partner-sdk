@@ -33,7 +33,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_oauth.JWKSResponse"
+              "$ref": "#/definitions/oauth.JWKSResponse"
             }
           },
           "500": {
@@ -60,7 +60,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_oauth.DiscoveryDocument"
+              "$ref": "#/definitions/oauth.DiscoveryDocument"
             }
           },
           "500": {
@@ -408,7 +408,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_oauth.TokenIntrospection"
+              "$ref": "#/definitions/oauth.TokenIntrospection"
             }
           },
           "400": {
@@ -555,7 +555,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_oauth.TokenResponse"
+              "$ref": "#/definitions/oauth.TokenResponse"
             }
           },
           "400": {
@@ -600,7 +600,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_oauth.UserInfo"
+              "$ref": "#/definitions/oauth.UserInfo"
             }
           },
           "400": {
@@ -892,7 +892,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-automation_AutomationResponse"
+              "$ref": "#/definitions/shared.ListResponse-automation_AutomationResponse"
             }
           },
           "400": {
@@ -1299,7 +1299,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-connection_UserConnectionResponse"
+              "$ref": "#/definitions/shared.ListResponse-connection_UserConnectionResponse"
             }
           },
           "400": {
@@ -2429,7 +2429,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-template_TemplateResponse"
+              "$ref": "#/definitions/shared.ListResponse-template_TemplateResponse"
             }
           },
           "400": {
@@ -2826,7 +2826,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-template_TemplateNextStepResponse"
+              "$ref": "#/definitions/shared.ListResponse-template_TemplateNextStepResponse"
             }
           },
           "400": {
@@ -3116,7 +3116,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-rome_api_controllers_external_partner_admin_toolkit_ToolkitResponse"
+              "$ref": "#/definitions/shared.ListResponse-toolkit_ToolkitResponse"
             }
           },
           "401": {
@@ -3298,7 +3298,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse"
+              "$ref": "#/definitions/toolkit.ToolkitResponse"
             }
           },
           "400": {
@@ -3432,7 +3432,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse"
+              "$ref": "#/definitions/toolkit.ToolkitResponse"
             }
           },
           "400": {
@@ -4492,7 +4492,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_shared.ListResponse-workflow_PartnerWorkflowTemplateSummary"
+              "$ref": "#/definitions/shared.ListResponse-workflow_PartnerWorkflowTemplateSummary"
             }
           },
           "401": {
@@ -4902,7 +4902,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-action_item_PartnerActionItemResponse"
+              "$ref": "#/definitions/shared.ListResponse-action_item_PartnerActionItemResponse"
             }
           },
           "400": {
@@ -5314,7 +5314,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-backlog_item_PartnerBacklogItemResponse"
+              "$ref": "#/definitions/shared.ListResponse-backlog_item_PartnerBacklogItemResponse"
             }
           },
           "400": {
@@ -5463,7 +5463,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-backlog_item_PartnerBacklogItemResponse"
+              "$ref": "#/definitions/shared.ListResponse-backlog_item_PartnerBacklogItemResponse"
             }
           },
           "400": {
@@ -5873,7 +5873,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-calendar_PartnerCalendarEventResponse"
+              "$ref": "#/definitions/shared.ListResponse-calendar_PartnerCalendarEventResponse"
             }
           },
           "400": {
@@ -6086,7 +6086,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-meeting_template_PartnerMeetingTemplateResponse"
+              "$ref": "#/definitions/shared.ListResponse-meeting_template_PartnerMeetingTemplateResponse"
             }
           },
           "401": {
@@ -6296,7 +6296,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-meeting_template_TemplateNextStepResponse"
+              "$ref": "#/definitions/shared.ListResponse-meeting_template_TemplateNextStepResponse"
             }
           },
           "401": {
@@ -6372,7 +6372,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-shared_PartnerMeetingResponse"
+              "$ref": "#/definitions/shared.ListResponse-shared_PartnerMeetingResponse"
             }
           },
           "400": {
@@ -6549,7 +6549,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-shared_PartnerMeetingResponse"
+              "$ref": "#/definitions/shared.ListResponse-shared_PartnerMeetingResponse"
             }
           },
           "400": {
@@ -6761,7 +6761,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-shared_ActionButtonResponse"
+              "$ref": "#/definitions/shared.ListResponse-shared_ActionButtonResponse"
             }
           },
           "400": {
@@ -6923,7 +6923,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-meeting_PartnerAgendaItemResponse"
+              "$ref": "#/definitions/shared.ListResponse-meeting_PartnerAgendaItemResponse"
             }
           },
           "400": {
@@ -8299,7 +8299,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-shared_NextStepResponse"
+              "$ref": "#/definitions/shared.ListResponse-shared_NextStepResponse"
             }
           },
           "400": {
@@ -8460,7 +8460,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-meeting_PartnerMeetingParticipantResponse"
+              "$ref": "#/definitions/shared.ListResponse-meeting_PartnerMeetingParticipantResponse"
             }
           },
           "400": {
@@ -8790,7 +8790,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_transcript_import.TranscriptImportResponse"
+              "$ref": "#/definitions/transcript_import.TranscriptImportResponse"
             }
           },
           "202": {
@@ -8995,7 +8995,7 @@
           "200": {
             "description": "Sessions retrieved successfully",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-session_PartnerChatSessionResponse"
+              "$ref": "#/definitions/shared.ListResponse-session_PartnerChatSessionResponse"
             }
           },
           "400": {
@@ -9387,7 +9387,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-rome_api_controllers_external_partner_user_toolkit_ToolkitResponse"
+              "$ref": "#/definitions/shared.ListResponse-toolkit_PartnerToolkitResponse"
             }
           },
           "401": {
@@ -9563,7 +9563,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_transcript_import.TranscriptImportResponse"
+              "$ref": "#/definitions/transcript_import.TranscriptImportResponse"
             }
           },
           "202": {
@@ -9752,7 +9752,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-workflow_run_PartnerWorkflowRunResponse"
+              "$ref": "#/definitions/shared.ListResponse-workflow_run_PartnerWorkflowRunResponse"
             }
           },
           "401": {
@@ -9939,7 +9939,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_shared.ListResponse-toolkit_ToolkitWithInstallationResponse"
+              "$ref": "#/definitions/shared.ListResponse-toolkit_ToolkitWithInstallationResponse"
             }
           },
           "400": {
@@ -10559,7 +10559,7 @@
           "description": "Actions to execute when the automation is triggered",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/rome_api_services_partner.AutomationAction"
+            "$ref": "#/definitions/partner.AutomationAction"
           }
         },
         "created_at": {
@@ -10641,7 +10641,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/rome_api_services_partner.AutomationAction"
+            "$ref": "#/definitions/partner.AutomationAction"
           }
         },
         "description": {
@@ -10700,7 +10700,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/rome_api_services_partner.AutomationAction"
+            "$ref": "#/definitions/partner.AutomationAction"
           }
         },
         "description": {
@@ -12807,6 +12807,75 @@
         }
       }
     },
+    "oauth.DiscoveryDocument": {
+      "type": "object",
+      "properties": {
+        "authorization_endpoint": {
+          "type": "string",
+          "example": "https://auth.contio.io/oauth2/authorize"
+        },
+        "claims_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "id_token_signing_alg_values_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "introspection_endpoint": {
+          "type": "string",
+          "example": "https://auth.contio.io/oauth2/introspect"
+        },
+        "issuer": {
+          "type": "string",
+          "example": "https://auth.contio.io"
+        },
+        "jwks_uri": {
+          "type": "string",
+          "example": "https://auth.contio.io/.well-known/jwks.json"
+        },
+        "response_types_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "revocation_endpoint": {
+          "type": "string",
+          "example": "https://auth.contio.io/oauth2/revoke"
+        },
+        "scopes_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subject_types_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "token_endpoint": {
+          "type": "string",
+          "example": "https://auth.contio.io/oauth2/token"
+        },
+        "token_endpoint_auth_methods_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "userinfo_endpoint": {
+          "type": "string",
+          "example": "https://auth.contio.io/oauth2/userInfo"
+        }
+      }
+    },
     "oauth.HealthResponse": {
       "type": "object",
       "properties": {
@@ -12825,6 +12894,61 @@
         "timestamp": {
           "type": "string",
           "example": "2024-01-14T10:00:00Z"
+        }
+      }
+    },
+    "oauth.JWK": {
+      "type": "object",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "example": "RS256"
+        },
+        "crv": {
+          "description": "For ECDSA keys",
+          "type": "string",
+          "example": "P-256"
+        },
+        "d": {
+          "description": "For RSA and ECDSA private keys (optional)",
+          "type": "string"
+        },
+        "e": {
+          "type": "string",
+          "example": "AQAB"
+        },
+        "kid": {
+          "type": "string",
+          "example": "key-id-1"
+        },
+        "kty": {
+          "type": "string",
+          "example": "RSA"
+        },
+        "n": {
+          "type": "string",
+          "example": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbISD08qNLyrdkt-bFTWhAI4vMQFh6WeZu0fM4lFd2NcRwr3XPksINHaQ-G_xBniIqbw0Ls1jF44-csFCur-kEgU8awapJzKnqDKgw"
+        },
+        "use": {
+          "type": "string",
+          "example": "sig"
+        },
+        "x": {
+          "type": "string"
+        },
+        "y": {
+          "type": "string"
+        }
+      }
+    },
+    "oauth.JWKSResponse": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/oauth.JWK"
+          }
         }
       }
     },
@@ -13107,434 +13231,7 @@
         }
       }
     },
-    "profile.UserProfileResponse": {
-      "type": "object",
-      "properties": {
-        "created_at": {
-          "description": "Timestamp when the user account was created",
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        },
-        "display_name": {
-          "description": "User's display name",
-          "type": "string",
-          "example": "John Doe"
-        },
-        "email": {
-          "description": "User's email address",
-          "type": "string",
-          "example": "john.doe@example.com"
-        },
-        "id": {
-          "description": "Unique identifier for the user",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174003"
-        },
-        "plan_type": {
-          "description": "Workspace billing plan (FREE, PRO, ELITE, ENT, UNLIMITED)",
-          "type": "string",
-          "example": "FREE"
-        },
-        "timezone": {
-          "description": "IANA timezone identifier for the user, if known",
-          "type": "string",
-          "example": "America/Los_Angeles"
-        },
-        "workspace_id": {
-          "description": "ID of the workspace the user belongs to",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174002"
-        },
-        "workspace_name": {
-          "description": "Name of the workspace the user belongs to",
-          "type": "string",
-          "example": "Acme Corp"
-        },
-        "workspace_role": {
-          "description": "User's role in the workspace (e.g., WORKSPACE_OWNER, WORKSPACE_ADMIN, WORKSPACE_MEMBER)",
-          "type": "string",
-          "example": "WORKSPACE_MEMBER"
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-automation_AutomationResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/automation.AutomationResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-connection_UserConnectionResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/connection.UserConnectionResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-template_TemplateNextStepResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/template.TemplateNextStepResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-template_TemplateResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/template.TemplateResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_shared.ListResponse-workflow_PartnerWorkflowTemplateSummary": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/workflow.PartnerWorkflowTemplateSummary"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_toolkit.ManifestRef": {
-      "type": "object",
-      "properties": {
-        "$id": {
-          "description": "ID references an existing entity by its database ID",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "$ref": {
-          "description": "Ref references an entity defined in the same manifest via its $id value",
-          "type": "string",
-          "example": "my-next-step"
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_toolkit.NextStepActionButtonRelation": {
-      "type": "object",
-      "required": [
-        "action_button"
-      ],
-      "properties": {
-        "action_button": {
-          "description": "ActionButton is the reference to the action button entity ($ref or $id)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ManifestRef"
-            }
-          ]
-        },
-        "sort_order": {
-          "description": "SortOrder is the display order of the action button within the next step",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_toolkit.TemplateNextStepRelation": {
-      "type": "object",
-      "required": [
-        "next_step"
-      ],
-      "properties": {
-        "autopilot": {
-          "description": "Autopilot indicates if the next step should auto-execute when the meeting is finalized",
-          "type": "boolean",
-          "example": false
-        },
-        "next_step": {
-          "description": "NextStep is the reference to the next step entity ($ref or $id)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ManifestRef"
-            }
-          ]
-        },
-        "sort_order": {
-          "description": "SortOrder is the display order of the next step within the template",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse": {
-      "type": "object",
-      "properties": {
-        "auto_install_on_new_workspaces": {
-          "type": "boolean",
-          "example": true
-        },
-        "auto_propagate": {
-          "type": "boolean",
-          "example": true
-        },
-        "created_at": {
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        },
-        "description": {
-          "type": "string",
-          "example": "Complete sales workflow toolkit"
-        },
-        "id": {
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "is_active": {
-          "type": "boolean",
-          "example": true
-        },
-        "manifest": {
-          "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
-        },
-        "name": {
-          "type": "string",
-          "example": "Sales Pipeline Toolkit"
-        },
-        "ownership_type": {
-          "type": "string",
-          "example": "PARTNER"
-        },
-        "partner_app_id": {
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174001"
-        },
-        "slug": {
-          "type": "string",
-          "example": "sales-pipeline"
-        },
-        "updated_at": {
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        },
-        "version": {
-          "type": "string",
-          "example": "1.0.0"
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_oauth.DiscoveryDocument": {
-      "type": "object",
-      "properties": {
-        "authorization_endpoint": {
-          "type": "string",
-          "example": "https://auth.contio.io/oauth2/authorize"
-        },
-        "claims_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "id_token_signing_alg_values_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "introspection_endpoint": {
-          "type": "string",
-          "example": "https://auth.contio.io/oauth2/introspect"
-        },
-        "issuer": {
-          "type": "string",
-          "example": "https://auth.contio.io"
-        },
-        "jwks_uri": {
-          "type": "string",
-          "example": "https://auth.contio.io/.well-known/jwks.json"
-        },
-        "response_types_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "revocation_endpoint": {
-          "type": "string",
-          "example": "https://auth.contio.io/oauth2/revoke"
-        },
-        "scopes_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "subject_types_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "token_endpoint": {
-          "type": "string",
-          "example": "https://auth.contio.io/oauth2/token"
-        },
-        "token_endpoint_auth_methods_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "userinfo_endpoint": {
-          "type": "string",
-          "example": "https://auth.contio.io/oauth2/userInfo"
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_oauth.JWK": {
-      "type": "object",
-      "properties": {
-        "alg": {
-          "type": "string",
-          "example": "RS256"
-        },
-        "crv": {
-          "description": "For ECDSA keys",
-          "type": "string",
-          "example": "P-256"
-        },
-        "d": {
-          "description": "For RSA and ECDSA private keys (optional)",
-          "type": "string"
-        },
-        "e": {
-          "type": "string",
-          "example": "AQAB"
-        },
-        "kid": {
-          "type": "string",
-          "example": "key-id-1"
-        },
-        "kty": {
-          "type": "string",
-          "example": "RSA"
-        },
-        "n": {
-          "type": "string",
-          "example": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbISD08qNLyrdkt-bFTWhAI4vMQFh6WeZu0fM4lFd2NcRwr3XPksINHaQ-G_xBniIqbw0Ls1jF44-csFCur-kEgU8awapJzKnqDKgw"
-        },
-        "use": {
-          "type": "string",
-          "example": "sig"
-        },
-        "x": {
-          "type": "string"
-        },
-        "y": {
-          "type": "string"
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_oauth.JWKSResponse": {
-      "type": "object",
-      "properties": {
-        "keys": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/rome_api_controllers_external_partner_oauth.JWK"
-          }
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_oauth.TokenIntrospection": {
+    "oauth.TokenIntrospection": {
       "type": "object",
       "properties": {
         "active": {
@@ -13589,7 +13286,7 @@
         }
       }
     },
-    "rome_api_controllers_external_partner_oauth.TokenResponse": {
+    "oauth.TokenResponse": {
       "type": "object",
       "properties": {
         "access_token": {
@@ -13618,7 +13315,7 @@
         }
       }
     },
-    "rome_api_controllers_external_partner_oauth.UserInfo": {
+    "oauth.UserInfo": {
       "type": "object",
       "properties": {
         "email": {
@@ -13663,507 +13360,7 @@
         }
       }
     },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-action_item_PartnerActionItemResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/action_item.PartnerActionItemResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-backlog_item_PartnerBacklogItemResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/backlog_item.PartnerBacklogItemResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-calendar_PartnerCalendarEventResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/calendar.PartnerCalendarEventResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-meeting_PartnerAgendaItemResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/meeting.PartnerAgendaItemResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-meeting_PartnerMeetingParticipantResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/meeting.PartnerMeetingParticipantResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-meeting_template_PartnerMeetingTemplateResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/meeting_template.PartnerMeetingTemplateResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-meeting_template_TemplateNextStepResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/meeting_template.TemplateNextStepResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-rome_api_controllers_external_partner_admin_toolkit_ToolkitResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-rome_api_controllers_external_partner_user_toolkit_ToolkitResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/rome_api_controllers_external_partner_user_toolkit.ToolkitResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-session_PartnerChatSessionResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/session.PartnerChatSessionResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-shared_ActionButtonResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/shared.ActionButtonResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-shared_NextStepResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/shared.NextStepResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-shared_PartnerMeetingResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/shared.PartnerMeetingResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-toolkit_ToolkitWithInstallationResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/toolkit.ToolkitWithInstallationResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_shared.ListResponse-workflow_run_PartnerWorkflowRunResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "description": "Array of items for the current page",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/workflow_run.PartnerWorkflowRunResponse"
-          }
-        },
-        "limit": {
-          "description": "Maximum number of items per page",
-          "type": "integer",
-          "example": 50
-        },
-        "offset": {
-          "description": "Number of items skipped from the beginning",
-          "type": "integer",
-          "example": 0
-        },
-        "total": {
-          "description": "Total number of items across all pages",
-          "type": "integer",
-          "example": 100
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_toolkit.ToolkitResponse": {
-      "type": "object",
-      "properties": {
-        "action_buttons_count": {
-          "description": "Number of action buttons in the toolkit",
-          "type": "integer",
-          "example": 2
-        },
-        "created_at": {
-          "description": "Timestamp when the toolkit was created",
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        },
-        "description": {
-          "description": "Description of the toolkit",
-          "type": "string",
-          "example": "A comprehensive toolkit for sales meetings"
-        },
-        "id": {
-          "description": "Unique identifier for the toolkit",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "is_active": {
-          "description": "Whether the toolkit is active",
-          "type": "boolean",
-          "example": true
-        },
-        "name": {
-          "description": "Name of the toolkit",
-          "type": "string",
-          "example": "Sales Meeting Toolkit"
-        },
-        "next_steps_count": {
-          "description": "Number of next steps in the toolkit",
-          "type": "integer",
-          "example": 5
-        },
-        "ownership_type": {
-          "description": "Ownership type of the toolkit",
-          "type": "string",
-          "enum": [
-            "SYSTEM",
-            "PARTNER"
-          ],
-          "example": "PARTNER"
-        },
-        "slug": {
-          "description": "URL-friendly slug for the toolkit",
-          "type": "string",
-          "example": "sales-meeting-toolkit"
-        },
-        "templates_count": {
-          "description": "Number of templates in the toolkit",
-          "type": "integer",
-          "example": 3
-        },
-        "updated_at": {
-          "description": "Timestamp when the toolkit was last updated",
-          "type": "string",
-          "example": "2023-01-01T00:00:00Z"
-        },
-        "version": {
-          "description": "Version of the toolkit",
-          "type": "string",
-          "example": "1.0.0"
-        }
-      }
-    },
-    "rome_api_controllers_external_partner_user_transcript_import.TranscriptImportResponse": {
-      "type": "object",
-      "properties": {
-        "duration_seconds": {
-          "type": "integer"
-        },
-        "ended_at": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "meeting_id": {
-          "type": "string"
-        },
-        "segments_count": {
-          "type": "integer"
-        },
-        "started_at": {
-          "type": "string"
-        },
-        "transcript_id": {
-          "type": "string"
-        }
-      }
-    },
-    "rome_api_services_partner.AutomationAction": {
+    "partner.AutomationAction": {
       "type": "object",
       "required": [
         "type"
@@ -14181,6 +13378,56 @@
         "type": {
           "type": "string",
           "example": "webhook"
+        }
+      }
+    },
+    "profile.UserProfileResponse": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "Timestamp when the user account was created",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "display_name": {
+          "description": "User's display name",
+          "type": "string",
+          "example": "John Doe"
+        },
+        "email": {
+          "description": "User's email address",
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "id": {
+          "description": "Unique identifier for the user",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174003"
+        },
+        "plan_type": {
+          "description": "Workspace billing plan (FREE, PRO, ELITE, ENT, UNLIMITED)",
+          "type": "string",
+          "example": "FREE"
+        },
+        "timezone": {
+          "description": "IANA timezone identifier for the user, if known",
+          "type": "string",
+          "example": "America/Los_Angeles"
+        },
+        "workspace_id": {
+          "description": "ID of the workspace the user belongs to",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174002"
+        },
+        "workspace_name": {
+          "description": "Name of the workspace the user belongs to",
+          "type": "string",
+          "example": "Acme Corp"
+        },
+        "workspace_role": {
+          "description": "User's role in the workspace (e.g., WORKSPACE_OWNER, WORKSPACE_ADMIN, WORKSPACE_MEMBER)",
+          "type": "string",
+          "example": "WORKSPACE_MEMBER"
         }
       }
     },
@@ -14636,6 +13883,546 @@
           "description": "Execution status",
           "type": "string",
           "example": "completed"
+        }
+      }
+    },
+    "shared.ListResponse-action_item_PartnerActionItemResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/action_item.PartnerActionItemResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-automation_AutomationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/automation.AutomationResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-backlog_item_PartnerBacklogItemResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/backlog_item.PartnerBacklogItemResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-calendar_PartnerCalendarEventResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/calendar.PartnerCalendarEventResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-connection_UserConnectionResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/connection.UserConnectionResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-meeting_PartnerAgendaItemResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/meeting.PartnerAgendaItemResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-meeting_PartnerMeetingParticipantResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/meeting.PartnerMeetingParticipantResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-meeting_template_PartnerMeetingTemplateResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/meeting_template.PartnerMeetingTemplateResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-meeting_template_TemplateNextStepResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/meeting_template.TemplateNextStepResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-session_PartnerChatSessionResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/session.PartnerChatSessionResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-shared_ActionButtonResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/shared.ActionButtonResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-shared_NextStepResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/shared.NextStepResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-shared_PartnerMeetingResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/shared.PartnerMeetingResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-template_TemplateNextStepResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/template.TemplateNextStepResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-template_TemplateResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/template.TemplateResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-toolkit_PartnerToolkitResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.PartnerToolkitResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-toolkit_ToolkitResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ToolkitResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-toolkit_ToolkitWithInstallationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolkit.ToolkitWithInstallationResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-workflow_PartnerWorkflowTemplateSummary": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/workflow.PartnerWorkflowTemplateSummary"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "shared.ListResponse-workflow_run_PartnerWorkflowRunResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Array of items for the current page",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/workflow_run.PartnerWorkflowRunResponse"
+          }
+        },
+        "limit": {
+          "description": "Maximum number of items per page",
+          "type": "integer",
+          "example": 50
+        },
+        "offset": {
+          "description": "Number of items skipped from the beginning",
+          "type": "integer",
+          "example": 0
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer",
+          "example": 100
         }
       }
     },
@@ -15229,7 +15016,7 @@
           "$ref": "#/definitions/toolkit.ManifestSummaryResponse"
         },
         "toolkit": {
-          "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ToolkitResponse"
+          "$ref": "#/definitions/toolkit.ToolkitResponse"
         },
         "validation": {
           "$ref": "#/definitions/toolkit.ValidationResultResponse"
@@ -15677,14 +15464,14 @@
           "description": "ActionButtons defines the action buttons to attach to this next step with junction fields",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.NextStepActionButtonRelation"
+            "$ref": "#/definitions/toolkit.NextStepActionButtonRelation"
           }
         },
         "default_action_button": {
           "description": "DefaultActionButton specifies the default action button for this next step (by $ref or $id)",
           "allOf": [
             {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ManifestRef"
+              "$ref": "#/definitions/toolkit.ManifestRef"
             }
           ]
         },
@@ -15796,6 +15583,21 @@
             "VIEWER"
           ],
           "example": "EDITOR"
+        }
+      }
+    },
+    "toolkit.ManifestRef": {
+      "type": "object",
+      "properties": {
+        "$id": {
+          "description": "ID references an existing entity by its database ID",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "$ref": {
+          "description": "Ref references an entity defined in the same manifest via its $id value",
+          "type": "string",
+          "example": "my-next-step"
         }
       }
     },
@@ -15920,7 +15722,7 @@
           "description": "NextSteps defines the next steps to attach to this template with junction fields",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.TemplateNextStepRelation"
+            "$ref": "#/definitions/toolkit.TemplateNextStepRelation"
           }
         },
         "spec": {
@@ -16029,6 +15831,122 @@
         "path": {
           "type": "string",
           "example": "next_steps[0]"
+        }
+      }
+    },
+    "toolkit.NextStepActionButtonRelation": {
+      "type": "object",
+      "required": [
+        "action_button"
+      ],
+      "properties": {
+        "action_button": {
+          "description": "ActionButton is the reference to the action button entity ($ref or $id)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ManifestRef"
+            }
+          ]
+        },
+        "sort_order": {
+          "description": "SortOrder is the display order of the action button within the next step",
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "toolkit.PartnerToolkitResponse": {
+      "type": "object",
+      "properties": {
+        "action_buttons_count": {
+          "description": "Number of action buttons in the toolkit",
+          "type": "integer",
+          "example": 2
+        },
+        "created_at": {
+          "description": "Timestamp when the toolkit was created",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "description": {
+          "description": "Description of the toolkit",
+          "type": "string",
+          "example": "A comprehensive toolkit for sales meetings"
+        },
+        "id": {
+          "description": "Unique identifier for the toolkit",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "is_active": {
+          "description": "Whether the toolkit is active",
+          "type": "boolean",
+          "example": true
+        },
+        "name": {
+          "description": "Name of the toolkit",
+          "type": "string",
+          "example": "Sales Meeting Toolkit"
+        },
+        "next_steps_count": {
+          "description": "Number of next steps in the toolkit",
+          "type": "integer",
+          "example": 5
+        },
+        "ownership_type": {
+          "description": "Ownership type of the toolkit",
+          "type": "string",
+          "enum": [
+            "SYSTEM",
+            "PARTNER"
+          ],
+          "example": "PARTNER"
+        },
+        "slug": {
+          "description": "URL-friendly slug for the toolkit",
+          "type": "string",
+          "example": "sales-meeting-toolkit"
+        },
+        "templates_count": {
+          "description": "Number of templates in the toolkit",
+          "type": "integer",
+          "example": 3
+        },
+        "updated_at": {
+          "description": "Timestamp when the toolkit was last updated",
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "version": {
+          "description": "Version of the toolkit",
+          "type": "string",
+          "example": "1.0.0"
+        }
+      }
+    },
+    "toolkit.TemplateNextStepRelation": {
+      "type": "object",
+      "required": [
+        "next_step"
+      ],
+      "properties": {
+        "autopilot": {
+          "description": "Autopilot indicates if the next step should auto-execute when the meeting is finalized",
+          "type": "boolean",
+          "example": false
+        },
+        "next_step": {
+          "description": "NextStep is the reference to the next step entity ($ref or $id)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/toolkit.ManifestRef"
+            }
+          ]
+        },
+        "sort_order": {
+          "description": "SortOrder is the display order of the next step within the template",
+          "type": "integer",
+          "example": 1
         }
       }
     },
@@ -16143,6 +16061,62 @@
         }
       }
     },
+    "toolkit.ToolkitResponse": {
+      "type": "object",
+      "properties": {
+        "auto_install_on_new_workspaces": {
+          "type": "boolean",
+          "example": true
+        },
+        "auto_propagate": {
+          "type": "boolean",
+          "example": true
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "description": {
+          "type": "string",
+          "example": "Complete sales workflow toolkit"
+        },
+        "id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "is_active": {
+          "type": "boolean",
+          "example": true
+        },
+        "manifest": {
+          "$ref": "#/definitions/toolkit.ToolkitManifestRequest"
+        },
+        "name": {
+          "type": "string",
+          "example": "Sales Pipeline Toolkit"
+        },
+        "ownership_type": {
+          "type": "string",
+          "example": "PARTNER"
+        },
+        "partner_app_id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        "slug": {
+          "type": "string",
+          "example": "sales-pipeline"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00Z"
+        },
+        "version": {
+          "type": "string",
+          "example": "1.0.0"
+        }
+      }
+    },
     "toolkit.ToolkitWithInstallationResponse": {
       "type": "object",
       "properties": {
@@ -16158,7 +16132,7 @@
           "description": "Toolkit details",
           "allOf": [
             {
-              "$ref": "#/definitions/rome_api_controllers_external_partner_user_toolkit.ToolkitResponse"
+              "$ref": "#/definitions/toolkit.PartnerToolkitResponse"
             }
           ]
         }
@@ -16332,6 +16306,32 @@
           "type": "string"
         },
         "updated_at": {
+          "type": "string"
+        }
+      }
+    },
+    "transcript_import.TranscriptImportResponse": {
+      "type": "object",
+      "properties": {
+        "duration_seconds": {
+          "type": "integer"
+        },
+        "ended_at": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "meeting_id": {
+          "type": "string"
+        },
+        "segments_count": {
+          "type": "integer"
+        },
+        "started_at": {
+          "type": "string"
+        },
+        "transcript_id": {
           "type": "string"
         }
       }
