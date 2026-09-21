@@ -28,7 +28,11 @@ export interface AgendaItem {
   /** @deprecated Use {@link presenter_details} instead. */
   presenters?: string[];
   presenter_details?: PresenterDetails[];
-  /** Private talking points / notes for this agenda item. */
+  /**
+   * Private talking points / notes for this agenda item, as markdown.
+   * Notes saved before the markdown migration may be returned as HTML
+   * until they are re-saved.
+   */
   talking_points?: string;
   created_at?: string;
   updated_at?: string;
@@ -41,7 +45,10 @@ export interface CreateAgendaItemRequest {
   sequence?: string;
   time_allocation_minutes?: number;
   presenters?: string[];
-  /** Private talking points / notes for this agenda item. */
+  /**
+   * Private talking points / notes for this agenda item, as markdown.
+   * HTML is still accepted and normalized to markdown before storage.
+   */
   talking_points?: string;
 }
 
@@ -53,7 +60,10 @@ export interface UpdateAgendaItemRequest {
   sequence?: string;
   time_allocation_minutes?: number;
   presenters?: string[];
-  /** Private talking points / notes for this agenda item. */
+  /**
+   * Private talking points / notes for this agenda item, as markdown.
+   * HTML is still accepted and normalized to markdown before storage.
+   */
   talking_points?: string;
 }
 

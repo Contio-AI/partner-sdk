@@ -19,3 +19,4 @@ export * from './nextSteps';
 export * from './workflows';
 export * from './backlogItems';
 export * from './attachments';
+export * from './transcriptImports';

@@ -30,7 +30,11 @@ export interface BacklogItem {
   deleted_at?: string;
   assigned_at?: string;
   presenters?: string[];
-  /** Private talking points for the authenticated user on this backlog item. */
+  /**
+   * Private talking points for the authenticated user on this backlog item,
+   * as markdown. Notes saved before the markdown migration may be returned
+   * as HTML until they are re-saved.
+   */
   talking_points?: string;
   time_allocation_minutes?: number;
 }
@@ -40,7 +44,10 @@ export interface CreateBacklogItemRequest {
   description?: string;
   item_type: BacklogItemType;
   presenters?: string[];
-  /** Private talking points for this backlog item. */
+  /**
+   * Private talking points for this backlog item, as markdown.
+   * HTML is still accepted and normalized to markdown before storage.
+   */
   talking_points?: string;
   time_allocation_minutes?: number;
 }
@@ -50,7 +57,10 @@ export interface UpdateBacklogItemRequest {
   description?: string;
   item_type?: BacklogItemType;
   presenters?: string[];
-  /** Private talking points for this backlog item. */
+  /**
+   * Private talking points for this backlog item, as markdown.
+   * HTML is still accepted and normalized to markdown before storage.
+   */
   talking_points?: string;
   time_allocation_minutes?: number;
 }

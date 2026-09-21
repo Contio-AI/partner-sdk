@@ -15,6 +15,12 @@ export interface Meeting {
   updated_at: string;
   redirect_to_meeting_id?: string; // Smart redirect hint (CON-1640)
   applied_template_ids?: string[]; // IDs of templates applied to the meeting
+  /**
+   * Highlighted snippet from the meeting's notes explaining why a search `q`
+   * matched. Only populated by `searchMeetings` when the match came from
+   * notes content; omitted otherwise (e.g. title-only matches).
+   */
+  match_context?: string;
 }
 
 export type MeetingStatus =

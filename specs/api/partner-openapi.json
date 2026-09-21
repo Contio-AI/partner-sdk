@@ -13,7 +13,7 @@
       "name": "MIT/Commercial",
       "url": "https://docs.contio.ai/partner-api/license/"
     },
-    "version": "1.11.0"
+    "version": "1.12.0"
   },
   "host": "api.contio.ai",
   "basePath": "/",
@@ -6234,7 +6234,7 @@
           "402": {
             "description": "Plan upgrade required (Pro)",
             "schema": {
-              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
             }
           },
           "403": {
@@ -6469,7 +6469,7 @@
             ]
           }
         ],
-        "description": "Searches meetings accessible to the authenticated partner user using the same full-text behavior as the in-product search: the free-text query matches the meeting title and email alias (case-insensitive substring) and full-text matches the meeting title, summary, and notes, so terms that appear only in a meeting's summary_notes match. Supports quoted phrases and -exclusions. Results are scoped to the user's workspace and de-duplicated: meetings sharing the same calendar_event_id and start time are collapsed into one row. Returns paginated results.",
+        "description": "Searches meetings accessible to the authenticated partner user using the same full-text behavior as the in-product search: the free-text query matches the meeting title and email alias (case-insensitive substring) and full-text matches the meeting title, summary, and notes, so terms that appear only in a meeting's summary_notes match. Supports quoted phrases and -exclusions. When `q` is provided, results are ranked by relevance (full-text rank over the title and notes plus a title-substring boost) rather than recency, and each item may include `match_context`, a highlighted snippet from the matching notes. Results are scoped to the user's workspace and de-duplicated: meetings sharing the same calendar_event_id and start time are collapsed into one row. Returns paginated results.",
         "produces": [
           "application/json"
         ],
@@ -6647,7 +6647,7 @@
             ]
           }
         ],
-        "description": "Updates an existing meeting if accessible to the authenticated partner user",
+        "description": "Updates an existing meeting if accessible to the authenticated partner user. If `template_id` is provided, the template is applied to the meeting as part of the update.",
         "consumes": [
           "application/json"
         ],
@@ -6702,6 +6702,12 @@
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
           },
+          "403": {
+            "description": "Forbidden / insufficient permissions",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
           "404": {
             "description": "Meeting not found",
             "schema": {
@@ -6710,6 +6716,12 @@
           },
           "500": {
             "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "503": {
+            "description": "Template apply backend unavailable",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -8385,7 +8397,7 @@
             }
           },
           "400": {
-            "description": "Invalid request parameters",
+            "description": "Invalid request parameters, or the meeting has no transcript or summary for AI execution (next_step_no_meeting_content)",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -8706,7 +8718,7 @@
           "402": {
             "description": "Plan upgrade required (Elite)",
             "schema": {
-              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
             }
           },
           "403": {
@@ -8723,6 +8735,114 @@
           },
           "500": {
             "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/meetings/{id}/transcript/import": {
+      "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Imports a text or audio transcript into an existing meeting.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Transcript Import"
+        ],
+        "summary": "Import a meeting transcript",
+        "operationId": "importMeetingTranscript",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meeting ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "file",
+            "description": "Transcript or audio file",
+            "name": "file",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_user_transcript_import.TranscriptImportResponse"
+            }
+          },
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/transcript_import.AudioTranscriptImportStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "402": {
+            "description": "Plan upgrade required for audio import (Elite), or insufficient credits (errors.PartnerErrorResponse with code insufficient_credits)",
+            "schema": {
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
               "$ref": "#/definitions/errors.PartnerErrorResponse"
             }
@@ -8957,7 +9077,7 @@
           "402": {
             "description": "Plan upgrade required (Pro)",
             "schema": {
-              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
             }
           },
           "422": {
@@ -9121,7 +9241,7 @@
           "402": {
             "description": "Plan upgrade required (Pro)",
             "schema": {
-              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
             }
           },
           "404": {
@@ -9362,6 +9482,208 @@
         }
       }
     },
+    "/v1/partner/user/transcript-imports": {
+      "post": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Imports a transcript from a multipart text or audio file, creating a meeting when unbound.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Transcript Import"
+        ],
+        "summary": "Import a transcript",
+        "operationId": "importTranscript",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Client-provided idempotency key",
+            "name": "Idempotency-Key",
+            "in": "header"
+          },
+          {
+            "type": "file",
+            "description": "Transcript or audio file",
+            "name": "file",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Existing meeting ID",
+            "name": "meeting_id",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "Meeting title for unbound imports",
+            "name": "title",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "Meeting start time in RFC3339",
+            "name": "starts_at",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "description": "Meeting duration in seconds",
+            "name": "duration_seconds",
+            "in": "formData"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "csv",
+            "description": "Meeting participants",
+            "name": "participants",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "Calendar event ID for audio binding",
+            "name": "calendar_event_id",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_user_transcript_import.TranscriptImportResponse"
+            }
+          },
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/transcript_import.AudioTranscriptImportStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "402": {
+            "description": "Plan upgrade required for audio import (Elite), or insufficient credits (errors.PartnerErrorResponse with code insufficient_credits)",
+            "schema": {
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/partner/user/transcript-imports/audio/jobs/{jobId}": {
+      "get": {
+        "security": [
+          {
+            "OAuth2Application": [
+              "meetings:read"
+            ]
+          },
+          {
+            "OAuth2Application": [
+              "meetings:write"
+            ]
+          }
+        ],
+        "description": "Returns the status of an audio transcript import owned by the authenticated partner application.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Transcript Import"
+        ],
+        "summary": "Get audio transcript import status",
+        "operationId": "getAudioTranscriptImport",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Audio import job ID",
+            "name": "jobId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/transcript_import.AudioTranscriptImportStatusResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errors.PartnerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v1/partner/user/workflow-runs": {
       "get": {
         "security": [
@@ -9506,7 +9828,7 @@
           "402": {
             "description": "Plan upgrade required (Elite)",
             "schema": {
-              "$ref": "#/definitions/middleware.FeatureNotAvailableResponse"
+              "$ref": "#/definitions/gating.FeatureNotAvailableResponse"
             }
           },
           "404": {
@@ -10237,7 +10559,7 @@
           "description": "Actions to execute when the automation is triggered",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/partner.AutomationAction"
+            "$ref": "#/definitions/rome_api_services_partner.AutomationAction"
           }
         },
         "created_at": {
@@ -10319,7 +10641,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/partner.AutomationAction"
+            "$ref": "#/definitions/rome_api_services_partner.AutomationAction"
           }
         },
         "description": {
@@ -10378,7 +10700,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/partner.AutomationAction"
+            "$ref": "#/definitions/rome_api_services_partner.AutomationAction"
           }
         },
         "description": {
@@ -10481,9 +10803,10 @@
           ]
         },
         "talking_points": {
+          "description": "TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.",
           "type": "string",
           "maxLength": 10000,
-          "example": "Key points: budget, timeline"
+          "example": "- Budget\n- Timeline"
         },
         "time_allocation_minutes": {
           "type": "number",
@@ -10587,9 +10910,9 @@
           ]
         },
         "talking_points": {
-          "description": "Private talking points of the authenticated user on this backlog item. Only returned when the user has talking points.",
+          "description": "Private talking points of the authenticated user on this backlog item, as markdown. Only returned when the user has talking points. Notes last saved before the markdown migration may still be returned as HTML until they are re-saved.",
           "type": "string",
-          "example": "Key points: budget, timeline"
+          "example": "- Budget\n- Timeline"
         },
         "time_allocation_minutes": {
           "type": "number",
@@ -10630,9 +10953,10 @@
           ]
         },
         "talking_points": {
+          "description": "TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.",
           "type": "string",
           "maxLength": 10000,
-          "example": "Key points: budget, timeline"
+          "example": "- Budget\n- Timeline"
         },
         "time_allocation_minutes": {
           "type": "number",
@@ -11390,6 +11714,26 @@
         }
       }
     },
+    "gating.FeatureNotAvailableResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "current_plan": {
+          "type": "string"
+        },
+        "feature": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "required_plan": {
+          "type": "string"
+        }
+      }
+    },
     "idp.CreateIdPConfigError400": {
       "description": "Bad request error for creating IdP configuration",
       "type": "object",
@@ -11833,9 +12177,10 @@
           "example": "300"
         },
         "talking_points": {
+          "description": "TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.",
           "type": "string",
           "maxLength": 10000,
-          "example": "My private notes for this item"
+          "example": "- My private notes for this item"
         },
         "time_allocation_minutes": {
           "type": "number",
@@ -11960,9 +12305,9 @@
           "example": "pending"
         },
         "talking_points": {
-          "description": "Private talking points for the authenticated user on this agenda item. Only returned if the user has talking points.",
+          "description": "Private talking points for the authenticated user on this agenda item, as markdown. Only returned if the user has talking points. Notes last saved before the markdown migration may still be returned as HTML until they are re-saved.",
           "type": "string",
-          "example": "Key points to discuss: budget allocation, timeline"
+          "example": "- Budget allocation\n- Timeline"
         },
         "time_allocation_minutes": {
           "description": "Allocated time for this agenda item in minutes",
@@ -12170,9 +12515,10 @@
           "example": "in_progress"
         },
         "talking_points": {
+          "description": "TalkingPoints is markdown. HTML is still accepted and normalised to markdown before storage.",
           "type": "string",
           "maxLength": 10000,
-          "example": "Updated private notes"
+          "example": "- Updated private notes"
         },
         "time_allocation_minutes": {
           "type": "number",
@@ -12423,26 +12769,6 @@
           "description": "Sort order of the next step",
           "type": "integer",
           "example": 1
-        }
-      }
-    },
-    "middleware.FeatureNotAvailableResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "current_plan": {
-          "type": "string"
-        },
-        "feature": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "required_plan": {
-          "type": "string"
         }
       }
     },
@@ -12781,27 +13107,6 @@
         }
       }
     },
-    "partner.AutomationAction": {
-      "type": "object",
-      "required": [
-        "type"
-      ],
-      "properties": {
-        "config": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "example": {
-            "url": "https://api.example.com/webhook"
-          }
-        },
-        "type": {
-          "type": "string",
-          "example": "webhook"
-        }
-      }
-    },
     "profile.UserProfileResponse": {
       "type": "object",
       "properties": {
@@ -12984,6 +13289,68 @@
           "description": "Total number of items across all pages",
           "type": "integer",
           "example": 100
+        }
+      }
+    },
+    "rome_api_controllers_external_partner_admin_toolkit.ManifestRef": {
+      "type": "object",
+      "properties": {
+        "$id": {
+          "description": "ID references an existing entity by its database ID",
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "$ref": {
+          "description": "Ref references an entity defined in the same manifest via its $id value",
+          "type": "string",
+          "example": "my-next-step"
+        }
+      }
+    },
+    "rome_api_controllers_external_partner_admin_toolkit.NextStepActionButtonRelation": {
+      "type": "object",
+      "required": [
+        "action_button"
+      ],
+      "properties": {
+        "action_button": {
+          "description": "ActionButton is the reference to the action button entity ($ref or $id)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ManifestRef"
+            }
+          ]
+        },
+        "sort_order": {
+          "description": "SortOrder is the display order of the action button within the next step",
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "rome_api_controllers_external_partner_admin_toolkit.TemplateNextStepRelation": {
+      "type": "object",
+      "required": [
+        "next_step"
+      ],
+      "properties": {
+        "autopilot": {
+          "description": "Autopilot indicates if the next step should auto-execute when the meeting is finalized",
+          "type": "boolean",
+          "example": false
+        },
+        "next_step": {
+          "description": "NextStep is the reference to the next step entity ($ref or $id)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ManifestRef"
+            }
+          ]
+        },
+        "sort_order": {
+          "description": "SortOrder is the display order of the next step within the template",
+          "type": "integer",
+          "example": 1
         }
       }
     },
@@ -13770,6 +14137,53 @@
         }
       }
     },
+    "rome_api_controllers_external_partner_user_transcript_import.TranscriptImportResponse": {
+      "type": "object",
+      "properties": {
+        "duration_seconds": {
+          "type": "integer"
+        },
+        "ended_at": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "meeting_id": {
+          "type": "string"
+        },
+        "segments_count": {
+          "type": "integer"
+        },
+        "started_at": {
+          "type": "string"
+        },
+        "transcript_id": {
+          "type": "string"
+        }
+      }
+    },
+    "rome_api_services_partner.AutomationAction": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "config": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "example": {
+            "url": "https://api.example.com/webhook"
+          }
+        },
+        "type": {
+          "type": "string",
+          "example": "webhook"
+        }
+      }
+    },
     "session.CreateSessionRequest": {
       "type": "object",
       "required": [
@@ -14359,7 +14773,7 @@
       "type": "object",
       "properties": {
         "applied_template_ids": {
-          "description": "AppliedTemplateIDs is the list of template IDs that have been applied to this meeting",
+          "description": "IDs of the meeting templates applied to this meeting",
           "type": "array",
           "items": {
             "type": "string"
@@ -14392,6 +14806,11 @@
           "description": "Unique identifier for the meeting",
           "type": "string",
           "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "match_context": {
+          "description": "A highlighted snippet from the meeting's notes explaining why a `q` search matched. Only populated by search endpoints when a query is provided and the match came from notes content; omitted otherwise (e.g. title-only matches).",
+          "type": "string",
+          "example": "…ship the **xerographic** sidebar redesign…"
         },
         "redirect_to_meeting_id": {
           "description": "ID of the meeting to redirect to if this meeting was merged",
@@ -15258,14 +15677,14 @@
           "description": "ActionButtons defines the action buttons to attach to this next step with junction fields",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/toolkit.NextStepActionButtonRelation"
+            "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.NextStepActionButtonRelation"
           }
         },
         "default_action_button": {
           "description": "DefaultActionButton specifies the default action button for this next step (by $ref or $id)",
           "allOf": [
             {
-              "$ref": "#/definitions/toolkit.ManifestRef"
+              "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.ManifestRef"
             }
           ]
         },
@@ -15377,21 +15796,6 @@
             "VIEWER"
           ],
           "example": "EDITOR"
-        }
-      }
-    },
-    "toolkit.ManifestRef": {
-      "type": "object",
-      "properties": {
-        "$id": {
-          "description": "ID references an existing entity by its database ID",
-          "type": "string",
-          "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "$ref": {
-          "description": "Ref references an entity defined in the same manifest via its $id value",
-          "type": "string",
-          "example": "my-next-step"
         }
       }
     },
@@ -15516,7 +15920,7 @@
           "description": "NextSteps defines the next steps to attach to this template with junction fields",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/toolkit.TemplateNextStepRelation"
+            "$ref": "#/definitions/rome_api_controllers_external_partner_admin_toolkit.TemplateNextStepRelation"
           }
         },
         "spec": {
@@ -15625,53 +16029,6 @@
         "path": {
           "type": "string",
           "example": "next_steps[0]"
-        }
-      }
-    },
-    "toolkit.NextStepActionButtonRelation": {
-      "type": "object",
-      "required": [
-        "action_button"
-      ],
-      "properties": {
-        "action_button": {
-          "description": "ActionButton is the reference to the action button entity ($ref or $id)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/toolkit.ManifestRef"
-            }
-          ]
-        },
-        "sort_order": {
-          "description": "SortOrder is the display order of the action button within the next step",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "toolkit.TemplateNextStepRelation": {
-      "type": "object",
-      "required": [
-        "next_step"
-      ],
-      "properties": {
-        "autopilot": {
-          "description": "Autopilot indicates if the next step should auto-execute when the meeting is finalized",
-          "type": "boolean",
-          "example": false
-        },
-        "next_step": {
-          "description": "NextStep is the reference to the next step entity ($ref or $id)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/toolkit.ManifestRef"
-            }
-          ]
-        },
-        "sort_order": {
-          "description": "SortOrder is the display order of the next step within the template",
-          "type": "integer",
-          "example": 1
         }
       }
     },
@@ -15944,6 +16301,38 @@
         "version_number": {
           "type": "integer",
           "example": 2
+        }
+      }
+    },
+    "transcript_import.AudioTranscriptImportStatusResponse": {
+      "type": "object",
+      "properties": {
+        "completed_at": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "failure_code": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "meeting_id": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "transcript_id": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
         }
       }
     },
@@ -16346,6 +16735,7 @@
         "Participants",
         "Templates",
         "Toolkits",
+        "Transcript Import",
         "User Profile",
         "Workflow Runs"
       ]
@@ -16443,6 +16833,10 @@
     {
       "name": "Toolkits",
       "description": "Browse and install toolkits in user workspaces. Toolkits provide pre-configured feature sets that partners have published for their users. Installing a toolkit creates all associated entities (templates, action buttons, next steps) in the target workspace.\n\n**Required scopes:** `toolkits:read` (GET) · `toolkits:write` (POST / DELETE)."
+    },
+    {
+      "name": "Transcript Import",
+      "description": "Import text or audio transcripts into Contio meetings on behalf of a connected user. A single multipart endpoint accepts transcript files (.txt, .md, .srt, .vtt, .pdf) and audio recordings; text imports complete synchronously while audio imports return a job you poll for transcription status. Text/PDF uploads are limited to 50 MiB by default and audio uploads to 2 GiB; oversized uploads return `413 request_too_large`.\n\n**Required scopes:** `meetings:write` (POST) · `meetings:read` or `meetings:write` (job status GET)."
     },
     {
       "name": "Workflow Runs",
