@@ -12,7 +12,7 @@
 asyncapi: 2.6.0
 info:
     title: Contio Partner Webhook Events
-    version: 1.12.0
+    version: 1.13.0
     description: AsyncAPI specification for Contio Partner webhook events.
     contact:
         name: Contio Partner Support
@@ -111,6 +111,46 @@ channels:
                 name: calendar_event.updated
                 payload:
                     $ref: '#/components/schemas/CalendarEventUpdatedPayload'
+    canvas.access_changed:
+        subscribe:
+            summary: Sent when a canvas's sharing roles change
+            operationId: onCanvasAccessChanged
+            message:
+                name: canvas.access_changed
+                payload:
+                    $ref: '#/components/schemas/CanvasAccessChangedPayload'
+    canvas.content_updated:
+        subscribe:
+            summary: Sent when a canvas's content changes
+            operationId: onCanvasContentUpdated
+            message:
+                name: canvas.content_updated
+                payload:
+                    $ref: '#/components/schemas/CanvasContentUpdatedPayload'
+    canvas.created:
+        subscribe:
+            summary: Sent when a canvas is created
+            operationId: onCanvasCreated
+            message:
+                name: canvas.created
+                payload:
+                    $ref: '#/components/schemas/CanvasCreatedPayload'
+    canvas.deleted:
+        subscribe:
+            summary: Sent when a canvas is deleted
+            operationId: onCanvasDeleted
+            message:
+                name: canvas.deleted
+                payload:
+                    $ref: '#/components/schemas/CanvasDeletedPayload'
+    canvas.updated:
+        subscribe:
+            summary: Sent when a canvas's metadata is updated
+            operationId: onCanvasUpdated
+            message:
+                name: canvas.updated
+                payload:
+                    $ref: '#/components/schemas/CanvasUpdatedPayload'
     canvas_template.applied:
         subscribe:
             summary: Sent when a canvas template is applied to a canvas
@@ -716,6 +756,160 @@ components:
                     event_type:
                         const: calendar_event.updated
                   type: object
+        CanvasAccessChangedData:
+            type: object
+            required:
+                - canvas_id
+                - changed_at
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                canvas_link_role:
+                    type: object
+                    required:
+                        - new_role
+                        - old_role
+                    properties:
+                        new_role:
+                            type: string
+                        old_role:
+                            type: string
+                changed_at:
+                    type: string
+                    format: date-time
+                workspace_canvas_role:
+                    type: object
+                    required:
+                        - new_role
+                        - old_role
+                    properties:
+                        new_role:
+                            type: string
+                        old_role:
+                            type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasAccessChangedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasAccessChangedData'
+                    event_type:
+                        const: canvas.access_changed
+                  type: object
+        CanvasContentUpdatedData:
+            type: object
+            required:
+                - canvas_id
+                - content_etag
+                - content_version
+                - owned_by_user_id
+                - updated_at
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                content_etag:
+                    type: string
+                content_version:
+                    type: integer
+                last_edited_by:
+                    type:
+                        - string
+                        - "null"
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                updated_at:
+                    type: string
+                    format: date-time
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasContentUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasContentUpdatedData'
+                    event_type:
+                        const: canvas.content_updated
+                  type: object
+        CanvasCreatedData:
+            type: object
+            required:
+                - canvas_id
+                - created_at
+                - created_by_user_id
+                - owned_by_user_id
+                - title
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                created_at:
+                    type: string
+                    format: date-time
+                created_by_user_id:
+                    type: string
+                    format: uuid
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                title:
+                    type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasCreatedData'
+                    event_type:
+                        const: canvas.created
+                  type: object
+        CanvasDeletedData:
+            type: object
+            required:
+                - canvas_id
+                - deleted_at
+                - owned_by_user_id
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                deleted_at:
+                    type: string
+                    format: date-time
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasDeletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasDeletedData'
+                    event_type:
+                        const: canvas.deleted
+                  type: object
         CanvasTemplateAppliedData:
             type: object
             required:
@@ -755,6 +949,43 @@ components:
                         $ref: '#/components/schemas/CanvasTemplateAppliedData'
                     event_type:
                         const: canvas_template.applied
+                  type: object
+        CanvasUpdatedData:
+            type: object
+            required:
+                - canvas_id
+                - owned_by_user_id
+                - title
+                - updated_at
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                title:
+                    type: string
+                updated_at:
+                    type: string
+                    format: date-time
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasUpdatedData'
+                    event_type:
+                        const: canvas.updated
                   type: object
         MeetingCompletedData:
             type: object
