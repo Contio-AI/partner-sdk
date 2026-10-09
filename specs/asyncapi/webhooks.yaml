@@ -12,7 +12,7 @@
 asyncapi: 2.6.0
 info:
     title: Contio Partner Webhook Events
-    version: 1.12.0
+    version: 1.14.0
     description: AsyncAPI specification for Contio Partner webhook events.
     contact:
         name: Contio Partner Support
@@ -111,6 +111,46 @@ channels:
                 name: calendar_event.updated
                 payload:
                     $ref: '#/components/schemas/CalendarEventUpdatedPayload'
+    canvas.access_changed:
+        subscribe:
+            summary: Sent when a canvas's sharing roles change
+            operationId: onCanvasAccessChanged
+            message:
+                name: canvas.access_changed
+                payload:
+                    $ref: '#/components/schemas/CanvasAccessChangedPayload'
+    canvas.content_updated:
+        subscribe:
+            summary: Sent when a canvas's content changes
+            operationId: onCanvasContentUpdated
+            message:
+                name: canvas.content_updated
+                payload:
+                    $ref: '#/components/schemas/CanvasContentUpdatedPayload'
+    canvas.created:
+        subscribe:
+            summary: Sent when a canvas is created
+            operationId: onCanvasCreated
+            message:
+                name: canvas.created
+                payload:
+                    $ref: '#/components/schemas/CanvasCreatedPayload'
+    canvas.deleted:
+        subscribe:
+            summary: Sent when a canvas is deleted
+            operationId: onCanvasDeleted
+            message:
+                name: canvas.deleted
+                payload:
+                    $ref: '#/components/schemas/CanvasDeletedPayload'
+    canvas.updated:
+        subscribe:
+            summary: Sent when a canvas's metadata is updated
+            operationId: onCanvasUpdated
+            message:
+                name: canvas.updated
+                payload:
+                    $ref: '#/components/schemas/CanvasUpdatedPayload'
     canvas_template.applied:
         subscribe:
             summary: Sent when a canvas template is applied to a canvas
@@ -255,54 +295,6 @@ channels:
                 name: user.connection.revoked
                 payload:
                     $ref: '#/components/schemas/UserConnectionRevokedPayload'
-    workflow.run.completed:
-        subscribe:
-            summary: Sent when a workflow run completes successfully
-            operationId: onWorkflowRunCompleted
-            message:
-                name: workflow.run.completed
-                payload:
-                    $ref: '#/components/schemas/WorkflowRunCompletedPayload'
-    workflow.run.failed:
-        subscribe:
-            summary: Sent when a workflow run fails
-            operationId: onWorkflowRunFailed
-            message:
-                name: workflow.run.failed
-                payload:
-                    $ref: '#/components/schemas/WorkflowRunFailedPayload'
-    workflow.run.started:
-        subscribe:
-            summary: Sent when a workflow run starts
-            operationId: onWorkflowRunStarted
-            message:
-                name: workflow.run.started
-                payload:
-                    $ref: '#/components/schemas/WorkflowRunStartedPayload'
-    workflow.step.completed:
-        subscribe:
-            summary: Sent when a workflow step completes
-            operationId: onWorkflowStepCompleted
-            message:
-                name: workflow.step.completed
-                payload:
-                    $ref: '#/components/schemas/WorkflowStepCompletedPayload'
-    workflow.task.created:
-        subscribe:
-            summary: Sent when a workflow task is created
-            operationId: onWorkflowTaskCreated
-            message:
-                name: workflow.task.created
-                payload:
-                    $ref: '#/components/schemas/WorkflowTaskCreatedPayload'
-    workflow.task.resolved:
-        subscribe:
-            summary: Sent when a workflow task is resolved
-            operationId: onWorkflowTaskResolved
-            message:
-                name: workflow.task.resolved
-                payload:
-                    $ref: '#/components/schemas/WorkflowTaskResolvedPayload'
 components:
     schemas:
         ActionButtonTriggeredData:
@@ -716,6 +708,160 @@ components:
                     event_type:
                         const: calendar_event.updated
                   type: object
+        CanvasAccessChangedData:
+            type: object
+            required:
+                - canvas_id
+                - changed_at
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                canvas_link_role:
+                    type: object
+                    required:
+                        - new_role
+                        - old_role
+                    properties:
+                        new_role:
+                            type: string
+                        old_role:
+                            type: string
+                changed_at:
+                    type: string
+                    format: date-time
+                workspace_canvas_role:
+                    type: object
+                    required:
+                        - new_role
+                        - old_role
+                    properties:
+                        new_role:
+                            type: string
+                        old_role:
+                            type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasAccessChangedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasAccessChangedData'
+                    event_type:
+                        const: canvas.access_changed
+                  type: object
+        CanvasContentUpdatedData:
+            type: object
+            required:
+                - canvas_id
+                - content_etag
+                - content_version
+                - owned_by_user_id
+                - updated_at
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                content_etag:
+                    type: string
+                content_version:
+                    type: integer
+                last_edited_by:
+                    type:
+                        - string
+                        - "null"
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                updated_at:
+                    type: string
+                    format: date-time
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasContentUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasContentUpdatedData'
+                    event_type:
+                        const: canvas.content_updated
+                  type: object
+        CanvasCreatedData:
+            type: object
+            required:
+                - canvas_id
+                - created_at
+                - created_by_user_id
+                - owned_by_user_id
+                - title
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                created_at:
+                    type: string
+                    format: date-time
+                created_by_user_id:
+                    type: string
+                    format: uuid
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                title:
+                    type: string
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasCreatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasCreatedData'
+                    event_type:
+                        const: canvas.created
+                  type: object
+        CanvasDeletedData:
+            type: object
+            required:
+                - canvas_id
+                - deleted_at
+                - owned_by_user_id
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                deleted_at:
+                    type: string
+                    format: date-time
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasDeletedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasDeletedData'
+                    event_type:
+                        const: canvas.deleted
+                  type: object
         CanvasTemplateAppliedData:
             type: object
             required:
@@ -755,6 +901,43 @@ components:
                         $ref: '#/components/schemas/CanvasTemplateAppliedData'
                     event_type:
                         const: canvas_template.applied
+                  type: object
+        CanvasUpdatedData:
+            type: object
+            required:
+                - canvas_id
+                - owned_by_user_id
+                - title
+                - updated_at
+                - workspace_id
+            properties:
+                canvas_id:
+                    type: string
+                    format: uuid
+                owned_by_user_id:
+                    type: string
+                    format: uuid
+                template_id:
+                    type:
+                        - string
+                        - "null"
+                    format: uuid
+                title:
+                    type: string
+                updated_at:
+                    type: string
+                    format: date-time
+                workspace_id:
+                    type: string
+                    format: uuid
+        CanvasUpdatedPayload:
+            allOf:
+                - $ref: '#/components/schemas/WebhookPayloadBase'
+                - properties:
+                    data:
+                        $ref: '#/components/schemas/CanvasUpdatedData'
+                    event_type:
+                        const: canvas.updated
                   type: object
         MeetingCompletedData:
             type: object
@@ -1390,241 +1573,3 @@ components:
                 id:
                     type: string
                     format: uuid
-        WorkflowRunCompletedData:
-            type: object
-            required:
-                - completed_at
-                - duration_ms
-                - final_status
-                - run_id
-                - template_id
-                - total_steps
-                - workspace_id
-            properties:
-                completed_at:
-                    type: string
-                    format: date-time
-                duration_ms:
-                    type: integer
-                final_status:
-                    type: string
-                run_id:
-                    type: string
-                    format: uuid
-                template_id:
-                    type: string
-                    format: uuid
-                total_steps:
-                    type: integer
-                workspace_id:
-                    type: string
-                    format: uuid
-        WorkflowRunCompletedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowRunCompletedData'
-                    event_type:
-                        const: workflow.run.completed
-                  type: object
-        WorkflowRunFailedData:
-            type: object
-            required:
-                - error_message
-                - failed_at
-                - final_status
-                - run_id
-                - template_id
-                - workspace_id
-            properties:
-                error_message:
-                    type: string
-                failed_at:
-                    type: string
-                    format: date-time
-                final_status:
-                    type: string
-                node_id:
-                    type:
-                        - string
-                        - "null"
-                run_id:
-                    type: string
-                    format: uuid
-                step_id:
-                    type:
-                        - string
-                        - "null"
-                    format: uuid
-                template_id:
-                    type: string
-                    format: uuid
-                workspace_id:
-                    type: string
-                    format: uuid
-        WorkflowRunFailedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowRunFailedData'
-                    event_type:
-                        const: workflow.run.failed
-                  type: object
-        WorkflowRunStartedData:
-            type: object
-            required:
-                - originating_id
-                - originating_type
-                - run_id
-                - started_at
-                - template_id
-                - trigger_type
-                - workspace_id
-            properties:
-                originating_id:
-                    type: string
-                    format: uuid
-                originating_type:
-                    type: string
-                run_id:
-                    type: string
-                    format: uuid
-                started_at:
-                    type: string
-                    format: date-time
-                template_id:
-                    type: string
-                    format: uuid
-                trigger_type:
-                    type: string
-                triggered_by:
-                    type:
-                        - string
-                        - "null"
-                workspace_id:
-                    type: string
-                    format: uuid
-        WorkflowRunStartedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowRunStartedData'
-                    event_type:
-                        const: workflow.run.started
-                  type: object
-        WorkflowStepCompletedData:
-            type: object
-            required:
-                - completed_at
-                - node_id
-                - node_type
-                - run_id
-                - status
-                - step_id
-            properties:
-                completed_at:
-                    type: string
-                    format: date-time
-                node_id:
-                    type: string
-                node_type:
-                    type: string
-                output_summary: {}
-                run_id:
-                    type: string
-                    format: uuid
-                status:
-                    type: string
-                step_id:
-                    type: string
-                    format: uuid
-        WorkflowStepCompletedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowStepCompletedData'
-                    event_type:
-                        const: workflow.step.completed
-                  type: object
-        WorkflowTaskCreatedData:
-            type: object
-            required:
-                - assignee_user_id
-                - created_at
-                - run_id
-                - task_id
-                - task_type
-                - title
-                - workspace_id
-            properties:
-                assignee_user_id:
-                    type: string
-                    format: uuid
-                created_at:
-                    type: string
-                    format: date-time
-                run_id:
-                    type: string
-                    format: uuid
-                task_id:
-                    type: string
-                    format: uuid
-                task_type:
-                    type: string
-                title:
-                    type: string
-                workspace_id:
-                    type: string
-                    format: uuid
-        WorkflowTaskCreatedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowTaskCreatedData'
-                    event_type:
-                        const: workflow.task.created
-                  type: object
-        WorkflowTaskResolvedData:
-            type: object
-            required:
-                - decision
-                - resolved_at
-                - resolved_by
-                - run_id
-                - task_id
-                - workspace_id
-            properties:
-                decision:
-                    type: string
-                reason:
-                    type:
-                        - string
-                        - "null"
-                resolved_at:
-                    type: string
-                    format: date-time
-                resolved_by:
-                    type: string
-                run_id:
-                    type: string
-                    format: uuid
-                task_id:
-                    type: string
-                    format: uuid
-                workspace_id:
-                    type: string
-                    format: uuid
-        WorkflowTaskResolvedPayload:
-            allOf:
-                - $ref: '#/components/schemas/WebhookPayloadBase'
-                - properties:
-                    data:
-                        $ref: '#/components/schemas/WorkflowTaskResolvedData'
-                    event_type:
-                        const: workflow.task.resolved
-                  type: object

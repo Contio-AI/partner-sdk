@@ -4,8 +4,8 @@
  * THIS FILE IS AUTO-GENERATED - DO NOT EDIT
  *
  * Source: specs/asyncapi/webhooks.yaml
- * Spec version: 1.12.0
- * Generated: 2026-09-21T09:21:17.512Z
+ * Spec version: 1.14.0
+ * Generated: 2026-10-09T09:19:56.056Z
  *
  * Regenerate: npm run gen-webhook-types
  */
@@ -251,6 +251,122 @@ export interface CalendarEventUpdatedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
+export interface CanvasAccessChangedPayload {
+  'actor_user_id'?: string;
+  'data': CanvasAccessChangedData;
+  'event_id': string;
+  'event_type': 'canvas.access_changed';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasAccessChangedData {
+  'canvas_id': string;
+  'canvas_link_role'?: AnonymousSchema_100;
+  'changed_at': string;
+  'workspace_canvas_role'?: AnonymousSchema_104;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_100 {
+  'new_role': string;
+  'old_role': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface AnonymousSchema_104 {
+  'new_role': string;
+  'old_role': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasContentUpdatedPayload {
+  'actor_user_id'?: string;
+  'data': CanvasContentUpdatedData;
+  'event_id': string;
+  'event_type': 'canvas.content_updated';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasContentUpdatedData {
+  'canvas_id': string;
+  'content_etag': string;
+  'content_version': number;
+  'last_edited_by'?: string | null;
+  'owned_by_user_id': string;
+  'updated_at': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasCreatedPayload {
+  'actor_user_id'?: string;
+  'data': CanvasCreatedData;
+  'event_id': string;
+  'event_type': 'canvas.created';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasCreatedData {
+  'canvas_id': string;
+  'created_at': string;
+  'created_by_user_id': string;
+  'owned_by_user_id': string;
+  'template_id'?: string | null;
+  'title': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasDeletedPayload {
+  'actor_user_id'?: string;
+  'data': CanvasDeletedData;
+  'event_id': string;
+  'event_type': 'canvas.deleted';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasDeletedData {
+  'canvas_id': string;
+  'deleted_at': string;
+  'owned_by_user_id': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasUpdatedPayload {
+  'actor_user_id'?: string;
+  'data': CanvasUpdatedData;
+  'event_id': string;
+  'event_type': 'canvas.updated';
+  'for_user'?: WebhookUserContext;
+  'partner_app_id': string;
+  'timestamp': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
+export interface CanvasUpdatedData {
+  'canvas_id': string;
+  'owned_by_user_id': string;
+  'template_id'?: string | null;
+  'title': string;
+  'updated_at': string;
+  'workspace_id': string;
+  'additionalProperties'?: Record<string, unknown>;
+}
+
 export interface CanvasTemplateAppliedPayload {
   'actor_user_id'?: string;
   'data': CanvasTemplateAppliedData;
@@ -265,14 +381,14 @@ export interface CanvasTemplateAppliedPayload {
 export interface CanvasTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_101;
+  'applied_items': AnonymousSchema_144;
   'canvas_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_101 {
+export interface AnonymousSchema_144 {
   'collaborators': number;
   'additionalProperties'?: Record<string, unknown>;
 }
@@ -350,20 +466,20 @@ export interface MeetingContextProcessedData {
   'context_id': string;
   'meeting_id': string;
   'processed_at': string;
-  'sanitization_report': AnonymousSchema_130;
+  'sanitization_report': AnonymousSchema_173;
   'workspace_id': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_130 {
+export interface AnonymousSchema_173 {
   'formula_escaped': boolean;
   'pii_detected': boolean;
-  'redactions'?: AnonymousSchema_134[];
+  'redactions'?: AnonymousSchema_177[];
   'secrets_detected': boolean;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_134 {
+export interface AnonymousSchema_177 {
   'count': number;
   'type': string;
   'additionalProperties'?: Record<string, unknown>;
@@ -423,14 +539,14 @@ export interface MeetingTemplateAppliedPayload {
 export interface MeetingTemplateAppliedData {
   'applied_at': string;
   'applied_by_user_id': string;
-  'applied_items': AnonymousSchema_157;
+  'applied_items': AnonymousSchema_200;
   'meeting_id': string;
   'template_id': string;
   'template_name': string;
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface AnonymousSchema_157 {
+export interface AnonymousSchema_200 {
   'agenda_items': number;
   'documents': number;
   'participants': number;
@@ -643,140 +759,6 @@ export interface UserConnectionRevokedData {
   'additionalProperties'?: Record<string, unknown>;
 }
 
-export interface WorkflowRunCompletedPayload {
-  'actor_user_id'?: string;
-  'data': WorkflowRunCompletedData;
-  'event_id': string;
-  'event_type': 'workflow.run.completed';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowRunCompletedData {
-  'completed_at': string;
-  'duration_ms': number;
-  'final_status': string;
-  'run_id': string;
-  'template_id': string;
-  'total_steps': number;
-  'workspace_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowRunFailedPayload {
-  'actor_user_id'?: string;
-  'data': WorkflowRunFailedData;
-  'event_id': string;
-  'event_type': 'workflow.run.failed';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowRunFailedData {
-  'error_message': string;
-  'failed_at': string;
-  'final_status': string;
-  'node_id'?: string | null;
-  'run_id': string;
-  'step_id'?: string | null;
-  'template_id': string;
-  'workspace_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowRunStartedPayload {
-  'actor_user_id'?: string;
-  'data': WorkflowRunStartedData;
-  'event_id': string;
-  'event_type': 'workflow.run.started';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowRunStartedData {
-  'originating_id': string;
-  'originating_type': string;
-  'run_id': string;
-  'started_at': string;
-  'template_id': string;
-  'trigger_type': string;
-  'triggered_by'?: string | null;
-  'workspace_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowStepCompletedPayload {
-  'actor_user_id'?: string;
-  'data': WorkflowStepCompletedData;
-  'event_id': string;
-  'event_type': 'workflow.step.completed';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowStepCompletedData {
-  'completed_at': string;
-  'node_id': string;
-  'node_type': string;
-  'output_summary'?: any;
-  'run_id': string;
-  'status': string;
-  'step_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowTaskCreatedPayload {
-  'actor_user_id'?: string;
-  'data': WorkflowTaskCreatedData;
-  'event_id': string;
-  'event_type': 'workflow.task.created';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowTaskCreatedData {
-  'assignee_user_id': string;
-  'created_at': string;
-  'run_id': string;
-  'task_id': string;
-  'task_type': string;
-  'title': string;
-  'workspace_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowTaskResolvedPayload {
-  'actor_user_id'?: string;
-  'data': WorkflowTaskResolvedData;
-  'event_id': string;
-  'event_type': 'workflow.task.resolved';
-  'for_user'?: WebhookUserContext;
-  'partner_app_id': string;
-  'timestamp': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
-export interface WorkflowTaskResolvedData {
-  'decision': string;
-  'reason'?: string | null;
-  'resolved_at': string;
-  'resolved_by': string;
-  'run_id': string;
-  'task_id': string;
-  'workspace_id': string;
-  'additionalProperties'?: Record<string, unknown>;
-}
-
 /**
  * All webhook event type names
  */
@@ -792,6 +774,11 @@ export const WEBHOOK_EVENT_TYPES = [
   'calendar_event.created',
   'calendar_event.deleted',
   'calendar_event.updated',
+  'canvas.access_changed',
+  'canvas.content_updated',
+  'canvas.created',
+  'canvas.deleted',
+  'canvas.updated',
   'canvas_template.applied',
   'meeting.completed',
   'meeting.context.created',
@@ -810,12 +797,6 @@ export const WEBHOOK_EVENT_TYPES = [
   'session.turn.completed',
   'session.turn.failed',
   'user.connection.revoked',
-  'workflow.run.completed',
-  'workflow.run.failed',
-  'workflow.run.started',
-  'workflow.step.completed',
-  'workflow.task.created',
-  'workflow.task.resolved',
 ] as const;
 
 export type WebhookEventType = typeof WEBHOOK_EVENT_TYPES[number];
